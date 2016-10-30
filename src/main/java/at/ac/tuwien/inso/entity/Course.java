@@ -11,12 +11,28 @@ public class Course {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
+    private int ects;
 
     protected Course() {}
 
     public Course(String name) {
         this.name = name;
+    }
+
+    public Course(String name, int ects) {
+        this.name = name;
+        this.ects = ects;
+    }
+
+    public int getEcts() {
+        return ects;
+    }
+
+    public void setEcts(int ects) {
+        this.ects = ects;
     }
 
     public Long getId() {

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Title</title>
+	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/min/css/style.css}"/>
+	<script type="text/javascript" th:src="@{/min/js/prefixfree.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/min/js/es6test.js}" ></script>
+
+</head>
+<body onload="myFunction()">
+
+<h2>This is using the main style</h2>
+
+<div id="description">
+	This is using another style, which is imported into the main style.
+</div>
+
+<h3 th:text="${course.name}">
+</h3>
+
+<form action="/editCourse" method="post" th:object="${course}">
+	<input type="hidden" th:field="*{id}"/>
+	<input type="text" th:field="*{name}"/>
+	<input type="text" th:field="*{ects}"/>
+
+	<button type="submit">Save course</button>
+
+</form>
+
+</body>
+</html>
