@@ -9,7 +9,7 @@
 
 <div th:fragment="header">
 	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Log Out"/>
+		<input type="submit" th:value="#{log.out}"/>
 	</form>
 </div>
 

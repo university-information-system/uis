@@ -15,8 +15,7 @@
 
 <div class="basic-error" sec:authorize="!(hasRole('ROLE_ADMIN') || hasRole('ROLE_USER'))">
     <br/>
-    You are not logged in. You can only see the basic information.
-    Please log in for extended functionality!
+    <span th:text="#{please.log.in}"></span>
 </div>
 
 <h2>This is using the main style</h2>
