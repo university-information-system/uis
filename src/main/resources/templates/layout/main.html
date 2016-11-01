@@ -2,15 +2,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/default">
-<body>
+<body onload="main.initialize()">
 
 <div layout:fragment="content">
 
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" th:value="#{log.out}"/>
-    </form>
+    <ul id="slide-out" class="side-nav fixed teal white-text">
+        <li class="logo center"><i class="medium material-icons">school</i></li>
 
-    <div layout:fragment="main"></div>
+        <li>
+            <ul layout:fragment="nav-items"></ul>
+        </li>
+
+        <li>
+            <div class="divider"></div>
+        </li>
+
+        <li>
+            <form id="logout" th:action="@{/logout}" method="post">
+                <a class="white-text" href="#" onclick="$('#logout').submit()" th:text="#{log.out}"></a>
+            </form>
+        </li>
+    </ul>
+
+    <nav class="hide-on-large-only">
+        <div class="nav-wrapper teal">
+            <span class="brand-logo"><i class="material-icons">school</i>UIS</span>
+            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+
+    <main layout:fragment="main"></main>
+</div>
+
+<div layout:fragment="scripts">
+    <script type="text/javascript" th:src="@{/min/js/main.js}"></script>
 </div>
 
 </body>

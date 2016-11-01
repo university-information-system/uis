@@ -1,13 +1,9 @@
-@import "another_style";
-$font-stack:    Helvetica, sans-serif;
-$primary-color: blue;
-
-body {
-  font: 100% $font-stack;
-  color: $primary-color;
-  transform: none;
+header, main, footer {
+  padding-left: 300px;
 }
 
-.basic-error {
-  color: red;
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
 }
