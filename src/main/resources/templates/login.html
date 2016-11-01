@@ -16,20 +16,19 @@
             <form class="card-panel z-depth-2" th:action="@{/login}" method="post">
                 <div class="input-field">
                     <input id="username" name="username" type="text"/>
-                    <label for="username">User name</label>
+                    <label for="username" th:text="#{username}"></label>
                 </div>
 
                 <div class="input-field">
                     <input id="password" name="password" type="password"/>
-                    <label for="password">Password</label>
+                    <label for="password" th:text="#{password}"></label>
                 </div>
 
                 <div class="input-field row">
-                    <input type="submit" value="Sign In" class="waves-effect waves-teal btn-large col s12"/>
+                    <input type="submit" th:value="#{log.in}" class="waves-effect waves-teal btn-large col s12"/>
                 </div>
 
-                <div th:if="${param.error}" class="red-text center">
-                    Invalid username and password!
+                <div th:if="${param.error}" class="red-text center" th:text="#{invalid.credentials}">
                 </div>
             </form>
         </div>
