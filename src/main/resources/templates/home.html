@@ -1,46 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head>
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/min/css/style.css}"/>
-    <script type="text/javascript" th:src="@{/min/js/prefixfree.min.js}" ></script>
-    <script type="text/javascript" th:src="@{/min/js/es6test.js}" ></script>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      layout:decorator="layout/default">
 
-</head>
 <body onload="myFunction()">
 
-<div th:replace="fragments/header:: header"></div>
+<div layout:fragment="content">
+    <div th:replace="fragments/header:: header"></div>
 
 
-<div class="basic-error" sec:authorize="!(hasRole('ROLE_ADMIN') || hasRole('ROLE_USER'))">
-    <br/>
-    <span th:text="#{please.log.in}"></span>
-</div>
+    <div class="basic-error" sec:authorize="!(hasRole('ROLE_ADMIN') || hasRole('ROLE_USER'))">
+        <br/>
+        <span th:text="#{please.log.in}"></span>
+    </div>
 
-<h2>This is using the main style</h2>
+    <h2>This is using the main style</h2>
 
-<div id="description">
-    This is using another style, which is imported into the main style.
-</div>
+    <div id="description">
+        This is using another style, which is imported into the main style.
+    </div>
 
-<h3>
-    <ul>
-        <li th:each="course : ${listOfCourses}" >
-            <a th:href="@{/editCourse(id=__${course.id}__)}" th:text="${course.name} + ', ' + ${course.ects} + 'ECTS'"> </a>
-        </li>
-    </ul>
-</h3>
+    <h3>
+        <ul>
+            <li th:each="course : ${listOfCourses}">
+                <a th:href="@{/editCourse(id=__${course.id}__)}"
+                   th:text="${course.name} + ', ' + ${course.ects} + 'ECTS'"> </a>
+            </li>
+        </ul>
+    </h3>
 
-<div sec:authorize="hasRole('ROLE_USER')">
-    Want to add a course? <a th:href="@{/login}">Log in as admin!</a>
-</div>
+    <div sec:authorize="hasRole('ROLE_USER')">
+        Want to add a course? <a th:href="@{/login}">Log in as admin!</a>
+    </div>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <form th:action="@{/addcourse}" method="post">
-        <input type="text" name="name" />
-        <button type="submit">Add new course</button>
-    </form>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <form th:action="@{/addcourse}" method="post">
+            <input type="text" name="name"/>
+            <button type="submit">Add new course</button>
+        </form>
+    </div>
+
+    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+
 </div>
 
 </body>
