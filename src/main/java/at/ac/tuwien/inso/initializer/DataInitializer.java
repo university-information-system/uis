@@ -1,23 +1,36 @@
 package at.ac.tuwien.inso.initializer;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.repository.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.*;
+import org.springframework.context.annotation.*;
+import org.springframework.security.crypto.password.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
+
+import static java.util.Arrays.*;
 
 @Configuration
 public class DataInitializer {
 
 	private final static int DEFAULT_ECTS_NUMBER = 3;
 
+	@Autowired
+	private CourseRepository courseRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
 	@Bean
-	CommandLineRunner initialize(CourseRepository courseRepository) {
-		return String -> courseRepository.save(createCourses());
+	CommandLineRunner initialize() {
+		return String -> {
+			courseRepository.save(createCourses());
+
+			userRepository.save(createUsers());
+		};
 	}
 
 	private List<Course> createCourses() {
@@ -26,4 +39,12 @@ public class DataInitializer {
 				.collect(Collectors.toList());
 	}
 
+	private List<User> createUsers() {
+		String password = new StandardPasswordEncoder().encode("pass");
+		return asList(
+				new User("admin", password, new Role("ROLE_ADMIN")),
+				new User("lecturer", password, new Role("ROLE_LECTURER")),
+				new User("student", password, new Role("ROLE_STUDENT"))
+		);
+	}
 }

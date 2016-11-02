@@ -1,11 +1,13 @@
 package at.ac.tuwien.inso.config;
 
+import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.*;
+import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.authentication.*;
 
 import java.util.*;
@@ -14,6 +16,9 @@ import java.util.stream.*;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private UserService userService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -60,12 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
-				.inMemoryAuthentication()
-				.withUser("admin").password("pass").roles("ADMIN")
-				.and()
-				.withUser("student").password("pass").roles("STUDENT")
-				.and()
-				.withUser("lecturer").password("pass").roles("LECTURER");
+				.userDetailsService(userService)
+				.passwordEncoder(new StandardPasswordEncoder());
 	}
 
 }

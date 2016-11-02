@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="input-field row">
-                    <a href="#" onclick="$('#login').submit()" th:text="#{log.in}" class="waves-effect waves-teal btn-large col s12"></a>
+                    <input type="submit" th:value="#{log.in}" class="btn-large col s12"/>
                 </div>
 
                 <div th:if="${param.error}" class="red-text center" th:text="#{invalid.credentials}">
