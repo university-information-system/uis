@@ -2,7 +2,7 @@
 
 ## Setup and running ##
 
-### 1. Installing postgres and configuring it in spring ###
+### 1. Installing postgres and configuring it in spring (optional as an embedded db is used for the moment) ###
 Make sure you have installed postgres, set a password and created a new database.
 Then you can configure your spring boot application:
 
