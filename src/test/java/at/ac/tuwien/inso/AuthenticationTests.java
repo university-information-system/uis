@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso;
 
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.service.*;
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
 
@@ -16,10 +19,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class AuthenticationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private UserAccountService userAccountService;
 
     @Test
     public void itRedirectsToLoginErrorOnAuthenticationError() throws Exception {
@@ -32,6 +39,8 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesAdmin() throws Exception {
+        userAccountService.create(new UserAccount("admin", "pass", new Role("ROLE_ADMIN")));
+
         mockMvc.perform(
                 formLogin().user("admin").password("pass")
         ).andExpect(
@@ -41,6 +50,8 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesLecturer() throws Exception {
+        userAccountService.create(new UserAccount("lecturer", "pass", new Role("ROLE_LECTURER")));
+
         mockMvc.perform(
                 formLogin().user("lecturer").password("pass")
         ).andExpect(
@@ -50,6 +61,8 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesStudent() throws Exception {
+        userAccountService.create(new UserAccount("student", "pass", new Role("ROLE_STUDENT")));
+
         mockMvc.perform(
                 formLogin().user("student").password("pass")
         ).andExpect(

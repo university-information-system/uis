@@ -12,7 +12,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @OneToOne
-    private User user;
+    private UserAccount userAccount;
 
     private String authority;
 
@@ -31,12 +31,12 @@ public class Role implements GrantedAuthority {
         return this;
     }
 
-    public User getUser() {
-        return user;
+    public UserAccount getUserAccount() {
+        return userAccount;
     }
 
-    public Role setUser(User user) {
-        this.user = user;
+    public Role setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
         return this;
     }
 

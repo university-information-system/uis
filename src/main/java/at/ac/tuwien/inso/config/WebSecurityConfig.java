@@ -18,7 +18,7 @@ import java.util.stream.*;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private UserService userService;
+	private UserAccountService userAccountService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -65,8 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
-				.userDetailsService(userService)
-				.passwordEncoder(new StandardPasswordEncoder());
+				.userDetailsService(userAccountService)
+				.passwordEncoder(userAccountService.getPasswordEncoder());
 	}
 
 }

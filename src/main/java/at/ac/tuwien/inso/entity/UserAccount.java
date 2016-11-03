@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.*;
 import javax.persistence.*;
 import java.util.*;
 
-import static java.util.Collections.singletonList;
+import static java.util.Collections.*;
 
 @Entity
-public class User implements UserDetails {
+public class UserAccount implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -20,36 +20,36 @@ public class User implements UserDetails {
 
     private String password;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
     private Role role;
 
-    public User() {}
-
-    public User(String username, String password, Role role) {
-        this
-                .setUsername(username)
-                .setPassword(password)
-                .setRole(role);
+    public UserAccount() {
     }
 
-    public User setId(Long id) {
+    public UserAccount(String username, String password, Role role) {
+        setUsername(username);
+        setPassword(password);
+        setRole(role);
+    }
+
+    public UserAccount setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public User setUsername(String username) {
+    public UserAccount setUsername(String username) {
         this.username = username;
         return this;
     }
 
-    public User setPassword(String password) {
+    public UserAccount setPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public User setRole(Role role) {
+    public UserAccount setRole(Role role) {
         this.role = role;
-        role.setUser(this);
+        role.setUserAccount(this);
         return this;
     }
 

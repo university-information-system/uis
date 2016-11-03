@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.initializer;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.context.annotation.*;
@@ -14,37 +15,37 @@ import java.util.stream.*;
 import static java.util.Arrays.*;
 
 @Configuration
+@Profile("demo")
 public class DataInitializer {
 
-	private final static int DEFAULT_ECTS_NUMBER = 3;
+    private final static int DEFAULT_ECTS_NUMBER = 3;
 
-	@Autowired
-	private CourseRepository courseRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserAccountService userAccountService;
 
-	@Bean
-	CommandLineRunner initialize() {
-		return String -> {
-			courseRepository.save(createCourses());
+    @Bean
+    CommandLineRunner initialize() {
+        return String -> {
+            courseRepository.save(createCourses());
 
-			userRepository.save(createUsers());
-		};
-	}
+            createUsers().forEach(it -> userAccountService.create(it));
+        };
+    }
 
-	private List<Course> createCourses() {
-		return Arrays.stream("ASE, SEPM, Advanced Internet Computing, Introduction to security, OOP, Seminar".split(","))
-				.map(name -> new Course(name.replace(", ", ""), DEFAULT_ECTS_NUMBER))
-				.collect(Collectors.toList());
-	}
+    private List<Course> createCourses() {
+        return Arrays.stream("ASE, SEPM, Advanced Internet Computing, Introduction to security, OOP, Seminar".split(","))
+                .map(name -> new Course(name.replace(", ", ""), DEFAULT_ECTS_NUMBER))
+                .collect(Collectors.toList());
+    }
 
-	private List<User> createUsers() {
-		String password = new StandardPasswordEncoder().encode("pass");
-		return asList(
-				new User("admin", password, new Role("ROLE_ADMIN")),
-				new User("lecturer", password, new Role("ROLE_LECTURER")),
-				new User("student", password, new Role("ROLE_STUDENT"))
-		);
-	}
+    private List<UserAccount> createUsers() {
+        return asList(
+                new UserAccount("admin", "pass", new Role("ROLE_ADMIN")),
+                new UserAccount("lecturer", "pass", new Role("ROLE_LECTURER")),
+                new UserAccount("student", "pass", new Role("ROLE_STUDENT"))
+        );
+    }
 }
