@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin/semester")
-public class SemesterController {
+public class AdminSemesterController {
 
     @GetMapping
     public String semester() {

@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="layout/main">
 <body>
 
 <ul layout:fragment="nav-items">
-    <li><a class="white-text" href="#">First Sidebar Link</a></li>
-    <li><a class="white-text" href="#">Second Sidebar Link</a></li>
+    <li th:class="${#httpServletRequest.requestURI} == '/lecturer/courses' ? 'active' : ''">
+        <a class="white-text" href="/lecturer/courses" th:text="#{lecturer.nav.courses}"></a>
+    </li>
+    <li th:class="${#httpServletRequest.requestURI} == '/lecturer/subjects' ? 'active' : ''">
+        <a class="white-text" href="/lecturer/subjects" th:text="#{lecturer.nav.subjects}"></a>
+    </li>
 </ul>
-
-<main layout:fragment="main">
-
-    <p>TODO: lecturer view</p>
-
-</main>
 
 </body>
 </html>

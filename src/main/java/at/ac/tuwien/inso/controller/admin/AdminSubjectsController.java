@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin/subjects")
-public class SubjectsController {
+public class AdminSubjectsController {
 
     @GetMapping
     public String subjects() {
