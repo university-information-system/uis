@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="layout/default">
 <head>
     <title>UIS Login</title>
@@ -15,21 +15,23 @@
             <h1 class="white-text center">UIS <span class="hide-on-small-only">- University Information System</span></h1>
 
             <form id="login" class="card-panel z-depth-2" th:action="@{/login}" method="post">
-                <div class="input-field">
-                    <input id="username" name="username" type="text"/>
-                    <label for="username" th:text="#{username}"></label>
-                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="username" name="username" type="text"/>
+                        <label for="username" th:text="#{username}"></label>
+                    </div>
 
-                <div class="input-field">
-                    <input id="password" name="password" type="password"/>
-                    <label for="password" th:text="#{password}"></label>
-                </div>
+                    <div class="input-field col s12">
+                        <input id="password" name="password" type="password"/>
+                        <label for="password" th:text="#{password}"></label>
+                    </div>
 
-                <div class="input-field row">
-                    <input type="submit" th:value="#{log.in}" class="btn-large col s12"/>
-                </div>
+                    <div class="input-field col s12">
+                        <input type="submit" th:value="#{log.in}" class="btn-large col s12"/>
+                    </div>
 
-                <div th:if="${param.error}" class="red-text center" th:text="#{invalid.credentials}">
+                    <p th:if="${param.error}" class="red-text center col s12" th:text="#{invalid.credentials}">
+                    </p>
                 </div>
             </form>
         </div>
