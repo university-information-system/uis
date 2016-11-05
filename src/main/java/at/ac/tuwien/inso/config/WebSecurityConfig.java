@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.*;
-import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.authentication.*;
 
 import java.util.*;
@@ -53,8 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .collect(Collectors.toList());
 
             if (roles.contains("ROLE_ADMIN")) {
-                resp.sendRedirect("/admin");
-            } else if (roles.contains("ROLE_LECTURER")) {
+				resp.sendRedirect("/admin/studyplans");
+			} else if (roles.contains("ROLE_LECTURER")) {
                 resp.sendRedirect("/lecturer");
             } else {
                 resp.sendRedirect("/student");

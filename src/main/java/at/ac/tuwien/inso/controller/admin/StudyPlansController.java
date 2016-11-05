@@ -3,12 +3,12 @@ package at.ac.tuwien.inso.controller.admin;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
-@Controller()
-@RequestMapping("/admin")
-public class AdminController {
+@Controller
+@RequestMapping("/admin/studyplans")
+public class StudyPlansController {
 
     @GetMapping
-    public String index() {
-        return "/admin/index";
+    public String studyplans() {
+        return "admin/studyplans";
     }
 }
