@@ -66,7 +66,7 @@ public class AuthenticationTests {
         mockMvc.perform(
                 formLogin().user("student").password("pass")
         ).andExpect(
-                redirectedUrl("/student")
+                redirectedUrl("/student/courses")
         );
     }
 
