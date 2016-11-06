@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
-import static java.util.Arrays.*;
-
 @Service
 public class UserAccountService implements UserDetailsService {
 
@@ -23,10 +21,5 @@ public class UserAccountService implements UserDetailsService {
         if (user == null) throw new UsernameNotFoundException(username);
 
         return user;
-    }
-
-    @Transactional
-    public void create(UserAccount... userAccount) {
-        userAccountRepository.save(asList(userAccount));
     }
 }

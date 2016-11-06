@@ -1,7 +1,7 @@
 package at.ac.tuwien.inso;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.repository.*;
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -26,7 +26,7 @@ public class AuthenticationTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserAccountService userAccountService;
+    private UserAccountRepository userAccountRepository;
 
     @Test
     public void itRedirectsToLoginErrorOnAuthenticationError() throws Exception {
@@ -39,7 +39,7 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesAdmin() throws Exception {
-        userAccountService.create(new UserAccount("admin", "pass", new Role("ROLE_ADMIN")));
+        userAccountRepository.save(new UserAccount("admin", "pass", new Role("ROLE_ADMIN")));
 
         mockMvc.perform(
                 formLogin().user("admin").password("pass")
@@ -50,7 +50,7 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesLecturer() throws Exception {
-        userAccountService.create(new UserAccount("lecturer", "pass", new Role("ROLE_LECTURER")));
+        userAccountRepository.save(new UserAccount("lecturer", "pass", new Role("ROLE_LECTURER")));
 
         mockMvc.perform(
                 formLogin().user("lecturer").password("pass")
@@ -61,7 +61,7 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesStudent() throws Exception {
-        userAccountService.create(new UserAccount("student", "pass", new Role("ROLE_STUDENT")));
+        userAccountRepository.save(new UserAccount("student", "pass", new Role("ROLE_STUDENT")));
 
         mockMvc.perform(
                 formLogin().user("student").password("pass")

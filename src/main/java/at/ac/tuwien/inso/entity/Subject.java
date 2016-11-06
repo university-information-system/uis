@@ -2,6 +2,11 @@ package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
 import java.math.*;
+import java.util.ArrayList;
+import java.util.*;
+
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 @Entity
 public class Subject {
@@ -15,6 +20,9 @@ public class Subject {
 
     @Column(nullable = false)
     private BigDecimal ects;
+
+    @ManyToMany
+    private List<Lecturer> lecturers = new ArrayList<>();
 
     protected Subject() {
     }
@@ -36,25 +44,38 @@ public class Subject {
         return ects;
     }
 
+    public List<Lecturer> getLecturers() {
+        return unmodifiableList(lecturers);
+    }
+
+    public void addLecturers(Lecturer... lecturers) {
+        this.lecturers.addAll(asList(lecturers));
+    }
+
+    public void removeLecturers(Lecturer... lecturers) {
+        this.lecturers.removeAll(asList(lecturers));
+    }
+
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Subject subject = (Subject) o;
 
-        if (id != null ? !id.equals(subject.id) : subject.id != null) return false;
-        if (name != null ? !name.equals(subject.name) : subject.name != null) return false;
-        return ects != null ? ects.equals(subject.ects) : subject.ects == null;
+        if (getId() != null ? !getId().equals(subject.getId()) : subject.getId() != null) return false;
+        if (getName() != null ? !getName().equals(subject.getName()) : subject.getName() != null) return false;
+        if (getEcts() != null ? !getEcts().equals(subject.getEcts()) : subject.getEcts() != null) return false;
+        return getLecturers() != null ? getLecturers().equals(subject.getLecturers()) : subject.getLecturers() == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (ects != null ? ects.hashCode() : 0);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getEcts() != null ? getEcts().hashCode() : 0);
+        result = 31 * result + (getLecturers() != null ? getLecturers().hashCode() : 0);
         return result;
     }
 
@@ -64,6 +85,7 @@ public class Subject {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", ects=" + ects +
+                ", lecturers=" + lecturers +
                 '}';
     }
 }

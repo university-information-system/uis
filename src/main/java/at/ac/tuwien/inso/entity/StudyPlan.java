@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.*;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 @Entity
 public class StudyPlan {
@@ -43,7 +44,7 @@ public class StudyPlan {
     }
 
     public List<SubjectForStudyPlan> getSubjects() {
-        return subjects;
+        return unmodifiableList(subjects);
     }
 
     public void addSubjects(SubjectForStudyPlan... subjects) {
