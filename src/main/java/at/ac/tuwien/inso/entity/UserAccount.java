@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.entity;
 
 import org.springframework.security.core.*;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.password.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -10,6 +11,8 @@ import static java.util.Collections.*;
 
 @Entity
 public class UserAccount implements UserDetails {
+
+    public static final PasswordEncoder PASSWORD_ENCODER = new StandardPasswordEncoder();
 
     @Id
     @GeneratedValue
@@ -20,37 +23,16 @@ public class UserAccount implements UserDetails {
 
     private String password;
 
-    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Role role;
 
-    public UserAccount() {
+    protected UserAccount() {
     }
 
     public UserAccount(String username, String password, Role role) {
-        setUsername(username);
-        setPassword(password);
-        setRole(role);
-    }
-
-    public UserAccount setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public UserAccount setUsername(String username) {
         this.username = username;
-        return this;
-    }
-
-    public UserAccount setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public UserAccount setRole(Role role) {
+        this.password = PASSWORD_ENCODER.encode(password);
         this.role = role;
-        role.setUserAccount(this);
-        return this;
     }
 
     @Override

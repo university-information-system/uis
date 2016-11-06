@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.config;
 
+import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
@@ -7,7 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.*;
-import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.authentication.*;
 
 import java.util.*;
@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 				.userDetailsService(userAccountService)
-				.passwordEncoder(userAccountService.getPasswordEncoder());
+				.passwordEncoder(UserAccount.PASSWORD_ENCODER);
 	}
 
 }
