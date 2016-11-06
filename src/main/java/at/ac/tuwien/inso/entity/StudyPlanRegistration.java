@@ -1,14 +1,69 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
-@Embeddable
+@Entity
 public class StudyPlanRegistration {
 
-    @ManyToMany
-    private StudyPlan studyPlan;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    @ManyToMany
-    private Student student;
+    @ManyToOne(optional = false)
+    private StudyPlan studyplan;
+
+    @ManyToOne(optional = false)
+    private Semester registeredSince;
+
+    protected StudyPlanRegistration() {
+
+    }
+
+    public StudyPlanRegistration(StudyPlan studyplan, Semester registeredSince) {
+        this.studyplan = studyplan;
+        this.registeredSince = registeredSince;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public StudyPlan getStudyplan() {
+        return studyplan;
+    }
+
+    public Semester getRegisteredSince() {
+        return registeredSince;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StudyPlanRegistration that = (StudyPlanRegistration) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (studyplan != null ? !studyplan.equals(that.studyplan) : that.studyplan != null) return false;
+        return registeredSince != null ? registeredSince.equals(that.registeredSince) : that.registeredSince == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (studyplan != null ? studyplan.hashCode() : 0);
+        result = 31 * result + (registeredSince != null ? registeredSince.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StudyPlanRegistration{" +
+                "id=" + id +
+                ", studyplan=" + studyplan +
+                ", registeredSince=" + registeredSince +
+                '}';
+    }
 }

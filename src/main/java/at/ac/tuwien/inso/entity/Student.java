@@ -1,6 +1,11 @@
 package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.*;
+
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 @Entity
 public class Student {
@@ -11,6 +16,9 @@ public class Student {
 
     @Column(nullable = false)
     private UserProfile userProfile;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudyPlanRegistration> studyplans = new ArrayList<>();
 
     protected Student() {
 
@@ -28,23 +36,37 @@ public class Student {
         return userProfile;
     }
 
+    public List<StudyPlanRegistration> getStudyplans() {
+        return unmodifiableList(studyplans);
+    }
+
+    public void registerTo(StudyPlanRegistration... studyplans) {
+        this.studyplans.addAll(asList(studyplans));
+    }
+
+    public void unregisterFrom(StudyPlanRegistration... studyplans) {
+        this.studyplans.removeAll(asList(studyplans));
+    }
+
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Student student = (Student) o;
 
-        if (id != null ? !id.equals(student.id) : student.id != null) return false;
-        return userProfile != null ? userProfile.equals(student.userProfile) : student.userProfile == null;
+        if (getId() != null ? !getId().equals(student.getId()) : student.getId() != null) return false;
+        if (getUserProfile() != null ? !getUserProfile().equals(student.getUserProfile()) : student.getUserProfile() != null)
+            return false;
+        return getStudyplans() != null ? getStudyplans().equals(student.getStudyplans()) : student.getStudyplans() == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (userProfile != null ? userProfile.hashCode() : 0);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getUserProfile() != null ? getUserProfile().hashCode() : 0);
+        result = 31 * result + (getStudyplans() != null ? getStudyplans().hashCode() : 0);
         return result;
     }
 
@@ -53,6 +75,7 @@ public class Student {
         return "Student{" +
                 "id=" + id +
                 ", userProfile=" + userProfile +
+                ", studyplans=" + studyplans +
                 '}';
     }
 }
