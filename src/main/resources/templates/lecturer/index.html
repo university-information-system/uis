@@ -11,6 +11,12 @@
     <li th:class="${#httpServletRequest.requestURI} == '/lecturer/subjects' ? 'active' : ''">
         <a class="white-text" href="/lecturer/subjects" th:text="#{lecturer.nav.subjects}"></a>
     </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li th:class="${#httpServletRequest.requestURI} == '/lecturer/studyplans' ? 'active' : ''">
+        <a class="white-text" href="/lecturer/studyplans" th:text="#{lecturer.nav.studyplans}"></a>
+    </li>
 </ul>
 
 </body>
