@@ -23,7 +23,7 @@ public class UserAccount implements UserDetails {
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     private Role role;
 
     protected UserAccount() {
