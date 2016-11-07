@@ -24,6 +24,9 @@ public class Subject {
     @ManyToMany
     private List<Lecturer> lecturers = new ArrayList<>();
 
+    @ManyToMany
+    private List<Subject> requiredSubjects = new ArrayList<>();
+
     protected Subject() {
     }
 
@@ -48,12 +51,24 @@ public class Subject {
         return unmodifiableList(lecturers);
     }
 
+    public List<Subject> getRequiredSubjects() {
+        return requiredSubjects;
+    }
+
     public void addLecturers(Lecturer... lecturers) {
         this.lecturers.addAll(asList(lecturers));
     }
 
     public void removeLecturers(Lecturer... lecturers) {
         this.lecturers.removeAll(asList(lecturers));
+    }
+
+    public void addRequiredSubjects(Subject... subjects) {
+        this.requiredSubjects.addAll(asList(subjects));
+    }
+
+    public void removeRequiredSubjects(Subject... subjects) {
+        this.requiredSubjects.removeAll(asList(subjects));
     }
 
     @Override
