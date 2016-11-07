@@ -78,19 +78,21 @@ public class Subject {
 
         Subject subject = (Subject) o;
 
-        if (getId() != null ? !getId().equals(subject.getId()) : subject.getId() != null) return false;
-        if (getName() != null ? !getName().equals(subject.getName()) : subject.getName() != null) return false;
-        if (getEcts() != null ? !getEcts().equals(subject.getEcts()) : subject.getEcts() != null) return false;
-        return getLecturers() != null ? getLecturers().equals(subject.getLecturers()) : subject.getLecturers() == null;
+        if (!id.equals(subject.id)) return false;
+        if (!name.equals(subject.name)) return false;
+        if (!ects.equals(subject.ects)) return false;
+        if (!lecturers.equals(subject.lecturers)) return false;
+        return requiredSubjects.equals(subject.requiredSubjects);
 
     }
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getEcts() != null ? getEcts().hashCode() : 0);
-        result = 31 * result + (getLecturers() != null ? getLecturers().hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + ects.hashCode();
+        result = 31 * result + lecturers.hashCode();
+        result = 31 * result + requiredSubjects.hashCode();
         return result;
     }
 
@@ -101,6 +103,7 @@ public class Subject {
                 ", name='" + name + '\'' +
                 ", ects=" + ects +
                 ", lecturers=" + lecturers +
+                ", requiredSubjects=" + requiredSubjects +
                 '}';
     }
 }
