@@ -53,12 +53,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .collect(Collectors.toList());
 
             if (roles.contains("ROLE_ADMIN")) {
-                resp.sendRedirect("/admin");
-            } else if (roles.contains("ROLE_LECTURER")) {
-                resp.sendRedirect("/lecturer");
-            } else {
-                resp.sendRedirect("/student");
-            }
+				resp.sendRedirect("/admin/studyplans");
+			} else if (roles.contains("ROLE_LECTURER")) {
+				resp.sendRedirect("/lecturer/courses");
+			} else {
+				resp.sendRedirect("/student/courses");
+			}
         };
 	}
 

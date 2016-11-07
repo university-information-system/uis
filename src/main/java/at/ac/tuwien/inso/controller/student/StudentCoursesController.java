@@ -3,12 +3,12 @@ package at.ac.tuwien.inso.controller.student;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
-@Controller()
-@RequestMapping("/student")
-public class StudentController {
+@Controller
+@RequestMapping("/student/courses")
+public class StudentCoursesController {
 
     @GetMapping
-    public String index() {
-        return "/student/index";
+    public String courses() {
+        return "/student/courses";
     }
 }

@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="layout/main">
 <body>
 
 <ul layout:fragment="nav-items">
-    <li><a class="white-text" href="#">First Sidebar Link</a></li>
-    <li><a class="white-text" href="#">Second Sidebar Link</a></li>
-    <li><a class="white-text" href="#">Third Sidebar Link</a></li>
+    <li th:class="${#httpServletRequest.requestURI} == '/student/courses' ? 'active' : ''">
+        <a class="white-text" href="/student/courses" th:text="#{student.nav.my.courses}"></a>
+    </li>
+    <li th:class="${#httpServletRequest.requestURI} == '/student/my-studyplans' ? 'active' : ''">
+        <a class="white-text" href="/student/my-studyplans" th:text="#{student.nav.my.studyplans}"></a>
+    </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li th:class="${#httpServletRequest.requestURI} == '/student/all-studyplans' ? 'active' : ''">
+        <a class="white-text" href="/student/all-studyplans" th:text="#{student.nav.all.studyplans}"></a>
+    </li>
 </ul>
-
-<main layout:fragment="main">
-
-    <p>TODO: student view</p>
-
-</main>
 
 </body>
 </html>
