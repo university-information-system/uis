@@ -26,6 +26,9 @@ public class Course {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Tag> tags = new ArrayList<>();
 
+    @ManyToMany
+    private List<Student> students = new ArrayList<>();
+
     protected Course() {}
 
     public Course(Subject subject, Semester semester) {
@@ -58,6 +61,10 @@ public class Course {
         return unmodifiableList(tags);
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
     public void addTags(Tag... tags) {
         this.tags.addAll(asList(tags));
     }
@@ -66,29 +73,38 @@ public class Course {
         this.tags.removeAll(asList(tags));
     }
 
+    public void addStudents(Student... students) {
+        this.students.addAll(asList(students));
+    }
+
+    public void removeStudents(Student... students) {
+        this.students.removeAll(asList(students));
+    }
+
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Course course = (Course) o;
 
-        if (id != null ? !id.equals(course.id) : course.id != null) return false;
-        if (subject != null ? !subject.equals(course.subject) : course.subject != null) return false;
-        if (semester != null ? !semester.equals(course.semester) : course.semester != null) return false;
-        if (description != null ? !description.equals(course.description) : course.description != null) return false;
-        return tags != null ? tags.equals(course.tags) : course.tags == null;
+        if (!id.equals(course.id)) return false;
+        if (!subject.equals(course.subject)) return false;
+        if (!semester.equals(course.semester)) return false;
+        if (!description.equals(course.description)) return false;
+        if (!tags.equals(course.tags)) return false;
+        return students.equals(course.students);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (subject != null ? subject.hashCode() : 0);
-        result = 31 * result + (semester != null ? semester.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + subject.hashCode();
+        result = 31 * result + semester.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + tags.hashCode();
+        result = 31 * result + students.hashCode();
         return result;
     }
 
@@ -100,6 +116,7 @@ public class Course {
                 ", semester=" + semester +
                 ", description='" + description + '\'' +
                 ", tags=" + tags +
+                ", students=" + students +
                 '}';
     }
 }

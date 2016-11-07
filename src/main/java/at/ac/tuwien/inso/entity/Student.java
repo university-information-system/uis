@@ -20,6 +20,9 @@ public class Student {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyPlanRegistration> studyplans = new ArrayList<>();
 
+    @ManyToMany
+    private List<Course> courses = new ArrayList<>();
+
     protected Student() {
 
     }
@@ -40,12 +43,24 @@ public class Student {
         return unmodifiableList(studyplans);
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
     public void registerTo(StudyPlanRegistration... studyplans) {
         this.studyplans.addAll(asList(studyplans));
     }
 
     public void unregisterFrom(StudyPlanRegistration... studyplans) {
         this.studyplans.removeAll(asList(studyplans));
+    }
+
+    public void addCourses(Course... courses) {
+        this.courses.addAll(asList(courses));
+    }
+
+    public void removeCourses(Course... courses) {
+        this.courses.removeAll(asList(courses));
     }
 
     @Override
@@ -55,18 +70,19 @@ public class Student {
 
         Student student = (Student) o;
 
-        if (getId() != null ? !getId().equals(student.getId()) : student.getId() != null) return false;
-        if (getUserProfile() != null ? !getUserProfile().equals(student.getUserProfile()) : student.getUserProfile() != null)
-            return false;
-        return getStudyplans() != null ? getStudyplans().equals(student.getStudyplans()) : student.getStudyplans() == null;
+        if (!id.equals(student.id)) return false;
+        if (!userProfile.equals(student.userProfile)) return false;
+        if (!studyplans.equals(student.studyplans)) return false;
+        return courses.equals(student.courses);
 
     }
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getUserProfile() != null ? getUserProfile().hashCode() : 0);
-        result = 31 * result + (getStudyplans() != null ? getStudyplans().hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + userProfile.hashCode();
+        result = 31 * result + studyplans.hashCode();
+        result = 31 * result + courses.hashCode();
         return result;
     }
 
@@ -76,6 +92,7 @@ public class Student {
                 "id=" + id +
                 ", userProfile=" + userProfile +
                 ", studyplans=" + studyplans +
+                ", courses=" + courses +
                 '}';
     }
 }
