@@ -22,4 +22,9 @@ public class UserAccountService implements UserDetailsService {
 
         return user;
     }
+
+    @Transactional(readOnly = true)
+    public Iterable<UserAccount> findAll() {
+        return userAccountRepository.findAll();
+    }
 }

@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="admin/index">
 <body>
 
 <main layout:fragment="main">
 
-    <p>users</p>
-
+    <h1 th:text="#{admin.users.header}"></h1>
+    <ul class="collection z-depth-2">
+        <li class="collection-item" th:each="user : ${usersAttr}" th:text="${user.username}">
+        </li>
+    </ul>
 </main>
 
 </body>
