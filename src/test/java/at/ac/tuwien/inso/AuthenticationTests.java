@@ -28,6 +28,9 @@ public class AuthenticationTests {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Test
     public void itRedirectsToLoginErrorOnAuthenticationError() throws Exception {
         mockMvc.perform(
@@ -39,7 +42,8 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesAdmin() throws Exception {
-        userAccountRepository.save(new UserAccount("admin", "pass", new Role("ROLE_ADMIN")));
+        Role role = roleRepository.save(new Role("ROLE_ADMIN"));
+        userAccountRepository.save(new UserAccount("admin", "pass", role));
 
         mockMvc.perform(
                 formLogin().user("admin").password("pass")
@@ -50,7 +54,8 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesLecturer() throws Exception {
-        userAccountRepository.save(new UserAccount("lecturer", "pass", new Role("ROLE_LECTURER")));
+        Role role = roleRepository.save(new Role("ROLE_LECTURER"));
+        userAccountRepository.save(new UserAccount("lecturer", "pass", role));
 
         mockMvc.perform(
                 formLogin().user("lecturer").password("pass")
@@ -61,7 +66,8 @@ public class AuthenticationTests {
 
     @Test
     public void itAuthenticatesStudent() throws Exception {
-        userAccountRepository.save(new UserAccount("student", "pass", new Role("ROLE_STUDENT")));
+        Role role = roleRepository.save(new Role("ROLE_STUDENT"));
+        userAccountRepository.save(new UserAccount("student", "pass", role));
 
         mockMvc.perform(
                 formLogin().user("student").password("pass")
