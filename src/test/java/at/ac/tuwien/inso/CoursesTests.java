@@ -29,7 +29,6 @@ import at.ac.tuwien.inso.repository.RoleRepository;
 import at.ac.tuwien.inso.repository.SemesterRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -59,7 +58,7 @@ public class CoursesTests {
     private RoleRepository roleRepository;
 
 
-    List<Course> expectedCourses;
+    private List<Course> expectedCourses;
 
 
     @Before
