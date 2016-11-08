@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="admin/index">
 <body>
 
-<main layout:fragment="main">
+<main layout:fragment="main" class="container">
 
-    <p>semester</p>
+    <h2 th:text="#{admin.semesters.label}"></h2>
+
+    <ul class="collection">
+        <li class="collection-item" th:each="semester : ${allSemesters}">
+            <span th:text="${semester.label}"></span>
+            <span th:if="${semester} eq ${currentSemester}"> (current) </span>
+        </li>
+    </ul>
 
 </main>
 
