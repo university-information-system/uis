@@ -60,41 +60,49 @@ public class CoursesTests {
 
     private List<Course> expectedCourses;
 
+    Role lecturerRole = new Role("ROLE_LECTURER");
+
+    Lecturer lecturer1 = new Lecturer(new UserProfile("Lecturer 1", "email", new UserAccount("lecturer1", "pass", lecturerRole)));
+    Lecturer lecturer2 = new Lecturer(new UserProfile("Lecturer 2", "email", new UserAccount("lecturer2", "pass", lecturerRole)));
+    Lecturer lecturer3 = new Lecturer(new UserProfile("Lecturer 3", "email", new UserAccount("lecturer3", "pass", lecturerRole)));
+
+    Semester ss2016 = new Semester("SS2016");
+    Semester ws2016 = new Semester("WS2016");
+
+    Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
+    Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
+    Subject ase = new Subject("ASE", new BigDecimal(6.0));
+
+    Course sepmSS2016 = new Course(sepm, ss2016);
+    Course sepmWS2016 = new Course(sepm, ws2016);
+    Course aseWS2016 = new Course(ase, ws2016);
+    Course calculusWS2016 = new Course(calculus, ws2016);
+
 
     @Before
     public void setUp() {
 
-        // create roles
-        Role adminRole = roleRepository.save(new Role("ROLE_ADMIN"));
-        Role lecturerRole = roleRepository.save(new Role("ROLE_LECTURER"));
-        Role studentRole = roleRepository.save(new Role("ROLE_STUDENT"));
+        roleRepository.save(lecturerRole);
 
-        //lecturers
-        Lecturer lecturer1 = lecturerRepository.save(new Lecturer(new UserProfile("Lecturer 1", "email", new UserAccount("lecturer1", "pass",lecturerRole))));
-        Lecturer lecturer2 = lecturerRepository.save(new Lecturer(new UserProfile("Lecturer 2", "email", new UserAccount("lecturer2", "pass", lecturerRole))));
-        Lecturer lecturer3 = lecturerRepository.save(new Lecturer(new UserProfile("Lecturer 3", "email", new UserAccount("lecturer3", "pass", lecturerRole))));
+        lecturerRepository.save(lecturer1);
+        lecturerRepository.save(lecturer2);
+        lecturerRepository.save(lecturer3);
 
-        //create semesters
-        Semester ss2016 = semesterRepository.save(new Semester("SS2016"));
-        Semester ws2016 = semesterRepository.save(new Semester("WS2016"));
+        semesterRepository.save(ss2016);
+        semesterRepository.save(ws2016);
 
-        //subjects
-        Subject calculus = subjectRepository.save(new Subject("Calculus", new BigDecimal(3.0)));
+        subjectRepository.save(calculus);
         calculus.addLecturers(lecturer3);
-        Subject sepm = subjectRepository.save(new Subject("SEPM", new BigDecimal(6.0)));
+        subjectRepository.save(sepm);
         sepm.addLecturers(lecturer1);
-        Subject ase = subjectRepository.save(new Subject("ASE", new BigDecimal(6.0)));
+        subjectRepository.save(ase);
         ase.addRequiredSubjects(sepm);
         ase.addLecturers(lecturer1, lecturer2);
 
-        //courses
-        Course sepmSS2016 = courseRepository.save(new Course(sepm,ss2016));
-        Course sepmWS2016 = courseRepository.save(new Course(sepm,ws2016));
-//        sepmWS2016.addStudents(student4);
-        Course aseWS2016 = courseRepository.save(new Course(ase,ws2016));
-//        aseWS2016.addStudents(student1, student2, student3, student4);
-        Course calculusWS2016 = courseRepository.save(new Course(calculus, ws2016));
-//        calculusWS2016.addStudents(student1, student4);
+        sepmSS2016 = courseRepository.save(sepmSS2016);
+        sepmWS2016 = courseRepository.save(sepmWS2016);
+        aseWS2016 = courseRepository.save(aseWS2016);
+        calculusWS2016 = courseRepository.save(calculusWS2016);
 
         expectedCourses = Arrays.asList(sepmWS2016, aseWS2016, calculusWS2016);
 
@@ -107,6 +115,26 @@ public class CoursesTests {
                 get("/student/courses").with(user("student").roles("STUDENT"))
         ).andExpect(
                 model().attribute("allCourses", expectedCourses)
+        );
+    }
+
+    @Test
+    @Transactional
+    public void itListsAllCoursesForCurrentSemesterWithNameFilterNoString() throws Exception {
+        mockMvc.perform(
+                get("/student/courses?search=").with(user("student").roles("STUDENT"))
+        ).andExpect(
+                model().attribute("allCourses", expectedCourses)
+        );
+    }
+
+    @Test
+    @Transactional
+    public void itListsAllCoursesForCurrentSemesterWithNameFilter() throws Exception {
+        mockMvc.perform(
+                get("/student/courses?search=sep").with(user("student").roles("STUDENT"))
+        ).andExpect(
+                model().attribute("allCourses", Arrays.asList(sepmWS2016))
         );
     }
 
