@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 @Service
 public class CoursesService {
 
@@ -18,9 +20,10 @@ public class CoursesService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public List<Course> findForCurrentSemester() {
+
+    public List<Course> findCourseForCurrentSemesterWithName(@NotNull String name) {
         Semester semester = semesterService.getCurrentSemester();
-        return courseRepository.findAllBySemester(semester);
+        return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%");
     }
 
 }
