@@ -16,4 +16,7 @@ public class SemesterService {
         return semesterRepository.findFirstByOrderByIdDesc();
     }
 
+    public Iterable<Semester> getAllSemesters() {
+        return semesterRepository.findAllByOrderByIdDesc();
+    }
 }

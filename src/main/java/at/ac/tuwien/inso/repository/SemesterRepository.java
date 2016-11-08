@@ -10,4 +10,6 @@ public interface SemesterRepository extends CrudRepository<Semester, Long> {
 
     Semester findFirstByOrderByIdDesc();
 
+    Iterable<Semester> findAllByOrderByIdDesc();
+
 }
