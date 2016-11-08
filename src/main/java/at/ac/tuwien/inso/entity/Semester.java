@@ -15,6 +15,10 @@ public class Semester {
     @Column
     private String label;
 
+    protected Semester() {
+
+    }
+
     public Semester(String label) {
         this.label = label;
     }
