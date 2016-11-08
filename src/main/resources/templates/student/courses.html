@@ -10,9 +10,9 @@
     <h2 th:text="#{student.courses.label}">Courses</h2>
 
     <ul class="collection">
-        <li class="collection-item"
-            th:each="course : ${allCourses}"
-            th:text="${course.subject.name} + ': ' + ${course.semester.label}">
+        <li class="collection-item" th:each="course : ${allCourses}">
+            <div class="title" th:text="${course.subject.name}"></div>
+            <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
         </li>
     </ul>
 
