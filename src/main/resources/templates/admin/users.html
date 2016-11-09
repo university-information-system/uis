@@ -13,7 +13,7 @@
         <ul class="collection z-depth-1">
             <li class="collection-item avatar" th:each="user : ${users}"
                 style="cursor: pointer"
-                th:onclick="'location.href = \'/admin/user-details/' + ${user.id} + '\''">
+                th:onclick="'location.href = \'/admin/users/' + ${user.id} + '\''">
 
                 <div th:if="${user instanceof T(at.ac.tuwien.inso.entity.Lecturer)}">
                     <div class="blue circle letter-icon white-text">L</div>

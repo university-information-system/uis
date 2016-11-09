@@ -1,17 +1,19 @@
 package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
-import org.springframework.context.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
-import java.math.*;
-import java.util.*;
-import java.util.stream.*;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 @Configuration
 @Profile("demo")
@@ -34,6 +36,14 @@ public class DataInitializer {
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
+    private List<StudyPlan> studyplans;
+
+    private List<Semester> semesters;
+
+    private List<Subject> subjects;
+
+    private List<Course> courses;
+
     private List<Student> students;
 
     private List<Lecturer> lecturers;
@@ -46,38 +56,21 @@ public class DataInitializer {
 
             createUsers();
 
-            //create semesters
-            Semester ss2016 = semesterRepository.save(new Semester("SS2016"));
-            Semester ws2016 = semesterRepository.save(new Semester("WS2016"));
+            createSemesters();
 
-            //subjects
-            Subject calculus = subjectRepository.save(new Subject("Calculus", new BigDecimal(3.0)));
-            calculus.addLecturers(lecturers.get(3));
-            Subject sepm = subjectRepository.save(new Subject("SEPM", new BigDecimal(6.0)));
-            sepm.addLecturers(lecturers.get(3));
-            Subject ase = subjectRepository.save(new Subject("ASE", new BigDecimal(6.0)));
-            ase.addRequiredSubjects(sepm);
-            ase.addLecturers(lecturers.get(3), lecturers.get(4));
-            subjectRepository.save(ase);
-            subjectRepository.save(sepm);
-            subjectRepository.save(calculus);
+            createSubjects();
 
-            //courses
-            Course sepmSS2016 = courseRepository.save(new Course(sepm,ss2016));
-            Course sepmWS2016 = courseRepository.save(new Course(sepm,ws2016));
-            sepmWS2016.addStudents(students.get(3));
-            Course aseWS2016 = courseRepository.save(new Course(ase,ws2016));
-            aseWS2016.addStudents(students.get(0), students.get(1), students.get(2), students.get(3));
-            Course calculusWS2016 = courseRepository.save(new Course(calculus, ws2016));
-            calculusWS2016.addStudents(students.get(0), students.get(3));
+            createCourses();
 
-            //study plan
-            StudyPlan studyPlan = studyPlanRepository.save(new StudyPlan("SE",new EctsDistribution(new BigDecimal(90), new BigDecimal(60), new BigDecimal(30))));
+            createStudyPlans();
 
-            SubjectForStudyPlan subjectForStudyPlan1 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(calculus, false));
-            SubjectForStudyPlan subjectForStudyPlan2 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(ase, true));
-            SubjectForStudyPlan subjectForStudyPlan3 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(sepm, true));
-            studyPlan.addSubjects(subjectForStudyPlan1, subjectForStudyPlan2, subjectForStudyPlan3);
+            registerStudentsToStudyPlans();
+
+            addPreconditionsToSubjects();
+
+            registerSubjectsToLecturers();
+
+            registerCoursesToStudents();
         };
     }
 
@@ -104,5 +97,83 @@ public class DataInitializer {
                 .filter(it -> it instanceof Lecturer)
                 .map(it -> (Lecturer) it)
                 .collect(Collectors.toList());
+    }
+
+    private void createSemesters() {
+        Iterable<Semester> semesters = semesterRepository.save(asList(
+                new Semester("SS2016"),
+                new Semester("WS2016")
+        ));
+
+        this.semesters = StreamSupport.stream(semesters.spliterator(), false).collect(Collectors.toList());
+    }
+
+    private void createSubjects() {
+        Iterable<Subject> subjects = subjectRepository.save(asList(
+                new Subject("Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik", new BigDecimal(3.0)),
+                new Subject("Software Engineering and Project Management", new BigDecimal(6.0)),
+                new Subject("Advanced Software Engineering", new BigDecimal(6.0))
+        ));
+
+        this.subjects = StreamSupport.stream(subjects.spliterator(), false).collect(Collectors.toList());
+    }
+
+    private void createCourses() {
+        Iterable<Course> courses = courseRepository.save(asList(
+                new Course(subjects.get(0), semesters.get(0)),
+                new Course(subjects.get(0), semesters.get(1)),
+                new Course(subjects.get(2), semesters.get(1)),
+                new Course(subjects.get(0), semesters.get(1))
+        ));
+
+        this.courses = StreamSupport.stream(courses.spliterator(), false).collect(Collectors.toList());
+    }
+
+    private void createStudyPlans() {
+        Iterable<StudyPlan> studyplans = studyPlanRepository.save(asList(
+                new StudyPlan("Bachelor Software and Information Engineering", new EctsDistribution(new BigDecimal(90), new BigDecimal(60), new BigDecimal(30))),
+                new StudyPlan("Master Business Informatics", new EctsDistribution(new BigDecimal(30), new BigDecimal(70), new BigDecimal(20)))
+        ));
+
+        this.studyplans = StreamSupport.stream(studyplans.spliterator(), false).collect(Collectors.toList());
+    }
+
+    private void registerStudentsToStudyPlans() {
+        students.stream()
+                .limit(2)
+                .forEach(it -> {
+                    it.addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(0)));
+                    uisUserRepository.save(it);
+                });
+
+        students.stream()
+                .skip(2)
+                .forEach(it -> {
+                    it.addStudyplans(
+                            new StudyPlanRegistration(studyplans.get(0), semesters.get(0)),
+                            new StudyPlanRegistration(studyplans.get(1), semesters.get(1))
+                    );
+                    uisUserRepository.save(it);
+                });
+    }
+
+    private void addPreconditionsToSubjects() {
+        subjects.get(2).addRequiredSubjects(subjects.get(0));
+    }
+
+    private void registerSubjectsToLecturers() {
+        subjects.get(0).addLecturers(lecturers.get(3));
+        subjects.get(1).addLecturers(lecturers.get(3));
+        subjects.get(2).addLecturers(lecturers.get(3), lecturers.get(4));
+
+        subjectRepository.save(subjects);
+    }
+
+    private void registerCoursesToStudents() {
+        courses.get(1).addStudents(students.get(3));
+        courses.get(2).addStudents(students.get(0), students.get(1), students.get(2), students.get(3));
+        courses.get(3).addStudents(students.get(0), students.get(3));
+
+        courseRepository.save(courses);
     }
 }
