@@ -27,6 +27,10 @@
         </table>
     </div>
 
+    <div th:if="${#lists.isEmpty(subjects)}">
+        <p>No subjects found</p>
+    </div>
+
 </main>
 
 </body>
