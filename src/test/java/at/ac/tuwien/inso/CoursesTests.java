@@ -1,33 +1,20 @@
 package at.ac.tuwien.inso;
 
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.test.web.servlet.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.entity.UserProfile;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.RoleRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
+import java.math.*;
+import java.util.*;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,50 +26,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class CoursesTests {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private SemesterRepository semesterRepository;
-
-    @Autowired
-    private SubjectRepository subjectRepository;
-
-    @Autowired
-    private LecturerRepository lecturerRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-
-    private List<Course> expectedCourses;
-
-    Role lecturerRole = new Role("ROLE_LECTURER");
-
-    Lecturer lecturer1 = new Lecturer(new UserProfile("Lecturer 1", "email", new UserAccount("lecturer1", "pass", lecturerRole)));
-    Lecturer lecturer2 = new Lecturer(new UserProfile("Lecturer 2", "email", new UserAccount("lecturer2", "pass", lecturerRole)));
-    Lecturer lecturer3 = new Lecturer(new UserProfile("Lecturer 3", "email", new UserAccount("lecturer3", "pass", lecturerRole)));
-
+    Lecturer lecturer1 = new Lecturer("Lecturer 1", "email", new UserAccount("lecturer1", "pass", Role.LECTURER));
+    Lecturer lecturer2 = new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
+    Lecturer lecturer3 = new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
     Semester ss2016 = new Semester("SS2016");
     Semester ws2016 = new Semester("WS2016");
-
     Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
     Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
     Subject ase = new Subject("ASE", new BigDecimal(6.0));
-
     Course sepmSS2016 = new Course(sepm, ss2016);
     Course sepmWS2016 = new Course(sepm, ws2016);
     Course aseWS2016 = new Course(ase, ws2016);
     Course calculusWS2016 = new Course(calculus, ws2016);
-
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private SemesterRepository semesterRepository;
+    @Autowired
+    private SubjectRepository subjectRepository;
+    @Autowired
+    private LecturerRepository lecturerRepository;
+    private List<Course> expectedCourses;
 
     @Before
     public void setUp() {
-
-        roleRepository.save(lecturerRole);
 
         lecturerRepository.save(lecturer1);
         lecturerRepository.save(lecturer2);
