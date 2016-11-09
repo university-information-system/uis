@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
+import java.util.*;
+
 @Service
 public class UisUserService {
 
@@ -13,7 +15,7 @@ public class UisUserService {
     private UisUserRepository uisUserRepository;
 
     @Transactional(readOnly = true)
-    public Iterable<UisUser> findAll() {
-        return uisUserRepository.findAll();
+    public List<UisUser> findAll() {
+        return uisUserRepository.findAllByOrderByIdDesc();
     }
 }

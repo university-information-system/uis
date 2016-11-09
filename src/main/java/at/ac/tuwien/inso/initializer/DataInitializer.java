@@ -8,6 +8,10 @@ import org.springframework.boot.*;
 import org.springframework.context.annotation.*;
 
 import java.math.*;
+import java.util.*;
+import java.util.stream.*;
+
+import static java.util.Arrays.*;
 
 @Configuration
 @Profile("demo")
@@ -18,9 +22,7 @@ public class DataInitializer {
     @Autowired
     private UserAccountRepository userAccountRepository;
     @Autowired
-    private LecturerRepository lecturerRepository;
-    @Autowired
-    private StudentRepository studentRepository;
+    private UisUserRepository uisUserRepository;
     @Autowired
     private SubjectRepository subjectRepository;
     @Autowired
@@ -32,22 +34,17 @@ public class DataInitializer {
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
+    private List<Student> students;
+
+    private List<Lecturer> lecturers;
+
     @Bean
     CommandLineRunner initialize() {
         return String -> {
 
             userAccountRepository.save(new UserAccount("admin", "pass", Role.ADMIN));
 
-            //users
-            Lecturer lecturer1 = lecturerRepository.save(new Lecturer("Lecturer 1", "email", new UserAccount("lecturer1", "pass", Role.LECTURER)));
-            Student student1 = studentRepository.save(new Student("Student 1", "email", new UserAccount("student1", "pass", Role.STUDENT)));
-            Lecturer lecturer2 = lecturerRepository.save(new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER)));
-            Student student2 = studentRepository.save(new Student("Student 2", "email", new UserAccount("student2", "pass", Role.STUDENT)));
-            Student student3 = studentRepository.save(new Student("Student 3", "email", new UserAccount("student3", "pass", Role.STUDENT)));
-            Lecturer lecturer3 = lecturerRepository.save(new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER)));
-            Lecturer lecturer4 = lecturerRepository.save(new Lecturer("Lecturer 3", "email"));
-            Student student4 = studentRepository.save(new Student("Student 4", "email", new UserAccount("student4", "pass", Role.STUDENT)));
-            Student student5 = studentRepository.save(new Student("Student 4", "email"));
+            createUsers();
 
             //create semesters
             Semester ss2016 = semesterRepository.save(new Semester("SS2016"));
@@ -55,21 +52,21 @@ public class DataInitializer {
 
             //subjects
             Subject calculus = subjectRepository.save(new Subject("Calculus", new BigDecimal(3.0)));
-            calculus.addLecturers(lecturer3);
+            calculus.addLecturers(lecturers.get(2));
             Subject sepm = subjectRepository.save(new Subject("SEPM", new BigDecimal(6.0)));
-            sepm.addLecturers(lecturer1);
+            sepm.addLecturers(lecturers.get(0));
             Subject ase = subjectRepository.save(new Subject("ASE", new BigDecimal(6.0)));
             ase.addRequiredSubjects(sepm);
-            ase.addLecturers(lecturer1, lecturer2);
+            ase.addLecturers(lecturers.get(0), lecturers.get(2));
 
             //courses
             Course sepmSS2016 = courseRepository.save(new Course(sepm,ss2016));
             Course sepmWS2016 = courseRepository.save(new Course(sepm,ws2016));
-            sepmWS2016.addStudents(student4);
+            sepmWS2016.addStudents(students.get(3));
             Course aseWS2016 = courseRepository.save(new Course(ase,ws2016));
-            aseWS2016.addStudents(student1, student2, student3, student4);
+            aseWS2016.addStudents(students.get(0), students.get(1), students.get(2), students.get(3));
             Course calculusWS2016 = courseRepository.save(new Course(calculus, ws2016));
-            calculusWS2016.addStudents(student1, student4);
+            calculusWS2016.addStudents(students.get(0), students.get(3));
 
             //study plan
             StudyPlan studyPlan = studyPlanRepository.save(new StudyPlan("SE",new EctsDistribution(new BigDecimal(90), new BigDecimal(60), new BigDecimal(30))));
@@ -78,8 +75,31 @@ public class DataInitializer {
             SubjectForStudyPlan subjectForStudyPlan2 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(ase, true));
             SubjectForStudyPlan subjectForStudyPlan3 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(sepm, true));
             studyPlan.addSubjects(subjectForStudyPlan1, subjectForStudyPlan2, subjectForStudyPlan3);
-
-
         };
+    }
+
+    private void createUsers() {
+        Iterable<UisUser> users = uisUserRepository.save(asList(
+                new Student("Emma Dowd", "emma.dowd@gmail.com", new UserAccount("emma", "pass", Role.STUDENT)),
+                new Lecturer("Carol Sanderson", "carol@uis.at"),
+                new Lecturer("Una Walker", "una.walker@uis.at", new UserAccount("lecturer", "pass", Role.LECTURER)),
+                new Student("Caroline Black", "caroline.black@uis.at", new UserAccount("student", "pass", Role.STUDENT)),
+                new Student("Joan Watson", "joan.watson@uit.at"),
+                new Lecturer("Connor MacLeod", "connor@gmail.com"),
+                new Student("James Bond", "jamesbond_007@yahoo.com"),
+                new Student("Trevor Bond", "trevor@uis.at"),
+                new Lecturer("Eric Wilkins", "e1234567@tuwien.ac.at", new UserAccount("eric", "pass", Role.LECTURER)),
+                new Lecturer("Benjamin Piper", "ben@uis.at", new UserAccount("ben", "pass", Role.LECTURER))
+        ));
+
+        students = StreamSupport.stream(users.spliterator(), false)
+                .filter(it -> it instanceof Student)
+                .map(it -> (Student) it)
+                .collect(Collectors.toList());
+
+        lecturers = StreamSupport.stream(users.spliterator(), false)
+                .filter(it -> it instanceof Lecturer)
+                .map(it -> (Lecturer) it)
+                .collect(Collectors.toList());
     }
 }
