@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -19,7 +20,16 @@ public class AdminSubjectsController {
     }
 
     @ModelAttribute("subjects")
-    private Iterable<Subject> getOwnSubjects() {
+    private Iterable<Subject> getSubjects() {
         return subjectService.getAllSubjects();
+    }
+
+    @GetMapping(params = "id")
+    private String getSubject(@RequestParam(value = "id") Long id, Model model) {
+        Subject subject = subjectService.getSubjectById(id);
+        model.addAttribute("subject", subject);
+        model.addAttribute("lecturers", subject.getLecturers());
+        model.addAttribute("requiredSubjects", subject.getRequiredSubjects());
+        return "admin/subject-details";
     }
 }
