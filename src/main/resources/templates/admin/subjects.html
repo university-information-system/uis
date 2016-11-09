@@ -1,12 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="admin/index">
 <body>
 
-<main layout:fragment="main">
+<main layout:fragment="main" class="container">
 
-    <p>subjects</p>
+    <h2 th:text="#{admin.nav.subjects}"></h2>
+
+    <div th:if="${not #lists.isEmpty(subjects)}">
+        <table class="bordered">
+            <tr>
+                <th>Name</th>
+                <th>ECTS</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:each="subject : ${subjects}">
+                <td th:text="${subject.name}">Subject</td>
+                <td th:text="${subject.ects}">ECTS</td>
+                <td>
+                    <a class="btn"><i class="material-icons">edit</i></a>
+                    <a class="btn"><i class="material-icons">delete</i></a>
+                </td>
+            </tr>
+        </table>
+    </div>
 
 </main>
 
