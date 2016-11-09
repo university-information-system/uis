@@ -1,0 +1,17 @@
+package at.ac.tuwien.inso.service;
+
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class SubjectService {
+
+    @Autowired
+    private SubjectRepository subjectRepository;
+
+    public Iterable<Subject> getAllSubjects() {
+        return subjectRepository.findAll();
+    }
+}
