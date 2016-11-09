@@ -19,13 +19,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().disable();
 		http
-				.csrf().ignoringAntMatchers("/rest/**")  //disable csrf for rest
+				.csrf().ignoringAntMatchers("/rest/**") //disable csrf for rest
+				.ignoringAntMatchers("/console/**") //disable the database
 				.and()
 				.authorizeRequests()
 				.antMatchers("/rest/**").permitAll()   //do not require passwords for rest
 				.antMatchers("/min/**").permitAll()
 				.antMatchers("/webjars/**").permitAll()
+				.antMatchers("/console/**").permitAll()
 				.antMatchers("/admin/**").hasRole(Role.ADMIN.name())
 				.antMatchers("/lecturer/**").hasRole(Role.LECTURER.name())
 				.antMatchers("/student/**").hasRole(Role.STUDENT.name())
