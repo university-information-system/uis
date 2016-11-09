@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.entity;
 
 import org.springframework.security.core.*;
+import org.springframework.security.core.authority.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.*;
 
@@ -23,7 +24,7 @@ public class UserAccount implements UserDetails {
 
     private String password;
 
-    @ManyToOne(optional = false)
+    @Enumerated
     private Role role;
 
     protected UserAccount() {
@@ -37,7 +38,11 @@ public class UserAccount implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return singletonList(role);
+        return singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    public boolean hasRole(Role role) {
+        return this.role.equals(role);
     }
 
     @Override

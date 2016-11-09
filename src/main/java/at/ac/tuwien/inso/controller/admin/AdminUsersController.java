@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class AdminUsersController {
 
     @Autowired
-    private UserAccountService userAccountService;
+    private UisUserService uisUserService;
 
     @GetMapping
     public String users(Model model) {
-        model.addAttribute("usersAttr", userAccountService.findAll());
+        model.addAttribute("users", uisUserService.findAll());
+
         return "admin/users";
     }
 }

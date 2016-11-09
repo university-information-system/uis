@@ -11,7 +11,7 @@ import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
 
-import static java.util.Arrays.*;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,23 +26,17 @@ public class AdminUsersTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserAccountRepository userAccountRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
+    private UisUserRepository uisUserRepository;
 
     @Test
     public void itListsAllUsers() throws Exception {
-        Role role = roleRepository.save(new Role("ROLE_ADMIN"));
-        Iterable<UserAccount> users =  userAccountRepository.save(asList(
-                new UserAccount("admin 1", "pass", role),
-                new UserAccount("admin 2", "pass", role)
-        ));
+        UisUser student = uisUserRepository.save(new Student("student", "email"));
+        UisUser lecturer = uisUserRepository.save(new Lecturer("lecturer", "email"));
 
         mockMvc.perform(
-                post("/admin/users").with(user("admin").roles("ADMIN"))
+                get("/admin/users").with(user("admin").roles(Role.ADMIN.name()))
         ).andExpect(
-                model().attribute("usersAttr", users)
+                model().attribute("users", hasItems(student, lecturer))
         );
     }
 }

@@ -7,29 +7,22 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.context.annotation.*;
 
-import java.math.BigDecimal;
+import java.math.*;
 
 @Configuration
 @Profile("demo")
 public class DataInitializer {
 
     @Autowired
+    CourseRepository courseRepository;
+    @Autowired
     private UserAccountRepository userAccountRepository;
-
     @Autowired
     private LecturerRepository lecturerRepository;
-
     @Autowired
     private StudentRepository studentRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Autowired
     private SubjectRepository subjectRepository;
-
-    @Autowired CourseRepository courseRepository;
-
     @Autowired
     private SemesterRepository semesterRepository;
 
@@ -43,24 +36,18 @@ public class DataInitializer {
     CommandLineRunner initialize() {
         return String -> {
 
-            // create roles
-            Role adminRole = roleRepository.save(new Role("ROLE_ADMIN"));
-            Role lecturerRole = roleRepository.save(new Role("ROLE_LECTURER"));
-            Role studentRole = roleRepository.save(new Role("ROLE_STUDENT"));
+            userAccountRepository.save(new UserAccount("admin", "pass", Role.ADMIN));
 
-            //the admin
-            userAccountRepository.save(new UserAccount("admin", "pass", adminRole));
-
-            //lecturers
-            Lecturer lecturer1 = lecturerRepository.save(new Lecturer(new UserProfile("Lecturer 1", "email", new UserAccount("lecturer1", "pass",lecturerRole))));
-            Lecturer lecturer2 = lecturerRepository.save(new Lecturer(new UserProfile("Lecturer 2", "email", new UserAccount("lecturer2", "pass", lecturerRole))));
-            Lecturer lecturer3 = lecturerRepository.save(new Lecturer(new UserProfile("Lecturer 3", "email", new UserAccount("lecturer3", "pass", lecturerRole))));
-
-            //students
-            Student student1 = studentRepository.save(new Student(new UserProfile("Student 1", "email", new UserAccount("student1", "pass", studentRole))));
-            Student student2 = studentRepository.save(new Student(new UserProfile("Student 2", "email", new UserAccount("student2", "pass", studentRole))));
-            Student student3 = studentRepository.save(new Student(new UserProfile("Student 3", "email", new UserAccount("student3", "pass", studentRole))));
-            Student student4 = studentRepository.save(new Student(new UserProfile("Student 4", "email", new UserAccount("student4", "pass", studentRole))));
+            //users
+            Lecturer lecturer1 = lecturerRepository.save(new Lecturer("Lecturer 1", "email", new UserAccount("lecturer1", "pass", Role.LECTURER)));
+            Student student1 = studentRepository.save(new Student("Student 1", "email", new UserAccount("student1", "pass", Role.STUDENT)));
+            Lecturer lecturer2 = lecturerRepository.save(new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER)));
+            Student student2 = studentRepository.save(new Student("Student 2", "email", new UserAccount("student2", "pass", Role.STUDENT)));
+            Student student3 = studentRepository.save(new Student("Student 3", "email", new UserAccount("student3", "pass", Role.STUDENT)));
+            Lecturer lecturer3 = lecturerRepository.save(new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER)));
+            Lecturer lecturer4 = lecturerRepository.save(new Lecturer("Lecturer 3", "email"));
+            Student student4 = studentRepository.save(new Student("Student 4", "email", new UserAccount("student4", "pass", Role.STUDENT)));
+            Student student5 = studentRepository.save(new Student("Student 4", "email"));
 
             //create semesters
             Semester ss2016 = semesterRepository.save(new Semester("SS2016"));

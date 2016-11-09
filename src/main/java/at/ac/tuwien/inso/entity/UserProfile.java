@@ -17,6 +17,10 @@ public class UserProfile {
     protected UserProfile() {
     }
 
+    public UserProfile(String name, String email) {
+        this(name, email, null);
+    }
+
     public UserProfile(String name, String email, UserAccount account) {
         this.name = name;
         this.email = email;
@@ -24,7 +28,6 @@ public class UserProfile {
     }
 
     public String getName() {
-
         return name;
     }
 
