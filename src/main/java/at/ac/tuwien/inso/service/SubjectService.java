@@ -14,4 +14,8 @@ public class SubjectService {
     public Iterable<Subject> getAllSubjects() {
         return subjectRepository.findAll();
     }
+
+    public Subject getSubjectById(Long id) {
+        return subjectRepository.findSubjectById(id);
+    }
 }
