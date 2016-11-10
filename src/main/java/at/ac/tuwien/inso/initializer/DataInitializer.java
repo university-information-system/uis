@@ -52,12 +52,15 @@ public class DataInitializer {
 
             //subjects
             Subject calculus = subjectRepository.save(new Subject("Calculus", new BigDecimal(3.0)));
-            calculus.addLecturers(lecturers.get(2));
+            calculus.addLecturers(lecturers.get(3));
             Subject sepm = subjectRepository.save(new Subject("SEPM", new BigDecimal(6.0)));
-            sepm.addLecturers(lecturers.get(0));
+            sepm.addLecturers(lecturers.get(3));
             Subject ase = subjectRepository.save(new Subject("ASE", new BigDecimal(6.0)));
             ase.addRequiredSubjects(sepm);
-            ase.addLecturers(lecturers.get(0), lecturers.get(2));
+            ase.addLecturers(lecturers.get(3), lecturers.get(4));
+            subjectRepository.save(ase);
+            subjectRepository.save(sepm);
+            subjectRepository.save(calculus);
 
             //courses
             Course sepmSS2016 = courseRepository.save(new Course(sepm,ss2016));
