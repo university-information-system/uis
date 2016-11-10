@@ -1,9 +1,33 @@
+body {
+  background-color: #fcfcfc;
+}
+
 header, main, footer {
   padding-left: 300px;
+}
+
+.container {
+  width: 100%;
+  padding: 0 20px;
+  margin: 0;
+}
+
+.collection .collection-item.avatar .letter-icon {
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
 }
 
 @media only screen and (max-width : 992px) {
   header, main, footer {
     padding-left: 0;
+  }
+
+  .container {
+    padding: 16px;
+    margin: 0;
   }
 }

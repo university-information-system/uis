@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.config;
 
+import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
@@ -7,11 +8,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.core.*;
 import org.springframework.security.web.authentication.*;
-
-import java.util.*;
-import java.util.stream.*;
 
 @Configuration
 @EnableWebSecurity
@@ -22,16 +19,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().disable();
 		http
-				.csrf().ignoringAntMatchers("/rest/**")  //disable csrf for rest
+				.csrf().ignoringAntMatchers("/rest/**") //disable csrf for rest
+				.ignoringAntMatchers("/console/**") //disable the database
 				.and()
 				.authorizeRequests()
 				.antMatchers("/rest/**").permitAll()   //do not require passwords for rest
 				.antMatchers("/min/**").permitAll()
 				.antMatchers("/webjars/**").permitAll()
-				.antMatchers("/admin/**").hasRole("ADMIN")
-				.antMatchers("/lecturer/**").hasRole("LECTURER")
-				.antMatchers("/student/**").hasRole("STUDENT")
+				.antMatchers("/console/**").permitAll()
+				.antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+				.antMatchers("/lecturer/**").hasRole(Role.LECTURER.name())
+				.antMatchers("/student/**").hasRole(Role.STUDENT.name())
 				.anyRequest().authenticated()
 				.and().exceptionHandling().accessDeniedHandler((req, resp, e) -> resp.sendRedirect("/login"))
 				.and()
@@ -48,13 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private AuthenticationSuccessHandler authenticationSuccessHandler() {
 		return (req, resp, auth) -> {
-            List<String> roles = auth.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
+			UserAccount userAccount = (UserAccount) auth.getPrincipal();
 
-            if (roles.contains("ROLE_ADMIN")) {
+			if (userAccount.hasRole(Role.ADMIN)) {
 				resp.sendRedirect("/admin/studyplans");
-			} else if (roles.contains("ROLE_LECTURER")) {
+			} else if (userAccount.hasRole(Role.LECTURER)) {
 				resp.sendRedirect("/lecturer/courses");
 			} else {
 				resp.sendRedirect("/student/courses");

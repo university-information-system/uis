@@ -5,16 +5,18 @@
       layout:decorator="admin/index">
 <body>
 
-<main layout:fragment="main" class="container">
+<main layout:fragment="main">
 
-    <h2 th:text="#{admin.semesters.label}"></h2>
+    <div class="container">
+        <h2 th:text="#{admin.semesters.label}"></h2>
 
-    <ul class="collection">
-        <li class="collection-item" th:each="semester : ${allSemesters}">
-            <span th:text="${semester.label}"></span>
-            <span th:if="${semester} eq ${currentSemester}"> (current) </span>
-        </li>
-    </ul>
+        <ul class="collection">
+            <li class="collection-item" th:each="semester : ${allSemesters}">
+                <span th:text="${semester.label}"></span>
+                <span th:if="${semester} eq ${currentSemester}"> (current) </span>
+            </li>
+        </ul>
+    </div>
 
 </main>
 
