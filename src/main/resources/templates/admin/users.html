@@ -1,12 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="admin/index">
 <body>
 
 <main layout:fragment="main">
 
-    <p>users</p>
+    <div class="container">
+        <h1 th:text="#{admin.users.header}"></h1>
+
+        <ul class="collection z-depth-1">
+            <li class="collection-item avatar" th:each="user : ${users}"
+                style="cursor: pointer"
+                th:onclick="'location.href = \'/admin/user-details/' + ${user.id} + '\''">
+
+                <div th:if="${user instanceof T(at.ac.tuwien.inso.entity.Lecturer)}">
+                    <div class="blue circle letter-icon white-text">L</div>
+                    <span class="title" th:text="${user.name}"></span>
+                    <p>
+                        <span th:text="#{admin.users.lecturer}"></span>
+                        <br/>
+                        <span th:text="${user.email}"></span>
+                        <span class="red-text" th:if="${!user.activated}"
+                              th:text="'(' + (#{admin.users.inactive}) + ')'"></span>
+                    </p>
+                </div>
+
+                <div th:if="${user instanceof T(at.ac.tuwien.inso.entity.Student)}">
+                    <div class="purple circle letter-icon white-text">S</div>
+                    <span class="title" th:text="${user.name}"></span>
+                    <p>
+                        <span th:text="#{admin.users.student}"></span>
+                        <br/>
+                        <span th:text="${user.email}"></span>
+                        <span class="red-text" th:if="${!user.activated}"
+                              th:text="'(' + (#{admin.users.inactive}) + ')'"></span>
+                    </p>
+                </div>
+            </li>
+        </ul>
+
+    </div>
 
 </main>
 

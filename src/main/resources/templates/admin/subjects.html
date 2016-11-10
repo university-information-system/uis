@@ -10,25 +10,24 @@
     <h2 th:text="#{admin.nav.subjects}"></h2>
 
     <div th:if="${not #lists.isEmpty(subjects)}">
-        <table class="bordered">
-            <tr>
-                <th>Name</th>
-                <th>ECTS</th>
-                <th>Actions</th>
-            </tr>
-            <tr th:each="subject : ${subjects}">
-                <td><a href="#" data-th-href="@{/admin/subjects/(id=${subject.id})}" th:text="${subject.name}"></a></td>
-                <td th:text="${subject.ects}"></td>
-                <td>
-                    <a class="btn" ><i class="material-icons">edit</i></a>
-                    <a class="btn"><i class="material-icons">delete</i></a>
-                </td>
-            </tr>
-        </table>
+
+        <ul class="collection">
+            <li class="collection-item" th:each="subject : ${subjects}">
+                <div>
+                    <div class="title" >
+                        <a href="#" data-th-href="@{/admin/subjects/(id=${subject.id})}" th:text="${subject.name}"></a>
+                        <a href="#!" style="margin-left:10px;" class="secondary-content"><i class="material-icons">delete</i></a>
+                        <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
+                    </div>
+                    <div th:text="${subject.ects} + ' ECTS'"></div>
+                </div>
+
+            </li>
+        </ul>
     </div>
 
     <div th:if="${#lists.isEmpty(subjects)}">
-        <p>No subjects found</p>
+        <p th:text="#{admin.subjects.notfound}"></p>
     </div>
 
 </main>
