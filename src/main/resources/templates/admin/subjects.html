@@ -5,29 +5,32 @@
       layout:decorator="admin/index">
 <body>
 
-<main layout:fragment="main" class="container">
+<main layout:fragment="main">
 
-    <h2 th:text="#{admin.nav.subjects}"></h2>
+    <div class="container">
+        <h2 th:text="#{admin.nav.subjects}"></h2>
 
-    <div th:if="${not #lists.isEmpty(subjects)}">
+        <div th:if="${not #lists.isEmpty(subjects)}">
 
-        <ul class="collection">
-            <li class="collection-item" th:each="subject : ${subjects}">
-                <div>
-                    <div class="title" >
-                        <a href="#" data-th-href="@{/admin/subjects/(id=${subject.id})}" th:text="${subject.name}"></a>
-                        <a href="#!" style="margin-left:10px;" class="secondary-content"><i class="material-icons">delete</i></a>
-                        <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
+            <ul class="collection">
+                <li class="collection-item" th:each="subject : ${subjects}">
+                    <div>
+                        <div class="title">
+                            <a href="#" data-th-href="@{/admin/subjects/(id=${subject.id})}"
+                               th:text="${subject.name}"></a>
+                            <a href="#!" style="margin-left:10px;" class="secondary-content"><i class="material-icons">delete</i></a>
+                            <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
+                        </div>
+                        <div th:text="${subject.ects} + ' ECTS'"></div>
                     </div>
-                    <div th:text="${subject.ects} + ' ECTS'"></div>
-                </div>
 
-            </li>
-        </ul>
-    </div>
+                </li>
+            </ul>
+        </div>
 
-    <div th:if="${#lists.isEmpty(subjects)}">
-        <p th:text="#{admin.subjects.notfound}"></p>
+        <div th:if="${#lists.isEmpty(subjects)}">
+            <p th:text="#{admin.subjects.notfound}"></p>
+        </div>
     </div>
 
 </main>
