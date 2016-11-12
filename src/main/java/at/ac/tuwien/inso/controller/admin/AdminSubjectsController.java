@@ -45,8 +45,6 @@ public class AdminSubjectsController {
     
     @PostMapping("/add")
     private String addSubject(@ModelAttribute Subject subject) {
-    	System.out.println(subject.getName());//immer null.. TODO, check warum
-    	System.out.println("ects"+subject.getEcts());
     	return "admin/subject-details";
     }
 }

@@ -47,6 +47,14 @@ public class Subject {
 		return ects;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setEcts(BigDecimal ects) {
+		this.ects = ects;
+	}
+
 	public List<Lecturer> getLecturers() {
 		return unmodifiableList(lecturers);
 	}
