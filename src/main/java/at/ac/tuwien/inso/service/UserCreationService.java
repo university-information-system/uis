@@ -3,11 +3,14 @@ package at.ac.tuwien.inso.service;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.mail.*;
-import org.springframework.stereotype.*;
+import org.springframework.mail.javamail.*;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.*;
 import org.thymeleaf.*;
 import org.thymeleaf.context.*;
+
+import javax.mail.*;
+import javax.mail.internet.*;
 
 @Service
 public class UserCreationService {
@@ -18,7 +21,7 @@ public class UserCreationService {
     private PendingAccountActivationRepository pendingAccountActivationRepository;
 
     @Autowired
-    private MailSender mailSender;
+    private JavaMailSender mailSender;
 
     @Autowired
     private TemplateEngine templateEngine;
@@ -33,18 +36,24 @@ public class UserCreationService {
     public PendingAccountActivation create(UisUser user) {
         PendingAccountActivation activation = new PendingAccountActivation(user);
 
-        sendActivationMail(activation);
+        mailSender.send(createActivationMail(activation));
 
         return pendingAccountActivationRepository.save(activation);
     }
 
-    private void sendActivationMail(PendingAccountActivation activation) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(activation.getForUser().getEmail());
-        msg.setSubject(messages.get(MAIL_SUBJECT));
-        msg.setText(messageContent(activation));
+    private MimeMessage createActivationMail(PendingAccountActivation activation) {
+        MimeMessage mimeMsg = mailSender.createMimeMessage();
+        MimeMessageHelper msg = new MimeMessageHelper(mimeMsg, "UTF-8");
 
-        mailSender.send(msg);
+        try {
+            msg.setTo(activation.getForUser().getEmail());
+            msg.setSubject(messages.get(MAIL_SUBJECT));
+            msg.setText(messageContent(activation), true);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return msg.getMimeMessage();
     }
 
     private String messageContent(PendingAccountActivation activation) {

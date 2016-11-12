@@ -4,10 +4,10 @@ import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.*;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -26,13 +26,17 @@ public class AdminUsersController {
         return "admin/users";
     }
 
+    @GetMapping("/create")
+    public String createUserView() {
+        return "admin/create-user";
+    }
+
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public String createUser(@ModelAttribute("form") CreateUserForm form, Model model) {
+    public String createUser(@ModelAttribute("form") CreateUserForm form, RedirectAttributes redirectAttributes) {
         PendingAccountActivation activation = userCreationService.create(form.toUisUser());
 
-        model.addAttribute("createdUser", activation.getForUser());
+        redirectAttributes.addFlashAttribute("createdUser", activation.getForUser());
 
-        return "/admin/users";
+        return "redirect:/admin/users";
     }
 }

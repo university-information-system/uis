@@ -10,12 +10,15 @@ import org.mockito.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.context.*;
-import org.springframework.mail.*;
+import org.springframework.mail.javamail.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
 
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.io.*;
 import java.util.regex.*;
 
 import static org.junit.Assert.*;
@@ -39,7 +42,7 @@ public class UserCreationTests {
     private PendingAccountActivationRepository pendingAccountActivationRepository;
 
     @Autowired
-    private MailSender mockMailSender;
+    private JavaMailSender mockMailSender;
 
     @Value("${uis.server.account.activation.url.prefix}")
     private String accountActivationUrlPrefix;
@@ -49,11 +52,12 @@ public class UserCreationTests {
 
     private UisUser user;
 
-    private SimpleMailMessage msg;
+    private MimeMessage msg;
 
     @Before
     public void setUp() throws Exception {
         Mockito.reset(mockMailSender);
+        Mockito.when(mockMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
     }
 
     @Test
@@ -64,8 +68,7 @@ public class UserCreationTests {
 
     private void checkUserCreation(CreateUserForm form) throws Exception {
         createUser(form)
-                .andExpect(status().isCreated())
-                .andExpect(view().name("/admin/users"))
+                .andExpect(redirectedUrl("/admin/users"))
                 .andDo(this::checkCreatedUser)
                 .andDo(this::checkActivationMailSent)
                 .andDo(this::checkActivationEntity);
@@ -82,25 +85,25 @@ public class UserCreationTests {
     }
 
     private void checkCreatedUser(MvcResult result) {
-        user = (UisUser) result.getModelAndView().getModel().get("createdUser");
+        user = (UisUser) result.getFlashMap().get("createdUser");
 
         assertNotNull(user);
     }
 
-    private void checkActivationMailSent(MvcResult result) {
+    private void checkActivationMailSent(MvcResult result) throws MessagingException {
         msg = getSentMail();
 
-        assertEquals(user.getEmail(), msg.getTo()[0]);
+        assertEquals(user.getEmail(), msg.getAllRecipients()[0].toString());
         assertEquals(messages.get(UserCreationService.MAIL_SUBJECT), msg.getSubject());
     }
 
-    private SimpleMailMessage getSentMail() {
-        ArgumentCaptor<SimpleMailMessage> captor = ArgumentCaptor.forClass(SimpleMailMessage.class);
+    private MimeMessage getSentMail() {
+        ArgumentCaptor<MimeMessage> captor = ArgumentCaptor.forClass(MimeMessage.class);
         Mockito.verify(mockMailSender).send(captor.capture());
         return captor.getValue();
     }
 
-    private void checkActivationEntity(MvcResult result) {
+    private void checkActivationEntity(MvcResult result) throws IOException, MessagingException {
         String activationId = getActivationIdFromMail();
 
         PendingAccountActivation activation = pendingAccountActivationRepository.findOne(activationId);
@@ -109,8 +112,8 @@ public class UserCreationTests {
         assertEquals(user, activation.getForUser());
     }
 
-    private String getActivationIdFromMail() {
-        Matcher activationLinkMatcher = Pattern.compile(accountActivationUrlPrefix + UUID_PATTERN).matcher(msg.getText());
+    private String getActivationIdFromMail() throws IOException, MessagingException {
+        Matcher activationLinkMatcher = Pattern.compile(accountActivationUrlPrefix + UUID_PATTERN).matcher(msg.getContent().toString());
         assertTrue(activationLinkMatcher.find());
 
         return activationLinkMatcher.group(1);
