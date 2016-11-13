@@ -76,7 +76,7 @@ public class UserCreationTests {
 
     private ResultActions createUser(CreateUserForm form) throws Exception {
         return mockMvc.perform(
-                post("/admin/users").with(user("admin").roles(Role.ADMIN.name()))
+                post("/admin/users/create").with(user("admin").roles(Role.ADMIN.name()))
                         .param("type", form.getType())
                         .param("name", form.getName())
                         .param("email", form.getEmail())
@@ -122,5 +122,11 @@ public class UserCreationTests {
     @Test
     public void onCreateLecturerItSendsActivationEmailAndStoresPendingAccountActivation() throws Exception {
         checkUserCreation(new CreateUserForm(CreateUserForm.LECTURER, "Lecturer", "lecturer@uis.at"));
+    }
+
+    @Test
+    public void onInvalidUserItSetsAttributeErrors() throws Exception {
+        createUser(new CreateUserForm("unknown", "", "invalid"))
+                .andExpect(model().attributeHasFieldErrors("createUserForm", "type", "name", "email"));
     }
 }

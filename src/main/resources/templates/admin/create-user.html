@@ -15,14 +15,15 @@
                     <div class="card-content">
                         <span class="card-title" th:text="#{admin.users.create.form.header}"></span>
 
-                        <form th:action="@{/admin/users}" method="post" id="create-user-form">
+                        <form th:action="@{/admin/users/create}" th:object="${createUserForm}" method="post"
+                              id="create-user-form">
                             <div class="row">
                                 <div class="col s12">
                                     <p>
-                                        <input name="type" type="radio" class="with-gap" id="student"
-                                               checked="checked" value="Student"/>
+                                        <input th:field="*{type}" type="radio" class="with-gap" id="student"
+                                               value="Student"/>
                                         <label for="student" th:text="#{admin.users.create.form.type.student}"></label>
-                                        <input name="type" type="radio" class="with-gap" id="lecturer"
+                                        <input th:field="*{type}" type="radio" class="with-gap" id="lecturer"
                                                value="Lecturer"/>
                                         <label for="lecturer"
                                                th:text="#{admin.users.create.form.type.lecturer}"></label>
@@ -30,13 +31,17 @@
                                 </div>
 
                                 <div class="input-field col s12">
-                                    <input id="name" name="name" type="text"/>
+                                    <input id="name" th:field="*{name}" type="text"/>
                                     <label for="name" th:text="#{admin.users.create.form.name}"></label>
+                                    <span class="red-text" th:if="${#fields.hasErrors('name')}"
+                                          th:text="#{admin.users.create.form.name.error}"></span>
                                 </div>
 
                                 <div class="input-field col s12">
-                                    <input id="email" name="email" type="text"/>
+                                    <input id="email" th:field="*{email}" type="email"/>
                                     <label for="email" th:text="#{admin.users.create.form.email}"></label>
+                                    <span class="red-text" th:if="${#fields.hasErrors('email')}"
+                                          th:text="#{admin.users.create.form.email.error}"></span>
                                 </div>
                             </div>
                         </form>
