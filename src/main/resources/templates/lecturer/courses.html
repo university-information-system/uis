@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="lecturer/index">
 <body>
 
 <main layout:fragment="main">
 
-    <p>courses</p>
+    <div class="container">
+        <h2 th:text="#{lecturer.courses.label}">Courses</h2>
 
+        <h4 th:if="${allCourses.isEmpty()}"  th:text="#{lecturer.courses.none}"></h4>
+
+        <ul class="collection" th:unless="${allCourses.isEmpty()}">
+            <li class="collection-item" th:each="course : ${allCourses}">
+                <div class="title" th:text="${course.subject.name}"></div>
+                <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
+            </li>
+        </ul>
+    </div>
 </main>
 
 </body>
