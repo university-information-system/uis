@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="layout/default">
 <body onload="main.initialize()">
 
@@ -32,10 +32,6 @@
     </nav>
 
     <main layout:fragment="main"></main>
-</div>
-
-<div layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{/min/js/main.js}"></script>
 </div>
 
 </body>

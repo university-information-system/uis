@@ -3,7 +3,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="admin/index">
-<body>
+<body th:with="toast=${createdUser} ? #{admin.users.create.success} : ''"
+      th:onload="'main.initialize();users.initialize(\'' + ${toast} + '\')'">
 
 <main layout:fragment="main">
 
@@ -41,6 +42,12 @@
             </li>
         </ul>
 
+    </div>
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large amber modal-trigger" href="/admin/users/create">
+            <i class="large material-icons">add</i>
+        </a>
     </div>
 
 </main>

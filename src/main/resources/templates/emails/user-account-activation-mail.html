@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="#{user.account.activation.mail.subject}"></title>
+</head>
+<body>
+
+<p>Dear <span th:text="${user.name}"></span>,</p>
+
+<p>We confirm your new UIS account. Please use the following link to activate your account:</p>
+
+<a th:href="${activationUrl}">Activate Account</a>
+
+<p>Kind regards,</p>
+<p>Your UIS team</p>
+
+</body>
+</html>

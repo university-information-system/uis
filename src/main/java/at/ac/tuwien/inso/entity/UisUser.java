@@ -23,10 +23,6 @@ public abstract class UisUser {
 
     }
 
-    public UisUser(String name, String email) {
-        this(name, email, null);
-    }
-
     public UisUser(String name, String email, UserAccount account) {
         this.name = name;
         this.email = email;
