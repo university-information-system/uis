@@ -3,6 +3,7 @@ package at.ac.tuwien.inso;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.*;
 import java.math.*;
 import java.util.*;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,7 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class CoursesTests {
 
-    Lecturer lecturer1 = new Lecturer("Lecturer 1", "email", new UserAccount("lecturer1", "pass", Role.LECTURER));
+    UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
+    Lecturer lecturer1 = new Lecturer("Lecturer 1", "email", user1);
     Lecturer lecturer2 = new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
     Lecturer lecturer3 = new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
     Semester ss2016 = new Semester("SS2016");
@@ -48,7 +51,11 @@ public class CoursesTests {
     private SubjectRepository subjectRepository;
     @Autowired
     private LecturerRepository lecturerRepository;
+
     private List<Course> expectedCourses;
+    private List<Course> expectedCoursesForLecturer1;
+    private List<Course> expectedCoursesForLecturer2;
+    private List<Course> expectedCoursesForLecturer3;
 
     @Before
     public void setUp() {
@@ -74,7 +81,9 @@ public class CoursesTests {
         calculusWS2016 = courseRepository.save(calculusWS2016);
 
         expectedCourses = Arrays.asList(sepmWS2016, aseWS2016, calculusWS2016);
-
+        expectedCoursesForLecturer1 = Arrays.asList(sepmWS2016, aseWS2016);
+        expectedCoursesForLecturer3 = Arrays.asList(aseWS2016);
+        expectedCoursesForLecturer2 = Arrays.asList(calculusWS2016);
     }
 
     @Test
@@ -104,6 +113,17 @@ public class CoursesTests {
                 get("/student/courses?search=sep").with(user("student").roles("STUDENT"))
         ).andExpect(
                 model().attribute("allCourses", Arrays.asList(sepmWS2016))
+        );
+    }
+
+    @Test
+    @Transactional
+    public void itListsAllCoursesForCurrentSemesterAndLecturer() throws Exception {
+
+        mockMvc.perform(
+                get("/lecturer/courses").with(user(user1))
+        ).andExpect(
+                model().attribute("allCourses", expectedCoursesForLecturer1)
         );
     }
 
