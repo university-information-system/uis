@@ -4,21 +4,23 @@
       layout:decorator="student/index">
 <body>
 
-<main layout:fragment="main" class="container">
+<main layout:fragment="main">
 
+    <div class="container">
+        <h2 th:text="#{student.courses.label}">Courses</h2>
 
-    <h2 th:text="#{student.courses.label}">Courses</h2>
+        <form>
+            <input id="search" name="search" th:placeholder="#{student.courses.search}" th:value="${searchString}"
+                   type="text"/>
+        </form>
 
-    <form>
-        <input id="search" name="search" th:placeholder="#{student.courses.search}" th:value="${searchString}" type="text"/>
-    </form>
-
-    <ul class="collection">
-        <li class="collection-item" th:each="course : ${allCourses}">
-            <div class="title" th:text="${course.subject.name}"></div>
-            <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
-        </li>
-    </ul>
+        <ul class="collection">
+            <li class="collection-item" th:each="course : ${allCourses}">
+                <div class="title" th:text="${course.subject.name}"></div>
+                <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
+            </li>
+        </ul>
+    </div>
 
 </main>
 
