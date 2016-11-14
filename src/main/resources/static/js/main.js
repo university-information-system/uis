@@ -1,16 +1,27 @@
-const main = {
 
-    initialize: function() {
-        $(document).ready(function(){
-            $('.button-collapse').sideNav();
-            moveLabelsForCheckboxes();
-        })
-    }
+import SideNav from "./side-nav";
+import CheckBoxes from "./checkboxes";
+
+// Flash Messages
+const showMessage = (message) => {
+    "use strict";
+
+    setTimeout(() => {
+        Materialize.toast(message, 5000);
+    }, 2000);
 };
 
-function moveLabelsForCheckboxes() {  //the label must be moved because materialize.css expects the input and label to be one after the other and spring mvc adds an extra hidden input field
-    $('.checkboxLabel').each(function () {
-        if(this.previousElementSibling)
-            this.parentNode.insertBefore(this, this.previousElementSibling);
-    })
-}
+const init = () => {
+    "use strict";
+
+    const checkboxes = new CheckBoxes();
+    checkboxes.initialize();
+
+    const sideNav = new SideNav();
+    sideNav.initialize();
+};
+
+init();
+
+// Exports for calls from HTML
+window.showMessage = showMessage;

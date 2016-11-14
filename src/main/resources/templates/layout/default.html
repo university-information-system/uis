@@ -19,9 +19,13 @@
 <script type="text/javascript" src="/webjars/materializecss/0.97.7/js/materialize.min.js"></script>
 
 <script type="text/javascript" src="/min/js/main.js"></script>
-<script type="text/javascript" src="/min/js/users.js"></script>
 
-<div layout:fragment="scripts"></div>
+<script data-message="asdf">
+</script>
+
+<script th:if="${flashMessage}" th:inline="javascript">
+    showMessage([[#{__${flashMessage}__}]]);
+</script>
 
 </body>
 </html>
