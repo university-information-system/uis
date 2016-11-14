@@ -127,4 +127,11 @@ public class CoursesTests {
         );
     }
 
+    @Test
+    @Transactional
+    @Ignore
+    public void itCreatesCourseForCurrentSemesterSubjectAndLecturer() throws Exception {
+        //TODO: add test
+    }
+
 }
