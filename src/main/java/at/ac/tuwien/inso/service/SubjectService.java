@@ -2,6 +2,9 @@ package at.ac.tuwien.inso.service;
 
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.repository.SubjectRepository;
+
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +20,9 @@ public class SubjectService {
 
     public Subject getSubjectById(Long id) {
         return subjectRepository.findSubjectById(id);
+    }
+    
+    public Subject getNewSubject(){
+    	return new Subject("",null);
     }
 }
