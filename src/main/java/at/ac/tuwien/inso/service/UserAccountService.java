@@ -17,7 +17,7 @@ public class UserAccountService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserAccount loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAccount user = userAccountRepository.findByUsername(username);
 
         if (user == null) throw new UsernameNotFoundException(username);
@@ -26,7 +26,7 @@ public class UserAccountService implements UserDetailsService {
     }
 
     public UserAccount getCurrentLoggedInUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();auth.getName();
-        return ((UserAccount)auth.getPrincipal());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return loadUserByUsername(auth.getName());
     }
 }
