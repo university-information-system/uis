@@ -3,8 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="admin/index">
-<body th:with="toast=${createdUser} ? #{admin.users.create.success} : ''"
-      th:onload="'main.initialize();users.initialize(\'' + ${toast} + '\')'">
+<body>
 
 <main layout:fragment="main">
 
