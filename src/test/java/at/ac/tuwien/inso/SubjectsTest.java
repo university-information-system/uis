@@ -1,0 +1,154 @@
+package at.ac.tuwien.inso;
+
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+
+import static java.util.Arrays.asList;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles("test")
+public class SubjectsTest {
+
+    private UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
+    private Lecturer lecturer1 = new Lecturer("Lecturer 1", "email", user1);
+    private Lecturer lecturer2 = new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
+    private Lecturer lecturer3 = new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
+    private Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
+    private Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
+    private Subject ase = new Subject("ASE", new BigDecimal(6.0));
+
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    private SubjectRepository subjectRepository;
+    @Autowired
+    private LecturerRepository lecturerRepository;
+
+
+    @Before
+    public void setUp() {
+        lecturerRepository.save(lecturer1);
+        lecturerRepository.save(lecturer2);
+        lecturerRepository.save(lecturer3);
+    }
+
+    @Test
+    @Transactional
+    public void adminShouldSeeAllSubjects() throws Exception {
+
+        // when subjects are created
+        subjectRepository.save(calculus);
+        subjectRepository.save(sepm);
+        subjectRepository.save(ase);
+
+        // then the admin should see them all
+        mockMvc.perform(
+                get("/admin/subjects").with(user("admin").roles("ADMIN"))
+        ).andExpect(
+                model().attribute("subjects", asList(calculus, sepm, ase))
+        );
+    }
+
+    @Test
+    @Transactional
+    public void adminShouldSeeSubjectDetails() throws Exception {
+
+        // when subjects are created and assigned to lecturers
+        sepm.addLecturers(lecturer1);
+        ase.addRequiredSubjects(sepm);
+        ase.addLecturers(lecturer1, lecturer2);
+        subjectRepository.save(calculus);
+        subjectRepository.save(sepm);
+        subjectRepository.save(ase);
+
+        // admin should see subject calculus without any lecturers or prerequisites
+        mockMvc.perform(
+                get("/admin/subjects").param("id", "1").with(user("admin").roles("ADMIN"))
+        ).andExpect(
+                model().attribute("subject", calculus)
+        ).andExpect(
+                model().attribute("lecturers", asList())
+        ).andExpect(
+                model().attribute("requiredSubjects", asList())
+        );
+
+        //admin should see subject sepm with lecturer1 and no required subject sepm
+        mockMvc.perform(
+                get("/admin/subjects").param("id", "2").with(user("admin").roles("ADMIN"))
+        ).andExpect(
+                model().attribute("subject", sepm)
+        ).andExpect(
+                model().attribute("lecturers", asList(lecturer1))
+        ).andExpect(
+                model().attribute("requiredSubjects", asList())
+        );
+
+        //admin should see subject ase with lecturer1 and lecturer2 and required subject sepm
+        mockMvc.perform(
+                get("/admin/subjects").param("id", "3").with(user("admin").roles("ADMIN"))
+        ).andExpect(
+                model().attribute("subject", ase)
+        ).andExpect(
+                model().attribute("lecturers", asList(lecturer1, lecturer2))
+        ).andExpect(
+                model().attribute("requiredSubjects", asList(sepm))
+        );
+    }
+
+    @Test
+    @Transactional
+    public void lecturersShouldSeeTheirOwnSubjects() throws Exception {
+
+        // when subjects are created and assigned to lecturers
+        sepm.addLecturers(lecturer1);
+        ase.addRequiredSubjects(sepm);
+        ase.addLecturers(lecturer1, lecturer2);
+        subjectRepository.save(calculus);
+        subjectRepository.save(sepm);
+        subjectRepository.save(ase);
+
+        // lecturer1 should see sepm and ase
+        mockMvc.perform(
+                get("/lecturer/subjects").with(user("lecturer1").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("ownedSubjects", asList(sepm, ase))
+        );
+
+        // lecturer2 should see ase
+        mockMvc.perform(
+                get("/lecturer/subjects").with(user("lecturer2").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("ownedSubjects", asList(ase))
+        );
+
+        // lecturer3 should see nothing
+        mockMvc.perform(
+                get("/lecturer/subjects").with(user("lecturer3").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("ownedSubjects", asList())
+        );
+
+    }
+
+}
