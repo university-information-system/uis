@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.*;
 
@@ -29,7 +30,8 @@ public class Course {
     @ManyToMany
     private List<Student> students = new ArrayList<>();
 
-    protected Course() {}
+    protected Course() {
+    }
 
     public Course(Subject subject, Semester semester) {
         this(subject, semester, "");
@@ -38,6 +40,22 @@ public class Course {
     public Course(Subject subject, Semester semester, String description) {
         this.subject = subject;
         this.semester = semester;
+        this.description = description;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -99,12 +117,12 @@ public class Course {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + subject.hashCode();
         result = 31 * result + semester.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + tags.hashCode();
-        result = 31 * result + students.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        result = 31 * result + (students != null ? students.hashCode() : 0);
         return result;
     }
 
