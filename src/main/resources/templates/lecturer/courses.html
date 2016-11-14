@@ -17,6 +17,10 @@
                 <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
             </li>
         </ul>
+
+        <div th:if="${createdCourse != null}"
+             th:text="'Course ' + ${createdCourse.subject.name} + ' ' + ${createdCourse.semester.label} + ' added'">
+        </div>
     </div>
 </main>
 

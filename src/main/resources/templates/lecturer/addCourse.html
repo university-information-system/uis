@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="lecturer/index">
+<body>
+
+<main layout:fragment="main">
+
+    <div class="container">
+        <h2 th:text="${subject.name}">Courses</h2>
+
+        <form th:object="${course}" th:action="@{addCourse(subjectId=__${subject.id}__)}" method="post" >
+
+            <textarea th:field="*{description}"></textarea>
+            <button type="submit">Submit</button>
+
+        </form>
+
+    </div>
+</main>
+
+</body>
+</html>
