@@ -116,4 +116,39 @@ public class SubjectsTest {
         );
     }
 
+    @Test
+    @Transactional
+    public void lecturersShouldSeeTheirOwnSubjects() throws Exception {
+
+        // when subjects are created and assigned to lecturers
+        sepm.addLecturers(lecturer1);
+        ase.addRequiredSubjects(sepm);
+        ase.addLecturers(lecturer1, lecturer2);
+        subjectRepository.save(calculus);
+        subjectRepository.save(sepm);
+        subjectRepository.save(ase);
+
+        // lecturer1 should see sepm and ase
+        mockMvc.perform(
+                get("/lecturer/subjects").with(user("lecturer1").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("ownedSubjects", asList(sepm, ase))
+        );
+
+        // lecturer2 should see ase
+        mockMvc.perform(
+                get("/lecturer/subjects").with(user("lecturer2").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("ownedSubjects", asList(ase))
+        );
+
+        // lecturer3 should see nothing
+        mockMvc.perform(
+                get("/lecturer/subjects").with(user("lecturer3").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("ownedSubjects", asList())
+        );
+
+    }
+
 }
