@@ -46,4 +46,9 @@ public class CourseService {
         return courses;
     }
 
+    @Transactional
+    public Course saveCourse(Course course) {
+        return courseRepository.save(course);
+    }
+
 }
