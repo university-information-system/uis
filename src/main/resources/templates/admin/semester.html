@@ -10,10 +10,16 @@
     <div class="container">
         <h2 th:text="#{admin.semesters.label}"></h2>
 
+        <a href="/admin/semester/create" th:text="#{admin.semesters.create.header}"></a>
+
         <ul class="collection">
             <li class="collection-item" th:each="semester : ${allSemesters}">
-                <span th:text="${semester.label}"></span>
-                <span th:if="${semester} eq ${currentSemester}"> (current) </span>
+                <div th:if="${semester} eq ${currentSemester}">
+                    <strong th:text="${semester.label} + ' ' + #{admin.semesters.current}"></strong>
+                </div>
+                <div th:unless="${semester} eq ${currentSemester}">
+                    <span th:text="${semester.label}"></span>
+                </div>
             </li>
         </ul>
     </div>
