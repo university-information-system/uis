@@ -1,9 +1,11 @@
 package at.ac.tuwien.inso.service;
 
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.Tag;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.LecturerRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
@@ -47,7 +50,13 @@ public class CourseService {
     }
 
     @Transactional
-    public Course saveCourse(Course course) {
+    public Course saveCourse(AddCourseForm form) {
+        Course course = form.getCourse();
+        List<Tag> tags = form.getActiveAndInactiveTags().stream()
+                .filter(tagBooleanEntry -> tagBooleanEntry.isActive())
+                .map(tagBooleanEntry -> tagBooleanEntry.getTag())
+                .collect(Collectors.toList());
+        tags.forEach(tag -> course.addTags(tag));
         return courseRepository.save(course);
     }
 
