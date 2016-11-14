@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
 public class DataInitializer {
 
     @Autowired
-    CourseRepository courseRepository;
+    private CourseRepository courseRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
     @Autowired
@@ -29,12 +29,12 @@ public class DataInitializer {
     private SubjectRepository subjectRepository;
     @Autowired
     private SemesterRepository semesterRepository;
-
     @Autowired
     private StudyPlanRepository studyPlanRepository;
-
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     private List<StudyPlan> studyplans;
 
@@ -71,7 +71,19 @@ public class DataInitializer {
             registerSubjectsToLecturers();
 
             registerCoursesToStudents();
+
+            createTags();
         };
+    }
+
+    private void createTags() {
+        tagRepository.save(asList(
+                new Tag("Computer Science"),
+                new Tag("Math"),
+                new Tag("Fun"),
+                new Tag("Easy"),
+                new Tag("Difficult")
+        ));
     }
 
     private void createUsers() {
