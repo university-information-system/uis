@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.SemesterService;
 import at.ac.tuwien.inso.service.SubjectService;
+import at.ac.tuwien.inso.service.TagService;
 
 @Controller
 @RequestMapping("/lecturer/addCourse")
@@ -25,16 +27,23 @@ public class LecturerAddCourseController {
     private SemesterService semesterService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private TagService tagService;
 
     @ModelAttribute("subject")
     private Subject getSubject(@RequestParam("subjectId") Long subjectId) {
         return subjectService.getSubjectById(subjectId);
     }
 
-    @ModelAttribute("course")
-    private Course getMockCourse(@RequestParam("subjectId") Long subjectId) {
-        return new Course(getSubject(subjectId), semesterService.getCurrentSemester());
+    @ModelAttribute("addCourseForm")
+    private AddCourseForm getAddCourseForm(@RequestParam("subjectId") Long subjectId) {
+        AddCourseForm form = new AddCourseForm(
+                new Course(getSubject(subjectId), semesterService.getCurrentSemester())
+        );
+        form.setInitialTags(tagService.getAllTags());
+        return form;
     }
+
 
     @GetMapping
     private String getAddCoursesPage(@RequestParam("subjectId") Long subjectId) {
@@ -42,9 +51,9 @@ public class LecturerAddCourseController {
     }
 
     @PostMapping
-    private String createCourse(Course course,
+    private String createCourse(@ModelAttribute AddCourseForm form,
                                 RedirectAttributes redirectAttributes) {
-        course = courseService.saveCourse(course);
+        Course course = courseService.saveCourse(form);
 
         redirectAttributes.addFlashAttribute("createdCourse", course);
         return "redirect:/lecturer/courses";

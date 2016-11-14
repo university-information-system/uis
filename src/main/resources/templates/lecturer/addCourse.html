@@ -5,19 +5,35 @@
 <body>
 
 <main layout:fragment="main">
-
     <div class="container">
-        <h2 th:text="${subject.name}">Courses</h2>
+        <h3 th:text="${subject.name}">Courses</h3>
 
-        <form th:object="${course}" th:action="@{addCourse(subjectId=__${subject.id}__)}" method="post" >
+        <form class="row"
+              th:object="${addCourseForm}"
+              th:action="@{addCourse(subjectId=__${subject.id}__)}"
+              method="post" >
 
-            <textarea th:field="*{description}"></textarea>
-            <button type="submit">Submit</button>
+            <div class="col s6">
+                <textarea class="materialize-textarea"
+                          th:field="*{course.description}"
+                          th:placeholder="#{lecturer.addCourse.description}">
+                </textarea>
+            </div>
+            <div class="col s5" th:each="tag, status : *{activeAndInactiveTags}">
+                <input type="checkbox"
+                       th:field="*{activeAndInactiveTags[__${status.index}__].active}"
+                       th:id="'tag' + ${status.index}"/>
+                <label class="checkboxLabel"
+                       th:for="'tag' + ${status.index}"
+                       th:text="${tag.tag.name}"></label>
+            </div>
 
+            <button class="btn" type="submit" th:text="#{lecturer.addCourse.save}">Submit</button>
         </form>
-
     </div>
+
 </main>
+
 
 </body>
 </html>
