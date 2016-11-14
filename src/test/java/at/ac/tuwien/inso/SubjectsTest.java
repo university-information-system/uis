@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 public class SubjectsTest {
 
@@ -73,9 +75,6 @@ public class SubjectsTest {
     public void adminShouldSeeSubjectDetails() throws Exception {
 
         // when subjects are created and assigned to lecturers
-        lecturerRepository.save(lecturer1);
-        lecturerRepository.save(lecturer2);
-        lecturerRepository.save(lecturer3);
         sepm.addLecturers(lecturer1);
         ase.addRequiredSubjects(sepm);
         ase.addLecturers(lecturer1, lecturer2);
@@ -83,11 +82,9 @@ public class SubjectsTest {
         subjectRepository.save(sepm);
         subjectRepository.save(ase);
 
-        System.out.println(ase);
-
         // admin should see subject calculus without any lecturers or prerequisites
         mockMvc.perform(
-                get("/admin/subjects").param("id", String.valueOf(calculus.getId())).with(user("admin").roles("ADMIN"))
+                get("/admin/subjects").param("id", "1").with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", calculus)
         ).andExpect(
@@ -98,7 +95,7 @@ public class SubjectsTest {
 
         //admin should see subject sepm with lecturer1 and no required subject sepm
         mockMvc.perform(
-                get("/admin/subjects").param("id", String.valueOf(sepm.getId())).with(user("admin").roles("ADMIN"))
+                get("/admin/subjects").param("id", "2").with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", sepm)
         ).andExpect(
@@ -109,7 +106,7 @@ public class SubjectsTest {
 
         //admin should see subject ase with lecturer1 and lecturer2 and required subject sepm
         mockMvc.perform(
-                get("/admin/subjects").param("id", String.valueOf(ase.getId())).with(user("admin").roles("ADMIN"))
+                get("/admin/subjects").param("id", "3").with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", ase)
         ).andExpect(
