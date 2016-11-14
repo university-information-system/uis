@@ -12,6 +12,10 @@ public class SemesterService {
     @Autowired
     private SemesterRepository semesterRepository;
 
+    public Semester create(Semester semester) {
+        return semesterRepository.save(semester);
+    }
+
     public Semester getCurrentSemester() {
         return semesterRepository.findFirstByOrderByIdDesc();
     }
