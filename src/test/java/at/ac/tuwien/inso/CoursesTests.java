@@ -3,7 +3,6 @@ package at.ac.tuwien.inso;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.*;
 import java.math.*;
 import java.util.*;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 public class CoursesTests {
 
     UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
@@ -87,7 +86,6 @@ public class CoursesTests {
     }
 
     @Test
-    @Transactional
     public void itListsAllCoursesForCurrentSemester() throws Exception {
         mockMvc.perform(
                 get("/student/courses").with(user("student").roles("STUDENT"))
@@ -97,7 +95,6 @@ public class CoursesTests {
     }
 
     @Test
-    @Transactional
     public void itListsAllCoursesForCurrentSemesterWithNameFilterNoString() throws Exception {
         mockMvc.perform(
                 get("/student/courses?search=").with(user("student").roles("STUDENT"))
@@ -107,7 +104,6 @@ public class CoursesTests {
     }
 
     @Test
-    @Transactional
     public void itListsAllCoursesForCurrentSemesterWithNameFilter() throws Exception {
         mockMvc.perform(
                 get("/student/courses?search=sep").with(user("student").roles("STUDENT"))
@@ -117,7 +113,6 @@ public class CoursesTests {
     }
 
     @Test
-    @Transactional
     public void itListsAllCoursesForCurrentSemesterAndLecturer() throws Exception {
 
         mockMvc.perform(
@@ -128,7 +123,6 @@ public class CoursesTests {
     }
 
     @Test
-    @Transactional
     @Ignore
     public void itCreatesCourseForCurrentSemesterSubjectAndLecturer() throws Exception {
         //TODO: add test

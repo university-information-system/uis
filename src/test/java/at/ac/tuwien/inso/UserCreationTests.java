@@ -50,7 +50,7 @@ public class UserCreationTests {
     @Autowired
     private Messages messages;
 
-    private UisUser user;
+    private CreateUserForm form;
 
     private MimeMessage msg;
 
@@ -69,12 +69,14 @@ public class UserCreationTests {
     private void checkUserCreation(CreateUserForm form) throws Exception {
         createUser(form)
                 .andExpect(redirectedUrl("/admin/users"))
-                .andDo(this::checkCreatedUser)
-                .andDo(this::checkActivationMailSent)
-                .andDo(this::checkActivationEntity);
+                .andExpect(this::flashMessageSet)
+                .andExpect(this::activationMailSent)
+                .andExpect(this::activationEntityCreated);
     }
 
     private ResultActions createUser(CreateUserForm form) throws Exception {
+        this.form = form;
+
         return mockMvc.perform(
                 post("/admin/users/create").with(user("admin").roles(Role.ADMIN.name()))
                         .param("type", form.getType())
@@ -84,16 +86,16 @@ public class UserCreationTests {
         );
     }
 
-    private void checkCreatedUser(MvcResult result) {
-        user = (UisUser) result.getFlashMap().get("createdUser");
+    private void flashMessageSet(MvcResult result) {
+        String msgKey = (String) result.getFlashMap().get("flashMessage");
 
-        assertNotNull(user);
+        assertEquals("admin.users.create.success", msgKey);
     }
 
-    private void checkActivationMailSent(MvcResult result) throws MessagingException {
+    private void activationMailSent(MvcResult result) throws MessagingException {
         msg = getSentMail();
 
-        assertEquals(user.getEmail(), msg.getAllRecipients()[0].toString());
+        assertEquals(form.getEmail(), msg.getAllRecipients()[0].toString());
         assertEquals(messages.get(UserCreationService.MAIL_SUBJECT), msg.getSubject());
     }
 
@@ -103,13 +105,13 @@ public class UserCreationTests {
         return captor.getValue();
     }
 
-    private void checkActivationEntity(MvcResult result) throws IOException, MessagingException {
+    private void activationEntityCreated(MvcResult result) throws IOException, MessagingException {
         String activationId = getActivationIdFromMail();
 
         PendingAccountActivation activation = pendingAccountActivationRepository.findOne(activationId);
         assertNotNull(activation);
 
-        assertEquals(user, activation.getForUser());
+        assertEquals(form.getName(), activation.getForUser().getName());
     }
 
     private String getActivationIdFromMail() throws IOException, MessagingException {

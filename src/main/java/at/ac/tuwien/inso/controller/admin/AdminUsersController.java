@@ -66,9 +66,9 @@ public class AdminUsersController {
             return "admin/create-user";
         }
 
-        PendingAccountActivation activation = userCreationService.create(form.toUisUser());
+        userCreationService.create(form.toUisUser());
 
-        redirectAttributes.addFlashAttribute("createdUser", activation.getForUser());
+        redirectAttributes.addFlashAttribute("flashMessage", "admin.users.create.success");
 
         return "redirect:/admin/users";
     }

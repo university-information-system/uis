@@ -10,9 +10,11 @@ import org.springframework.boot.test.context.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
+import org.springframework.transaction.annotation.*;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 public class AuthenticationTests {
 
     @Autowired
@@ -33,6 +36,8 @@ public class AuthenticationTests {
         mockMvc.perform(
                 formLogin().user("unknown").password("pass")
         ).andExpect(
+                unauthenticated()
+        ).andExpect(
                 redirectedUrl("/login?error")
         );
     }
@@ -43,6 +48,8 @@ public class AuthenticationTests {
 
         mockMvc.perform(
                 formLogin().user("admin").password("pass")
+        ).andExpect(
+                authenticated().withRoles(Role.ADMIN.name())
         ).andExpect(
                 redirectedUrl("/admin/studyplans")
         );
@@ -55,6 +62,8 @@ public class AuthenticationTests {
         mockMvc.perform(
                 formLogin().user("lecturer").password("pass")
         ).andExpect(
+                authenticated().withRoles(Role.LECTURER.name())
+        ).andExpect(
                 redirectedUrl("/lecturer/courses")
         );
     }
@@ -66,14 +75,18 @@ public class AuthenticationTests {
         mockMvc.perform(
                 formLogin().user("student").password("pass")
         ).andExpect(
+                authenticated().withRoles(Role.STUDENT.name())
+        ).andExpect(
                 redirectedUrl("/student/courses")
         );
     }
 
     @Test
-    public void onLogoutItRedirectsToLoginPage() throws Exception {
+    public void onLogoutUserIsNoLongerAuthenticatedAndRedirectedToLoginPage() throws Exception {
         mockMvc.perform(
                 logout()
+        ).andExpect(
+                unauthenticated()
         ).andExpect(
                 redirectedUrl("/login")
         );

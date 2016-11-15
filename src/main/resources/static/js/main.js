@@ -8,7 +8,7 @@ const showMessage = (message) => {
 
     setTimeout(() => {
         Materialize.toast(message, 5000);
-    }, 2000);
+    }, 1000);
 };
 
 const init = () => {
