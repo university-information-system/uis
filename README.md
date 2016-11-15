@@ -19,6 +19,10 @@ spring.jpa.hibernate.hbm2ddl.auto=create
 ### 2. Building the app ###
 
 ```
+cd src/main/resources/static
+npm install
+./node_modules/.bin/webpack
+cd -
 mvn clean install
 ```
 
@@ -34,6 +38,12 @@ Now type Shift+Command+A and enter "Registry" in the search box that appears. En
 
 Now every time you modify classes, html etc. you will see the changes immediately in your browser after doing a refresh.
 To make your browser autorefresh every time you change smth in your code, you can install livereload.
+
+For the frontend static content, use the webpack watcher to automatically recompile es6 scripts and scss files:
+```
+cd src/main/resources/static
+./node_modules/.bin/webpack --watch
+```
 
 
 
