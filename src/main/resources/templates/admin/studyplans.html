@@ -10,6 +10,8 @@
     <div class="container">
         <h2 th:text="#{admin.nav.studyplans}"></h2>
 
+        <a href="/admin/studyplans/create" th:text="#{admin.studyplans.create.header}"></a>
+
         <div th:if="${not #lists.isEmpty(studyPlans)}">
 
             <ul class="collection">
