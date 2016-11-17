@@ -13,6 +13,9 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
 
 import java.math.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.Arrays.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
@@ -29,6 +32,7 @@ public class StudyPlanTest {
     private StudyPlan studyPlan1 = new StudyPlan("Bachelor Software and Information Engineering", new EctsDistribution(new BigDecimal(90), new BigDecimal(60), new BigDecimal(30)));
     private StudyPlan studyPlan2 = new StudyPlan("Master Business Informatics", new EctsDistribution(new BigDecimal(30), new BigDecimal(70), new BigDecimal(20)));
     private StudyPlan studyPlan3 = new StudyPlan("Master Computational Intelligence", new EctsDistribution(new BigDecimal(60),new BigDecimal(30),new BigDecimal(30)));
+    private List<Subject> subjects;
 
     @Autowired
     MockMvc mockMvc;
@@ -36,17 +40,63 @@ public class StudyPlanTest {
     @Autowired
     private StudyPlanRepository studyPlanRepository;
 
+    @Autowired
+    private SubjectRepository subjectRepository;
+
+    @Autowired
+    private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
+
     @Before
     public void setUp() {
-        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+        Iterable<Subject> subjects = subjectRepository.save(asList(
+                new Subject("Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik", new BigDecimal(3.0)),
+                new Subject("Software Engineering and Project Management", new BigDecimal(6.0)),
+                new Subject("Advanced Software Engineering", new BigDecimal(6.0)),
+                new Subject("Digital forensics", new BigDecimal(3.0)),
+                new Subject("Model Engineering", new BigDecimal(6.0)),
+                new Subject("Formale Methoden", new BigDecimal(6.0)),
+                new Subject("Datenbanksysteme", new BigDecimal(6.0)),
+                new Subject("Verteile Systeme", new BigDecimal(3.0))
+        ));
+        this.subjects = StreamSupport.stream(subjects.spliterator(), false).collect(Collectors.toList());
+
     }
 
     @Test
     public void adminShouldSeeAllStudyPlans() throws Exception {
+
+        // given study plans
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+
+        // the admin should see them all
         mockMvc.perform(
                 get("/admin/studyplans").with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("studyPlans", asList(studyPlan1, studyPlan2, studyPlan3))
+        );
+    }
+
+    @Test
+    public void adminShouldSeeDetailsOfStudyPlan() throws Exception {
+
+        // given subjects in a study plan
+        StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
+        SubjectForStudyPlan s1 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(0), studyPlan, true, 1));
+        SubjectForStudyPlan s2 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(1), studyPlan, true, 1));
+        SubjectForStudyPlan s3 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(2), studyPlan, true, 2));
+        SubjectForStudyPlan s4 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(3), studyPlan, false, 3));
+        SubjectForStudyPlan s5 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(4), studyPlan, false, 2));
+        SubjectForStudyPlan s6 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(5), studyPlan, true, 2));
+
+        // the admin should see details of the study plan, containing separate lists of mandatory and optional subjects
+        mockMvc.perform(
+                get("/admin/studyplans").param("id", studyPlan.getId().toString()).with(user("admin").roles("ADMIN"))
+        ).andExpect(
+                model().attribute("studyPlan", studyPlan)
+        ).andExpect(
+                model().attribute("mandatory", asList(s1, s2, s3, s6))
+        ).andExpect(
+                model().attribute("optional", asList(s5, s4))
         );
     }
 
