@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubjectForStudyPlanRepository extends CrudRepository<SubjectForStudyPlan, Long> {
+
+    Iterable<SubjectForStudyPlan> findByStudyPlanIdOrderBySemesterRecommendation(Long id);
 }
