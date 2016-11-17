@@ -17,6 +17,10 @@ public class StudyPlanService {
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
+    public StudyPlan create(StudyPlan studyPlan) {
+        return studyPlanRepository.save(studyPlan);
+    }
+
     public Iterable<StudyPlan> getAllStudyPlans() {
         return studyPlanRepository.findAll();
     }
