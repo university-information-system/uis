@@ -73,6 +73,8 @@ public class DataInitializer {
             registerCoursesToStudents();
 
             createTags();
+
+            addSubjectsToStudyPlans();
         };
     }
 
@@ -124,7 +126,12 @@ public class DataInitializer {
         Iterable<Subject> subjects = subjectRepository.save(asList(
                 new Subject("Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik", new BigDecimal(3.0)),
                 new Subject("Software Engineering and Project Management", new BigDecimal(6.0)),
-                new Subject("Advanced Software Engineering", new BigDecimal(6.0))
+                new Subject("Advanced Software Engineering", new BigDecimal(6.0)),
+                new Subject("Digital forensics", new BigDecimal(3.0)),
+                new Subject("Model Engineering", new BigDecimal(6.0)),
+                new Subject("Formale Methoden", new BigDecimal(6.0)),
+                new Subject("Datenbanksysteme", new BigDecimal(6.0)),
+                new Subject("Verteile Systeme", new BigDecimal(3.0))
         ));
 
         this.subjects = StreamSupport.stream(subjects.spliterator(), false).collect(Collectors.toList());
@@ -191,5 +198,14 @@ public class DataInitializer {
         courses.get(3).addStudents(students.get(0), students.get(3));
 
         courseRepository.save(courses);
+    }
+
+    private void addSubjectsToStudyPlans() {
+        subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(0), studyplans.get(0), true, 1));
+        subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(1), studyplans.get(0), true, 1));
+        subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(2), studyplans.get(0), true, 2));
+        subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(3), studyplans.get(0), false, 3));
+        subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(4), studyplans.get(0), false, 2));
+        subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(5), studyplans.get(0), true, 2));
     }
 }
