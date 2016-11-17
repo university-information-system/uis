@@ -12,6 +12,9 @@ public class SubjectForStudyPlan {
     @ManyToOne(optional = false)
     private Subject subject;
 
+    @ManyToOne(optional = false)
+    private StudyPlan studyPlan;
+
     @Column(nullable = false)
     private Boolean mandatory;
 
@@ -20,13 +23,14 @@ public class SubjectForStudyPlan {
     protected SubjectForStudyPlan() {
     }
 
-    public SubjectForStudyPlan(Subject subject, Boolean mandatory) {
-        this(subject, mandatory, null);
+    public SubjectForStudyPlan(Subject subject, StudyPlan studyPlan, Boolean mandatory) {
+        this(subject, studyPlan, mandatory, null);
     }
 
-    public SubjectForStudyPlan(Subject subject, Boolean mandatory, Integer semesterRecommendation) {
+    public SubjectForStudyPlan(Subject subject, StudyPlan studyPlan, Boolean mandatory, Integer semesterRecommendation) {
 
         this.subject = subject;
+        this.studyPlan = studyPlan;
         this.mandatory = mandatory;
         this.semesterRecommendation = semesterRecommendation;
     }
@@ -45,6 +49,10 @@ public class SubjectForStudyPlan {
 
     public Integer getSemesterRecommendation() {
         return semesterRecommendation;
+    }
+
+    public StudyPlan getStudyPlan() {
+        return studyPlan;
     }
 
     @Override
