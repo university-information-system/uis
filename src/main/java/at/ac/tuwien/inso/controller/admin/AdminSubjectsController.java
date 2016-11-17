@@ -35,16 +35,13 @@ public class AdminSubjectsController {
     
     @GetMapping("/add")
     private String addSubject(Model model) {
-        /*Subject subject = subjectService.getSubjectById(id);
-        model.addAttribute("subject", subject);
-        model.addAttribute("lecturers", subject.getLecturers());
-        model.addAttribute("requiredSubjects", subject.getRequiredSubjects());*/
-    	model.addAttribute("subject", subjectService.getNewSubject());
+    	model.addAttribute("subject", new Subject());
         return "admin/subject-add";
     }
     
     @PostMapping("/add")
     private String addSubject(@ModelAttribute Subject subject) {
+        subject = subjectService.create(subject);
     	return "admin/subject-details";
     }
 }

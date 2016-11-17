@@ -27,7 +27,7 @@ public class Subject {
 	@ManyToMany
 	private List<Subject> requiredSubjects = new ArrayList<>();
 
-	protected Subject() {
+	public Subject() {
 	}
 
 	public Subject(String name, BigDecimal ects) {

@@ -22,7 +22,7 @@ public class SubjectService {
         return subjectRepository.findSubjectById(id);
     }
     
-    public Subject getNewSubject(){
-    	return new Subject("",null);
+    public Subject create(Subject subject) {
+        return subjectRepository.save(subject);
     }
 }
