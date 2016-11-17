@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso;
 
+import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import org.junit.*;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.Arrays.*;
+import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -97,6 +100,68 @@ public class StudyPlanTest {
                 model().attribute("mandatory", asList(s1, s2, s3, s6))
         ).andExpect(
                 model().attribute("optional", asList(s5, s4))
+        );
+    }
+
+    @Test
+    public void studyPlanSuccessCreationTest() throws Exception {
+
+        // when the form is filled correctly
+        CreateStudyPlanForm form = new CreateStudyPlanForm("Bachelor SE", new BigDecimal(120.0), new BigDecimal(30.0), new BigDecimal(30.0));
+        StudyPlan expectedStudyPlan = form.toStudyPlan();
+
+        // the created study plan should be seen
+        createStudyPlan(form)
+                .andExpect(view().name("admin/studyplan-details"))
+                .andExpect(model().attribute("studyPlan", expectedStudyPlan));
+
+        // and it should be persisted
+        List<StudyPlan> allStudyPlans = StreamSupport.stream(studyPlanRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        assertTrue(allStudyPlans.contains(expectedStudyPlan));
+    }
+
+    @Test
+    public void studyPlanFailureCreationNameIsEmptyTest() throws Exception {
+
+        // when the form is filled not correctly
+        CreateStudyPlanForm form = new CreateStudyPlanForm("", new BigDecimal(120.0), new BigDecimal(30.0), new BigDecimal(30.0));
+        StudyPlan wrongStudyPlan = form.toStudyPlan();
+
+        // error messages should appear
+        createStudyPlan(form)
+                .andExpect(view().name("admin/create-studyplan"))
+                .andExpect(model().attributeHasFieldErrors("createStudyPlanForm", "name"));
+
+        // and nothing should be persisted
+        List<StudyPlan> allStudyPlans = StreamSupport.stream(studyPlanRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        assertFalse(allStudyPlans.contains(wrongStudyPlan));
+    }
+
+    @Test
+    public void studyPlanFailureCreationEctsNegativeTest() throws Exception {
+
+        // when the form is filled not correctly
+        CreateStudyPlanForm form = new CreateStudyPlanForm("Bachelor SE", new BigDecimal(-120.0), new BigDecimal(-30.0), new BigDecimal(-30.0));
+        StudyPlan wrongStudyPlan = form.toStudyPlan();
+
+        // error messages should appear
+        createStudyPlan(form)
+                .andExpect(view().name("admin/create-studyplan"))
+                .andExpect(model().attributeHasFieldErrors("createStudyPlanForm", "mandatory", "optional", "freeChoice"));
+
+        // and nothing should be persisted
+        List<StudyPlan> allStudyPlans = StreamSupport.stream(studyPlanRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        assertFalse(allStudyPlans.contains(wrongStudyPlan));
+    }
+
+    private ResultActions createStudyPlan(CreateStudyPlanForm form) throws Exception {
+        return mockMvc.perform(
+                post("/admin/studyplans/create").with(user("admin").roles(Role.ADMIN.name()))
+                        .param("name", form.getName())
+                        .param("mandatory", form.getMandatory().toString())
+                        .param("optional", form.getOptional().toString())
+                        .param("freeChoice", form.getFreeChoice().toString())
+                        .with(csrf())
         );
     }
 
