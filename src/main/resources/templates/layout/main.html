@@ -6,11 +6,20 @@
 
 <div layout:fragment="content">
 
-    <ul id="slide-out" class="side-nav fixed teal white-text">
-        <li class="logo center"><i class="medium material-icons">school</i></li>
+    <ul id="slide-out" class="side-nav fixed teal">
+        <li class="logo center white-text"><i class="medium material-icons">school</i></li>
 
         <li>
             <ul layout:fragment="nav-items"></ul>
+        </li>
+
+        <li style="padding-top: 50px">
+            <div class="divider"></div>
+        </li>
+
+        <li>
+            <a class="white-text" th:if="${#strings.startsWith(#locale, 'en')}" href="?lang=de">Language: English</a>
+            <a class="white-text" th:if="${#strings.startsWith(#locale, 'de')}" href="?lang=en">Sprache: Deutsch</a>
         </li>
 
         <li>
