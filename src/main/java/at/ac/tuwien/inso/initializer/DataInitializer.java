@@ -181,7 +181,7 @@ public class DataInitializer {
     }
 
     private void addPreconditionsToSubjects() {
-        subjects.get(2).addRequiredSubjects(subjects.get(0));
+        subjects.get(2).addRequiredSubjects(subjects.get(1));
     }
 
     private void registerSubjectsToLecturers() {
