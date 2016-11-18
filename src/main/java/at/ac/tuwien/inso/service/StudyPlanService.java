@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.service;
 
 import at.ac.tuwien.inso.entity.StudyPlan;
-import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
 import at.ac.tuwien.inso.repository.StudyPlanRepository;
 import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
@@ -31,5 +30,9 @@ public class StudyPlanService {
 
     public Iterable<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id) {
         return subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
+    }
+
+    public void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan) {
+        subjectForStudyPlanRepository.save(subjectForStudyPlan);
     }
 }
