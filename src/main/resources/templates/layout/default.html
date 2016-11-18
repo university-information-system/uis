@@ -9,76 +9,22 @@
 
     <link rel="stylesheet" type="text/css" href="/webjars/materializecss/0.97.7/css/materialize.min.css"/>
     <link rel="stylesheet" type="text/css" href="/webjars/material-design-icons/3.0.1/material-icons.css"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{/min/css/style.css}"/>
 </head>
 <body>
 
 <div layout:fragment="content"></div>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
 <script type="text/javascript" src="/webjars/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/webjars/materializecss/0.97.7/js/materialize.min.js"></script>
-<script type="text/javascript" src="/min/js/main.js"></script>
 
-<!-- TODO: remove these scripts when we have ECMA2016 support -->
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-<script>
-    $( function() {
-        $(document).ready(function() {
-            $('select').material_select();
-        });
-        $( "#mandatory-autocomplete-input").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/admin/studyplans/json/availableSubjects",
-                    data: { query: request.term },
-                    type: 'GET',
-                    success: function (data) {
-                        response($.map(data, function (subject) {
-                            console.log(subject);
-                            return {
-                                label: subject.name + " (" + subject.ects + " ECTS)",
-                                value: JSON.stringify(subject)
-                            }
-                        }));
-                    }
-                })
-            },
-            select: function (event, ui) {
-                $('#mandatory-autocomplete-input').val(ui.item.label);
-                $('#mandatorySubjectJson').val(ui.item.value);
-                return false;
-            },
-            minLength: 2
-        });
-        $( "#optional-autocomplete-input").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/admin/studyplans/json/availableSubjects",
-                    data: { query: request.term },
-                    type: 'GET',
-                    success: function (data) {
-                        response($.map(data, function (subject) {
-                            console.log(subject);
-                            return {
-                                label: subject.name + " (" + subject.ects + " ECTS)",
-                                value: JSON.stringify(subject)
-                            }
-                        }));
-                    }
-                })
-            },
-            select: function (event, ui) {
-                $('#optional-autocomplete-input').val(ui.item.label);
-                $('#optionalSubjectJson').val(ui.item.value);
-                return false;
-            },
-            minLength: 2
-        });
-    });
-</script>
+<!-- TODO: remove these scripts and use webjars instead.-->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+
+<script type="text/javascript" src="/min/js/main.js"></script>
 
 <script th:if="${flashMessage}" th:inline="javascript">
     showMessage([[#{__${flashMessage}__}]]);
