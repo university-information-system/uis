@@ -10,6 +10,7 @@
         <h2 th:text="${studyPlan.getName()}"></h2>
 
         <div class="row">
+
             <div class="col s12 m7">
                 <div class="card-content">
                     <ul class="collection with-header">
@@ -25,6 +26,36 @@
                             </div>
                             <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
                             <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="col s12">
+                                    <form action="#" th:action="@{/admin/studyplans/addSubject}" method="post" id="form1">
+                                        <input id="mandatorySubjectJson" name="subjectJson" type="hidden"/>
+                                        <input name="studyPlanId" th:value="${studyPlan.getId()}" type="hidden"/>
+                                        <input name="mandatory" value="true" type="hidden"/>
+                                        <div class="input-field col s6">
+                                            <input id="mandatory-autocomplete-input" type="text" class="autocomplete">
+                                            <label for="mandatory-autocomplete-input">Add new subject</label>
+                                            </input>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <select name="semester" form="form1">
+                                                <option value="1" selected="">1. Semester</option>
+                                                <option value="2">2. Semester</option>
+                                                <option value="3">3. Semester</option>
+                                                <option value="4">4. Semester</option>
+                                                <option value="5">5. Semester</option>
+                                                <option value="6">6. Semester</option>
+                                                <option value="7">7. Semester</option>
+                                                <option value="8">8. Semester</option>
+                                            </select>
+                                            <label>Semester</label>
+                                        </div>
+                                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -49,6 +80,37 @@
                             <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
                             <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
                         </li>
+
+                        <li>
+                            <div class="row">
+                                <div class="col s12">
+                                    <form action="#" th:action="@{/admin/studyplans/addSubject}" method="post" id="form2">
+                                        <input id="optionalSubjectJson" name="subjectJson" type="hidden"/>
+                                        <input name="studyPlanId" th:value="${studyPlan.getId()}" type="hidden"/>
+                                        <input name="mandatory" value="false" type="hidden"/>
+                                        <div class="input-field col s6">
+                                            <input id="optional-autocomplete-input" type="text" class="autocomplete">
+                                            <label for="optional-autocomplete-input">Add new subject</label>
+                                            </input>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <select name="semester" form="form2">
+                                                <option value="1" selected="">1. Semester</option>
+                                                <option value="2">2. Semester</option>
+                                                <option value="3">3. Semester</option>
+                                                <option value="4">4. Semester</option>
+                                                <option value="5">5. Semester</option>
+                                                <option value="6">6. Semester</option>
+                                                <option value="7">7. Semester</option>
+                                                <option value="8">8. Semester</option>
+                                            </select>
+                                            <label>Semester</label>
+                                        </div>
+                                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
 
@@ -72,7 +134,9 @@
 
     </div>
 
+
 </main>
 
 </body>
+
 </html>
