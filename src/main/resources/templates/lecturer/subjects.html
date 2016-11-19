@@ -12,9 +12,9 @@
 		<div th:if="${not #lists.isEmpty(ownedSubjects)}">
 			<ul class="collection">
 				<li class="collection-item" th:each="subject : ${ownedSubjects}">
+					<a th:href="@{/lecturer/addCourse(subjectId=__${subject.id}__)}" class="secondary-content"><i class="material-icons">add</i></a>
 					<div class="title" th:text="${subject.name}"></div>
-					<div
-							th:text="${subject.ects} + ' ECTS'"></div>
+					<div th:text="${subject.ects} + ' ECTS'"></div>
 				</li>
 			</ul>
 		</div>
