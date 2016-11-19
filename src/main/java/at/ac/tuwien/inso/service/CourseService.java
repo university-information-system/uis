@@ -63,4 +63,9 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    @Transactional
+    public Course findCourseWithId(Long id) {
+        return courseRepository.findOne(id);
+    }
+
 }
