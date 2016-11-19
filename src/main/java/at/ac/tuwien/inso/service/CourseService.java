@@ -57,7 +57,15 @@ public class CourseService {
                 .map(tagBooleanEntry -> tagBooleanEntry.getTag())
                 .collect(Collectors.toList());
         tags.forEach(tag -> course.addTags(tag));
+        if (!(course.getStudentLimits() > 0)) {
+            course.setStudentLimits(1);
+        }
         return courseRepository.save(course);
+    }
+
+    @Transactional
+    public Course findCourseWithId(Long id) {
+        return courseRepository.findOne(id);
     }
 
 }

@@ -10,7 +10,7 @@
 
         <form class="row"
               th:object="${addCourseForm}"
-              th:action="@{addCourse(subjectId=__${subject.id}__)}"
+              th:action="@{editCourse(courseId=__${addCourseForm.course.id}__)}"
               method="post">
 
             <div th:replace="lecturer/lecturerFragments:: addAndEdit"></div>

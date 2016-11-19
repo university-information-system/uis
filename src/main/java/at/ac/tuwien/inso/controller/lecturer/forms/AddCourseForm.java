@@ -42,4 +42,10 @@ public class AddCourseForm {
     public void setActiveAndInactiveTags(List<AddCourseTag> activeAndInactiveTags) {
         this.activeAndInactiveTags = activeAndInactiveTags;
     }
+
+    public void setInitialActiveTags(List<Tag> initialActiveTags) {
+        activeAndInactiveTags.stream()
+                .filter(tag -> initialActiveTags.contains(tag.getTag()))
+                .forEach(tag -> tag.setActive(true));
+    }
 }

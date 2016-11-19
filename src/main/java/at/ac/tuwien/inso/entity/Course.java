@@ -24,6 +24,9 @@ public class Course {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private int studentLimits;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Tag> tags = new ArrayList<>();
 
@@ -99,6 +102,14 @@ public class Course {
         this.students.removeAll(asList(students));
     }
 
+    public int getStudentLimits() {
+        return studentLimits;
+    }
+
+    public void setStudentLimits(int studentLimits) {
+        this.studentLimits = studentLimits;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,6 +121,7 @@ public class Course {
         if (!subject.equals(course.subject)) return false;
         if (!semester.equals(course.semester)) return false;
         if (!description.equals(course.description)) return false;
+        if (studentLimits != course.studentLimits) return false;
         if (!tags.equals(course.tags)) return false;
         return students.equals(course.students);
 
@@ -120,6 +132,7 @@ public class Course {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + subject.hashCode();
         result = 31 * result + semester.hashCode();
+        result = 31 * result + studentLimits;
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (students != null ? students.hashCode() : 0);
@@ -134,6 +147,7 @@ public class Course {
                 ", semester=" + semester +
                 ", description='" + description + '\'' +
                 ", tags=" + tags +
+                ", student limits=" + studentLimits +
                 ", students=" + students +
                 '}';
     }
