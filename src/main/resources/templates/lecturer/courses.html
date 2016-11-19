@@ -20,7 +20,7 @@
             </li>
         </ul>
 
-        <div th:if="${createdCourse != null}"
+        <div id="flashAttributes" th:if="${createdCourse != null}"
              th:text="'Course ' + ${createdCourse.subject.name} + ' ' + ${createdCourse.semester.label} + ' added'">
         </div>
     </div>
