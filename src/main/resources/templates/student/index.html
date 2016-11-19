@@ -6,7 +6,10 @@
 
 <ul layout:fragment="nav-items">
     <li th:class="${#httpServletRequest.requestURI} == '/student/courses' ? 'active' : ''">
-        <a class="white-text" href="/student/courses" th:text="#{student.nav.my.courses}"></a>
+        <a class="white-text" href="/student/courses" th:text="#{student.nav.courses}"></a>
+    </li>
+    <li th:class="${#httpServletRequest.requestURI} == '/student/myCourses' ? 'active' : ''">
+        <a class="white-text" href="/student/myCourses" th:text="#{student.nav.my.courses}"></a>
     </li>
     <li th:class="${#httpServletRequest.requestURI} == '/student/my-studyplans' ? 'active' : ''">
         <a class="white-text" href="/student/my-studyplans" th:text="#{student.nav.my.studyplans}"></a>
