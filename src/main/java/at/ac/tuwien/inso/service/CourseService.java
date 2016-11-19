@@ -4,10 +4,12 @@ import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.Tag;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,13 @@ public class CourseService {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private UserAccountService userAccountService;
 
 
     @Transactional
@@ -66,6 +75,21 @@ public class CourseService {
     @Transactional
     public Course findCourseWithId(Long id) {
         return courseRepository.findOne(id);
+    }
+
+
+    @Transactional
+    public boolean registerStudentForCourse(Course course) {
+        Student student = studentRepository.findOne(userAccountService.getCurrentLoggedInUser().getId());
+        if (course.getStudentLimits() >= course.getStudents().size()) {
+            return false;
+        } else if (course.getStudents().contains(student)) {
+            return true;
+        } else {
+            course.addStudents(student);
+            courseRepository.save(course);
+            return true;
+        }
     }
 
 }
