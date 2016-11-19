@@ -13,37 +13,7 @@
               th:action="@{addCourse(subjectId=__${subject.id}__)}"
               method="post">
 
-            <div class="col s12">
-                <textarea class="materialize-textarea col s6"
-                          th:field="*{course.description}"
-                          th:placeholder="#{lecturer.addCourse.description}">
-                </textarea>
-                <div class="input-field">
-                    <input class="col s2 right" type="number" id="studentLimits"
-                           th:field="*{course.studentLimits}"/>
-                    <span class="col s2 right offset-s2" for="studentLimits"
-                           th:text="#{lecturer.addCourse.studentLimits}"></span>
-                </div>
-            </div>
-            <div class="col s12"></div>
-            <div class="col s12">
-                <div class="col s4" th:each="tag, status : *{activeAndInactiveTags}">
-                    <input type="checkbox"
-                           th:field="*{activeAndInactiveTags[__${status.index}__].active}"
-                           th:id="'tag' + ${status.index}"/>
-                    <label class="checkboxLabel"
-                           th:for="'tag' + ${status.index}"
-                           th:text="${tag.tag.name}"></label>
-                </div>
-            </div>
-            <div class="col s12"></div>
-
-
-            <div class="col s12">
-                <button class="btn right" type="submit" th:text="#{lecturer.addCourse.save}">Submit
-                </button>
-
-            </div>
+            <div th:replace="lecturer/lecturerFragments:: addAndEdit"></div>
         </form>
     </div>
 
