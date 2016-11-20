@@ -81,7 +81,7 @@ public class CourseService {
     @Transactional
     public boolean registerStudentForCourse(Course course) {
         Student student = studentRepository.findOne(userAccountService.getCurrentLoggedInUser().getId());
-        if (course.getStudentLimits() >= course.getStudents().size()) {
+        if (course.getStudentLimits() <= course.getStudents().size()) {
             return false;
         } else if (course.getStudents().contains(student)) {
             return true;
