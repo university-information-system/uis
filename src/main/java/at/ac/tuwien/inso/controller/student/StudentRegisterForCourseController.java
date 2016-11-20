@@ -9,7 +9,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.service.CourseService;
-import at.ac.tuwien.inso.service.StudentService;
 
 @Controller
 @RequestMapping("/student/register")
