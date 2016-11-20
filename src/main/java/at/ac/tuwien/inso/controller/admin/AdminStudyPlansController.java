@@ -70,7 +70,7 @@ public class AdminStudyPlansController {
         return "admin/studyplan-details";
     }
 
-    @PostMapping(value = "/addSubject", params = {"subjectId", "studyPlanId", "semester"})
+    @PostMapping(value = "/addSubject", params = {"subjectId", "studyPlanId", "semester", "mandatory"})
     public String addSubjectToStudyPlan(
             @RequestParam Long subjectId,
             @RequestParam Long studyPlanId,
