@@ -36,7 +36,7 @@
 							<li class="collection-header"><h4 th:text="#{admin.subjectdetails.prerequisites}"></h4></li>
 							<li class="collection-item"
 								th:each="requiredSubject : ${requiredSubjects}"><a href="#"
-								data-th-href="@{/admin/subjects/(id=${requiredSubject.id})}"
+								data-th-href="@{/admin/subjects/{id}(id=${requiredSubject.id})}"
 								th:text="${requiredSubject.name}"></a></li>
 						</ul>
 					</div>
