@@ -12,6 +12,10 @@ header, main, footer {
   margin: 0;
 }
 
+.collection {
+  overflow: visible;
+}
+
 .collection .collection-item.avatar .letter-icon {
   width: 42px;
   height: 42px;
