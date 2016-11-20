@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso;
 
 
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import org.junit.*;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.*;
 import java.math.*;
 import java.util.*;
 
+import static java.util.Arrays.asList;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -50,6 +52,8 @@ public class CoursesTests {
     private SubjectRepository subjectRepository;
     @Autowired
     private LecturerRepository lecturerRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     private List<Course> expectedCourses;
     private List<Course> expectedCoursesForLecturer1;
@@ -83,6 +87,14 @@ public class CoursesTests {
         expectedCoursesForLecturer1 = Arrays.asList(sepmWS2016, aseWS2016);
         expectedCoursesForLecturer3 = Arrays.asList(aseWS2016);
         expectedCoursesForLecturer2 = Arrays.asList(calculusWS2016);
+
+        tagRepository.save(asList(
+                new Tag("Computer Science"),
+                new Tag("Math"),
+                new Tag("Fun"),
+                new Tag("Easy"),
+                new Tag("Difficult")
+        ));
     }
 
     @Test
@@ -123,9 +135,46 @@ public class CoursesTests {
     }
 
     @Test
-    @Ignore
-    public void itCreatesCourseForCurrentSemesterSubjectAndLecturer() throws Exception {
-        //TODO: add test
+    public void itCreatesCourse() throws Exception {
+        Course course = new Course(sepm, ws2016);
+        AddCourseForm form = new AddCourseForm(course);
+        form.setInitialTags(tagRepository.findAll());
+        form.getActiveAndInactiveTags().get(0).setActive(true);
+        mockMvc.perform(
+                post("/lecturer/addCourse").with(user("lecturer").roles(Role.LECTURER.name()))
+                        .content(form.toString())
+                        .param("subjectId", form.getCourse().getSubject().getId().toString())
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/lecturer/courses")
+        ).andExpect(
+               flash().attributeExists("createdCourse")
+        );
+    }
+
+    @Test
+    public void itEditsCourse() throws Exception {
+        AddCourseForm form = new AddCourseForm(sepmWS2016);
+        Course expected = sepmWS2016;
+        form.setInitialTags(tagRepository.findAll());
+        form.setInitialActiveTags(sepmWS2016.getTags());
+        String testDescription = "TEST DESCRIPTION";
+        form.getCourse().setDescription(testDescription);
+        expected.setDescription(testDescription);
+        expected.setStudentLimits(1);
+        expected.setId(sepmWS2016.getId());
+        mockMvc.perform(
+                post("/lecturer/editCourse").with(user("lecturer").roles(Role.LECTURER.name()))
+                        .content(form.toString())
+                        .param("courseId", form.getCourse().getId().toString())
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/lecturer/courses")
+        ).andExpect(
+                flash().attributeExists("editedCourse")
+        ).andExpect(
+                flash().attribute("editedCourse", expected)
+        );
     }
 
 }
