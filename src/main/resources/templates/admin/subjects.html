@@ -16,7 +16,7 @@
                 <li class="collection-item" th:each="subject : ${subjects}">
                     <div>
                         <div class="title">
-                            <a href="#" data-th-href="@{/admin/subjects/(id=${subject.id})}"
+                            <a href="#" data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}"
                                th:text="${subject.name}"></a>
                             <a href="#!" style="margin-left:10px;" class="secondary-content"><i class="material-icons">delete</i></a>
                             <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
