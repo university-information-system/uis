@@ -6,7 +6,6 @@ import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
 import at.ac.tuwien.inso.service.StudyPlanService;
 import at.ac.tuwien.inso.service.SubjectService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -72,28 +70,25 @@ public class AdminStudyPlansController {
         return "admin/studyplan-details";
     }
 
-    @PostMapping(value = "/addSubject", params = {"subjectJson", "studyPlanId", "semester"})
+    @PostMapping(value = "/addSubject", params = {"subjectId", "studyPlanId", "semester"})
     public String addSubjectToStudyPlan(
-            @RequestParam String subjectJson,
+            @RequestParam Long subjectId,
             @RequestParam Long studyPlanId,
             @RequestParam Integer semester,
             @RequestParam Boolean mandatory) {
 
         StudyPlan studyPlan = new StudyPlan();
         studyPlan.setId(studyPlanId);
-        try {
-            Subject subject = new ObjectMapper().readValue(subjectJson, Subject.class);
-            studyPlanService.addSubjectToStudyPlan(new SubjectForStudyPlan(subject, studyPlan, mandatory, semester));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Subject subject = new Subject();
+        subject.setId(subjectId);
+        studyPlanService.addSubjectToStudyPlan(new SubjectForStudyPlan(subject, studyPlan, mandatory, semester));
         return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
 
 
     @GetMapping(value = "/json/availableSubjects", params = "query")
     @ResponseBody
-    public List<Subject> subjects(@RequestParam String query) {
+    public List<Subject> getAvailableSubjects(@RequestParam String query) {
         List<Subject> subjects = new ArrayList<>();
         Iterable<Subject> iterable = subjectService.searchForSubjects(query);
         Iterator<Subject> iter = iterable.iterator();
