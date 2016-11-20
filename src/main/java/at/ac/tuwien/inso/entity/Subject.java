@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.*;
 import java.util.ArrayList;
@@ -39,6 +41,10 @@ public class Subject {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -55,10 +61,12 @@ public class Subject {
 		this.ects = ects;
 	}
 
+	@JsonIgnore
 	public List<Lecturer> getLecturers() {
 		return unmodifiableList(lecturers);
 	}
 
+	@JsonIgnore
 	public List<Subject> getRequiredSubjects() {
 		return requiredSubjects;
 	}
@@ -86,27 +94,18 @@ public class Subject {
 
 		Subject subject = (Subject) o;
 
-		if (!id.equals(subject.id)) return false;
+		if (id != null ? !id.equals(subject.id) : subject.id != null) return false;
 		if (!name.equals(subject.name)) return false;
-		if (!ects.equals(subject.ects)) return false;
-		if (!lecturers.equals(subject.lecturers)) return false;
-		return requiredSubjects.equals(subject.requiredSubjects);
+		return ects.equals(subject.ects);
 
 	}
 
 	@Override
 	public int hashCode() {
-		if(id!=null){
-		int result = id.hashCode();
-			result = 31 * result + name.hashCode();
-			result = 31 * result + ects.hashCode();
-			result = 31 * result + lecturers.hashCode();
-			result = 31 * result + requiredSubjects.hashCode();
-	
-			return result;
-		}else{
-			return -1;
-		}
+		int result = id != null ? id.hashCode() : 0;
+		result = name != null ? 31 * result + name.hashCode() : 0;
+		result = ects != null ? 31 * result + ects.hashCode(): 0;
+		return result;
 	}
 
 	@Override
@@ -119,4 +118,5 @@ public class Subject {
 				", requiredSubjects=" + requiredSubjects +
 				'}';
 	}
+
 }

@@ -3,8 +3,6 @@ package at.ac.tuwien.inso.service;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.repository.SubjectRepository;
 
-import java.math.BigDecimal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +22,9 @@ public class SubjectService {
     
     public Subject create(Subject subject) {
         return subjectRepository.save(subject);
+    }
+
+    public Iterable<Subject> searchForSubjects(String word) {
+        return subjectRepository.findByNameContainingIgnoreCase(word);
     }
 }

@@ -1,6 +1,7 @@
 
 import SideNav from "./side-nav";
 import CheckBoxes from "./checkboxes";
+import AutoComplete from "./autocomplete";
 
 // Flash Messages
 const showMessage = (message) => {
@@ -19,6 +20,9 @@ const init = () => {
 
     const sideNav = new SideNav();
     sideNav.initialize();
+
+    const autoComplete = new AutoComplete();
+    autoComplete.initialize();
 };
 
 init();

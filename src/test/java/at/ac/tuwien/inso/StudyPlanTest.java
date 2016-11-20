@@ -3,6 +3,7 @@ package at.ac.tuwien.inso;
 import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -152,6 +153,37 @@ public class StudyPlanTest {
         // and nothing should be persisted
         List<StudyPlan> allStudyPlans = StreamSupport.stream(studyPlanRepository.findAll().spliterator(), false).collect(Collectors.toList());
         assertFalse(allStudyPlans.contains(wrongStudyPlan));
+    }
+
+    @Test
+    public void addSubjectToStudyPlanSuccessTest() throws Exception {
+
+        //given study plan and a subject which is not part of it
+        StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
+        Subject subject = subjectRepository.save(new Subject("Operating Systems", new BigDecimal(4.0)));
+
+        //when a mandatory subject is added to the study plan
+        mockMvc.perform(
+                post("/admin/studyplans/addSubject")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("subjectId", subject.getId().toString())
+                        .param("studyPlanId", studyPlan.getId().toString())
+                        .param("semester", "1")
+                        .param("mandatory", "true")
+                        .with(csrf())
+        ).andExpect(
+                (redirectedUrl("/admin/studyplans/?id="+studyPlan.getId()))
+        );
+
+        //the subject should be part of the mandatory subjects of the study plan
+        List<SubjectForStudyPlan> subjectsForStudyPlan = StreamSupport
+                .stream(subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(studyPlan.getId())
+                        .spliterator(), false).collect(Collectors.toList());
+        List<Subject> usedSubjects = subjectsForStudyPlan.stream()
+                .filter(SubjectForStudyPlan::getMandatory)
+                .map(s -> subjectRepository.findSubjectById(s.getSubject().getId())).collect(Collectors.toList());
+
+        assertTrue(usedSubjects.contains(subject));
     }
 
     private ResultActions createStudyPlan(CreateStudyPlanForm form) throws Exception {

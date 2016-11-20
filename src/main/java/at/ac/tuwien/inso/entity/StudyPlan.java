@@ -23,7 +23,7 @@ public class StudyPlan {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<SubjectForStudyPlan> subjects = new ArrayList<>();
 
-    protected StudyPlan() {
+    public StudyPlan() {
     }
 
     public StudyPlan(String name, EctsDistribution ectsDistribution) {
@@ -33,6 +33,10 @@ public class StudyPlan {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -85,4 +89,5 @@ public class StudyPlan {
                 ", subjects=" + subjects +
                 '}';
     }
+
 }
