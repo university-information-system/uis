@@ -9,20 +9,18 @@
 
     <div class="container">
         <h2 th:text="#{admin.users.student.addtostudyplan}"></h2>
-		 <p th:text="'Hello, ' + ${user.getName()} + '!'" />
 		  <div>
-            <p th:inline="text">[[#{admin.users.header}]]: ${user.getName()}</p>
+            <p th:text="#{admin.users.header} +': '+ ${user.getName()}"></p>
         </div>
 		
-        <!-- <div th:if="${not #lists.isEmpty(studyPlans)}">
+        <div th:if="${not #lists.isEmpty(studyPlans)}">
 
             <ul class="collection">
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
-                            <a href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"
-                               th:text="${studyPlan.name}"></a>
-                            <a href="#!" class="secondary-content"><i class="material-icons">add</i></a>
+                        	<span th:text="${studyPlan.name}"></span>
+                            <a href="#!" data-th-href="@{/admin/registerToStudyplan/(studentId=${user.id},studyPlanId=${studyPlan.id})}" class="secondary-content"><i class="material-icons">add</i></a>
                         </div>
                     </div>
 
@@ -32,7 +30,7 @@
 
         <div th:if="${#lists.isEmpty(studyPlans)}">
             <p th:text="#{admin.studyplan.notfound}"></p>
-        </div>-->
+        </div>
     </div>
 
 </main>
