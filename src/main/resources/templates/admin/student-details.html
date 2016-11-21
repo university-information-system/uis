@@ -13,7 +13,8 @@
                     <div class="col s12 m9 l11" th:text="${studyplan.studyplan.name}"></div>
                 </div>
             </li>
-        </ul>
+        </ul>        
+        <a href="#" data-th-href="@{/admin/registerToStudyplan/(studentId=${user.id})}" class="waves-effect waves-light btn" th:inline="text">[[#{admin.users.student.addtostudyplan}]]<i class="material-icons">add</i></a>
     </div>
 </div>
 </body>
