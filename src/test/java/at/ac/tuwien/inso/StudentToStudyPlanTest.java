@@ -2,10 +2,7 @@ package at.ac.tuwien.inso;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.StudentService;
-import at.ac.tuwien.inso.service.StudyPlanService;
-import junit.framework.Assert;
-
+import at.ac.tuwien.inso.service.*;
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -16,13 +13,12 @@ import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
 
-import static java.util.Arrays.*;
-import static org.junit.Assert.assertEquals;
+import java.math.*;
+
+import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.math.BigDecimal;
 
 
 @RunWith(SpringRunner.class)
@@ -65,8 +61,8 @@ public class StudentToStudyPlanTest {
         ).andExpect(
                 redirectedUrl("/admin/users/"+newStudent.getId())
         ).andExpect(it -> {
-        		Student s = studentService.findStudentById(newStudent.getId());
-        		assertEquals(sp, s.getStudyplans().get(0).getStudyplan());
+            Student s = studentService.findOne(newStudent.getId());
+            assertEquals(sp, s.getStudyplans().get(0).getStudyplan());
         });
     }
 

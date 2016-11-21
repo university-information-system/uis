@@ -1,18 +1,15 @@
 package at.ac.tuwien.inso.controller.admin;
 
-import at.ac.tuwien.inso.controller.admin.forms.CreateSemesterForm;
-import at.ac.tuwien.inso.controller.admin.forms.CreateUserForm;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.service.SemesterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import at.ac.tuwien.inso.controller.admin.forms.*;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.*;
 
-import java.util.List;
-
-import javax.validation.Valid;
+import javax.validation.*;
 
 @Controller
 @RequestMapping("/admin/semester")
@@ -23,7 +20,7 @@ public class AdminSemesterController {
 
     @ModelAttribute("allSemesters")
     private Iterable<Semester> getAllSemesters() {
-        return semesterService.getAllSemesters();
+        return semesterService.findAll();
     }
 
     @ModelAttribute("currentSemester")

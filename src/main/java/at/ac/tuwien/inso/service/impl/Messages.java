@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.service;
+package at.ac.tuwien.inso.service.impl;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.*;

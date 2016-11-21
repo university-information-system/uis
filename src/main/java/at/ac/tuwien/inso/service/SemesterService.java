@@ -1,26 +1,13 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.entity.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.*;
 
-@Service
-public class SemesterService {
+public interface SemesterService {
+    Semester create(Semester semester);
 
-    @Autowired
-    private SemesterRepository semesterRepository;
+    Semester getCurrentSemester();
 
-    public Semester create(Semester semester) {
-        return semesterRepository.save(semester);
-    }
-
-    public Semester getCurrentSemester() {
-        return semesterRepository.findFirstByOrderByIdDesc();
-    }
-
-    public Iterable<Semester> getAllSemesters() {
-        return semesterRepository.findAllByOrderByIdDesc();
-    }
+    List<Semester> findAll();
 }

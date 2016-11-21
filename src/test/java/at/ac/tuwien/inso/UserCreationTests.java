@@ -3,7 +3,7 @@ package at.ac.tuwien.inso;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.impl.*;
 import org.junit.*;
 import org.junit.runner.*;
 import org.mockito.*;
@@ -96,7 +96,7 @@ public class UserCreationTests {
         msg = getSentMail();
 
         assertEquals(form.getEmail(), msg.getAllRecipients()[0].toString());
-        assertEquals(messages.get(UserCreationService.MAIL_SUBJECT), msg.getSubject());
+        assertEquals(messages.get(UserCreationServiceImpl.MAIL_SUBJECT), msg.getSubject());
     }
 
     private MimeMessage getSentMail() {

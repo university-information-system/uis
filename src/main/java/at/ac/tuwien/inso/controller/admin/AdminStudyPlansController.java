@@ -1,23 +1,17 @@
 package at.ac.tuwien.inso.controller.admin;
 
-import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
-import at.ac.tuwien.inso.entity.StudyPlan;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
-import at.ac.tuwien.inso.service.StudyPlanService;
-import at.ac.tuwien.inso.service.SubjectService;
-import org.springframework.beans.factory.annotation.Autowired;
+import at.ac.tuwien.inso.controller.admin.forms.*;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.*;
+import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import javax.validation.*;
+import java.util.*;
+import java.util.stream.*;
 
 @Controller
 @RequestMapping("/admin/studyplans")
@@ -39,14 +33,16 @@ public class AdminStudyPlansController {
 
     @ModelAttribute("studyPlans")
     private Iterable<StudyPlan> getStudyPlans() {
-        return studyPlanService.getAllStudyPlans();
+        return studyPlanService.findAll();
     }
 
     @GetMapping(params = "id")
     private String getStudyPlan(@RequestParam(value = "id") Long id, Model model) {
-        StudyPlan studyPlan = studyPlanService.getStudyPlanById(id);
+        StudyPlan studyPlan = studyPlanService.findOne(id);
         model.addAttribute("studyPlan", studyPlan);
-        this.subjectsForStudyPlan = StreamSupport.stream(studyPlanService.getSubjectsForStudyPlan(id).spliterator(), false).collect(Collectors.toList());
+
+        Spliterator<SubjectForStudyPlan> studyplans = studyPlanService.getSubjectsForStudyPlan(id).spliterator();
+        this.subjectsForStudyPlan = StreamSupport.stream(studyplans, false).collect(Collectors.toList());
         model.addAttribute("mandatory", subjectsForStudyPlan.stream().filter(SubjectForStudyPlan::getMandatory).collect(Collectors.toList()));
         model.addAttribute("optional", subjectsForStudyPlan.stream().filter(s -> !s.getMandatory()).collect(Collectors.toList()));
 
@@ -89,16 +85,10 @@ public class AdminStudyPlansController {
     @GetMapping(value = "/json/availableSubjects", params = "query")
     @ResponseBody
     public List<Subject> getAvailableSubjects(@RequestParam String query) {
-        List<Subject> subjects = new ArrayList<>();
-        Iterable<Subject> iterable = subjectService.searchForSubjects(query);
-        Iterator<Subject> iter = iterable.iterator();
-        while(iter.hasNext()) {
-            Subject subject = iter.next();
-            if(!usedSubjects.contains(subject)) {
-                subjects.add(subject);
-            }
-        }
-        return subjects;
+        return subjectService.searchForSubjects(query)
+                .stream()
+                .filter(it -> !usedSubjects.contains(it))
+                .collect(Collectors.toList());
     }
 
 }

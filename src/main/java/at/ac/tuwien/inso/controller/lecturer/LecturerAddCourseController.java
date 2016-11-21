@@ -1,21 +1,12 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.service.CourseService;
-import at.ac.tuwien.inso.service.SemesterService;
-import at.ac.tuwien.inso.service.SubjectService;
-import at.ac.tuwien.inso.service.TagService;
+import at.ac.tuwien.inso.controller.lecturer.forms.*;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.*;
 
 @Controller
 @RequestMapping("/lecturer/addCourse")
@@ -32,7 +23,7 @@ public class LecturerAddCourseController {
 
     @ModelAttribute("subject")
     private Subject getSubject(@RequestParam("subjectId") Long subjectId) {
-        return subjectService.getSubjectById(subjectId);
+        return subjectService.findOne(subjectId);
     }
 
     @ModelAttribute("addCourseForm")
@@ -40,7 +31,7 @@ public class LecturerAddCourseController {
         AddCourseForm form = new AddCourseForm(
                 new Course(getSubject(subjectId), semesterService.getCurrentSemester())
         );
-        form.setInitialTags(tagService.getAllTags());
+        form.setInitialTags(tagService.findAll());
         return form;
     }
 

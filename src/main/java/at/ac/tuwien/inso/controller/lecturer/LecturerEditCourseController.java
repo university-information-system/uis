@@ -1,24 +1,12 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-
-import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.service.CourseService;
-import at.ac.tuwien.inso.service.SemesterService;
-import at.ac.tuwien.inso.service.SubjectService;
-import at.ac.tuwien.inso.service.TagService;
+import at.ac.tuwien.inso.controller.lecturer.forms.*;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.*;
 
 @Controller
 @RequestMapping("/lecturer/editCourse")
@@ -35,14 +23,14 @@ public class LecturerEditCourseController {
 
     @ModelAttribute("subject")
     private Subject getSubject(@RequestParam("courseId") Long courseId) {
-        return courseService.findCourseWithId(courseId).getSubject();
+        return courseService.findOne(courseId).getSubject();
     }
 
     @ModelAttribute("addCourseForm")
     private AddCourseForm getAddCourseForm(@RequestParam("courseId") Long courseId) {
-        Course course = courseService.findCourseWithId(courseId);
+        Course course = courseService.findOne(courseId);
         AddCourseForm form = new AddCourseForm(course);
-        form.setInitialTags(tagService.getAllTags());
+        form.setInitialTags(tagService.findAll());
         form.setInitialActiveTags(course.getTags());
         return form;
     }

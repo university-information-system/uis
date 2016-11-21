@@ -1,38 +1,18 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.entity.StudyPlan;
-import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
-import at.ac.tuwien.inso.repository.StudyPlanRepository;
-import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import at.ac.tuwien.inso.entity.*;
 
-@Service
-public class StudyPlanService {
+import java.util.*;
 
-    @Autowired
-    private StudyPlanRepository studyPlanRepository;
+public interface StudyPlanService {
 
-    @Autowired
-    private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
+    StudyPlan create(StudyPlan studyPlan);
 
-    public StudyPlan create(StudyPlan studyPlan) {
-        return studyPlanRepository.save(studyPlan);
-    }
+    List<StudyPlan> findAll();
 
-    public Iterable<StudyPlan> getAllStudyPlans() {
-        return studyPlanRepository.findAll();
-    }
+    StudyPlan findOne(Long id);
 
-    public StudyPlan getStudyPlanById(Long id) {
-        return studyPlanRepository.findStudyPlanById(id);
-    }
+    List<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id);
 
-    public Iterable<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id) {
-        return subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
-    }
-
-    public void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan) {
-        subjectForStudyPlanRepository.save(subjectForStudyPlan);
-    }
+    void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan);
 }

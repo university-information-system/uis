@@ -1,30 +1,16 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.entity.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.*;
 
-@Service
-public class SubjectService {
+public interface SubjectService {
 
-    @Autowired
-    private SubjectRepository subjectRepository;
+    List<Subject> findAll();
 
-    public Iterable<Subject> getAllSubjects() {
-        return subjectRepository.findAll();
-    }
+    Subject findOne(long id);
 
-    public Subject getSubjectById(Long id) {
-        return subjectRepository.findSubjectById(id);
-    }
-    
-    public Subject create(Subject subject) {
-        return subjectRepository.save(subject);
-    }
+    Subject create(Subject subject);
 
-    public Iterable<Subject> searchForSubjects(String word) {
-        return subjectRepository.findByNameContainingIgnoreCase(word);
-    }
+    List<Subject> searchForSubjects(String word);
 }
