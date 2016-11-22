@@ -31,6 +31,14 @@
                                 </div>
 
                                 <div class="input-field col s12">
+                                    <input id="identificationNumber" th:field="*{identificationNumber}" type="text"/>
+                                    <label for="identificationNumber"
+                                           th:text="#{admin.users.create.form.identificationNumber}"></label>
+                                    <span class="red-text" th:if="${#fields.hasErrors('identificationNumber')}"
+                                          th:text="#{admin.users.create.form.identificationNumber.error}"></span>
+                                </div>
+
+                                <div class="input-field col s12">
                                     <input id="name" th:field="*{name}" type="text"/>
                                     <label for="name" th:text="#{admin.users.create.form.name}"></label>
                                     <span class="red-text" th:if="${#fields.hasErrors('name')}"

@@ -49,7 +49,7 @@ public class StudentToStudyPlanTest {
     @Test
     public void isStudyPlanAddedToStudent() throws Exception {
     	Semester semester = semesterRepository.save(new Semester("WS2016"));
-       Student newStudent = studentRepository.save(new Student("TestUser", "a@c.com"));
+        Student newStudent = studentRepository.save(new Student("s1123456", "TestUser", "a@c.com"));
        
        StudyPlan sp = studyplanRepository.save(new StudyPlan("TestStudyPlan", new EctsDistribution(BigDecimal.TEN, BigDecimal.TEN, BigDecimal.TEN)));
     	

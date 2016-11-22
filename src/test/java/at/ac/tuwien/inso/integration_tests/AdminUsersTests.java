@@ -32,8 +32,8 @@ public class AdminUsersTests {
 
     @Test
     public void itListsAllUsers() throws Exception {
-        UisUser student = uisUserRepository.save(new Student("student", "email"));
-        UisUser lecturer = uisUserRepository.save(new Lecturer("lecturer", "email"));
+        UisUser student = uisUserRepository.save(new Student("s1234567", "student", "email"));
+        UisUser lecturer = uisUserRepository.save(new Lecturer("l1234567", "lecturer", "email"));
 
         mockMvc.perform(
                 get("/admin/users").with(user("admin").roles(Role.ADMIN.name()))

@@ -42,6 +42,9 @@ public class UserCreationTests {
     private PendingAccountActivationRepository pendingAccountActivationRepository;
 
     @Autowired
+    private UisUserRepository uisUserRepository;
+
+    @Autowired
     private JavaMailSender mockMailSender;
 
     @Value("${uis.server.account.activation.url.prefix}")
@@ -62,7 +65,7 @@ public class UserCreationTests {
 
     @Test
     public void onCreateStudentAccountItSendsActivationEmailAndStoresPendingAccountActivation() throws Exception {
-        checkUserCreation(new CreateUserForm(CreateUserForm.STUDENT, "Student", "student@uis.at"));
+        checkUserCreation(new CreateUserForm(CreateUserForm.STUDENT, "s1234567", "Student", "student@uis.at"));
 
     }
 
@@ -80,6 +83,7 @@ public class UserCreationTests {
         return mockMvc.perform(
                 post("/admin/users/create").with(user("admin").roles(Role.ADMIN.name()))
                         .param("type", form.getType())
+                        .param("identificationNumber", form.getIdentificationNumber())
                         .param("name", form.getName())
                         .param("email", form.getEmail())
                         .with(csrf())
@@ -123,12 +127,26 @@ public class UserCreationTests {
 
     @Test
     public void onCreateLecturerItSendsActivationEmailAndStoresPendingAccountActivation() throws Exception {
-        checkUserCreation(new CreateUserForm(CreateUserForm.LECTURER, "Lecturer", "lecturer@uis.at"));
+        checkUserCreation(new CreateUserForm(CreateUserForm.LECTURER, "l1234567", "Lecturer", "lecturer@uis.at"));
     }
 
     @Test
     public void onInvalidUserItSetsAttributeErrors() throws Exception {
-        createUser(new CreateUserForm("unknown", "", "invalid"))
-                .andExpect(model().attributeHasFieldErrors("createUserForm", "type", "name", "email"));
+        createUser(
+                new CreateUserForm("unknown", "", "", "invalid")
+        ).andExpect(
+                model().attributeHasFieldErrors("createUserForm", "type", "identificationNumber", "name", "email")
+        );
+    }
+
+    @Test
+    public void onDuplicateIdentificationNumberItSetsAttributeError() throws Exception {
+        uisUserRepository.save(new Student("1234567", "student", "student@uis.at"));
+
+        createUser(
+                new CreateUserForm(CreateUserForm.LECTURER, "1234567", "lecturer", "lecturer@uis.at")
+        ).andExpect(
+                model().attributeHasFieldErrors("createUserForm", "identificationNumber")
+        );
     }
 }

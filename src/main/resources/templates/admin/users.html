@@ -19,7 +19,7 @@
                     <div class="blue circle letter-icon white-text">L</div>
                     <span class="title" th:text="${user.name}"></span>
                     <p>
-                        <span th:text="#{admin.users.lecturer}"></span>
+                        <span th:text="#{admin.users.lecturer} + ', ' + ${user.identificationNumber}"></span>
                         <br/>
                         <span th:text="${user.email}"></span>
                         <span class="red-text" th:if="${!user.activated}"
@@ -31,7 +31,7 @@
                     <div class="purple circle letter-icon white-text">S</div>
                     <span class="title" th:text="${user.name}"></span>
                     <p>
-                        <span th:text="#{admin.users.student}"></span>
+                        <span th:text="#{admin.users.student} + ', ' + ${user.identificationNumber}"></span>
                         <br/>
                         <span th:text="${user.email}"></span>
                         <span class="red-text" th:if="${!user.activated}"

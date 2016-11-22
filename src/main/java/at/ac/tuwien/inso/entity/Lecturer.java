@@ -1,9 +1,7 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 public class Lecturer extends UisUser {
@@ -15,12 +13,12 @@ public class Lecturer extends UisUser {
 
     }
 
-    public Lecturer(String name, String email) {
-        this(name, email, null);
+    public Lecturer(String identificationNumber, String name, String email) {
+        this(identificationNumber, name, email, null);
     }
 
-    public Lecturer(String name, String email, UserAccount account) {
-        super(name, email, account);
+    public Lecturer(String identificationNumber, String name, String email, UserAccount account) {
+        super(identificationNumber, name, email, account);
     }
 
     public List<Subject> getSubjects() {

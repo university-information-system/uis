@@ -1,19 +1,17 @@
 package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.*;
+import org.springframework.context.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.math.*;
+import java.util.*;
+import java.util.stream.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 @Configuration
 @Profile("demo")
@@ -90,16 +88,16 @@ public class DataInitializer {
 
     private void createUsers() {
         Iterable<UisUser> users = uisUserRepository.save(asList(
-                new Student("Emma Dowd", "emma.dowd@gmail.com", new UserAccount("emma", "pass", Role.STUDENT)),
-                new Lecturer("Carol Sanderson", "carol@uis.at"),
-                new Lecturer("Una Walker", "una.walker@uis.at", new UserAccount("lecturer", "pass", Role.LECTURER)),
-                new Student("Caroline Black", "caroline.black@uis.at", new UserAccount("student", "pass", Role.STUDENT)),
-                new Student("Joan Watson", "joan.watson@uit.at"),
-                new Lecturer("Connor MacLeod", "connor@gmail.com"),
-                new Student("James Bond", "jamesbond_007@yahoo.com"),
-                new Student("Trevor Bond", "trevor@uis.at"),
-                new Lecturer("Eric Wilkins", "e1234567@tuwien.ac.at", new UserAccount("eric", "pass", Role.LECTURER)),
-                new Lecturer("Benjamin Piper", "ben@uis.at", new UserAccount("ben", "pass", Role.LECTURER))
+                new Student("s1127157", "Emma Dowd", "emma.dowd@gmail.com", new UserAccount("emma", "pass", Role.STUDENT)),
+                new Lecturer("l0100010", "Carol Sanderson", "carol@uis.at"),
+                new Lecturer("l0100011", "Una Walker", "una.walker@uis.at", new UserAccount("lecturer", "pass", Role.LECTURER)),
+                new Student("s1123960", "Caroline Black", "caroline.black@uis.at", new UserAccount("student", "pass", Role.STUDENT)),
+                new Student("s0227157", "Joan Watson", "joan.watson@uit.at"),
+                new Lecturer("l0203019", "Connor MacLeod", "connor@gmail.com"),
+                new Student("s1527199", "James Bond", "jamesbond_007@yahoo.com"),
+                new Student("s0445157", "Trevor Bond", "trevor@uis.at"),
+                new Lecturer("l1100010", "Eric Wilkins", "e1234567@tuwien.ac.at", new UserAccount("eric", "pass", Role.LECTURER)),
+                new Lecturer("l9123410", "Benjamin Piper", "ben@uis.at", new UserAccount("ben", "pass", Role.LECTURER))
         ));
 
         students = StreamSupport.stream(users.spliterator(), false)

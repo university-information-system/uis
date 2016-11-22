@@ -9,4 +9,6 @@ public interface UisUserService {
     List<UisUser> findAll();
 
     UisUser findOne(long id);
+
+    boolean existsUserWithIdentificationNumber(String id);
 }

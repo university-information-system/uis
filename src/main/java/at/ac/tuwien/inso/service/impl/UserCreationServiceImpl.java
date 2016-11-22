@@ -37,11 +37,11 @@ public class UserCreationServiceImpl implements UserCreationService {
     @Transactional
     @Override
     public PendingAccountActivation create(UisUser user) {
-        PendingAccountActivation activation = new PendingAccountActivation(user);
+        PendingAccountActivation activation = pendingAccountActivationRepository.save(new PendingAccountActivation(user));
 
         mailSender.send(createActivationMail(activation));
 
-        return pendingAccountActivationRepository.save(activation);
+        return activation;
     }
 
     private MimeMessage createActivationMail(PendingAccountActivation activation) {

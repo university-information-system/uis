@@ -30,9 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CoursesTests {
 
     UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
-    Lecturer lecturer1 = new Lecturer("Lecturer 1", "email", user1);
-    Lecturer lecturer2 = new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
-    Lecturer lecturer3 = new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
+    Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email", user1);
+    Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
+    Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
     Semester ss2016 = new Semester("SS2016");
     Semester ws2016 = new Semester("WS2016");
     Subject calculus = new Subject("Calculus", new BigDecimal(3.0));

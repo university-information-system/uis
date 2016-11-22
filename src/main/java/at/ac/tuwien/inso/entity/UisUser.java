@@ -10,6 +10,9 @@ public abstract class UisUser {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    private String identificationNumber;
+
     @Column(nullable = false)
     private String name;
 
@@ -23,7 +26,8 @@ public abstract class UisUser {
 
     }
 
-    public UisUser(String name, String email, UserAccount account) {
+    public UisUser(String identificationNumber, String name, String email, UserAccount account) {
+        this.identificationNumber = identificationNumber;
         this.name = name;
         this.email = email;
         this.account = account;
@@ -32,6 +36,10 @@ public abstract class UisUser {
     public Long getId() {
 
         return id;
+    }
+
+    public String getIdentificationNumber() {
+        return identificationNumber;
     }
 
     public String getName() {
@@ -49,15 +57,16 @@ public abstract class UisUser {
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         UisUser uisUser = (UisUser) o;
 
         if (getId() != null ? !getId().equals(uisUser.getId()) : uisUser.getId() != null) return false;
-        if (name != null ? !name.equals(uisUser.name) : uisUser.name != null) return false;
-        if (email != null ? !email.equals(uisUser.email) : uisUser.email != null) return false;
+        if (getIdentificationNumber() != null ? !getIdentificationNumber().equals(uisUser.getIdentificationNumber()) : uisUser.getIdentificationNumber() != null)
+            return false;
+        if (getName() != null ? !getName().equals(uisUser.getName()) : uisUser.getName() != null) return false;
+        if (getEmail() != null ? !getEmail().equals(uisUser.getEmail()) : uisUser.getEmail() != null) return false;
         return account != null ? account.equals(uisUser.account) : uisUser.account == null;
 
     }
@@ -65,8 +74,9 @@ public abstract class UisUser {
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (getIdentificationNumber() != null ? getIdentificationNumber().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         result = 31 * result + (account != null ? account.hashCode() : 0);
         return result;
     }
@@ -75,6 +85,7 @@ public abstract class UisUser {
     public String toString() {
         return "UisUser{" +
                 "id=" + id +
+                ", identificationNumber='" + identificationNumber + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", account=" + account +
