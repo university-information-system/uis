@@ -25,7 +25,9 @@
                                    th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
                                 <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
                             </div>
-                            <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
+                            <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
+                                <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
+                            </div>
                             <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
                         </li>
                         <li>
@@ -81,7 +83,9 @@
                                    th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
                                 <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
                             </div>
-                            <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
+                            <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
+                                <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
+                            </div>
                             <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
                         </li>
 
