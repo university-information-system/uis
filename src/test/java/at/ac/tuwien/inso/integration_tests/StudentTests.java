@@ -1,34 +1,20 @@
-package at.ac.tuwien.inso;
+package at.ac.tuwien.inso.integration_tests;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.test.web.servlet.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
+import java.math.*;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
-import at.ac.tuwien.inso.repository.TagRepository;
-
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

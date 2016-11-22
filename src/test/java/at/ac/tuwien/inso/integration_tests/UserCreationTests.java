@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso;
+package at.ac.tuwien.inso.integration_tests;
 
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;

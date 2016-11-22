@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso;
+package at.ac.tuwien.inso.integration_tests;
 
 import org.mockito.*;
 import org.springframework.context.annotation.*;

@@ -1,7 +1,7 @@
-package at.ac.tuwien.inso;
+package at.ac.tuwien.inso.integration_tests;
 
 
-import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
+import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import org.junit.*;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.*;
 import java.math.*;
 import java.util.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

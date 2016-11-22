@@ -1,9 +1,8 @@
-package at.ac.tuwien.inso;
+package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
+import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -15,9 +14,8 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
 
 import java.math.*;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.*;
+import java.util.stream.*;
 
 import static java.util.Arrays.*;
 import static junit.framework.TestCase.assertFalse;
@@ -33,14 +31,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class StudyPlanTest {
 
+    @Autowired
+    MockMvc mockMvc;
     private StudyPlan studyPlan1 = new StudyPlan("Bachelor Software and Information Engineering", new EctsDistribution(new BigDecimal(90), new BigDecimal(60), new BigDecimal(30)));
     private StudyPlan studyPlan2 = new StudyPlan("Master Business Informatics", new EctsDistribution(new BigDecimal(30), new BigDecimal(70), new BigDecimal(20)));
     private StudyPlan studyPlan3 = new StudyPlan("Master Computational Intelligence", new EctsDistribution(new BigDecimal(60),new BigDecimal(30),new BigDecimal(30)));
     private List<Subject> subjects;
-
-    @Autowired
-    MockMvc mockMvc;
-
     @Autowired
     private StudyPlanRepository studyPlanRepository;
 

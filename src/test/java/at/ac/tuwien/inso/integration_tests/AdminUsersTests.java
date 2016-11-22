@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso;
+package at.ac.tuwien.inso.integration_tests;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
 
-import static java.util.Arrays.*;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,26 +22,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class SemestersTest {
+public class AdminUsersTests {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    private SemesterRepository semesterRepository;
+    private UisUserRepository uisUserRepository;
 
     @Test
-    public void itListsAllSemesters() throws Exception {
-        Semester ss2016 = semesterRepository.save(new Semester("SS2016"));
-        Semester ws2016 = semesterRepository.save(new Semester("WS2016"));
+    public void itListsAllUsers() throws Exception {
+        UisUser student = uisUserRepository.save(new Student("student", "email"));
+        UisUser lecturer = uisUserRepository.save(new Lecturer("lecturer", "email"));
 
         mockMvc.perform(
-                get("/admin/semester").with(user("admin").roles("ADMIN"))
+                get("/admin/users").with(user("admin").roles(Role.ADMIN.name()))
         ).andExpect(
-                model().attribute("allSemesters", asList(ws2016, ss2016))
-        ).andExpect(
-                model().attribute("currentSemester", ws2016)
+                model().attribute("users", hasItems(student, lecturer))
         );
     }
-
 }
