@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -50,7 +50,7 @@ public class DataInitializer {
 
     private List<Lecturer> lecturers;
 
-    private HashMap<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester1 = new HashMap<String, Subject>() {
+    private Map<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester1 = new HashMap<String, Subject>() {
         {
             put("VU Programmkonstruktion", new Subject("VU Programmkonstruktion", new BigDecimal(8.8)));
             put("UE Studieneingangsgespräch", new Subject("UE Studieneingangsgespräch", new BigDecimal(0.2)));
@@ -62,7 +62,7 @@ public class DataInitializer {
         }
     };
 
-    private HashMap<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester2 = new HashMap<String, Subject>() {
+    private Map<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester2 = new HashMap<String, Subject>() {
         {
             put("VU Algorithmen und Datenstrukturen 1", new Subject("VU Algorithmen und Datenstrukturen 1", new BigDecimal(6.0)));
             put("VU Algorithmen und Datenstrukturen 2", new Subject("VU Algorithmen und Datenstrukturen 2", new BigDecimal(3.0)));
@@ -75,7 +75,7 @@ public class DataInitializer {
         }
     };
 
-    private HashMap<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester3 = new HashMap<String, Subject>() {
+    private Map<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester3 = new HashMap<String, Subject>() {
         {
             put("VU Objektorientierte Programmiertechniken", new Subject("VU Objektorientierte Programmiertechniken", new BigDecimal(3.0)));
             put("VU Funktionale Programmierung", new Subject("VU Funktionale Programmierung", new BigDecimal(3.0)));
@@ -89,7 +89,7 @@ public class DataInitializer {
         }
     };
 
-    private HashMap<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester4 = new HashMap<String, Subject>() {
+    private Map<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester4 = new HashMap<String, Subject>() {
         {
             put("VU Einführung in die Künstliche Intelligenz", new Subject("VU Einführung in die Künstliche Intelligenz", new BigDecimal(3.0)));
             put("VU Theoretische Informatik und Logik", new Subject("VU Theoretische Informatik und Logik", new BigDecimal(6.0)));
@@ -98,7 +98,7 @@ public class DataInitializer {
         }
     };
 
-    private HashMap<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester5 = new HashMap<String, Subject>() {
+    private Map<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester5 = new HashMap<String, Subject>() {
         {
             put("VO Verteilte Systeme", new Subject("VO Verteilte Systeme", new BigDecimal(3.0)));
             put("UE Verteilte Systeme", new Subject("UE Verteilte Systeme", new BigDecimal(3.0)));
@@ -109,13 +109,13 @@ public class DataInitializer {
         }
     };
 
-    private HashMap<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester6 = new HashMap<String, Subject>() {
+    private Map<String, Subject> subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester6 = new HashMap<String, Subject>() {
         {
             put("PR Bachelorarbeit für Informatik und Wirtschaftsinformatik", new Subject("PR Bachelorarbeit für Informatik und Wirtschaftsinformatik", new BigDecimal(10.0)));
         }
     };
 
-    private HashMap<String, Subject> subjectsOptionalBachelorSoftwareAndInformationEngineering = new HashMap<String, Subject>() {
+    private Map<String, Subject> subjectsOptionalBachelorSoftwareAndInformationEngineering = new HashMap<String, Subject>() {
         {
             put("VU Propädeutikum für Informatik", new Subject("VU Propädeutikum für Informatik", new BigDecimal(6.0)));
             put("VO Deklaratives Problemlösen", new Subject("VO Deklaratives Problemlösen", new BigDecimal(3.0)));
@@ -169,7 +169,7 @@ public class DataInitializer {
         }
     };
 
-    private HashMap<String, Subject> subjectsFreeChoiceInformatics = new HashMap<String, Subject>() {{
+    private Map<String, Subject> subjectsFreeChoiceInformatics = new HashMap<String, Subject>() {{
         put("VU Pilots in Mobile Interaction: User-centered Interaction Research and Evaluation", new Subject("VU Pilots in Mobile Interaction: User-centered Interaction Research and Evaluation", new BigDecimal(3.0)));
         put("VU Robotik für RoboCup", new Subject("VU Robotik für RoboCup", new BigDecimal(6.0)));
         put("KO Reflections on ICTs and Society", new Subject("KO Reflections on ICTs and Society", new BigDecimal(6.0)));
@@ -202,7 +202,84 @@ public class DataInitializer {
         put("VU Brückenkurs Programmierung für Studienanfänger", new Subject("", new BigDecimal(0.0)));
     }};
 
-    private List<Subject> subjectsBachelorSoftwareAndInformationEngineering;
+    private Map<String, Subject> subjectsBachelorSoftwareAndInformationEngineering;
+
+    private Map<String, Course> coursesBachelorSoftwareAndInformationEngineering;
+
+    private Map<String, Tag> tags = new HashMap<String, Tag>() {{
+        put("Programmieren", new Tag("Programmieren"));
+        put("Java", new Tag("Java"));
+        put("Debug", new Tag("Debug"));
+        put("Rekursion", new Tag("Rekursion"));
+        put("Boolsche Algebra", new Tag("Boolsche Algebra"));
+        put("RISC", new Tag("RISC"));
+        put("CISC", new Tag("CISC"));
+        put("Pipelining", new Tag("Pipelining"));
+        put("ROM", new Tag("ROM"));
+        put("PROM/EPROM", new Tag("PROM/EPROM"));
+        put("2 Complement", new Tag("2 Complement"));
+        put("1 Complement", new Tag("1 Complement"));
+        put("Gatterschaltungen", new Tag("Gatterschaltungen"));
+        put("Befehlssatz", new Tag("Befehlssatz"));
+        put("Digital", new Tag("Digital"));
+        put("Zahlentheorie", new Tag("Zahlentheorie"));
+        put("Aussagenlogik", new Tag("Aussagenlogik"));
+        put("Mengenlehre", new Tag("Mengenlehre"));
+        put("Kombinatorik,", new Tag("Kombinatorik,"));
+        put("Differenzengleichungen", new Tag("Differenzengleichungen"));
+        put("Graphentheorie", new Tag("Graphentheorie"));
+        put("Algebraische Strukturen", new Tag("Algebraische Strukturen"));
+        put("Lineare Algebra", new Tag("Lineare Algebra"));
+        put("Codierungstheorie", new Tag("Codierungstheorie"));
+        put("UE", new Tag("UE"));
+        put("VU", new Tag("VU"));
+        put("VO", new Tag("VO"));
+        put("Automaten", new Tag("Automaten"));
+        put("reguläre Ausdrücke", new Tag("reguläre Ausdrücke"));
+        put("Grammatiken", new Tag("Grammatiken"));
+        put("Petri-Netze", new Tag("Petri-Netze"));
+        put("Prädikatenlogik", new Tag("Prädikatenlogik"));
+        put("EER", new Tag("EER"));
+        put("Relationenmodel", new Tag("Relationenmodel"));
+        put("Domänenkalkül", new Tag("Domänenkalkül"));
+        put("Datenbanksprachen", new Tag("Datenbanksprachen"));
+        put("Relationale Entwurfstheorie", new Tag("Relationale Entwurfstheorie"));
+        put("Normalformen", new Tag("Normalformen"));
+        put("Datenintegrität", new Tag("Datenintegrität"));
+        put("SQL", new Tag("SQL"));
+        put("JDBC", new Tag("JDBC"));
+        put("DBMS", new Tag("DBMS"));
+        put("Algorithmen", new Tag("Algorithmen"));
+        put("Datenstrukturen", new Tag("Datenstrukturen"));
+        put("Visual Computing", new Tag("Visual Computing"));
+        put("MATLAB", new Tag("MATLAB"));
+        put("Fourier", new Tag("Fourier"));
+        put("Analysis", new Tag("Analysis"));
+        put("Langweilig", new Tag("Langweilig"));
+        put("Theorie", new Tag("Theorie"));
+        put("Gesellschaft", new Tag("Gesellschaft"));
+        put("Human Computer Interaction", new Tag("Human Computer Interaction"));
+        put("Laplace", new Tag("Laplace"));
+        put("Laplace", new Tag("Laplace"));
+        put("Folgen", new Tag("Folgen"));
+        put("Reihen", new Tag("Reihen"));
+        put("Stetigkeit", new Tag("Stetigkeit"));
+        put("Grenzwerte", new Tag("Grenzwerte"));
+        put("Nullstellen", new Tag("Nullstellen"));
+        put("Differentialrechnung", new Tag("Differentialrechnung"));
+        put("Funktionen", new Tag("Funktionen"));
+        put("Integralrechnung", new Tag("Integralrechnung"));
+        put("Objektorientiert", new Tag("Objektorientiert"));
+        put("UML", new Tag("UML"));
+        put("Grundlagen", new Tag("Grundlagen"));
+        put("Hardware", new Tag("Hardware"));
+        put("Software", new Tag("Software"));
+        put("Computer Science", new Tag("Computer Science"));
+        put("Mathe", new Tag("Mathe"));
+        put("Spaß", new Tag("Spaß"));
+        put("Einfach", new Tag("Einfach"));
+        put("Diffizil", new Tag("Diffizil"));
+    }};
 
     @Bean
     CommandLineRunner initialize() {
@@ -220,6 +297,8 @@ public class DataInitializer {
 
             createStudyPlans();
 
+            createTags();
+
             registerStudentsToStudyPlans();
 
             addPreconditionsToSubjects();
@@ -228,20 +307,10 @@ public class DataInitializer {
 
             registerCoursesToStudents();
 
-            createTags();
+            addTagsToCourses();
 
             addSubjectsToStudyPlans();
         };
-    }
-
-    private void createTags() {
-        tagRepository.save(asList(
-                new Tag("Computer Science"),
-                new Tag("Math"),
-                new Tag("Fun"),
-                new Tag("Easy"),
-                new Tag("Difficult")
-        ));
     }
 
     private void createUsers() {
@@ -280,31 +349,38 @@ public class DataInitializer {
 
     private void createSubjects() {
         createSubjectsBachelorSoftwareAndInformationEngineering();
-        Iterable<Subject> subjects = subjectRepository.save(subjectsBachelorSoftwareAndInformationEngineering);
+        Iterable<Subject> subjects = subjectRepository.save(subjectsBachelorSoftwareAndInformationEngineering.values());
 
         this.subjects = StreamSupport.stream(subjects.spliterator(), false).collect(Collectors.toList());
     }
 
     private void createSubjectsBachelorSoftwareAndInformationEngineering() {
-        subjectsBachelorSoftwareAndInformationEngineering = new ArrayList<>(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester1.values());
-        subjectsBachelorSoftwareAndInformationEngineering.addAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester2.values());
-        subjectsBachelorSoftwareAndInformationEngineering.addAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester3.values());
-        subjectsBachelorSoftwareAndInformationEngineering.addAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester4.values());
-        subjectsBachelorSoftwareAndInformationEngineering.addAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester5.values());
-        subjectsBachelorSoftwareAndInformationEngineering.addAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester6.values());
-        subjectsBachelorSoftwareAndInformationEngineering.addAll(subjectsOptionalBachelorSoftwareAndInformationEngineering.values());
-        subjectsBachelorSoftwareAndInformationEngineering.addAll(subjectsFreeChoiceInformatics.values());
+        subjectsBachelorSoftwareAndInformationEngineering = new HashMap<>();
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester1);
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester2);
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester3);
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester4);
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester5);
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester6);
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsOptionalBachelorSoftwareAndInformationEngineering);
+        subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsFreeChoiceInformatics);
     }
 
     private void createCourses() {
-        Iterable<Course> courses = courseRepository.save(asList(
-                new Course(subjects.get(0), semesters.get(0)),
-                new Course(subjects.get(0), semesters.get(1)),
-                new Course(subjects.get(2), semesters.get(1)),
-                new Course(subjects.get(0), semesters.get(1))
-        ));
+        createCoursesBachelorSoftwareAndInformationEngineering();
+        Iterable<Course> courses = courseRepository.save(coursesBachelorSoftwareAndInformationEngineering.values());
 
         this.courses = StreamSupport.stream(courses.spliterator(), false).collect(Collectors.toList());
+    }
+
+    private void createCoursesBachelorSoftwareAndInformationEngineering() {
+        coursesBachelorSoftwareAndInformationEngineering = new HashMap<>();
+        for (String subjectName : subjectsBachelorSoftwareAndInformationEngineering.keySet()) {
+            coursesBachelorSoftwareAndInformationEngineering.put(
+                    subjectName,
+                    new Course(subjectsBachelorSoftwareAndInformationEngineering.get(subjectName), semesters.get(1))
+            );
+        }
     }
 
     private void createStudyPlans() {
@@ -318,6 +394,10 @@ public class DataInitializer {
         ));
 
         this.studyplans = StreamSupport.stream(studyplans.spliterator(), false).collect(Collectors.toList());
+    }
+
+    private void createTags() {
+        tagRepository.save(tags.values());
     }
 
     private void registerStudentsToStudyPlans() {
@@ -357,6 +437,112 @@ public class DataInitializer {
         courses.get(3).addStudents(students.get(0), students.get(3));
 
         courseRepository.save(courses);
+    }
+
+    private void addTagsToCourses() {
+        addTagsToBachelorSoftwareAndInformationEngineeringCourses();
+    }
+
+    private void addTagsToBachelorSoftwareAndInformationEngineeringCourses() {
+        addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester1();
+        addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester2();
+    }
+
+    private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester1() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").addTags(
+                tags.get("VU"), tags.get("Programmieren"), tags.get("Java"), tags.get("Debug"),
+                tags.get("Rekursion"), tags.get("Software"), tags.get("Einfach"), tags.get("Grundlagen"),
+                tags.get("Objektorientiert")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addTags(
+                tags.get("VU"), tags.get("Boolsche Algebra"), tags.get("RISC"), tags.get("CISC"), tags.get("Pipelining"),
+                tags.get("ROM"), tags.get("PROM/EPROM"), tags.get("2 Complement"), tags.get("1 Complement"),
+                tags.get("Gatterschaltungen"), tags.get("Befehlssatz"), tags.get("Digital"), tags.get("Diffizil"), tags.get("Grundlagen"),
+                tags.get("Hardware")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addTags(
+                tags.get("VO"), tags.get("Zahlentheorie"), tags.get("Aussagenlogik"), tags.get("Mengenlehre"),
+                tags.get("Mathe"), tags.get("Kombinatorik"), tags.get("Differenzengleichungen"),
+                tags.get("Graphentheorie"), tags.get("Algebraische Strukturen"), tags.get("Lineare Algebra"),
+                tags.get("Codierungstheorie"), tags.get("Einfach"), tags.get("Funktionen"), tags.get("Grundlagen")
+
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addTags(
+                tags.get("UE"), tags.get("Zahlentheorie"), tags.get("Aussagenlogik"), tags.get("Mengenlehre"),
+                tags.get("Mathe"), tags.get("Kombinatorik"), tags.get("Differenzengleichungen"),
+                tags.get("Graphentheorie"), tags.get("Algebraische Strukturen"), tags.get("Lineare Algebra"),
+                tags.get("Codierungstheorie"), tags.get("Einfach"), tags.get("Funktionen"), tags.get("Grundlagen")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Formale Modellierung").addTags(
+                tags.get("VU"), tags.get("Automaten"), tags.get("reguläre Ausdrücke"), tags.get("formale Grammatiken"),
+                tags.get("Aussagenlogik"), tags.get("Petri-Netze"), tags.get("Prädikatenlogik"), tags.get("Diffizil"), tags.get("Grundlagen")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addTags(
+                tags.get("VU"), tags.get("EER"), tags.get("Relationenmodel"), tags.get("Domänenkalkül"),
+                tags.get("Datenbanksprachen"), tags.get("Normalformen"), tags.get("Relationale Entwurfstheorie"),
+                tags.get("Datenintegrität"), tags.get("Einfach"), tags.get("SQL"), tags.get("Grundlagen")
+        );
+    }
+
+    private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester2() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenbanksysteme").addTags(
+                tags.get("VU"), tags.get("EER"), tags.get("Relationenmodel"), tags.get("Domänenkalkül"),
+                tags.get("Datenbanksprachen"), tags.get("Normalformen"), tags.get("SQL"),
+                tags.get("Datenintegrität"), tags.get("Diffizil"), tags.get("JDBC"), tags.get("DBMS")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Algorithmen und Datenstrukturen 1").addTags(
+                tags.get("VU"), tags.get("Datenstrukturen"), tags.get("Algorithmen"), tags.get("Java"),
+                tags.get("Programmieren"), tags.get("Debug"), tags.get("Rekursion"),
+                tags.get("Software"), tags.get("Graphentheorie"), tags.get("Einfach")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Algorithmen und Datenstrukturen 2").addTags(
+                tags.get("VU"), tags.get("Datenstrukturen"), tags.get("Algorithmen"), tags.get("Java"),
+                tags.get("Programmieren"), tags.get("Debug"), tags.get("Rekursion"),
+                tags.get("Software"), tags.get("Graphentheorie"), tags.get("Diffizil")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Einführung in Visual Computing").addTags(
+                tags.get("VU"), tags.get("Visual Computing"), tags.get("MATLAB"), tags.get("Mathe"),
+                tags.get("Fourier"), tags.get("Analysis"), tags.get("Diffizil"), tags.get("Programmieren"),
+                tags.get("Grundlagen")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Gesellschaftliche Spannungsfelder der Informatik").addTags(
+                tags.get("VU"), tags.get("Langweilig"), tags.get("Theorie"), tags.get("Einfach"),
+                tags.get("Gesellschaft")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Basics of Human Computer Interaction").addTags(
+                tags.get("VU"), tags.get("Human Computer Interaction"), tags.get("Einfach"), tags.get("Grundlagen")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Analysis für Informatik und Wirtschaftsinformatik").addTags(
+                tags.get("VU"), tags.get("Mathe"), tags.get("Analysis"), tags.get("Fourier"),
+                tags.get("Laplace"), tags.get("Diffizil"), tags.get("Folgen"),
+                tags.get("Reihen"), tags.get("Stetigkeit"), tags.get("Grenzwerte"),
+                tags.get("Nullstellen"), tags.get("Differentialrechnung"),
+                tags.get("Integralrechnung"), tags.get("Funktionen")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Analysis für Informatik und Wirtschaftsinformatik").addTags(
+                tags.get("UE"), tags.get("Mathe"), tags.get("Analysis"), tags.get("Fourier"),
+                tags.get("Laplace"), tags.get("Diffizil"), tags.get("Folgen"),
+                tags.get("Reihen"), tags.get("Stetigkeit"), tags.get("Grenzwerte"),
+                tags.get("Nullstellen"), tags.get("Differentialrechnung"),
+                tags.get("Integralrechnung"), tags.get("Funktionen")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Objektorientierte Modellierung").addTags(
+                tags.get("VU"), tags.get("Objektorientiert"), tags.get("UML"), tags.get("Grundlagen"),
+                tags.get("Einfach")
+        );
     }
 
     private void addSubjectsToStudyPlans() {
@@ -406,5 +592,4 @@ public class DataInitializer {
             );
         }
     }
-
 }
