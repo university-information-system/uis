@@ -8,42 +8,54 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h1 th:text="#{admin.users.header}"></h1>
+        <div class="row">
+            <div class="col s12">
+                <h1 th:text="#{admin.users.header}"></h1>
+            </div>
+
+            <div class="col s12">
+                <a class="right amber btn hide-on-small-only" href="/admin/users/create">Create new user</a>
+            </div>
+        </div>
+
+
+        <nav>
+            <div class="nav-wrapper white black-text">
+                <form>
+                    <div class="input-field">
+                        <input id="search" name="search" type="search"
+                               th:value="${param.search != null} ? ${param.search[0]} : ''"/>
+                        <label for="search"><i class="material-icons black-text">search</i></label>
+                    </div>
+                </form>
+            </div>
+        </nav>
 
         <ul class="collection z-depth-1">
-            <li class="collection-item avatar" th:each="user : ${users}"
-                style="cursor: pointer"
-                th:onclick="'location.href = \'/admin/users/' + ${user.id} + '\''">
+            <li class="collection-item" th:if="${#lists.isEmpty(users)}" th:text="#{admin.users.emptyusers}"></li>
 
-                <div th:if="${user instanceof T(at.ac.tuwien.inso.entity.Lecturer)}">
-                    <div class="blue circle letter-icon white-text">L</div>
-                    <span class="title" th:text="${user.name}"></span>
-                    <p>
-                        <span th:text="#{admin.users.lecturer}"></span>
-                        <br/>
-                        <span th:text="${user.email}"></span>
-                        <span class="red-text" th:if="${!user.activated}"
-                              th:text="'(' + (#{admin.users.inactive}) + ')'"></span>
-                    </p>
+            <li class="collection-item" th:each="user : ${users}">
+                <div class="title">
+                    <a class="teal-text" th:href="@{/admin/users/__${user.id}__}" th:text="${user.name}"></a>
                 </div>
-
-                <div th:if="${user instanceof T(at.ac.tuwien.inso.entity.Student)}">
-                    <div class="purple circle letter-icon white-text">S</div>
-                    <span class="title" th:text="${user.name}"></span>
-                    <p>
-                        <span th:text="#{admin.users.student}"></span>
-                        <br/>
-                        <span th:text="${user.email}"></span>
-                        <span class="red-text" th:if="${!user.activated}"
-                              th:text="'(' + (#{admin.users.inactive}) + ')'"></span>
-                    </p>
+                <div>
+                    <span th:if="${user instanceof T(at.ac.tuwien.inso.entity.Lecturer)}"
+                          th:text="#{admin.users.lecturer}"></span>
+                    <span th:if="${user instanceof T(at.ac.tuwien.inso.entity.Student)}"
+                          th:text="#{admin.users.student}"></span>
+                    <span>, </span>
+                    <span th:text="${user.identificationNumber}"></span>
+                    <br/>
+                    <span th:text="${user.email}"></span>
+                    <span class="red-text" th:if="${!user.activated}"
+                          th:text="'(' + (#{admin.users.inactive}) + ')'"></span>
                 </div>
             </li>
         </ul>
 
     </div>
 
-    <div class="fixed-action-btn">
+    <div class="fixed-action-btn hide-on-med-and-up">
         <a class="btn-floating btn-large amber modal-trigger" href="/admin/users/create">
             <i class="large material-icons">add</i>
         </a>

@@ -6,7 +6,9 @@ import java.util.*;
 
 public interface UisUserService {
 
-    List<UisUser> findAll();
+    List<UisUser> findAllMatching(String searchFilter);
 
     UisUser findOne(long id);
+
+    boolean existsUserWithIdentificationNumber(String id);
 }

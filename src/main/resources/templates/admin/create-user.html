@@ -10,7 +10,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col s12 m6">
+            <div class="col s12 m9 l6">
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title" th:text="#{admin.users.create.form.header}"></span>
@@ -28,6 +28,14 @@
                                         <label for="lecturer"
                                                th:text="#{admin.users.create.form.type.lecturer}"></label>
                                     </p>
+                                </div>
+
+                                <div class="input-field col s12">
+                                    <input id="identificationNumber" th:field="*{identificationNumber}" type="text"/>
+                                    <label for="identificationNumber"
+                                           th:text="#{admin.users.create.form.identificationNumber}"></label>
+                                    <span class="red-text" th:if="${#fields.hasErrors('identificationNumber')}"
+                                          th:text="#{admin.users.create.form.identificationNumber.error}"></span>
                                 </div>
 
                                 <div class="input-field col s12">

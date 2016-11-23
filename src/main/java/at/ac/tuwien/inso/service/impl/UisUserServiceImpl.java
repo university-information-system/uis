@@ -18,8 +18,8 @@ public class UisUserServiceImpl implements UisUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UisUser> findAll() {
-        return uisUserRepository.findAllByOrderByIdDesc();
+    public List<UisUser> findAllMatching(String searchFilter) {
+        return uisUserRepository.findAllMatching(searchFilter);
     }
 
     @Override
@@ -31,5 +31,11 @@ public class UisUserServiceImpl implements UisUserService {
         }
 
         return user;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsUserWithIdentificationNumber(String id) {
+        return uisUserRepository.existsByIdentificationNumber(id);
     }
 }

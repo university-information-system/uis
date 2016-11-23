@@ -29,9 +29,9 @@ public class SubjectsTest {
     @Autowired
     MockMvc mockMvc;
     private UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
-    private Lecturer lecturer1 = new Lecturer("Lecturer 1", "email", user1);
-    private Lecturer lecturer2 = new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
-    private Lecturer lecturer3 = new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
+    private Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email", user1);
+    private Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
+    private Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
     private Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
     private Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
     private Subject ase = new Subject("ASE", new BigDecimal(6.0));

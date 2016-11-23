@@ -28,12 +28,12 @@ public class StudentTests {
 
     UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
     UserAccount studentUser = new UserAccount("student1", "pass", Role.STUDENT);
-    Lecturer lecturer1 = new Lecturer("Lecturer 1", "email", user1);
-    Lecturer lecturer2 = new Lecturer("Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
-    Lecturer lecturer3 = new Lecturer("Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
-    Student student1 = new Student("Student1", "email", studentUser);
-    Student student2 = new Student("Student2", "email", new UserAccount("student2", "pass", Role.STUDENT));
-    Student student3 = new Student("Student3", "email", new UserAccount("student3", "pass", Role.STUDENT));
+    Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email", user1);
+    Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
+    Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
+    Student student1 = new Student("s000001", "Student1", "email", studentUser);
+    Student student2 = new Student("s000002", "Student2", "email", new UserAccount("student2", "pass", Role.STUDENT));
+    Student student3 = new Student("s000003", "Student3", "email", new UserAccount("student3", "pass", Role.STUDENT));
     Semester ss2016 = new Semester("SS2016");
     Semester ws2016 = new Semester("WS2016");
     Subject calculus = new Subject("Calculus", new BigDecimal(3.0));

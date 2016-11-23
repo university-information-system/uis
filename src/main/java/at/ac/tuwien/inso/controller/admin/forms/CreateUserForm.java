@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.controller.admin.forms;
 
+import at.ac.tuwien.inso.controller.admin.forms.validation.*;
 import at.ac.tuwien.inso.entity.*;
 import org.hibernate.validator.constraints.*;
 
@@ -14,6 +15,10 @@ public class CreateUserForm {
     private String type = STUDENT;
 
     @NotEmpty
+    @UniqueIdentificationNumber
+    private String identificationNumber;
+
+    @NotEmpty
     private String name;
 
     // RFC 2822 email pattern
@@ -23,17 +28,18 @@ public class CreateUserForm {
     protected CreateUserForm() {
     }
 
-    public CreateUserForm(String type, String name, String email) {
+    public CreateUserForm(String type, String identificationNumber, String name, String email) {
         this.type = type;
+        this.identificationNumber = identificationNumber;
         this.name = name;
         this.email = email;
     }
 
     public UisUser toUisUser() {
         if (type.equals(CreateUserForm.STUDENT)) {
-            return new Student(name, email);
+            return new Student(identificationNumber, name, email);
         } else {
-            return new Lecturer(name, email);
+            return new Lecturer(identificationNumber, name, email);
         }
     }
 
@@ -43,6 +49,15 @@ public class CreateUserForm {
 
     public CreateUserForm setType(String type) {
         this.type = type;
+        return this;
+    }
+
+    public String getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    public CreateUserForm setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
         return this;
     }
 
@@ -66,23 +81,25 @@ public class CreateUserForm {
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         CreateUserForm that = (CreateUserForm) o;
 
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return email != null ? email.equals(that.email) : that.email == null;
+        if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null) return false;
+        if (getIdentificationNumber() != null ? !getIdentificationNumber().equals(that.getIdentificationNumber()) : that.getIdentificationNumber() != null)
+            return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        return getEmail() != null ? getEmail().equals(that.getEmail()) : that.getEmail() == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        int result = getType() != null ? getType().hashCode() : 0;
+        result = 31 * result + (getIdentificationNumber() != null ? getIdentificationNumber().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         return result;
     }
 
@@ -90,6 +107,7 @@ public class CreateUserForm {
     public String toString() {
         return "CreateUserForm{" +
                 "type='" + type + '\'' +
+                ", identificationNumber='" + identificationNumber + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
