@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
 
+@Table(uniqueConstraints= @UniqueConstraint(columnNames={"subject_id", "study_plan_id"}))
 @Entity
 public class SubjectForStudyPlan {
 
