@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.controller;
 
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,15 @@ public class GlobalExceptionHandler {
         logger.info("DataAccessException: " + ex.getMessage() + "\n url="+request.getRequestURL());
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", messageSource.getMessage("error.dataaccess", null, LocaleContextHolder.getLocale()));
+        mav.setViewName("error");
+        return mav;
+    }
+
+    @ExceptionHandler(BusinessObjectNotFoundException.class)
+    public ModelAndView handleBusinessObjectNotFoundExceptions(HttpServletRequest request, BusinessObjectNotFoundException ex) {
+        logger.info("BusinessObjectNotFoundException: " + ex.getMessage() + "\n url="+request.getRequestURL());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
         return mav;
     }
