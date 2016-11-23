@@ -18,8 +18,8 @@ public class UisUserServiceImpl implements UisUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UisUser> findAll() {
-        return uisUserRepository.findAllByOrderByIdDesc();
+    public List<UisUser> findAllMatching(String searchFilter) {
+        return uisUserRepository.findAllMatching(searchFilter);
     }
 
     @Override
