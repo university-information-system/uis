@@ -10,7 +10,21 @@
     <div class="container">
         <h1 th:text="#{admin.users.header}"></h1>
 
+        <nav>
+            <div class="nav-wrapper white black-text">
+                <form>
+                    <div class="input-field">
+                        <input id="search" name="search" type="search"
+                               th:value="${param.search != null} ? ${param.search[0]} : ''"/>
+                        <label for="search"><i class="material-icons black-text">search</i></label>
+                    </div>
+                </form>
+            </div>
+        </nav>
+
         <ul class="collection z-depth-1">
+            <li class="collection-item" th:if="${#lists.isEmpty(users)}" th:text="#{admin.users.emptyusers}"></li>
+
             <li class="collection-item avatar" th:each="user : ${users}"
                 style="cursor: pointer"
                 th:onclick="'location.href = \'/admin/users/' + ${user.id} + '\''">
