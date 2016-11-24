@@ -9,6 +9,7 @@
 
     <div class="container">
         <h2 th:text="${studyPlan.getName()}"></h2>
+        <p th:if="${error}" class="red-text col s12" th:text="${error}"/>
 
         <div class="row">
 
@@ -35,7 +36,7 @@
                                 <div class="col s12">
                                     <form action="#" th:action="@{/admin/studyplans/addSubject}" method="post" id="form1">
                                         <input id="mandatorySubjectId" name="subjectId" type="hidden"/>
-                                        <input name="studyPlanId" th:value="${studyPlan.getId()}" type="hidden"/>
+                                        <input id="studyPlanId" name="studyPlanId" th:value="${studyPlan.getId()}" type="hidden"/>
                                         <input name="mandatory" value="true" type="hidden"/>
                                         <div class="input-field col s6">
                                             <input id="mandatory-autocomplete-input" type="text" class="autocomplete" data-activates="singleDropdownMandatory" data-beloworigin="true" autocomplete="off">

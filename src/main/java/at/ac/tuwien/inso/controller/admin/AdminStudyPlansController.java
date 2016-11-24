@@ -2,14 +2,17 @@ package at.ac.tuwien.inso.controller.admin;
 
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.*;
+import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.*;
 
@@ -23,11 +26,8 @@ public class AdminStudyPlansController {
     @Autowired
     private SubjectService subjectService;
 
-    private List<SubjectForStudyPlan> subjectsForStudyPlan;
-    private List<Subject> usedSubjects;
-
     @GetMapping
-    public String studyplans() {
+    public String getStudyplansView() {
         return "admin/studyplans";
     }
 
@@ -37,22 +37,28 @@ public class AdminStudyPlansController {
     }
 
     @GetMapping(params = "id")
-    private String getStudyPlan(@RequestParam(value = "id") Long id, Model model) {
+    private String getStudyplanDetailsView(@RequestParam(value = "id") Long id, Model model) {
         StudyPlan studyPlan = studyPlanService.findOne(id);
+
+        List<SubjectForStudyPlan> subjectsForStudyPlan = studyPlanService.getSubjectsForStudyPlan(id);
+        List<SubjectForStudyPlan> mandatory = subjectsForStudyPlan
+                .stream()
+                .filter(SubjectForStudyPlan::getMandatory)
+                .collect(Collectors.toList());
+        List<SubjectForStudyPlan> optional = subjectsForStudyPlan
+                .stream()
+                .filter(s -> !s.getMandatory())
+                .collect(Collectors.toList());
+
         model.addAttribute("studyPlan", studyPlan);
+        model.addAttribute("mandatory", mandatory);
+        model.addAttribute("optional", optional);
 
-        Spliterator<SubjectForStudyPlan> studyplans = studyPlanService.getSubjectsForStudyPlan(id).spliterator();
-        this.subjectsForStudyPlan = StreamSupport.stream(studyplans, false).collect(Collectors.toList());
-        model.addAttribute("mandatory", subjectsForStudyPlan.stream().filter(SubjectForStudyPlan::getMandatory).collect(Collectors.toList()));
-        model.addAttribute("optional", subjectsForStudyPlan.stream().filter(s -> !s.getMandatory()).collect(Collectors.toList()));
-
-        //collect the subject objects for further use
-        this.usedSubjects = subjectsForStudyPlan.stream().map(SubjectForStudyPlan::getSubject).collect(Collectors.toList());
         return "admin/studyplan-details";
     }
 
     @GetMapping("/create")
-    public String createStudyPlanView(CreateStudyPlanForm form, Model model) {
+    public String getCreateStudyplanView(CreateStudyPlanForm form) {
         return "admin/create-studyplan";
     }
 
@@ -68,6 +74,7 @@ public class AdminStudyPlansController {
 
     @PostMapping(value = "/addSubject", params = {"subjectId", "studyPlanId", "semester", "mandatory"})
     public String addSubjectToStudyPlan(
+            RedirectAttributes redirectAttributes,
             @RequestParam Long subjectId,
             @RequestParam Long studyPlanId,
             @RequestParam Integer semester,
@@ -77,18 +84,21 @@ public class AdminStudyPlansController {
         studyPlan.setId(studyPlanId);
         Subject subject = new Subject();
         subject.setId(subjectId);
-        studyPlanService.addSubjectToStudyPlan(new SubjectForStudyPlan(subject, studyPlan, mandatory, semester));
+        try {
+            studyPlanService.addSubjectToStudyPlan(new SubjectForStudyPlan(subject, studyPlan, mandatory, semester));
+        }
+        catch (ValidationException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
         return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
 
 
-    @GetMapping(value = "/json/availableSubjects", params = "query")
+    @GetMapping(value = "/json/availableSubjects", params = {"id", "query"})
     @ResponseBody
-    public List<Subject> getAvailableSubjects(@RequestParam String query) {
-        return subjectService.searchForSubjects(query)
-                .stream()
-                .filter(it -> !usedSubjects.contains(it))
-                .collect(Collectors.toList());
+    public List<Subject> getAvailableSubjects(@RequestParam Long id, @RequestParam String query) {
+        return studyPlanService.getAvailableSubjectsForStudyPlan(id, query);
     }
 
 }

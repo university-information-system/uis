@@ -17,7 +17,7 @@ export default class AutoComplete {
                 getData: function (value, callback) {
                     $.ajax({
                         url: "/admin/studyplans/json/availableSubjects",
-                        data: { query: value },
+                        data: { query: value, id: $('#studyPlanId').val() },
                         type: 'GET',
                         success: function (data) {
                             callback(value, data);
@@ -40,7 +40,7 @@ export default class AutoComplete {
                 getData: function (value, callback) {
                     $.ajax({
                         url: "/admin/studyplans/json/availableSubjects",
-                        data: { query: value },
+                        data: { query: value, id: $('#studyPlanId').val() },
                         type: 'GET',
                         success: function (data) {
                             callback(value, data);

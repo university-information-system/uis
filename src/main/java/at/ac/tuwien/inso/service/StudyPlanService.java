@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.service;
 
 import at.ac.tuwien.inso.entity.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -15,4 +16,6 @@ public interface StudyPlanService {
     List<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id);
 
     void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan);
+
+    List<Subject> getAvailableSubjectsForStudyPlan(Long id, String query);
 }
