@@ -20,7 +20,7 @@
                         <div class="title">
                             <a href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"
                                th:text="${studyPlan.name}"></a>
-                            <a href="#!" style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_open</i></a>
+                            <a href="#" data-th-href="@{/admin/studyplans/disable/(id=${studyPlan.id})}" style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_open</i></a>
                             <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
                         </div>
                     </div>

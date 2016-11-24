@@ -93,6 +93,12 @@ public class AdminStudyPlansController {
 
         return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
+    
+    @GetMapping(value = "/disable", params = {"id"})
+    private String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
+      System.out.println("Disabling "+id);
+      return "redirect:/admin/studyplans/?id=" + id;
+    }
 
 
     @GetMapping(value = "/json/availableSubjects", params = {"id", "query"})
