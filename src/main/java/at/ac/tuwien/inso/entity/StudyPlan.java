@@ -35,6 +35,12 @@ public class StudyPlan {
         this.ectsDistribution = ectsDistribution;
         this.enabled = true;
     }
+    
+    public StudyPlan(String name, EctsDistribution ectsDistribution, boolean enabled) {
+      this.name = name;
+      this.ectsDistribution = ectsDistribution;
+      this.enabled = enabled;
+  }
 
     public Long getId() {
         return id;
