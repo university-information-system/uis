@@ -22,13 +22,18 @@ public class StudyPlan {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<SubjectForStudyPlan> subjects = new ArrayList<>();
+    
+    @Column(nullable = false)
+    private boolean enabled;
 
     public StudyPlan() {
+      this.enabled = true;
     }
 
     public StudyPlan(String name, EctsDistribution ectsDistribution) {
         this.name = name;
         this.ectsDistribution = ectsDistribution;
+        this.enabled = true;
     }
 
     public Long getId() {
@@ -58,6 +63,14 @@ public class StudyPlan {
     public void removeSubjects(SubjectForStudyPlan... subjects) {
         this.subjects.removeAll(asList(subjects));
     }
+    
+    public boolean isEnabled(){
+      return enabled;
+    }
+    
+    public void setEnabled(boolean enabled){
+      this.enabled = enabled;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -67,6 +80,7 @@ public class StudyPlan {
         StudyPlan studyPlan = (StudyPlan) o;
 
         if (!name.equals(studyPlan.name)) return false;
+        if (!enabled==studyPlan.enabled) return false;
         if (!ectsDistribution.equals(studyPlan.ectsDistribution)) return false;
         return subjects.equals(studyPlan.subjects);
 
@@ -87,6 +101,7 @@ public class StudyPlan {
                 ", name='" + name + '\'' +
                 ", ectsDistribution=" + ectsDistribution +
                 ", subjects=" + subjects +
+                ", enabled=" + enabled +
                 '}';
     }
 

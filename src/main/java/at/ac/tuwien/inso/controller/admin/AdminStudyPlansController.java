@@ -97,6 +97,9 @@ public class AdminStudyPlansController {
     @GetMapping(value = "/disable", params = {"id"})
     private String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
       System.out.println("Disabling "+id);
+      StudyPlan studyPlan = studyPlanService.findOne(id);
+      //check if exists
+      
       return "redirect:/admin/studyplans/?id=" + id;
     }
 
