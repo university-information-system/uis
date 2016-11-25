@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout/default">
+<head>
+    <title>UIS Account Activation</title>
+</head>
+<body class="teal">
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col s12 center">
+            <p class="center white-text"><i class="large material-icons">school</i></p>
+            <h3 class="white-text center">Welcome, <span th:text="${user.name}"></span></h3>
+        </div>
+
+        <div class="col s12 m8 offset-m2 l4 offset-l4">
+
+            <form id="activate-account" class="card-panel z-depth-2" method="post" th:object="${accountActivationForm}">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="username" th:field="*{username}" type="text"/>
+                        <label for="username" th:text="#{username}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="password" th:field="*{password}" type="password"/>
+                        <label for="password" th:text="#{password}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="repeat-password" th:field="*{repeatPassword}" type="password"/>
+                        <label for="repeat-password" th:text="#{repeat.password}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input type="submit" th:value="#{activate.account}" class="btn-large col s12"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

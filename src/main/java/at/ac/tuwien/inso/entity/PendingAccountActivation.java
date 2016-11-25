@@ -17,12 +17,15 @@ public class PendingAccountActivation {
     }
 
     public PendingAccountActivation(UisUser forUser) {
-        this.id = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString(), forUser);
+    }
+
+    public PendingAccountActivation(String id, UisUser forUser) {
+        this.id = id;
         this.forUser = forUser;
     }
 
     public String getId() {
-
         return id;
     }
 
