@@ -44,6 +44,10 @@ public class SubjectForStudyPlan {
         return subject;
     }
 
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
     public Boolean getMandatory() {
         return mandatory;
     }
@@ -54,6 +58,10 @@ public class SubjectForStudyPlan {
 
     public StudyPlan getStudyPlan() {
         return studyPlan;
+    }
+
+    public void setStudyPlan(StudyPlan studyPlan) {
+        this.studyPlan = studyPlan;
     }
 
     @Override
