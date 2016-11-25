@@ -26,6 +26,11 @@ public class Student extends UisUser {
         super(identificationNumber, name, email, account);
     }
 
+    @Override
+    protected void adjustRole(UserAccount account) {
+        account.setRole(Role.STUDENT);
+    }
+
     public List<StudyPlanRegistration> getStudyplans() {
         return studyplans;
     }

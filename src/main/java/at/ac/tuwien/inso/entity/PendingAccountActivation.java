@@ -9,7 +9,7 @@ public class PendingAccountActivation {
     @Id
     private String id;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private UisUser forUser;
 
     protected PendingAccountActivation() {

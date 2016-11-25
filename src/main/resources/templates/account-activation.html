@@ -17,7 +17,8 @@
 
         <div class="col s12 m8 offset-m2 l4 offset-l4">
 
-            <form id="activate-account" class="card-panel z-depth-2" method="post" th:object="${accountActivationForm}">
+            <form id="activate-account" class="card-panel z-depth-2" method="post"
+                  th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${accountActivationForm}">
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="username" th:field="*{username}" type="text"/>

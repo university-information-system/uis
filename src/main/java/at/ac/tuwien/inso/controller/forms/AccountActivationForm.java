@@ -1,11 +1,18 @@
 package at.ac.tuwien.inso.controller.forms;
 
+import at.ac.tuwien.inso.entity.*;
+import org.hibernate.validator.constraints.*;
+
+@ScriptAssert(lang = "javascript", script = "_this.password === _this.repeatPassword", message = "repeatPassword")
 public class AccountActivationForm {
 
+    @NotEmpty
     private String username;
 
+    @NotEmpty
     private String password;
 
+    @NotEmpty
     private String repeatPassword;
 
     protected AccountActivationForm() {
@@ -16,6 +23,10 @@ public class AccountActivationForm {
         this.username = username;
         this.password = password;
         this.repeatPassword = repeatPassword;
+    }
+
+    public UserAccount toUserAccount() {
+        return new UserAccount(username, password);
     }
 
     public String getUsername() {

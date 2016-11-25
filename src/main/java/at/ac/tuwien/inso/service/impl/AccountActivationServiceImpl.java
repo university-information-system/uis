@@ -28,4 +28,14 @@ public class AccountActivationServiceImpl implements AccountActivationService {
 
         return pendingAccountActivation;
     }
+
+    @Override
+    @Transactional
+    public void activateAccount(String activationCode, UserAccount account) {
+        PendingAccountActivation pendingAccountActivation = findOne(activationCode);
+
+        pendingAccountActivation.getForUser().activate(account);
+
+        pendingAccountActivationRepository.delete(pendingAccountActivation);
+    }
 }
