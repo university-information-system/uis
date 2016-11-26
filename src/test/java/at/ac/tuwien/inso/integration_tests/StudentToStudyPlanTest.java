@@ -8,6 +8,7 @@ import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.context.*;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
@@ -61,7 +62,7 @@ public class StudentToStudyPlanTest {
         ).andExpect(
                 redirectedUrl("/admin/users/"+newStudent.getId())
         ).andExpect(it -> {
-            Student s = studentService.findOne(newStudent.getId());
+            Student s = studentRepository.findOne(newStudent.getId());
             assertEquals(sp, s.getStudyplans().get(0).getStudyplan());
         });
     }

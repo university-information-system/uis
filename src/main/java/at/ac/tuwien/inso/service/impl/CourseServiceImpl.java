@@ -24,7 +24,6 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private SubjectRepository subjectRepository;
 
-
     @Autowired
     private StudentRepository studentRepository;
 

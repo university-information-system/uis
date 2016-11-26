@@ -19,15 +19,15 @@ public class StudentServiceImpl implements StudentService {
     private SemesterService semesterService;
 
     @Override
-    @Transactional(readOnly = true)
-    public List<StudyPlanRegistration> findStudyPlanRegistrationsFor(Student student) {
-        return student.getStudyplans();
-    }
-
-    @Override
     @Transactional
     public Student findOne(Long id) {
         return studentRepository.findOne(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StudyPlanRegistration> findStudyPlanRegistrationsFor(Student student) {
+        return student.getStudyplans();
     }
 
     @Override
