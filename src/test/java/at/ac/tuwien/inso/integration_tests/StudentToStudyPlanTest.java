@@ -54,7 +54,7 @@ public class StudentToStudyPlanTest {
        StudyPlan sp = studyplanRepository.save(new StudyPlan("TestStudyPlan", new EctsDistribution(BigDecimal.TEN, BigDecimal.TEN, BigDecimal.TEN)));
     	
         mockMvc.perform(
-                get("/admin/registerToStudyplan/")
+                get("/admin/studyplans/registerStudent/")
                 .param("studentId", newStudent.getId()+"")
                 .param("studyPlanId", sp.getId()+"")
                 .with(user("admin").roles("ADMIN"))
