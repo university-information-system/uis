@@ -57,7 +57,7 @@ public class StudentToStudyPlanTest {
                 get("/admin/studyplans/registerStudent/")
                 .param("studentId", newStudent.getId()+"")
                 .param("studyPlanId", sp.getId()+"")
-                .with(user("admin").roles("ADMIN"))
+                .with(user("admin").roles(Role.ADMIN.name()))
         ).andExpect(
                 redirectedUrl("/admin/users/"+newStudent.getId())
         ).andExpect(it -> {

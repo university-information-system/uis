@@ -3,6 +3,8 @@ package at.ac.tuwien.inso.integration_tests;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.StudyPlanService;
+
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -45,6 +47,9 @@ public class StudyPlanTest {
 
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
+    
+    @Autowired
+    private StudyPlanService studyPlanService;
 
     @Before
     public void setUp() {
@@ -191,6 +196,34 @@ public class StudyPlanTest {
                         .param("freeChoice", form.getFreeChoice().toString())
                         .with(csrf())
         );
+    }
+    
+    /**
+     * @author m.pazourek
+     * Tests if a StudyPlan gets disabled properly
+     * @throws Exception 
+     */
+    @Test
+    public void disableStudyPlanTest(){
+      StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
+
+      try{
+        mockMvc.perform(
+            get("/admin/studyplans/disable/")
+            .param("id", studyPlan.getId()+"")
+            .with(user("admin").roles(Role.ADMIN.name()))
+            ).andExpect(    
+                (redirectedUrl("/admin/studyplans"))
+                ).andExpect(it -> {
+                  StudyPlan s = studyPlanService.findOne(studyPlan.getId());
+                  assertFalse(s.isEnabled());
+                });
+
+      }catch(Exception e){
+        assertFalse(true);//fail
+      }
+
+
     }
 
 }
