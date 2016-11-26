@@ -98,7 +98,6 @@ public class AdminStudyPlansController {
     private String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
       System.out.println("Disabling "+id);
       studyPlanService.disableStudyPlan(id);
-      
       return "redirect:/admin/studyplans";
     }
 

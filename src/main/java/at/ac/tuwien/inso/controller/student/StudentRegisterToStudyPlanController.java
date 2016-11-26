@@ -44,7 +44,7 @@ public class StudentRegisterToStudyPlanController {
 	    			error = true;
 	    		}
     		}
-    		if(!error){
+    		if(!error&&sp.isEnabled()){
     			toShow.add(sp);
     		}
     	}
