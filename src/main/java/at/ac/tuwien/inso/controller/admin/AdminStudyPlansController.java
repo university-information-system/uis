@@ -25,6 +25,9 @@ public class AdminStudyPlansController {
 
     @Autowired
     private SubjectService subjectService;
+    
+    @Autowired
+    private StudentService studentService;
 
     @GetMapping
     public String getStudyplansView() {
@@ -106,6 +109,54 @@ public class AdminStudyPlansController {
     @ResponseBody
     public List<Subject> getAvailableSubjects(@RequestParam Long id, @RequestParam String query) {
         return studyPlanService.getAvailableSubjectsForStudyPlan(id, query);
+    }
+    
+    
+    /**
+     * @author m.pazourek
+     * @param studentId
+     * @param studyPlanId
+     * @return
+     */
+    @GetMapping(value = "/registerStudent", params = "studentId")
+    public String registerStudent(@RequestParam Long studentId, @RequestParam Long studyPlanId) {
+        StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+        Student student = studentService.findOne(studentId);
+
+        studentService.registerStudentToStudyPlan(student, studyPlan);
+                
+        return "redirect:/admin/users/"+student.getId();
+    }
+    
+    /**
+     * @author m.pazourek
+     * @param studentToAddId
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/registerStudent", params = "studentToAddId")
+    public String registerStudentView(@RequestParam Long studentToAddId, Model model) {
+        Student student = studentService.findOne(studentToAddId);
+
+        model.addAttribute("user", student);
+        model.addAttribute("test", "testString");
+        
+        List<StudyPlan> toShow = new ArrayList<StudyPlan>();
+        for (StudyPlan sp : studyPlanService.findAll()) {
+            boolean error = false;
+            for(StudyPlanRegistration studentSp : student.getStudyplans()){
+                if(sp.equals(studentSp.getStudyplan())){
+                    error = true;
+                }
+            }
+            if(!error&&sp.isEnabled()){
+                toShow.add(sp);
+            }
+        }
+        
+        model.addAttribute("studyPlans", toShow);
+        
+        return "admin/addStudyPlanToStudent";
     }
 
 }
