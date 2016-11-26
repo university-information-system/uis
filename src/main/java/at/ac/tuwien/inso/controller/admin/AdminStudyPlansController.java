@@ -159,10 +159,12 @@ public class AdminStudyPlansController {
       return "admin/addStudyPlanToStudent";
     }
 
-    @GetMapping(value = "/remove", params = "id")
-    public String removeSubjectFromStudyPlan(@RequestParam Long id, Model model){
-      studyPlanService.removeSubjectFromStudyPlan(id);
-
+    @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
+    public String removeSubjectFromStudyPlan(@RequestParam Long studyPlanId, @RequestParam Long subjectId, Model model){
+      StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+      Subject subject = subjectService.findOne(subjectId);
+      studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
+      return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
 
 }
