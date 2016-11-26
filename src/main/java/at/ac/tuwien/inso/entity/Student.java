@@ -34,4 +34,9 @@ public class Student extends UisUser {
         this.studyplans.addAll(asList(studyplans));
         return this;
     }
+
+    public Student addCourses(Course... courses) {
+        this.courses.addAll(asList(courses));
+        return this;
+    }
 }
