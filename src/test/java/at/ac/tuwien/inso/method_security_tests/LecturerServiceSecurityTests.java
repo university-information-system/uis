@@ -33,9 +33,11 @@ import at.ac.tuwien.inso.repository.SemesterRepository;
 import at.ac.tuwien.inso.repository.StudentRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
 import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.LecturerService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,7 +48,7 @@ import static org.junit.Assert.assertTrue;
 public class LecturerServiceSecurityTests {
 
     @Autowired
-    private CourseService courseService;
+    private LecturerService lecturerService;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -66,21 +68,21 @@ public class LecturerServiceSecurityTests {
     private Lecturer lecturer;
     private Course course;
     private Student student;
-    private UserAccount user = new UserAccount("student1", "pass", Role.STUDENT);
+    private UserAccount user = new UserAccount("lecturer1", "pass", Role.LECTURER);
 
     @BeforeTransaction
     public void beforeTransaction() {
-        student = studentRepository.save(new Student("1", "student1", "student@student.com", user));
+        lecturer = lecturerRepository.save(new Lecturer("2", "Lecturer", "lecturer@lecturer.com", user));
     }
 
     @AfterTransaction
     public void afterTransaction() {
-        studentRepository.delete(student);
+        lecturerRepository.delete(lecturer);
     }
 
     @Before
     public void setUp() {
-        lecturer = lecturerRepository.save(new Lecturer("2", "Lecturer", "lecturer@lecturer.com"));
+        student = studentRepository.save(new Student("1", "student1", "student@student.com"));
         Subject subject = subjectRepository.save(new Subject("ASE", BigDecimal.valueOf(6)));
         subject.addLecturers(lecturer);
         subjectRepository.save(subject);
@@ -89,92 +91,63 @@ public class LecturerServiceSecurityTests {
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    public void findCourseForCurrentSemesterWithNameNotAuthenticated() {
-        courseService.findCourseForCurrentSemesterWithName("test");
-    }
-
-    @Test
-    @WithMockUser
-    public void findCourseForCurrentSemesterWithNameAuthenticated() {
-        List<Course> results = courseService.findCourseForCurrentSemesterWithName("ASE");
-        assertFalse(results.isEmpty());
-        assertEquals(results.get(0).getSubject().getName(), "ASE");
-    }
-
-    @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    public void findCoursesForCurrentSemesterForLecturerNotAuthenticated() {
-        courseService.findCoursesForCurrentSemesterForLecturer(lecturer);
-    }
-
-    @Test
-    @WithMockUser
-    public void findCoursesForCurrentSemesterForLecturerAuthenticated() {
-        List<Course> courses = courseService.findCoursesForCurrentSemesterForLecturer(lecturer);
-        assertTrue(courses.size() == 1);
-    }
-
-    @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    public void saveCourseNotAuthenticated() {
-        AddCourseForm addCourseForm = new AddCourseForm(course);
-        courseService.saveCourse(addCourseForm);
+    public void getLoggedInLecturerNotAuthenticated() {
+        lecturerService.getLoggedInLecturer();
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
-    public void saveCourseAuthenticatedAsStudent() {
-        AddCourseForm addCourseForm = new AddCourseForm(course);
-        courseService.saveCourse(addCourseForm);
+    public void getLoggedInLecturerAuthenticatedAsStudent() {
+        lecturerService.getLoggedInLecturer();
     }
 
-    @Test
+    @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "ADMIN")
-    public void saveCourseAuthenticatedAsAdmin() {
-        AddCourseForm addCourseForm = new AddCourseForm(course);
-        Course result = courseService.saveCourse(addCourseForm);
-        assertTrue(addCourseForm.getCourse().equals(result));
+    public void getLoggedInLecturerAuthenticatedAsAdmin() {
+        lecturerService.getLoggedInLecturer();
     }
 
     @Test
-    @WithMockUser(roles = "LECTURER")
-    public void saveCourseAuthenticatedAsLecturer() {
-        AddCourseForm addCourseForm = new AddCourseForm(course);
-        Course result = courseService.saveCourse(addCourseForm);
-        assertTrue(addCourseForm.getCourse().equals(result));
+    @WithUserDetails("lecturer1")
+    public void getLoggedInLecturerAuthenticatedAsLecturer() {
+        Lecturer result = lecturerService.getLoggedInLecturer();
+        assertTrue(lecturer.equals(result));
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    public void findOneNotAuthenticated() {
-        courseService.findOne(Long.parseLong("1"));
+    public void getOwnSubjectsNotAuthenticated() {
+        lecturerService.getOwnSubjects();
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    @WithMockUser(roles = "STUDENT")
+    public void getOwnSubjectsAuthenticatedAsStudent() {
+        lecturerService.getOwnSubjects();
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    @WithMockUser(roles = "ADMIN")
+    public void getOwnSubjectsAuthenticatedAsAdmin() {
+        lecturerService.getOwnSubjects();
+    }
+
+    @Test
+    @WithUserDetails("lecturer1")
+    public void getOwnSubjectsAuthenticatedAsLecturer() {
+        Iterable<Subject> result = lecturerService.getOwnSubjects();
+        assertNotNull(result);
+    }
+
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void findSubjectsForNotAuthenticated() {
+        lecturerService.findSubjectsFor(lecturer);
     }
 
     @Test
     @WithMockUser
-    public void findOneAuthenticated() {
-        Course result = courseService.findOne(course.getId());
-        assertTrue(course.getId().equals(result.getId()));
-    }
-
-    @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    public void registerStudentForCourseNotAuthenticated() {
-        courseService.registerStudentForCourse(course);
-    }
-
-    @Test(expected = AccessDeniedException.class)
-    @WithMockUser(roles = "ADMIN")
-    public void registerStudentForCourseAuthenticatedAsAdmin() {
-        courseService.registerStudentForCourse(course);
-    }
-
-    @Test(expected = AccessDeniedException.class)
-    @WithMockUser(roles = "LECTURER")
-    public void registerStudentForCourseAuthenticatedAsLecturer() {
-        courseService.registerStudentForCourse(course);
-    }
-
-    @Test
-    @WithUserDetails(value = "student1")
-    public void registerStudentForCourseAuthenticatedAsStudent() {
-        assertFalse(courseService.registerStudentForCourse(course));
+    public void findSubjectsForAuthenticated() {
+        List<Subject> result = lecturerService.findSubjectsFor(lecturer);
+        assertNotNull(result);
     }
 
 }
