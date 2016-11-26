@@ -6,4 +6,6 @@ import org.springframework.security.core.userdetails.*;
 public interface UserAccountService extends UserDetailsService {
 
     UserAccount getCurrentLoggedInUser();
+
+    boolean existsUsername(String username);
 }

@@ -23,16 +23,22 @@
                     <div class="input-field col s12">
                         <input id="username" th:field="*{username}" type="text"/>
                         <label for="username" th:text="#{username}"></label>
+                        <span class="red-text" th:if="${#fields.hasErrors('username')}"
+                              th:text="#{username.error}"></span>
                     </div>
 
                     <div class="input-field col s12">
                         <input id="password" th:field="*{password}" type="password"/>
                         <label for="password" th:text="#{password}"></label>
+                        <span class="red-text" th:if="${#fields.hasErrors('password')}"
+                              th:text="#{password.error}"></span>
                     </div>
 
                     <div class="input-field col s12">
                         <input id="repeat-password" th:field="*{repeatPassword}" type="password"/>
                         <label for="repeat-password" th:text="#{repeat.password}"></label>
+                        <span class="red-text" th:if="${#fields.hasGlobalErrors()}"
+                              th:text="#{repeat.password.error}"></span>
                     </div>
 
                     <div class="input-field col s12">

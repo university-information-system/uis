@@ -36,6 +36,9 @@ public class AccountActivationTests {
     private PendingAccountActivationRepository pendingAccountActivationRepository;
 
     @Autowired
+    private UserAccountRepository userAccountRepository;
+
+    @Autowired
     private Messages messages;
 
     private PendingAccountActivation pendingAccountActivation;
@@ -45,6 +48,8 @@ public class AccountActivationTests {
         this.pendingAccountActivation = pendingAccountActivationRepository.save(
                 new PendingAccountActivation(new Student("s1234567", "Student", "student@uis.at"))
         );
+
+        userAccountRepository.save(new UserAccount("student", "pass", Role.STUDENT));
     }
 
     @Test
@@ -121,6 +126,19 @@ public class AccountActivationTests {
                 model().attribute("user", pendingAccountActivation.getForUser())
         ).andExpect(r ->
                 model().attributeHasErrors("accountActivationForm")
+        );
+    }
+
+    @Test
+    public void itDoesNotActivateAccountIfUsernameIsNotUnique() throws Exception {
+        mockMvc.perform(
+                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("student", "pass", "pass"))
+        ).andExpect(
+                status().isBadRequest()
+        ).andExpect(
+                model().attribute("user", pendingAccountActivation.getForUser())
+        ).andExpect(
+                model().attributeHasFieldErrors("accountActivationForm", "username")
         );
     }
 
