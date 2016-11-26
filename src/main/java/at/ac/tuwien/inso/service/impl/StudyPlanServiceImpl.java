@@ -102,4 +102,19 @@ public class StudyPlanServiceImpl implements StudyPlanService {
       studyPlan.setEnabled(false);
       studyPlanRepository.save(studyPlan);
     }
+
+    @Override
+    public void removeSubjectFromStudyPlan(StudyPlan sp, Subject s) {
+     
+      List<SubjectForStudyPlan> subjectsForStudyPlan = sp.getSubjects();
+      
+      for(SubjectForStudyPlan sfsp:subjectsForStudyPlan){
+        if(sfsp.getSubject().getId()==s.getId()){
+          sp.removeSubjects(sfsp);
+        }
+      }
+      
+      studyPlanRepository.save(sp);
+      
+    }
 }
