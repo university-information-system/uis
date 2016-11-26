@@ -120,14 +120,14 @@ public class AdminStudyPlansController {
      */
     @GetMapping(value = "/registerStudent", params = "studentId")
     public String registerStudent(@RequestParam Long studentId, @RequestParam Long studyPlanId) {
-        StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
-        Student student = studentService.findOne(studentId);
+      StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+      Student student = studentService.findOne(studentId);
 
-        studentService.registerStudentToStudyPlan(student, studyPlan);
-                
-        return "redirect:/admin/users/"+student.getId();
+      studentService.registerStudentToStudyPlan(student, studyPlan);
+
+      return "redirect:/admin/users/"+student.getId();
     }
-    
+
     /**
      * @author m.pazourek
      * @param studentToAddId
@@ -136,33 +136,33 @@ public class AdminStudyPlansController {
      */
     @GetMapping(value = "/registerStudent", params = "studentToAddId")
     public String registerStudentView(@RequestParam Long studentToAddId, Model model) {
-        Student student = studentService.findOne(studentToAddId);
+      Student student = studentService.findOne(studentToAddId);
 
-        model.addAttribute("user", student);
-        model.addAttribute("test", "testString");
-        
-        List<StudyPlan> toShow = new ArrayList<StudyPlan>();
-        for (StudyPlan sp : studyPlanService.findAll()) {
-            boolean error = false;
-            for(StudyPlanRegistration studentSp : student.getStudyplans()){
-                if(sp.equals(studentSp.getStudyplan())){
-                    error = true;
-                }
-            }
-            if(!error&&sp.isEnabled()){
-                toShow.add(sp);
-            }
+      model.addAttribute("user", student);
+      model.addAttribute("test", "testString");
+
+      List<StudyPlan> toShow = new ArrayList<StudyPlan>();
+      for (StudyPlan sp : studyPlanService.findAll()) {
+        boolean error = false;
+        for(StudyPlanRegistration studentSp : student.getStudyplans()){
+          if(sp.equals(studentSp.getStudyplan())){
+            error = true;
+          }
         }
-        
-        model.addAttribute("studyPlans", toShow);
-        
-        return "admin/addStudyPlanToStudent";
+        if(!error&&sp.isEnabled()){
+          toShow.add(sp);
+        }
+      }
+
+      model.addAttribute("studyPlans", toShow);
+
+      return "admin/addStudyPlanToStudent";
     }
-    
+
     @GetMapping(value = "/remove", params = "id")
-    public String removeSubjectFromStudyPlan(@RequestParam Long studentToAddId, Model model){
-      
-      
+    public String removeSubjectFromStudyPlan(@RequestParam Long id, Model model){
+      studyPlanService.removeSubjectFromStudyPlan(id);
+
     }
 
 }
