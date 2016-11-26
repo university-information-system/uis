@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.controller.student;
+package at.ac.tuwien.inso.controller.admin;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
@@ -11,7 +11,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/admin/registerToStudyplan")
-public class StudentRegisterToStudyPlanController {
+public class AdminStudyPlanRegisterStudentController {
 
 	@Autowired
 	private StudyPlanService studyPlanService;
