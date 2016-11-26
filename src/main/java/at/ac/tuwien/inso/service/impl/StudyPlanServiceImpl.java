@@ -90,4 +90,11 @@ public class StudyPlanServiceImpl implements StudyPlanService {
         return subjects.stream().filter(it -> !subjectsOfStudyPlan.contains(it)).collect(Collectors.toList());
 
     }
+
+    @Override
+    public void disableStudyPlan(Long id) {
+      StudyPlan studyPlan = findOne(id);
+      studyPlan.setEnabled(false);
+      studyPlanRepository.save(studyPlan);
+    }
 }
