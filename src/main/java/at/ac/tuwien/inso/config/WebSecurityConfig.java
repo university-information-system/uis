@@ -6,12 +6,14 @@ import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
+import org.springframework.security.config.annotation.method.configuration.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.web.authentication.*;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -28,7 +30,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/rest/**").permitAll()   //do not require passwords for rest
 				.antMatchers("/min/**").permitAll()
 				.antMatchers("/webjars/**").permitAll()
+				.antMatchers("/node_modules/**").permitAll()
 				.antMatchers("/console/**").permitAll()
+				.antMatchers("/account_activation/**").permitAll()
 				.antMatchers("/admin/**").hasRole(Role.ADMIN.name())
 				.antMatchers("/lecturer/**").hasRole(Role.LECTURER.name())
 				.antMatchers("/student/**").hasRole(Role.STUDENT.name())

@@ -17,17 +17,22 @@ import java.util.stream.*;
 @Service
 public class StudyPlanServiceImpl implements StudyPlanService {
 
-    @Autowired
     private StudyPlanRepository studyPlanRepository;
-
-    @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
-
-    @Autowired
     private SubjectService subjectService;
+    private MessageSource messageSource;
 
     @Autowired
-    private MessageSource messageSource;
+    public StudyPlanServiceImpl(
+            StudyPlanRepository studyPlanRepository,
+            SubjectForStudyPlanRepository subjectForStudyPlanRepository,
+            SubjectService subjectService,
+            MessageSource messageSource) {
+        this.studyPlanRepository = studyPlanRepository;
+        this.subjectForStudyPlanRepository = subjectForStudyPlanRepository;
+        this.subjectService = subjectService;
+        this.messageSource = messageSource;
+    }
 
     @Override
     @Transactional

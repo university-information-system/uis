@@ -33,6 +33,8 @@ public class DataInitializer {
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private PendingAccountActivationRepository pendingAccountActivationRepository;
 
     private List<StudyPlan> studyplans;
 
@@ -310,6 +312,9 @@ public class DataInitializer {
     }
 
     private void createUsers() {
+        pendingAccountActivationRepository.save(
+                new PendingAccountActivation("test", new Student("test", "Test User", "test-user@uis.at"))
+        );
         Iterable<UisUser> users = uisUserRepository.save(asList(
                 new Student("s1127157", "Emma Dowd", "emma.dowd@gmail.com", new UserAccount("emma", "pass", Role.STUDENT)),
                 new Lecturer("l0100010", "Carol Sanderson", "carol@uis.at"),

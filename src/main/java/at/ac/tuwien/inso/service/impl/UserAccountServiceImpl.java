@@ -32,4 +32,9 @@ public class UserAccountServiceImpl implements UserAccountService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return loadUserByUsername(auth.getName());
     }
+
+    @Override
+    public boolean existsUsername(String username) {
+        return userAccountRepository.existsByUsername(username);
+    }
 }
