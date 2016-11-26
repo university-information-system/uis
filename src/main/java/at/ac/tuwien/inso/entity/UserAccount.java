@@ -22,12 +22,18 @@ public class UserAccount implements UserDetails {
     @Column(unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     @Enumerated
+    @Column(nullable = false)
     private Role role;
 
     protected UserAccount() {
+    }
+
+    public UserAccount(String username, String password) {
+        this(username, password, null);
     }
 
     public UserAccount(String username, String password, Role role) {
@@ -43,6 +49,12 @@ public class UserAccount implements UserDetails {
 
     public boolean hasRole(Role role) {
         return this.role.equals(role);
+    }
+
+    public void setRole(Role role) {
+        assert (this.role == null);
+
+        this.role = role;
     }
 
     @Override
@@ -78,7 +90,6 @@ public class UserAccount implements UserDetails {
     public Long getId() {
         return id;
     }
-
 
     @Override
     public boolean equals(Object o) {

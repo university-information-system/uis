@@ -21,6 +21,11 @@ public class Lecturer extends UisUser {
         super(identificationNumber, name, email, account);
     }
 
+    @Override
+    protected void adjustRole(UserAccount account) {
+        account.setRole(Role.LECTURER);
+    }
+
     public List<Subject> getSubjects() {
         return subjects;
     }

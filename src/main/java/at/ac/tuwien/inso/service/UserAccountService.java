@@ -9,4 +9,6 @@ public interface UserAccountService extends UserDetailsService {
 
     @PreAuthorize("isAuthenticated()")
     UserAccount getCurrentLoggedInUser();
+
+    boolean existsUsername(String username);
 }

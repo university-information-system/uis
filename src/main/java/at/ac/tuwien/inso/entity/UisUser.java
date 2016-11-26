@@ -55,6 +55,15 @@ public abstract class UisUser {
         return account != null;
     }
 
+    public final void activate(UserAccount account) {
+        assert (this.account == null);
+
+        this.account = account;
+        adjustRole(account);
+    }
+
+    protected abstract void adjustRole(UserAccount account);
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
