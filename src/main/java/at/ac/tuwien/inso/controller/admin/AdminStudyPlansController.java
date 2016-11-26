@@ -158,5 +158,11 @@ public class AdminStudyPlansController {
         
         return "admin/addStudyPlanToStudent";
     }
+    
+    @GetMapping(value = "/remove", params = "id")
+    public String removeSubjectFromStudyPlan(@RequestParam Long studentToAddId, Model model){
+      
+      
+    }
 
 }
