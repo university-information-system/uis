@@ -35,19 +35,19 @@ public class SubjectServiceSecurityTests {
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
-    public void createNotAuthenticatedAsStudent() {
+    public void createAuthenticatedAsStudent() {
         subjectService.create(new Subject());
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "LECTURER")
-    public void createNotAuthenticatedAsLecturer() {
+    public void createAuthenticatedAsLecturer() {
         subjectService.create(new Subject());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void createNotAuthenticatedAsAdmin() {
+    public void createAuthenticatedAsAdmin() {
         subjectService.create(new Subject("ASE", BigDecimal.ONE));
     }
 
