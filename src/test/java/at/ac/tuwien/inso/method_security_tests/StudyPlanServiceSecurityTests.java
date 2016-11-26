@@ -53,19 +53,19 @@ public class StudyPlanServiceSecurityTests {
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
-    public void createNotAuthenticatedAsStudent() {
+    public void createAuthenticatedAsStudent() {
         studyPlanService.create(studyPlan);
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "LECTURER")
-    public void createNotAuthenticatedAsLecturer() {
+    public void createAuthenticatedAsLecturer() {
         studyPlanService.create(studyPlan);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void createNotAuthenticatedAsAdmin() {
+    public void createAuthenticatedAsAdmin() {
         studyPlanService.create(studyPlan);
     }
 
@@ -114,28 +114,28 @@ public class StudyPlanServiceSecurityTests {
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    public void addSubjectToStudyPlanAuthenticated() {
+    public void addSubjectToStudyPlanNotAuthenticated() {
         studyPlanService.addSubjectToStudyPlan(
                 new SubjectForStudyPlan(new Subject(), studyPlan, true));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
-    public void addSubjectToStudyPlanAsStudent() {
+    public void addSubjectToStudyPlanAuthenticatedAsStudent() {
         studyPlanService.addSubjectToStudyPlan(
                 new SubjectForStudyPlan(new Subject(), studyPlan, true));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "LECTURER")
-    public void addSubjectToStudyPlanAsLecturer() {
+    public void addSubjectToStudyPlanAuthenticatedAsLecturer() {
         studyPlanService.addSubjectToStudyPlan(
                 new SubjectForStudyPlan(new Subject(), studyPlan, true));
     }
 
     @Test(expected = ValidationException.class)
     @WithMockUser(roles = "ADMIN")
-    public void addSubjectToStudyPlanAsAdmin() {
+    public void addSubjectToStudyPlanAuthenticatedAsAdmin() {
         studyPlanService.addSubjectToStudyPlan(
                 new SubjectForStudyPlan(new Subject(), studyPlan, true));
     }
