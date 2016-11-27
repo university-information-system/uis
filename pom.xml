@@ -92,6 +92,13 @@
             <version>3.0.1</version>
         </dependency>
 
+        <!-- PDF library -->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>
