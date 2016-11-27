@@ -115,4 +115,14 @@ public class UserAccount implements UserDetails {
         result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        // We don't show the password here
+        return "UserAccount{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }
