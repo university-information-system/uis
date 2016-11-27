@@ -26,6 +26,7 @@ import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.LecturerRepository;
 import at.ac.tuwien.inso.repository.SemesterRepository;
@@ -101,7 +102,7 @@ public class GradeServiceSecurityTest {
         gradeService.getDefaultGradeForStudentAndCourse(student.getId(), course.getId());
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     @WithUserDetails("lecturer1")
     public void getDefaultGradeForStudentAndCourseAuthenticatedAsLecturer() {
         gradeService.getDefaultGradeForStudentAndCourse(student.getId(), course.getId());
@@ -124,7 +125,7 @@ public class GradeServiceSecurityTest {
         gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     @WithUserDetails("lecturer1")
     public void saveNewGradeForStudentAndCourseAuthenticatedAsLecturer() {
         gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
