@@ -13,10 +13,6 @@ import org.springframework.web.servlet.mvc.support.*;
 public class LecturerEditCourseController {
 
     @Autowired
-    private SubjectService subjectService;
-    @Autowired
-    private SemesterService semesterService;
-    @Autowired
     private CourseService courseService;
     @Autowired
     private TagService tagService;
