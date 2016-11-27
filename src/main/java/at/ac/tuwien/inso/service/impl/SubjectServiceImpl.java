@@ -63,8 +63,32 @@ public class SubjectServiceImpl implements SubjectService {
         return savedSubject;
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Lecturer> getAvailableLecturersForSubject(Long subjectId) {
+        Subject subject = subjectRepository.findOne(subjectId);
+
+        if (subject == null) {
+            String msg = "Subject with id '" + subjectId + "' not found";
+            throw new BusinessObjectNotFoundException(msg);
+        }
+
+        List<Lecturer> currentLecturers = subject.getLecturers();
+
+        List<Lecturer> allLecturers = lecturerRepository.findAll();
+
+        return allLecturers
+                .stream()
+                .filter(lecturer -> !currentLecturers.contains(lecturer))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<Subject> searchForSubjects(String word) {
         return subjectRepository.findByNameContainingIgnoreCase(word);
     }
+
+
 }

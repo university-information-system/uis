@@ -33,6 +33,12 @@ public class AdminSubjectLecturersController {
         return subjectService.findOne(subjectId);
     }
 
+    @GetMapping(value = "/availableLecturers.json")
+    @ResponseBody
+    public List<Lecturer> getAvailableLecturers(@PathVariable Long subjectId) {
+        return subjectService.getAvailableLecturersForSubject(subjectId);
+    }
+
     @GetMapping("/lecturers")
     public String addLecturerForm(AddLecturersToSubjectForm addLecturersToSubjectForm) {
         return "/admin/add-lecturer-to-subject";

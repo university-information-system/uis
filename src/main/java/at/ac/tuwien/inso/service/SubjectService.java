@@ -24,4 +24,7 @@ public interface SubjectService {
 
     @PreAuthorize("hasRole('ADMIN')")
     Subject addLecturerToSubject(Long subjectId, Long lecturerUisUserId);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    List<Lecturer> getAvailableLecturersForSubject(Long subjectId);
 }
