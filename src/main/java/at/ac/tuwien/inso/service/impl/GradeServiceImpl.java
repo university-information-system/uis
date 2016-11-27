@@ -65,4 +65,14 @@ public class GradeServiceImpl implements GradeService {
         return (grade.getMark().compareTo(BigDecimal.ONE) > 0) &&
                 (grade.getMark().compareTo(BigDecimal.valueOf(5)) < 0);
     }
+
+    @Override
+    public Grade getForValidation(String identifier) {
+        Long gradeId = parseValidationIdentifier(identifier);
+        return gradeRepository.findOne(gradeId);
+    }
+
+    private Long parseValidationIdentifier(String identifier) {
+        return Long.valueOf(identifier);
+    }
 }

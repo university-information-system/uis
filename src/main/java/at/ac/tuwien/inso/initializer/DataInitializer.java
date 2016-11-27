@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.initializer;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.*;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.context.annotation.*;
@@ -35,6 +36,8 @@ public class DataInitializer {
     private TagRepository tagRepository;
     @Autowired
     private PendingAccountActivationRepository pendingAccountActivationRepository;
+    @Autowired
+    private GradeRepository gradeRepository;
 
     private List<StudyPlan> studyplans;
 
@@ -308,7 +311,18 @@ public class DataInitializer {
             addTagsToCourses();
 
             addSubjectsToStudyPlans();
+
+            giveGrades();
+
         };
+    }
+
+    private void giveGrades() {
+        Course course = courses.get(1);
+        Student student = course.getStudents().get(0);
+        Lecturer lecturer = course.getSubject().getLecturers().get(0);
+        Grade grade = new Grade(course, lecturer, student, BigDecimal.ONE);
+        gradeRepository.save(grade);
     }
 
     private void createUsers() {

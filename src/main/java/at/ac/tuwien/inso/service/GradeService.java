@@ -14,4 +14,6 @@ public interface GradeService {
     @PreAuthorize("hasRole('LECTURER')")
     Grade saveNewGradeForStudentAndCourse(Grade grade);
 
+    Grade getForValidation(String identifier);
+
 }

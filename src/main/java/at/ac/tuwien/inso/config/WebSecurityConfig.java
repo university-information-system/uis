@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.authorizeRequests()
 				.antMatchers("/rest/**").permitAll()   //do not require passwords for rest
+				.antMatchers("/public/**").permitAll()
 				.antMatchers("/min/**").permitAll()
 				.antMatchers("/webjars/**").permitAll()
 				.antMatchers("/node_modules/**").permitAll()
