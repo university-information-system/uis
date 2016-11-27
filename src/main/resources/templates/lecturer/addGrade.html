@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="lecturer/index">
+<body>
+
+<main layout:fragment="main">
+    <div class="container">
+        <div class="row card-panel">
+            <form th:object="${grade}" th:action="@{/lecturer/addGrade}" method="post">
+                <h4 th:text="*{course.subject.name} + ' ' + *{course.semester.label}"></h4>
+                <h5 th:text="*{student.name}"></h5>
+                <input type="hidden" th:field="*{course}"/>
+                <input type="hidden" th:field="*{student}"/>
+                <input type="hidden" th:field="*{lecturer}"/>
+                <span class="" for="mark" th:text="#{lecturer.addGrade.note}"></span>
+                <div class="row">
+                    <input class="col s1" id="mark" type="number" th:field="*{mark}" min="1" max="5"/>
+                </div>
+                <button class="btn right" type="submit" th:text="#{lecturer.addGrade.submit}"></button>
+            </form>
+
+        </div>
+    </div>
+
+</main>
+
+
+</body>
+</html>
