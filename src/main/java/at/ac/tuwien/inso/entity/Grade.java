@@ -60,7 +60,13 @@ public class Grade {
 
         Grade grade = (Grade) o;
 
-        if (!id.equals(grade.id)) return false;
+        if (id != null) {
+            if (!id.equals(grade.id)) return false;
+        } else {
+            if (grade.id != null) {
+                return false;
+            }
+        }
         if (!course.equals(grade.course)) return false;
         if (!lecturer.equals(grade.lecturer)) return false;
         if (!student.equals(grade.student)) return false;
