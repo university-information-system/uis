@@ -131,5 +131,10 @@ public class GradeServiceSecurityTest {
         gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
     }
 
+    @Test
+    public void getForValidationTestNotAuthenticated() {
+        gradeService.getForValidation("1");
+    }
+
 
 }
