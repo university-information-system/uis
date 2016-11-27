@@ -215,7 +215,7 @@ public class StudyPlanTest {
             ).andExpect(    
                 (redirectedUrl("/admin/studyplans"))
                 ).andExpect(it -> {
-                  StudyPlan s = studyPlanService.findOne(studyPlan.getId());
+                  StudyPlan s = studyPlanRepository.findOne(studyPlan.getId());
                   assertFalse(s.isEnabled());
                 });
 
