@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
@@ -16,6 +17,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    @Autowired
+    private LecturerRepository lecturerRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -36,6 +40,29 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional
+    public Subject addLecturerToSubject(Long subjectId, Long lecturerUisUserId) {
+        Lecturer lecturer = lecturerRepository.findOne(lecturerUisUserId);
+
+        if (lecturer == null) {
+            String msg = "Lecturer with user id " + lecturerUisUserId + " not found";
+            throw new BusinessObjectNotFoundException(msg);
+        }
+
+        Subject subject = subjectRepository.findOne(subjectId);
+
+        if (subject == null) {
+            String msg = "Subject with id " + lecturerUisUserId + " not found";
+            throw new BusinessObjectNotFoundException(msg);
+        }
+
+        subject.addLecturers(lecturer);
+
+        Subject savedSubject = subjectRepository.save(subject);
+
+        return savedSubject;
+    }
+
     @Transactional(readOnly = true)
     public List<Subject> searchForSubjects(String word) {
         return subjectRepository.findByNameContainingIgnoreCase(word);
