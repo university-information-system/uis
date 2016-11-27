@@ -2,10 +2,6 @@ export default class AutoComplete {
 
     initialize() {
         $( function() {
-            $(document).ready(function() {
-                $('select').material_select();
-            });
-
             $('#mandatory-autocomplete-input').materialize_autocomplete({
                 multiple: {
                     enable: false

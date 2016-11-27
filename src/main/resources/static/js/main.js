@@ -2,6 +2,7 @@
 import SideNav from "./side-nav";
 import CheckBoxes from "./checkboxes";
 import AutoComplete from "./autocomplete";
+import Select from "./select";
 
 // Flash Messages
 const showMessage = (message) => {
@@ -23,6 +24,9 @@ const init = () => {
 
     const autoComplete = new AutoComplete();
     autoComplete.initialize();
+
+    const select = new Select();
+    select.initialize('select');
 };
 
 init();
