@@ -33,6 +33,7 @@ public class CoursesTests {
     Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email", user1);
     Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
     Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
+    Student student = new Student("s1234", "Student", "student@uis.at", new UserAccount("student", "pass", Role.STUDENT));
     Semester ss2016 = new Semester("SS2016");
     Semester ws2016 = new Semester("WS2016");
     Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
@@ -53,6 +54,8 @@ public class CoursesTests {
     @Autowired
     private LecturerRepository lecturerRepository;
     @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
     private TagRepository tagRepository;
 
     private List<Course> expectedCourses;
@@ -62,6 +65,7 @@ public class CoursesTests {
 
     @Before
     public void setUp() {
+        student = studentRepository.save(student);
 
         lecturerRepository.save(lecturer1);
         lecturerRepository.save(lecturer2);
@@ -98,7 +102,6 @@ public class CoursesTests {
     }
 
     @Test
-    @Ignore
     public void itListsAllCoursesForCurrentSemester() throws Exception {
         mockMvc.perform(
                 get("/student/courses").with(user("student").roles("STUDENT"))
@@ -108,7 +111,6 @@ public class CoursesTests {
     }
 
     @Test
-    @Ignore
     public void itListsAllCoursesForCurrentSemesterWithNameFilterNoString() throws Exception {
         mockMvc.perform(
                 get("/student/courses?search=").with(user("student").roles("STUDENT"))
