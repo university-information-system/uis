@@ -1,12 +1,11 @@
 package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
-import java.util.*;
+import java.util.List;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 @Entity
 public class Course {
@@ -46,36 +45,36 @@ public class Course {
         this.description = description;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Subject getSubject() {
         return subject;
     }
 
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
     public Semester getSemester() {
         return semester;
     }
 
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<Tag> getTags() {
@@ -86,8 +85,9 @@ public class Course {
         return students;
     }
 
-    public void addTags(Tag... tags) {
+    public Course addTags(Tag... tags) {
         this.tags.addAll(asList(tags));
+        return this;
     }
 
     public void removeTags(Tag... tags) {
@@ -117,23 +117,23 @@ public class Course {
 
         Course course = (Course) o;
 
-        if (!id.equals(course.id)) return false;
-        if (!subject.equals(course.subject)) return false;
-        if (!semester.equals(course.semester)) return false;
-        if (!description.equals(course.description)) return false;
         if (studentLimits != course.studentLimits) return false;
-        if (!tags.equals(course.tags)) return false;
-        return students.equals(course.students);
+        if (id != null ? !id.equals(course.id) : course.id != null) return false;
+        if (subject != null ? !subject.equals(course.subject) : course.subject != null) return false;
+        if (semester != null ? !semester.equals(course.semester) : course.semester != null) return false;
+        if (description != null ? !description.equals(course.description) : course.description != null) return false;
+        if (tags != null ? !tags.equals(course.tags) : course.tags != null) return false;
+        return students != null ? students.equals(course.students) : course.students == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + subject.hashCode();
-        result = 31 * result + semester.hashCode();
-        result = 31 * result + studentLimits;
+        result = 31 * result + (subject != null ? subject.hashCode() : 0);
+        result = 31 * result + (semester != null ? semester.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + studentLimits;
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (students != null ? students.hashCode() : 0);
         return result;
