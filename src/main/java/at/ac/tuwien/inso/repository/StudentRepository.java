@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.repository;
 
 import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.UserAccount;
 import at.ac.tuwien.inso.repository.utils.TagFrequency;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,4 +15,6 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
             "where s = ?1 " +
             "group by t")
     List<TagFrequency> computeTagsFrequencyFor(Student student);
+
+    Student findByAccount(UserAccount account);
 }
