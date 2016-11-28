@@ -1,17 +1,22 @@
 package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
-import org.springframework.context.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
-import java.math.*;
-import java.util.*;
-import java.util.stream.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 @Configuration
 @Profile("demo")
@@ -277,23 +282,44 @@ public class DataInitializer {
         put("Diffizil", new Tag("Diffizil"));
     }};
 
+    private Map<String, Student> studentMap = new HashMap<String, Student>() {
+        {
+            put("Caroline Black", new Student("s1123960", "Caroline Black", "caroline.black@uis.at", new UserAccount("student", "pass", Role.STUDENT)));
+            put("Emma Dowd", new Student("s1127157", "Emma Dowd", "emma.dowd@gmail.com", new UserAccount("emma", "pass", Role.STUDENT)));
+            put("John Terry", new Student("s1126441", "John Terry", "john.terry@uis.at", new UserAccount("john", "pass", Role.STUDENT)));
+            put("Joan Watson", new Student("s0227157", "Joan Watson", "joan.watson@uit.at"));
+            put("James Bond", new Student("s1527199", "James Bond", "jamesbond_007@yahoo.com"));
+            put("Trevor Bond", new Student("s0445157", "Trevor Bond", "trevor@uis.at"));
+        }
+    };
+
+    private Map<String, Lecturer> lecturerMap = new HashMap<String, Lecturer>() {
+        {
+            put("Carol Sanderson", new Lecturer("l0100010", "Carol Sanderson", "carol@uis.at"));
+            put("Una Walker", new Lecturer("l0100011", "Una Walker", "una.walker@uis.at", new UserAccount("lecturer", "pass", Role.LECTURER)));
+            put("Connor MacLeod", new Lecturer("l0203019", "Connor MacLeod", "connor@gmail.com"));
+            put("Eric Wilkins", new Lecturer("l1100010", "Eric Wilkins", "e1234567@tuwien.ac.at", new UserAccount("eric", "pass", Role.LECTURER)));
+            put("Benjamin Piper", new Lecturer("l9123410", "Benjamin Piper", "ben@uis.at", new UserAccount("ben", "pass", Role.LECTURER)));
+        }
+    };
+
     @Bean
     CommandLineRunner initialize() {
         return String -> {
 
             userAccountRepository.save(new UserAccount("admin", "pass", Role.ADMIN));
 
-            createUsers();
-
-            createSemesters();
+            createTags();
 
             createSubjects();
+
+            createSemesters();
 
             createCourses();
 
             createStudyPlans();
 
-            createTags();
+            createUsers();
 
             registerStudentsToStudyPlans();
 
@@ -301,46 +327,18 @@ public class DataInitializer {
 
             registerSubjectsToLecturers();
 
-            registerCoursesToStudents();
-
             addTagsToCourses();
 
             addSubjectsToStudyPlans();
+
+            registerCoursesToStudents();
+
+            registerStudentsToCourses();
         };
     }
 
-    private void createUsers() {
-        Iterable<UisUser> users = uisUserRepository.save(asList(
-                new Student("s1127157", "Emma Dowd", "emma.dowd@gmail.com", new UserAccount("emma", "pass", Role.STUDENT)),
-                new Lecturer("l0100010", "Carol Sanderson", "carol@uis.at"),
-                new Lecturer("l0100011", "Una Walker", "una.walker@uis.at", new UserAccount("lecturer", "pass", Role.LECTURER)),
-                new Student("s1123960", "Caroline Black", "caroline.black@uis.at", new UserAccount("student", "pass", Role.STUDENT)),
-                new Student("s0227157", "Joan Watson", "joan.watson@uit.at"),
-                new Lecturer("l0203019", "Connor MacLeod", "connor@gmail.com"),
-                new Student("s1527199", "James Bond", "jamesbond_007@yahoo.com"),
-                new Student("s0445157", "Trevor Bond", "trevor@uis.at"),
-                new Lecturer("l1100010", "Eric Wilkins", "e1234567@tuwien.ac.at", new UserAccount("eric", "pass", Role.LECTURER)),
-                new Lecturer("l9123410", "Benjamin Piper", "ben@uis.at", new UserAccount("ben", "pass", Role.LECTURER))
-        ));
-
-        students = StreamSupport.stream(users.spliterator(), false)
-                .filter(it -> it instanceof Student)
-                .map(it -> (Student) it)
-                .collect(Collectors.toList());
-
-        lecturers = StreamSupport.stream(users.spliterator(), false)
-                .filter(it -> it instanceof Lecturer)
-                .map(it -> (Lecturer) it)
-                .collect(Collectors.toList());
-    }
-
-    private void createSemesters() {
-        Iterable<Semester> semesters = semesterRepository.save(asList(
-                new Semester("SS2016"),
-                new Semester("WS2016")
-        ));
-
-        this.semesters = StreamSupport.stream(semesters.spliterator(), false).collect(Collectors.toList());
+    private void createTags() {
+        tagRepository.save(tags.values());
     }
 
     private void createSubjects() {
@@ -360,6 +358,15 @@ public class DataInitializer {
         subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsMandatoryBachelorSoftwareAndInformationEngineeringSemester6);
         subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsOptionalBachelorSoftwareAndInformationEngineering);
         subjectsBachelorSoftwareAndInformationEngineering.putAll(subjectsFreeChoiceInformatics);
+    }
+
+    private void createSemesters() {
+        Iterable<Semester> semesters = semesterRepository.save(asList(
+                new Semester("SS2016"),
+                new Semester("WS2016")
+        ));
+
+        this.semesters = StreamSupport.stream(semesters.spliterator(), false).collect(Collectors.toList());
     }
 
     private void createCourses() {
@@ -392,27 +399,31 @@ public class DataInitializer {
         this.studyplans = StreamSupport.stream(studyplans.spliterator(), false).collect(Collectors.toList());
     }
 
-    private void createTags() {
-        tagRepository.save(tags.values());
+    private void createUsers() {
+        List<UisUser> usersList = new ArrayList<>(studentMap.values());
+        usersList.addAll(lecturerMap.values());
+
+        Iterable<UisUser> users = uisUserRepository.save(usersList);
+
+        students = StreamSupport.stream(users.spliterator(), false)
+                .filter(it -> it instanceof Student)
+                .map(it -> (Student) it)
+                .collect(Collectors.toList());
+
+        lecturers = StreamSupport.stream(users.spliterator(), false)
+                .filter(it -> it instanceof Lecturer)
+                .map(it -> (Lecturer) it)
+                .collect(Collectors.toList());
     }
 
     private void registerStudentsToStudyPlans() {
-        students.stream()
-                .limit(2)
-                .forEach(it -> {
-                    it.addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(0)));
-                    uisUserRepository.save(it);
-                });
-
-        students.stream()
-                .skip(2)
-                .forEach(it -> {
-                    it.addStudyplans(
-                            new StudyPlanRegistration(studyplans.get(0), semesters.get(0)),
-                            new StudyPlanRegistration(studyplans.get(1), semesters.get(1))
-                    );
-                    uisUserRepository.save(it);
-                });
+        studentMap.get("John Terry").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
+        studentMap.get("Caroline Black").addStudyplans(new StudyPlanRegistration(studyplans.get(1), semesters.get(1)));
+        studentMap.get("Emma Dowd").addStudyplans(new StudyPlanRegistration(studyplans.get(2), semesters.get(1)));
+        studentMap.get("Joan Watson").addStudyplans(new StudyPlanRegistration(studyplans.get(3), semesters.get(1)));
+        studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(4), semesters.get(1)));
+        studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(5), semesters.get(0)));
+        studentMap.get("Trevor Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(1), semesters.get(1)));
     }
 
     private void addPreconditionsToSubjects() {
@@ -427,16 +438,9 @@ public class DataInitializer {
         subjectRepository.save(subjects);
     }
 
-    private void registerCoursesToStudents() {
-        courses.get(1).addStudents(students.get(3));
-        courses.get(2).addStudents(students.get(0), students.get(1), students.get(2), students.get(3));
-        courses.get(3).addStudents(students.get(0), students.get(3));
-
-        courseRepository.save(courses);
-    }
-
     private void addTagsToCourses() {
         addTagsToBachelorSoftwareAndInformationEngineeringCourses();
+        courseRepository.save(coursesBachelorSoftwareAndInformationEngineering.values());
     }
 
     private void addTagsToBachelorSoftwareAndInformationEngineeringCourses() {
@@ -588,4 +592,31 @@ public class DataInitializer {
             );
         }
     }
+
+    private void registerCoursesToStudents() {
+        // Joan Watson
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch").addStudents(studentMap.get("Joan Watson"));
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Joan Watson"));
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(studentMap.get("Joan Watson"));
+
+        // Emma Dowd
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Emma Dowd"));
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(studentMap.get("Emma Dowd"));
+
+        // Caroline Black
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Caroline Black"));
+
+        // John Terry
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addStudents(studentMap.get("John Terry"));
+    }
+
+    private void registerStudentsToCourses() {
+        // John Terry
+        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"));
+        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
+        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"));
+
+        uisUserRepository.save(studentMap.values());
+    }
+
 }
