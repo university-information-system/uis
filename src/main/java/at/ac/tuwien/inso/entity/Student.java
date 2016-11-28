@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.List;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 @Entity
 public class Student extends UisUser {
@@ -35,8 +38,17 @@ public class Student extends UisUser {
         return studyplans;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
     public Student addStudyplans(StudyPlanRegistration... studyplans) {
         this.studyplans.addAll(asList(studyplans));
+        return this;
+    }
+
+    public Student addCourses(Course... courses) {
+        this.courses.addAll(asList(courses));
         return this;
     }
 }
