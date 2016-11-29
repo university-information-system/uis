@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -129,6 +130,29 @@ public class GradeServiceSecurityTest {
     @WithUserDetails("lecturer1")
     public void saveNewGradeForStudentAndCourseAuthenticatedAsLecturer() {
         gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
+    }
+
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void getGradesForLoggedInStudentNotAuthenticated() {
+        gradeService.getGradesForLoggedInStudent();
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    @WithMockUser(roles = "ADMIN")
+    public void getGradesForLoggedInStudentAsAdmin() {
+        gradeService.getGradesForLoggedInStudent();
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    @WithMockUser(roles = "LECTURER")
+    public void getGradesForLoggedInStudentAsLecturer() {
+        gradeService.getGradesForLoggedInStudent();
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    @WithMockUser(roles = "STUDENT")
+    public void getGradesForLoggedInStudentAsStudent() {
+        gradeService.getGradesForLoggedInStudent();
     }
 
     @Test
