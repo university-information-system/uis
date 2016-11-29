@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,8 @@ public class DataInitializer {
     private PendingAccountActivationRepository pendingAccountActivationRepository;
     @Autowired
     private GradeRepository gradeRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     private List<StudyPlan> studyplans;
 
@@ -450,7 +453,19 @@ public class DataInitializer {
         subjects.get(2).addLecturers(lecturers.get(3), lecturers.get(4));
 
         subjectRepository.save(subjects);
+
+        Subject s = subjectsBachelorSoftwareAndInformationEngineering
+                .get("VU Technische Grundlagen der Informatik");
+        s.addLecturers(lecturers.get(3));
+        subjectRepository.save(s);
+
+        s = subjectsBachelorSoftwareAndInformationEngineering
+                .get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik");
+        s.addLecturers(lecturers.get(3));
+        subjectRepository.save(s);
     }
+
+
 
     private void addTagsToCourses() {
         addTagsToBachelorSoftwareAndInformationEngineeringCourses();
@@ -640,6 +655,20 @@ public class DataInitializer {
         Lecturer lecturer = course.getSubject().getLecturers().get(0);
 
         Grade grade = new Grade(course, lecturer, student, BigDecimal.ONE);
+        gradeRepository.save(grade);
+
+        course = coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik");
+        student = studentMap.get("Emma Dowd");
+        lecturer = course.getSubject().getLecturers().get(0);
+
+        grade = new Grade(course, lecturer, student, BigDecimal.ONE);
+        gradeRepository.save(grade);
+
+        course = coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik");
+        student = studentMap.get("Emma Dowd");
+        lecturer = course.getSubject().getLecturers().get(0);
+
+        grade = new Grade(course, lecturer, student, BigDecimal.valueOf(3));
         gradeRepository.save(grade);
     }
 }
