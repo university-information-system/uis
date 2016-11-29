@@ -11,6 +11,9 @@
     <li th:class="${#httpServletRequest.requestURI} == '/student/myCourses' ? 'active' : ''">
         <a class="white-text" href="/student/myCourses" th:text="#{student.nav.my.courses}"></a>
     </li>
+    <li th:class="${#httpServletRequest.requestURI} == '/student/grades' ? 'active' : ''">
+        <a class="white-text" href="/student/grades" th:text="#{student.nav.my.grades}"></a>
+    </li>
     <li th:class="${#httpServletRequest.requestURI} == '/student/my-studyplans' ? 'active' : ''">
         <a class="white-text" href="/student/my-studyplans" th:text="#{student.nav.my.studyplans}"></a>
     </li>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="student/index">
+<body>
+<main layout:fragment="main">
+
+    <div class="container">
+        <div th:if="${grades.isEmpty()}">
+            <span th:text="#{student.grades.none}"></span>
+        </div>
+        <ul class="collection" th:unless="${grades.isEmpty()}">
+            <li class="collection-item" th:each="grade : ${grades}">
+                <a class="secondary-content" target="_blank"
+                   th:href="@{/public/grade(identifier=__${grade.id}__)}"><i class="material-icons">description</i></a>
+                <div class="title" th:text="${grade.course.subject.name}"></div>
+                <div th:text="${grade.course.semester.label}"></div>
+            </li>
+        </ul>
+    </div>
+
+
+</main>
+
+</body>
+</html>

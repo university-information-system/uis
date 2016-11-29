@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
 
 import java.math.*;
+import java.util.*;
 
 import static java.util.Arrays.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
@@ -28,11 +29,12 @@ public class StudentTests {
 
     UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
     UserAccount studentUser = new UserAccount("student1", "pass", Role.STUDENT);
+    UserAccount student2User = new UserAccount("student2", "pass", Role.STUDENT);
     Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email", user1);
     Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
     Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
     Student student1 = new Student("s000001", "Student1", "email", studentUser);
-    Student student2 = new Student("s000002", "Student2", "email", new UserAccount("student2", "pass", Role.STUDENT));
+    Student student2 = new Student("s000002", "Student2", "email", student2User);
     Student student3 = new Student("s000003", "Student3", "email", new UserAccount("student3", "pass", Role.STUDENT));
     Semester ss2016 = new Semester("SS2016");
     Semester ws2016 = new Semester("WS2016");
@@ -43,6 +45,7 @@ public class StudentTests {
     Course sepmWS2016 = new Course(sepm, ws2016);
     Course aseWS2016 = new Course(ase, ws2016);
     Course calculusWS2016 = new Course(calculus, ws2016);
+    List<Grade> grades = new ArrayList<>();
 
     @Autowired
     private MockMvc mockMvc;
@@ -58,6 +61,8 @@ public class StudentTests {
     private TagRepository tagRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private GradeRepository gradeRepository;
 
 
     @Before
@@ -86,6 +91,13 @@ public class StudentTests {
         aseWS2016 = courseRepository.save(aseWS2016);
         calculusWS2016 = courseRepository.save(calculusWS2016);
 
+
+        student2.addCourses(aseWS2016);
+        student2 = studentRepository.save(student2);
+
+        Grade grade = new Grade(aseWS2016, lecturer1, student2, BigDecimal.ONE);
+        grade = gradeRepository.save(grade);
+        grades.add(grade);
 
         tagRepository.save(asList(
                 new Tag("Computer Science"),
@@ -117,6 +129,24 @@ public class StudentTests {
                 redirectedUrl("/student/courses")
         ).andExpect(
                 flash().attribute("registeredForCourse", aseWS2016.getSubject().getName())
+        );
+    }
+
+    @Test
+    public void itShowsEmptyGrades() throws Exception{
+        mockMvc.perform(
+                get("/student/grades").with(user(studentUser))
+        ).andExpect(
+                model().attributeExists("grades")
+        );
+    }
+
+    @Test
+    public void itShowsGrades() throws Exception{
+        mockMvc.perform(
+                get("/student/grades").with(user(student2User))
+        ).andExpect(
+                model().attributeExists("grades")
         );
     }
 
