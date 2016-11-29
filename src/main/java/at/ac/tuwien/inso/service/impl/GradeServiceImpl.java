@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Grade;
@@ -16,6 +17,7 @@ import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.service.LecturerService;
 import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.UserAccountService;
 
 @Service
 public class GradeServiceImpl implements GradeService {
@@ -24,16 +26,19 @@ public class GradeServiceImpl implements GradeService {
     private StudentService studentService;
     private CourseService courseService;
     private LecturerService lecturerService;
+    private UserAccountService userAccountService;
 
     @Autowired
     public GradeServiceImpl(GradeRepository gradeRepository,
                             StudentService studentService,
                             CourseService courseService,
-                            LecturerService lecturerService) {
+                            LecturerService lecturerService,
+                            UserAccountService userAccountService) {
         this.gradeRepository = gradeRepository;
         this.studentService = studentService;
         this.courseService = courseService;
         this.lecturerService = lecturerService;
+        this.userAccountService = userAccountService;
     }
 
     @Override
@@ -59,6 +64,12 @@ public class GradeServiceImpl implements GradeService {
             throw new ValidationException("Lecturer is not valid!");
         }
         return gradeRepository.save(grade);
+    }
+
+    @Override
+    public List<Grade> getGradesForLoggedInStudent() {
+        Long studentId =  userAccountService.getCurrentLoggedInUser().getId();
+        return gradeRepository.findByStudentAccountId(studentId);
     }
 
     private boolean isMarkValid(Grade grade) {
