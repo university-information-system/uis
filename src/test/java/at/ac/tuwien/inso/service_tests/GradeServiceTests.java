@@ -24,6 +24,7 @@ import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.service.LecturerService;
 import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.UserAccountService;
 import at.ac.tuwien.inso.service.impl.GradeServiceImpl;
 
 import static org.junit.Assert.assertEquals;
@@ -44,6 +45,9 @@ public class GradeServiceTests {
 
     @Mock
     private CourseService courseService;
+
+    @Mock
+    private UserAccountService userAccountService;
 
     @Mock
     private GradeRepository gradeRepository;
@@ -80,7 +84,10 @@ public class GradeServiceTests {
         when(lecturerService.getLoggedInLecturer()).thenReturn(lecturer);
         when(gradeRepository.save(validGrade)).thenReturn(validGrade);
 
-        gradeService = new GradeServiceImpl(gradeRepository, studentService, courseService, lecturerService);
+
+        gradeService = new GradeServiceImpl(
+                gradeRepository, studentService, courseService, lecturerService, userAccountService
+        );
     }
 
     @Test
