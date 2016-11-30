@@ -102,7 +102,7 @@ public class AdminStudyPlansController {
     }
     
     @GetMapping(value = "/disable", params = {"id"})
-    private String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
+    public String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
       System.out.println("Disabling "+id);
       studyPlanService.disableStudyPlan(id);
       return "redirect:/admin/studyplans";
@@ -166,10 +166,17 @@ public class AdminStudyPlansController {
     @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
     public String removeSubjectFromStudyPlan(@RequestParam Long studyPlanId, @RequestParam Long subjectId, Model model){
       StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
-      System.out.println("studyplan="+studyPlan+studyPlan.getName());
       Subject subject = subjectService.findOne(subjectId);
       
-      //subjectForStudyPlanRepository.save(new SubjectForStudyPlan(
+      System.out.println("studyP: "+studyPlan.getId());
+      System.out.println("Servus");
+      if(subject==null){
+        System.out.println("subject is null");
+      }else{
+        System.out.println(subject.toString());
+      }
+      System.out.println("subject: "+subject.getId());
+      System.out.println("hallo");
       
       studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
       return "redirect:/admin/studyplans/?id=" + studyPlanId;
