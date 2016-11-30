@@ -122,4 +122,24 @@ public class StudyPlanServiceTests {
         studyPlanService.addSubjectToStudyPlan(subjectForStudyPlan);
     }
 
+    /**
+     * @author m.pazourek
+     */
+    @Test(expected = ValidationException.class)
+    public void removeSubjectFromStudyPlanSubjectIdNotNullTest(){
+     
+      subjectForStudyPlan.getStudyPlan().setId(null);
+      Subject subject = subjects.get(0);
+      
+      studyPlanService.removeSubjectFromStudyPlan(subjectForStudyPlan.getStudyPlan(), subject);
+    }
+    
+    @Test(expected = ValidationException.class)
+    public void removeSubjectsFromStudyPlanStudyPlanIdNotNullTest(){
+
+      Subject subject = subjects.get(0);
+      subject.setId(null);
+      
+      studyPlanService.removeSubjectFromStudyPlan(subjectForStudyPlan.getStudyPlan(), subject);
+    }
 }

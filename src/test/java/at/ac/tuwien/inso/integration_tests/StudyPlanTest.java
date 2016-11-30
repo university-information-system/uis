@@ -81,7 +81,7 @@ public class StudyPlanTest {
         );
     }
 
-    @Test
+    @Test()
     public void adminShouldSeeDetailsOfStudyPlan() throws Exception {
 
         // given subjects in a study plan
@@ -204,26 +204,47 @@ public class StudyPlanTest {
      * @throws Exception 
      */
     @Test
-    public void disableStudyPlanTest(){
+    public void disableStudyPlanTest() throws Exception{
       StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
+      mockMvc.perform(
+          get("/admin/studyplans/disable/")
+          .param("id", studyPlan.getId().toString())
+          .with(user("admin").roles(Role.ADMIN.name()))
+          ).andExpect(    
+              (redirectedUrl("/admin/studyplans"))
+              ).andExpect(it -> {
+                StudyPlan s = studyPlanRepository.findOne(studyPlan.getId());
+                assertFalse(s.isEnabled());
+              });
 
-      try{
-        mockMvc.perform(
-            get("/admin/studyplans/disable/")
-            .param("id", studyPlan.getId()+"")
-            .with(user("admin").roles(Role.ADMIN.name()))
-            ).andExpect(    
-                (redirectedUrl("/admin/studyplans"))
-                ).andExpect(it -> {
-                  StudyPlan s = studyPlanRepository.findOne(studyPlan.getId());
-                  assertFalse(s.isEnabled());
-                });
+    }
+    
+    /**
+     * @author m.pazourek
+     * Tests if a Subject can be removed from a study plan and that the browser redirects properly afterwards
+     * @throws Exception 
+     */
+    @Test
+    public void removeSubjectFromStudyPlanTest() throws Exception{
 
-      }catch(Exception e){
-        assertFalse(true);//fail
-      }
+      // given subjects in a study plan
+      StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
+      SubjectForStudyPlan s1 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(0), studyPlan, true, 1));
+      SubjectForStudyPlan s2 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(1), studyPlan, true, 1));
 
-
+      System.out.println("s1" +s1.getId());
+      System.out.println("studyPlan "+studyPlan.getId());
+      
+      mockMvc.perform(
+          get("/admin/studyplans/remove/").with(user("admin").roles("ADMIN"))
+          .param("studyPlanId", studyPlan.getId().toString())
+          .param("subjectId", s2.getSubject().getId().toString())
+          ).andExpect(    
+              (redirectedUrl("/admin/studyplans/?id="+studyPlan.getId().toString()))
+              ).andExpect(it -> {
+                List<SubjectForStudyPlan> list = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(studyPlan.getId());
+                assertFalse(list.contains(s2));
+              });
     }
 
 }

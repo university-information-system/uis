@@ -96,10 +96,33 @@ public class StudyPlanServiceImpl implements StudyPlanService {
 
     }
 
+    /**
+     * @author m.pazourek
+     * disables a studyplan by the given id
+     */
     @Override
     public void disableStudyPlan(Long id) {
       StudyPlan studyPlan = findOne(id);
       studyPlan.setEnabled(false);
       studyPlanRepository.save(studyPlan);
+    }
+
+    /**
+     * @author m.pazourek
+     * removes a subject from the studyplan
+     */
+    @Override
+    public void removeSubjectFromStudyPlan(StudyPlan sp, Subject s) {
+      System.out.println(sp.getId()+", "+s.getId());
+      if(sp==null||sp.getId()==null||s==null||s.getId()==null){
+        throw new ValidationException();
+      }
+      
+      List<SubjectForStudyPlan> sfsp = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(sp.getId());
+      for(SubjectForStudyPlan each:sfsp){
+        if(each.getSubject().getId() == s.getId()){
+          subjectForStudyPlanRepository.delete(each);
+        }
+      }      
     }
 }

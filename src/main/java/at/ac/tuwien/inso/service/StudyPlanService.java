@@ -31,6 +31,15 @@ public interface StudyPlanService {
      * @author m.pazourek
      * @param id
      */
+    @PreAuthorize("hasRole('ADMIN')")
+    void disableStudyPlan(Long id);
+
+	/**
+	 * removes a given subject s from the studyplan sp
+	 * @author m.pazourek
+	 * @param sp
+	 * @param s
+	 */
 	@PreAuthorize("hasRole('ADMIN')")
-    public void disableStudyPlan(Long id);
+    void removeSubjectFromStudyPlan(StudyPlan sp, Subject s);
 }

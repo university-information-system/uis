@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.controller.admin;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.ValidationException;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -28,6 +29,9 @@ public class AdminStudyPlansController {
     
     @Autowired
     private StudentService studentService;
+    
+    @Autowired
+    private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
     @GetMapping
     public String getStudyplansView() {
@@ -98,7 +102,7 @@ public class AdminStudyPlansController {
     }
     
     @GetMapping(value = "/disable", params = {"id"})
-    private String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
+    public String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
       System.out.println("Disabling "+id);
       studyPlanService.disableStudyPlan(id);
       return "redirect:/admin/studyplans";
@@ -120,14 +124,14 @@ public class AdminStudyPlansController {
      */
     @GetMapping(value = "/registerStudent", params = "studentId")
     public String registerStudent(@RequestParam Long studentId, @RequestParam Long studyPlanId) {
-        StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
-        Student student = studentService.findOne(studentId);
+      StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+      Student student = studentService.findOne(studentId);
 
-        studentService.registerStudentToStudyPlan(student, studyPlan);
-                
-        return "redirect:/admin/users/"+student.getId();
+      studentService.registerStudentToStudyPlan(student, studyPlan);
+
+      return "redirect:/admin/users/"+student.getId();
     }
-    
+
     /**
      * @author m.pazourek
      * @param studentToAddId
@@ -136,27 +140,46 @@ public class AdminStudyPlansController {
      */
     @GetMapping(value = "/registerStudent", params = "studentToAddId")
     public String registerStudentView(@RequestParam Long studentToAddId, Model model) {
-        Student student = studentService.findOne(studentToAddId);
+      Student student = studentService.findOne(studentToAddId);
 
-        model.addAttribute("user", student);
-        model.addAttribute("test", "testString");
-        
-        List<StudyPlan> toShow = new ArrayList<StudyPlan>();
-        for (StudyPlan sp : studyPlanService.findAll()) {
-            boolean error = false;
-            for(StudyPlanRegistration studentSp : student.getStudyplans()){
-                if(sp.equals(studentSp.getStudyplan())){
-                    error = true;
-                }
-            }
-            if(!error&&sp.isEnabled()){
-                toShow.add(sp);
-            }
+      model.addAttribute("user", student);
+      model.addAttribute("test", "testString");
+
+      List<StudyPlan> toShow = new ArrayList<StudyPlan>();
+      for (StudyPlan sp : studyPlanService.findAll()) {
+        boolean error = false;
+        for(StudyPlanRegistration studentSp : student.getStudyplans()){
+          if(sp.equals(studentSp.getStudyplan())){
+            error = true;
+          }
         }
-        
-        model.addAttribute("studyPlans", toShow);
-        
-        return "admin/addStudyPlanToStudent";
+        if(!error&&sp.isEnabled()){
+          toShow.add(sp);
+        }
+      }
+
+      model.addAttribute("studyPlans", toShow);
+
+      return "admin/addStudyPlanToStudent";
+    }
+
+    @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
+    public String removeSubjectFromStudyPlan(@RequestParam Long studyPlanId, @RequestParam Long subjectId, Model model){
+      StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+      Subject subject = subjectService.findOne(subjectId);
+      
+      System.out.println("studyP: "+studyPlan.getId());
+      System.out.println("Servus");
+      if(subject==null){
+        System.out.println("subject is null");
+      }else{
+        System.out.println(subject.toString());
+      }
+      System.out.println("subject: "+subject.getId());
+      System.out.println("hallo");
+      
+      studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
+      return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
 
 }

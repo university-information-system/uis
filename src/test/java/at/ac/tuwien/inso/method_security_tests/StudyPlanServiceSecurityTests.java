@@ -139,5 +139,23 @@ public class StudyPlanServiceSecurityTests {
         studyPlanService.addSubjectToStudyPlan(
                 new SubjectForStudyPlan(new Subject(), studyPlan, true));
     }
+    
+    @Test(expected = ValidationException.class)
+    @WithMockUser(roles = "ADMIN")
+    public void removeSubjectFromStudyPlanAuthenticatedAsAdmin() {
+        studyPlanService.removeSubjectFromStudyPlan(new StudyPlan(), new Subject());
+    }
+    
+    @Test(expected = AccessDeniedException.class)
+    @WithMockUser(roles = "STUDENT")
+    public void removeSubjectFromStudyPlanAuthenticatedAsStudent() {
+      studyPlanService.removeSubjectFromStudyPlan(new StudyPlan(), new Subject());
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    @WithMockUser(roles = "LECTURER")
+    public void removeSubjectFromStudyPlanAuthenticatedAsLecturer() {
+      studyPlanService.removeSubjectFromStudyPlan(new StudyPlan(), new Subject());
+    }
 
 }
