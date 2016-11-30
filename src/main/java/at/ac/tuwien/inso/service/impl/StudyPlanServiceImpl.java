@@ -106,14 +106,19 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     public void removeSubjectFromStudyPlan(StudyPlan sp, Subject s) {
      
-      List<SubjectForStudyPlan> subjectsForStudyPlan = sp.getSubjects();
+      //List<SubjectForStudyPlan> subjectsForStudyPlan = new ArrayList<SubjectForStudyPlan>();
+      System.out.println("removingHallo");
+      System.out.println("size"+sp.getSubjects().size());
       
-      for(SubjectForStudyPlan sfsp:subjectsForStudyPlan){
+      for(SubjectForStudyPlan sfsp:sp.getSubjects()){
+        System.out.println("hallo");
+        System.out.println(sfsp.getSubject().getName()+", "+s.getName());
         if(sfsp.getSubject().getId()==s.getId()){
-          sp.removeSubjects(sfsp);
+          System.out.println("found" + s.getName());
+          sp.removeSubjects(sfsp);      
         }
       }
-      
+            
       studyPlanRepository.save(sp);
       
     }

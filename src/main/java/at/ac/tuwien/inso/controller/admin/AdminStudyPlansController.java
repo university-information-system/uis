@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.controller.admin;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.ValidationException;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -28,6 +29,9 @@ public class AdminStudyPlansController {
     
     @Autowired
     private StudentService studentService;
+    
+    @Autowired
+    private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
     @GetMapping
     public String getStudyplansView() {
@@ -162,7 +166,11 @@ public class AdminStudyPlansController {
     @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
     public String removeSubjectFromStudyPlan(@RequestParam Long studyPlanId, @RequestParam Long subjectId, Model model){
       StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+      System.out.println("studyplan="+studyPlan+studyPlan.getName());
       Subject subject = subjectService.findOne(subjectId);
+      
+      //subjectForStudyPlanRepository.save(new SubjectForStudyPlan(
+      
       studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
       return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
