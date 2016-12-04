@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="student/index">
+<body>
+<main layout:fragment="main">
+
+    <div class="container">
+        <h2 th:text="#{student.my.courses.label}"></h2>
+
+        <div th:each="semesterProgress : ${studyProgress.semestersProgress}">
+            <h6 class="section-separator" th:text="${semesterProgress.semester.label}"></h6>
+
+            <div th:if="${#lists.isEmpty(semesterProgress.courseRegistrations)}">
+                You have not registered to any course in this semester.
+            </div>
+
+            <ul class="collection z-depth-1" th:if="${not #lists.isEmpty(semesterProgress.courseRegistrations)}">
+                <li class="collection-item" th:each="courseRegistration : ${semesterProgress.courseRegistrations}">
+
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).in_progress}"
+                       data-position="bottom" data-delay="50" data-tooltip="Unregister"
+                       href="#" class="secondary-content tooltipped"><i class="material-icons">remove_circle</i></a>
+
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).needs_feedback}"
+                       data-position="bottom" data-delay="50" data-tooltip="Give feedback"
+                       href="#" class="secondary-content tooltipped"><i class="material-icons">thumbs_up_down</i></a>
+
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).complete_ok}"
+                       data-position="bottom" data-delay="50" data-tooltip="Course successfully completed"
+                       class="secondary-content tooltipped"><i class="material-icons">done</i></a>
+
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).complete_not_ok}"
+                       data-position="bottom" data-delay="50" data-tooltip="Course unsatisfactory completed"
+                       class="secondary-content tooltipped"><i class="material-icons grey-text">warning</i></a>
+
+                    <a class="title teal-text" href="#" th:text="${courseRegistration.course.subject.name}"></a>
+                    <div>
+                        <span th:text="${courseRegistration.course.subject.ects}"></span>
+                        <span> ECTS</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
