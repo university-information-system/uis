@@ -1,9 +1,9 @@
 package at.ac.tuwien.inso.service;
 
 import at.ac.tuwien.inso.entity.*;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.*;
 
-import java.util.List;
+import java.util.*;
 
 public interface StudentService {
 
@@ -12,6 +12,9 @@ public interface StudentService {
 
     @PreAuthorize("isAuthenticated()")
     Student findOne(UserAccount account);
+
+    @PreAuthorize("isAuthenticated()")
+    Student findByUsername(String username);
 
     @PreAuthorize("hasRole('ADMIN')")
     List<StudyPlanRegistration> findStudyPlanRegistrationsFor(Student student);

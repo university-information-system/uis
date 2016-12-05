@@ -1,14 +1,13 @@
 package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.service.SemesterService;
-import at.ac.tuwien.inso.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -28,6 +27,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findOne(UserAccount account) {
         return studentRepository.findByAccount(account);
+    }
+
+    @Override
+    public Student findByUsername(String username) {
+        return studentRepository.findByUsername(username);
     }
 
     @Override

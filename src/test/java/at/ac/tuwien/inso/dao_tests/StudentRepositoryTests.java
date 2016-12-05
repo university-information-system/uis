@@ -2,24 +2,20 @@ package at.ac.tuwien.inso.dao_tests;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.repository.utils.TagFrequency;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import at.ac.tuwien.inso.repository.utils.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.*;
+import java.util.*;
 
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.collection.IsEmptyCollection.*;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -74,7 +70,7 @@ public class StudentRepositoryTests {
 
     private Map<String, Student> students = new HashMap<String, Student>() {
         {
-            put("Student1", new Student("s1127157", "Emma Dowd", "emma.dowd@gmail.com", null));
+            put("Student1", new Student("s1127157", "Emma Dowd", "emma.dowd@gmail.com", new UserAccount("student", "pass", Role.STUDENT)));
             put("Student2", new Student("s1123960", "Caroline Black", "caroline.black@uis.at", null));
         }
     };
@@ -121,5 +117,15 @@ public class StudentRepositoryTests {
         expected.put("Tag3", 1L);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void itReturnsNullOnFindByUsernameWithUnknownUsername() throws Exception {
+        assertNull(studentRepository.findByUsername("unknown"));
+    }
+
+    @Test
+    public void itFindsStudentByUsername() throws Exception {
+        assertEquals(students.get("Student1"), studentRepository.findByUsername("student"));
     }
 }

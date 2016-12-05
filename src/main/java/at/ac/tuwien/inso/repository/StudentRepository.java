@@ -1,12 +1,11 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.repository.utils.TagFrequency;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.utils.*;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.*;
 
-import java.util.List;
+import java.util.*;
 
 public interface StudentRepository extends CrudRepository<Student, Long> {
 
@@ -17,4 +16,9 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
     List<TagFrequency> computeTagsFrequencyFor(Student student);
 
     Student findByAccount(UserAccount account);
+
+    @Query("select s " +
+            "from Student s join s.account a " +
+            "where a.username = ?1")
+    Student findByUsername(String username);
 }

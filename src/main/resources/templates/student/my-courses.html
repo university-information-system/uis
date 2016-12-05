@@ -18,19 +18,19 @@
             <ul class="collection z-depth-1" th:if="${not #lists.isEmpty(semesterProgress.courseRegistrations)}">
                 <li class="collection-item" th:each="courseRegistration : ${semesterProgress.courseRegistrations}">
 
-                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).in_progress}"
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).in_progress}"
                        data-position="bottom" data-delay="50" data-tooltip="Unregister"
                        href="#" class="secondary-content tooltipped"><i class="material-icons">remove_circle</i></a>
 
-                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).needs_feedback}"
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).needs_feedback}"
                        data-position="bottom" data-delay="50" data-tooltip="Give feedback"
                        href="#" class="secondary-content tooltipped"><i class="material-icons">thumbs_up_down</i></a>
 
-                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).complete_ok}"
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).complete_ok}"
                        data-position="bottom" data-delay="50" data-tooltip="Course successfully completed"
                        class="secondary-content tooltipped"><i class="material-icons">done</i></a>
 
-                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.controller.student.StudentMyCoursesController.CourseRegistrationState).complete_not_ok}"
+                    <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).complete_not_ok}"
                        data-position="bottom" data-delay="50" data-tooltip="Course unsatisfactory completed"
                        class="secondary-content tooltipped"><i class="material-icons grey-text">warning</i></a>
 
