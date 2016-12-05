@@ -72,7 +72,7 @@ public class StudyPlanTest {
     }
 
     @Test
-    public void adminShouldSeeAllStudyPlans() throws Exception {
+    public void adminShouldSeeAllStudyPlansTest() throws Exception {
 
         // given study plans
         studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
@@ -86,7 +86,7 @@ public class StudyPlanTest {
     }
 
     @Test()
-    public void adminShouldSeeDetailsOfStudyPlan() throws Exception {
+    public void adminShouldSeeDetailsOfStudyPlanTest() throws Exception {
 
         // given subjects in a study plan
         StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
@@ -252,7 +252,7 @@ public class StudyPlanTest {
     }
 
     @Test
-    public void studentShouldSeeAllStudyPlans() throws Exception {
+    public void studentShouldSeeAllStudyPlansTest() throws Exception {
 
         // given study plans
         studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
@@ -266,7 +266,32 @@ public class StudyPlanTest {
     }
 
     @Test
-    public void studentShouldSeeOwnStudyPlans() throws Exception {
+    public void studentShouldSeeDetailsOfStudyPlanInAllStudyPlansTest() throws Exception {
+
+        // given subjects in a study plan
+        StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
+        SubjectForStudyPlan s1 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(0), studyPlan, true, 1));
+        SubjectForStudyPlan s2 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(1), studyPlan, true, 1));
+        SubjectForStudyPlan s3 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(2), studyPlan, true, 2));
+        SubjectForStudyPlan s4 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(3), studyPlan, false, 3));
+        SubjectForStudyPlan s5 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(4), studyPlan, false, 2));
+        SubjectForStudyPlan s6 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(5), studyPlan, true, 2));
+
+        // the student should see details of the study plan, containing separate lists of mandatory and optional subjects
+        mockMvc.perform(
+                get("/student/all-studyplans").param("id", studyPlan.getId().toString()).with(user("student").roles("STUDENT"))
+        ).andExpect(
+                model().attribute("studyPlan", studyPlan)
+        ).andExpect(
+                model().attribute("mandatory", asList(s1, s2, s3, s6))
+        ).andExpect(
+                model().attribute("optional", asList(s5, s4))
+        );
+    }
+
+
+    @Test
+    public void studentShouldSeeOwnStudyPlansTest() throws Exception {
 
         // given a student and study plan registrations
         studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
