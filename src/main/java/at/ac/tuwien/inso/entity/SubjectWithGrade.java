@@ -57,4 +57,26 @@ public class SubjectWithGrade {
                 ", subjectType=" + subjectType +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SubjectWithGrade that = (SubjectWithGrade) o;
+
+        if (subjectForStudyPlan != null ? !subjectForStudyPlan.equals(that.subjectForStudyPlan) : that.subjectForStudyPlan != null)
+            return false;
+        if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
+        return subjectType == that.subjectType;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = subjectForStudyPlan != null ? subjectForStudyPlan.hashCode() : 0;
+        result = 31 * result + (grade != null ? grade.hashCode() : 0);
+        result = 31 * result + subjectType.hashCode();
+        return result;
+    }
 }
