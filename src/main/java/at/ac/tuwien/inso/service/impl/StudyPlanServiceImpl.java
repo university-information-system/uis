@@ -21,16 +21,19 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
     private SubjectService subjectService;
     private MessageSource messageSource;
+    private GradeService gradeService;
 
     @Autowired
     public StudyPlanServiceImpl(
             StudyPlanRepository studyPlanRepository,
             SubjectForStudyPlanRepository subjectForStudyPlanRepository,
             SubjectService subjectService,
+            GradeService gradeService,
             MessageSource messageSource) {
         this.studyPlanRepository = studyPlanRepository;
         this.subjectForStudyPlanRepository = subjectForStudyPlanRepository;
         this.subjectService = subjectService;
+        this.gradeService = gradeService;
         this.messageSource = messageSource;
     }
 
@@ -65,6 +68,57 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Transactional(readOnly = true)
     public List<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id) {
         return subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
+    }
+
+    @Override
+    public List<SubjectWithGrade> getSubjectsWithGradesForStudyPlan(Long id) {
+        List<SubjectForStudyPlan> subjectsForStudyPlan = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
+        List<Grade> grades = gradeService.getGradesForLoggedInStudent();
+        List<SubjectWithGrade> subjectsWithGrades = new ArrayList<>();
+
+        for(SubjectForStudyPlan subjectForStudyPlan : subjectsForStudyPlan) {
+
+            if(grades.isEmpty()) {
+                // means there are no (more) grades at all
+                if (subjectForStudyPlan.getMandatory()) {
+                    subjectsWithGrades.add(new SubjectWithGrade(subjectForStudyPlan, SubjectType.MANDATORY));
+                } else {
+                    subjectsWithGrades.add(new SubjectWithGrade(subjectForStudyPlan, SubjectType.OPTIONAL));
+                }
+            }
+
+            //look for grades belonging to the actual subject
+            for(int i=0; i<grades.size(); i++) {
+                Grade grade = grades.get(i);
+                if(grade.getCourse().getSubject().equals(subjectForStudyPlan.getSubject())) {
+                    // add to mandatory or optional subjects
+                    if(subjectForStudyPlan.getMandatory()) {
+                        subjectsWithGrades.add(new SubjectWithGrade(subjectForStudyPlan, grade, SubjectType.MANDATORY));
+                    }
+                    else {
+                        subjectsWithGrades.add(new SubjectWithGrade(subjectForStudyPlan, grade, SubjectType.OPTIONAL));
+                    }
+                    grades.remove(grade);
+                    break;
+                }
+                else if(i == grades.size()-1) {
+                    // means we reached the end of the list. there is no grade for this subject
+                    if(subjectForStudyPlan.getMandatory()) {
+                        subjectsWithGrades.add(new SubjectWithGrade(subjectForStudyPlan, SubjectType.MANDATORY));
+                    }
+                    else {
+                        subjectsWithGrades.add(new SubjectWithGrade(subjectForStudyPlan, SubjectType.OPTIONAL));
+                    }
+                }
+            }
+        }
+
+        //remaining unassigned grades are used as free choice subjects
+        for(Grade grade : grades) {
+            subjectsWithGrades.add(new SubjectWithGrade(grade, SubjectType.FREE_CHOICE));
+        }
+
+        return subjectsWithGrades;
     }
 
     @Override

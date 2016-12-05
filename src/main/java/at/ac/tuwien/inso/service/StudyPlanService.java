@@ -20,6 +20,9 @@ public interface StudyPlanService {
     @PreAuthorize("isAuthenticated()")
     List<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id);
 
+    @PreAuthorize("isAuthenticated()")
+    List<SubjectWithGrade> getSubjectsWithGradesForStudyPlan(Long id);
+
     @PreAuthorize("hasRole('ADMIN')")
     void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan);
 

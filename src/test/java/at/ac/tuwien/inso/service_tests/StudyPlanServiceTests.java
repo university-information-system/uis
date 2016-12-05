@@ -8,6 +8,7 @@ import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.StudyPlanRepository;
 import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.service.SubjectService;
 import at.ac.tuwien.inso.service.impl.StudyPlanServiceImpl;
 import org.junit.Before;
@@ -40,6 +41,9 @@ public class StudyPlanServiceTests {
 
     @Mock
     private SubjectService subjectService;
+
+    @Mock
+    private GradeService gradeService;
 
     @Mock
     private MessageSource messageSource;
@@ -78,7 +82,7 @@ public class StudyPlanServiceTests {
         when(subjectForStudyPlanRepository.save(subjectForStudyPlan)).thenReturn(subjectForStudyPlan);
         when(subjectService.searchForSubjects(any())).thenReturn(subjects);
         when(subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(VALID_STUDY_PLAN_ID)).thenReturn(subjectsForStudyPlan);
-        studyPlanService = new StudyPlanServiceImpl(studyPlanRepository, subjectForStudyPlanRepository, subjectService, messageSource);
+        studyPlanService = new StudyPlanServiceImpl(studyPlanRepository, subjectForStudyPlanRepository, subjectService, gradeService, messageSource);
     }
 
     @Test
