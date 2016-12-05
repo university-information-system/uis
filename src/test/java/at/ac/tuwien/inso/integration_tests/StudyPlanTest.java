@@ -247,4 +247,18 @@ public class StudyPlanTest {
               });
     }
 
+    @Test
+    public void studentShouldSeeAllStudyPlans() throws Exception {
+
+        // given study plans
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+
+        // the admin should see them all
+        mockMvc.perform(
+                get("/student/all-studyplans").with(user("student").roles("STUDENT"))
+        ).andExpect(
+                model().attribute("studyPlans", asList(studyPlan1, studyPlan2, studyPlan3))
+        );
+    }
+
 }
