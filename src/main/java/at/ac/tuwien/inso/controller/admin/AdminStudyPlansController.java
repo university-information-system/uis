@@ -165,21 +165,10 @@ public class AdminStudyPlansController {
 
     @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
     public String removeSubjectFromStudyPlan(@RequestParam Long studyPlanId, @RequestParam Long subjectId, Model model){
-      StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
-      Subject subject = subjectService.findOne(subjectId);
-      
-      System.out.println("studyP: "+studyPlan.getId());
-      System.out.println("Servus");
-      if(subject==null){
-        System.out.println("subject is null");
-      }else{
-        System.out.println(subject.toString());
-      }
-      System.out.println("subject: "+subject.getId());
-      System.out.println("hallo");
-      
-      studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
-      return "redirect:/admin/studyplans/?id=" + studyPlanId;
+        StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+        Subject subject = subjectService.findOne(subjectId);
+        studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
+        return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
 
 }
