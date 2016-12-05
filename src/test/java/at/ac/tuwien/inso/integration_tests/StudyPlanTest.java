@@ -39,6 +39,7 @@ public class StudyPlanTest {
     private StudyPlan studyPlan2 = new StudyPlan("Master Business Informatics", new EctsDistribution(new BigDecimal(30), new BigDecimal(70), new BigDecimal(20)));
     private StudyPlan studyPlan3 = new StudyPlan("Master Computational Intelligence", new EctsDistribution(new BigDecimal(60),new BigDecimal(30),new BigDecimal(30)));
     private List<Subject> subjects;
+
     @Autowired
     private StudyPlanRepository studyPlanRepository;
 
@@ -47,9 +48,12 @@ public class StudyPlanTest {
 
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
-    
+
     @Autowired
-    private StudyPlanService studyPlanService;
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private SemesterRepository semesterRepository;
 
     @Before
     public void setUp() {
@@ -253,12 +257,34 @@ public class StudyPlanTest {
         // given study plans
         studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
 
-        // the admin should see them all
+        // the student should see them all
         mockMvc.perform(
                 get("/student/all-studyplans").with(user("student").roles("STUDENT"))
         ).andExpect(
                 model().attribute("studyPlans", asList(studyPlan1, studyPlan2, studyPlan3))
         );
+    }
+
+    @Test
+    public void studentShouldSeeOwnStudyPlans() throws Exception {
+
+        // given a student and study plan registrations
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+        UserAccount user =  new UserAccount("caroline", "pass", Role.STUDENT);
+        Student s = new Student("s1123960", "Caroline Black", "caroline.black@uis.at", user);
+        Semester ws = semesterRepository.save(new Semester("WS2016"));
+        s.addStudyplans(new StudyPlanRegistration(studyPlan1, ws), new StudyPlanRegistration(studyPlan3, ws));
+        studentRepository.save(s);
+        StudyPlanRegistration sReg1 = s.getStudyplans().get(0);
+        StudyPlanRegistration sReg3 = s.getStudyplans().get(1);
+
+        // the student should see own study plans
+        mockMvc.perform(
+                get("/student/my-studyplans").with(user(user))
+        ).andExpect(
+                model().attribute("studyPlanRegistrations", asList(sReg1, sReg3))
+        );
+
     }
 
 }
