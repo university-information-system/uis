@@ -3,11 +3,11 @@ package at.ac.tuwien.inso.controller.admin;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
 
 @Controller
 @RequestMapping("/admin/subjects")
@@ -16,14 +16,19 @@ public class AdminSubjectsController {
     @Autowired
     private SubjectService subjectService;
 
+    private static final Integer SUBJECTS_PER_PAGE = 10;
+
     @GetMapping
-    public String subjects() {
-        return "admin/subjects";
+    private String listSubjects() {
+        return "redirect:/admin/subjects/page/0";
     }
 
-    @ModelAttribute("subjects")
-    private List<Subject> getSubjects() {
-        return subjectService.findAll();
+    @GetMapping("/page/{nr}")
+    private String listSubjectsForPage(@PathVariable Integer nr, Model model) {
+        Page<Subject> subjects = subjectService.findAll(new PageRequest(nr, SUBJECTS_PER_PAGE));
+        model.addAttribute("subjects", subjects.getContent());
+        model.addAttribute("page", subjects);
+        return "admin/subjects";
     }
 
     @GetMapping(params = "id")

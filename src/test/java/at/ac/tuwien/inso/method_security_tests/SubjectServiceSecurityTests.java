@@ -53,13 +53,13 @@ public class SubjectServiceSecurityTests {
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void findAllNotAuthenticated() {
-        subjectService.findAll();
+        subjectService.findAll(null);
     }
 
     @Test
     @WithMockUser
     public void findAllAuthenticated() {
-        subjectService.findAll();
+        subjectService.findAll(null);
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)

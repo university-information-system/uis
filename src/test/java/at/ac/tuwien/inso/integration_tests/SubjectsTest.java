@@ -49,18 +49,17 @@ public class SubjectsTest {
     }
 
     @Test
-    public void adminShouldSeeAllSubjects() throws Exception {
+    public void adminShouldSeeSubjectsOfFirstPage() throws Exception {
 
         // when subjects are created
         subjectRepository.save(calculus);
         subjectRepository.save(sepm);
         subjectRepository.save(ase);
 
-        // then the admin should see them all
+        // then the admin should see them all in the first page
         mockMvc.perform(
-                get("/admin/subjects").with(user("admin").roles("ADMIN"))
-        ).andExpect(
-                model().attribute("subjects", asList(calculus, sepm, ase))
+                get("/admin/subjects/page/0").with(user("admin").roles("ADMIN")))
+                .andExpect(model().attribute("subjects", asList(calculus, sepm, ase))
         );
     }
 
