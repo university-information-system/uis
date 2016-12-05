@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="student/index">
 <body>
 
 <main layout:fragment="main">
 
-    <p>my study plans</p>
+    <div class="container">
+        <h2 th:text="#{student.nav.mystudyplans}"></h2>
+
+
+        <div th:if="${not #lists.isEmpty(studyPlanRegistrations)}">
+
+            <ul class="collection">
+                <li class="collection-item" th:each="studyPlanRegistration : ${studyPlanRegistrations}">
+                    <div>
+                        <div class="title">
+                            <a href="#" data-th-href="@{/student/my-studyplans/(id=${studyPlanRegistration.getStudyplan().getId()})}" th:text="${studyPlanRegistration.getStudyplan().getName()}"></a>
+                            <span th:if="${studyPlanRegistration.getStudyplan().enabled}" class="secondary-content"><i class="material-icons">lock_open</i></span>
+                            <span th:if="${not studyPlanRegistration.getStudyplan().enabled}" class="secondary-content"><i class="material-icons">lock_outline</i></span>
+                        </div>
+                        <div th:text="#{student.studyplan.since} + ' ' + ${studyPlanRegistration.getRegisteredSince().getLabel()}"></div>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div th:if="${#lists.isEmpty(studyPlanRegistrations)}">
+            <p th:text="#{student.studyplan.notfound}"></p>
+        </div>
+    </div>
 
 </main>
 
