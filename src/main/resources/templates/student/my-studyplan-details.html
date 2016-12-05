@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml" layout:decorator="student/index">
+
+<body>
+
+<main layout:fragment="main">
+
+    <div class="container">
+        <h2 th:if="${studyPlan.enabled}" th:text="${studyPlan.getName()}"></h2>
+        <h2 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons">lock_outline</i></h2>
+
+        <div class="row">
+            <div class="col s12 m7">
+                <div class="card-content">
+                    <ul class="collection with-header">
+                        <li class="collection-header">
+                            <h4 th:text="#{student.studyplandetails.mandatory}"></h4>
+                            <h6 th:text="${progressMandatory + ' / ' + studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"></h6>
+                        </li>
+                        <li class="collection-item" th:each="subjectWithGrade : ${mandatory}">
+                            <div class="title">
+                                <a th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
+                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark() != 5}"><i class="material-icons">done</i></span>
+                            </div>
+                            <div th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}">
+                                <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. Semester'"></div>
+                            </div>
+                            <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getEcts()} + ' ECTS'"></div>
+                            <h5 th:if="${subjectWithGrade.getGrade() != null}" th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark()}"></h5>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m7">
+                <div class="card-content">
+                    <ul class="collection with-header">
+                        <li class="collection-header">
+                            <h4 th:text="#{student.studyplandetails.optional}"></h4>
+                            <h6 th:text="${progressOptional + ' / ' + studyPlan.getEctsDistribution().getOptional() + ' ECTS'}"></h6>
+                        </li>
+                        <li class="collection-item" th:each="subjectWithGrade : ${optional}">
+                            <div class="title">
+                                <a th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
+                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark() != 5}"><i class="material-icons">done</i></span>
+                            </div>
+                            <div th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}">
+                                <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. Semester'"></div>
+                            </div>
+                            <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getEcts()} + ' ECTS'"></div>
+                            <h5 th:if="${subjectWithGrade.getGrade() != null}" th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark()}"></h5>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m7">
+                <div class="card-content">
+                    <ul class="collection with-header">
+                        <li class="collection-header">
+                            <h4 th:text="#{student.studyplandetails.free}"></h4>
+                            <h6 th:text="${progressFreeChoice + ' / ' + studyPlan.getEctsDistribution().getFreeChoice() + ' ECTS'}"></h6>
+                        </li>
+                        <li class="collection-item" th:each="subjectWithGrade : ${freeChoice}">
+                            <div th:if="${subjectWithGrade.getGrade().getMark() != 5}">
+                                <div class="title">
+                                    <a th:text="${subjectWithGrade.getGrade().getCourse().getSubject().getName()}"></a>
+                                    <span class="secondary-content"><i class="material-icons">done</i></span>
+                                </div>
+                                <div th:text="${subjectWithGrade.getGrade().getCourse().getSubject().getEcts()} + ' ECTS'"></div>
+                                <h5 th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark()}"></h5>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</main>
+
+</body>
+
+</html>
