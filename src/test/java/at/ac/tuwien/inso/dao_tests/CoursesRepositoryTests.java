@@ -2,21 +2,23 @@ package at.ac.tuwien.inso.dao_tests;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import org.hamcrest.CoreMatchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.hamcrest.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
+import java.math.*;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static at.ac.tuwien.inso.utils.IterableUtils.*;
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,6 +40,8 @@ public class CoursesRepositoryTests {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    private List<Student> students;
 
     private Map<String, Tag> tags = new HashMap<String, Tag>() {
         {
@@ -83,6 +87,11 @@ public class CoursesRepositoryTests {
 
     @Before
     public void setUp() throws Exception {
+        students = toList(studentRepository.save(asList(
+                new Student("123", "student", "student@uis.at"),
+                new Student("456", "student", "student@uis.at")
+        )));
+
         tagRepository.save(tags.values());
         subjectRepository.save(subjects.values());
         semesterRepository.save(semesters.values());
@@ -96,5 +105,25 @@ public class CoursesRepositoryTests {
         List<Course> actual = courseRepository.findAllByCurrentSemesterWithTags();
 
         assertThat(actual, CoreMatchers.hasItems(courses.get("Course1"), courses.get("Course2"), courses.get("Course3")));
+    }
+
+    @Test
+    public void findAllForStudentWithEmptyCourses() throws Exception {
+        courses.values().forEach(it -> it.addStudents(students.get(0)));
+
+        List<Course> courses = courseRepository.findAllForStudent(students.get(1));
+
+        assertThat(courses, empty());
+    }
+
+    @Test
+    public void findAllForStudentWithCourseRegistrations() throws Exception {
+        Course course = courses.get("Course1");
+        Student student = students.get(0);
+        course.addStudents(student);
+
+        List<Course> courses = courseRepository.findAllForStudent(student);
+
+        assertThat(courses, equalTo(singletonList(course)));
     }
 }

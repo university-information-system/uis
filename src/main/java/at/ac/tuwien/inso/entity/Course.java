@@ -2,10 +2,10 @@ package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
 
 @Entity
 public class Course {
@@ -94,8 +94,9 @@ public class Course {
         this.tags.removeAll(asList(tags));
     }
 
-    public void addStudents(Student... students) {
+    public Course addStudents(Student... students) {
         this.students.addAll(asList(students));
+        return this;
     }
 
     public void removeStudents(Student... students) {
