@@ -636,9 +636,10 @@ public class DataInitializer {
 
     private void registerStudentsToCourses() {
         // John Terry
-        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"));
-        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
-        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"));
+        Student john = studentMap.get("John Terry");
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addStudents(john);
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(john);
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").addStudents(john);
 
         uisUserRepository.save(studentMap.values());
     }

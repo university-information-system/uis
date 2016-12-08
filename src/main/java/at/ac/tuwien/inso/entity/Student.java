@@ -1,22 +1,16 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 @Entity
 public class Student extends UisUser {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyPlanRegistration> studyplans = new ArrayList<>();
-
-    @ManyToMany
-    private List<Course> courses = new ArrayList<>();
 
     protected Student() {
     }
@@ -38,17 +32,8 @@ public class Student extends UisUser {
         return studyplans;
     }
 
-    public List<Course> getCourses() {
-        return courses;
-    }
-
     public Student addStudyplans(StudyPlanRegistration... studyplans) {
         this.studyplans.addAll(asList(studyplans));
-        return this;
-    }
-
-    public Student addCourses(Course... courses) {
-        this.courses.addAll(asList(courses));
         return this;
     }
 }

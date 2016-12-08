@@ -10,8 +10,8 @@ import java.util.*;
 public interface StudentRepository extends CrudRepository<Student, Long> {
 
     @Query("select new at.ac.tuwien.inso.repository.utils.TagFrequency(t, count(t)) " +
-            "from Student s join s.courses c join c.tags t " +
-            "where s = ?1 " +
+            "from Course c join c.tags t " +
+            "where ?1 member of c.students " +
             "group by t")
     List<TagFrequency> computeTagsFrequencyFor(Student student);
 

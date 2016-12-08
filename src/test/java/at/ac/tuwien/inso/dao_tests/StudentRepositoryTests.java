@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.*;
 import java.math.*;
 import java.util.*;
 
+import static java.util.Arrays.*;
 import static org.hamcrest.collection.IsEmptyCollection.*;
 import static org.junit.Assert.*;
 
@@ -82,7 +83,8 @@ public class StudentRepositoryTests {
     }
 
     private void addCoursesToStudents() {
-        students.get("Student2").addCourses(courses.get("Course1"), courses.get("Course2"), courses.get("Course3"));
+        asList(courses.get("Course1"), courses.get("Course2"), courses.get("Course3"))
+                .forEach(it -> it.addStudents(students.get("Student2")));
     }
 
     @Before
