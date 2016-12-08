@@ -84,4 +84,10 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Course> findAllForStudent(Student student) {
+        return courseRepository.findAllForStudent(student);
+    }
+
 }

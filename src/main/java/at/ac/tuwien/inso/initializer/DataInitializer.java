@@ -1,23 +1,18 @@
 package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.*;
+import org.springframework.context.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
-import java.math.BigDecimal;
+import java.math.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.*;
+import java.util.stream.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 @Configuration
 @Profile("demo")
@@ -654,21 +649,21 @@ public class DataInitializer {
         Student student = course.getStudents().get(0);
         Lecturer lecturer = course.getSubject().getLecturers().get(0);
 
-        Grade grade = new Grade(course, lecturer, student, BigDecimal.ONE);
+        Grade grade = new Grade(course, lecturer, student, Mark.EXCELLENT);
         gradeRepository.save(grade);
 
         course = coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik");
         student = studentMap.get("Emma Dowd");
         lecturer = course.getSubject().getLecturers().get(0);
 
-        grade = new Grade(course, lecturer, student, BigDecimal.ONE);
+        grade = new Grade(course, lecturer, student, Mark.EXCELLENT);
         gradeRepository.save(grade);
 
         course = coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik");
         student = studentMap.get("Emma Dowd");
         lecturer = course.getSubject().getLecturers().get(0);
 
-        grade = new Grade(course, lecturer, student, BigDecimal.valueOf(3));
+        grade = new Grade(course, lecturer, student, Mark.SATISFACTORY);
         gradeRepository.save(grade);
     }
 }

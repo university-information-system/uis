@@ -1,8 +1,7 @@
 package at.ac.tuwien.inso.service;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import at.ac.tuwien.inso.entity.*;
+import org.springframework.security.access.prepost.*;
 
 import java.util.*;
 
@@ -16,4 +15,7 @@ public interface SemesterService {
 
     @PreAuthorize("isAuthenticated()")
     List<Semester> findAll();
+
+    @PreAuthorize("isAuthenticated()")
+    List<Semester> findAllSince(Semester semester);
 }

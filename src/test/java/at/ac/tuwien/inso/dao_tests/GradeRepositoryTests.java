@@ -63,7 +63,7 @@ public class GradeRepositoryTests {
         Course course = courseRepository.save(new Course(subject, semester));
         Lecturer lecturer = lecturerRepository.save(new Lecturer("abc", "lecturer", "lecturer@uis.at"));
 
-        return gradeRepository.save(new Grade(course, lecturer, student, BigDecimal.ONE));
+        return gradeRepository.save(new Grade(course, lecturer, student, Mark.EXCELLENT));
     }
 
     @Test

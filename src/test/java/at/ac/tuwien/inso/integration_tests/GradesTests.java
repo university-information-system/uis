@@ -1,42 +1,23 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.test.web.servlet.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
+import java.math.*;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Grade;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.GradeRepository;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
-import at.ac.tuwien.inso.repository.TagRepository;
-
-import static java.util.Arrays.asList;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static java.util.Arrays.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -121,7 +102,7 @@ public class GradesTests {
                 get("/lecturer/addGrade?studentId=" + student.getId() + "&courseId=" + aseWS2016.getId())
                         .with(user(user1))
         ).andExpect(
-                model().attribute("grade", new Grade(aseWS2016, lecturer1, student, BigDecimal.valueOf(5)))
+                model().attribute("grade", new Grade(aseWS2016, lecturer1, student, Mark.FAILED))
         );
     }
 
