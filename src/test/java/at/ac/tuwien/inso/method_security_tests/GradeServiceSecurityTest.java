@@ -1,39 +1,23 @@
 package at.ac.tuwien.inso.method_security_tests;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.AfterTransaction;
-import org.springframework.test.context.transaction.BeforeTransaction;
-import org.springframework.transaction.annotation.Transactional;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.*;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.security.access.*;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.test.context.support.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.test.context.transaction.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
-
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Grade;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
-import at.ac.tuwien.inso.service.GradeService;
+import java.math.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -111,25 +95,19 @@ public class GradeServiceSecurityTest {
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void saveNewGradeForStudentAndCourseNotAuthenticated() {
-        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
+        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, Mark.EXCELLENT));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
     public void saveNewGradeForStudentAndCourseAuthenticatedAsStudent() {
-        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
+        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, Mark.EXCELLENT));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "ADMIN")
     public void saveNewGradeForStudentAndCourseAuthenticatedAsAdmin() {
-        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
-    }
-
-    @Test(expected = ValidationException.class)
-    @WithUserDetails("lecturer1")
-    public void saveNewGradeForStudentAndCourseAuthenticatedAsLecturer() {
-        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, BigDecimal.ONE));
+        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, Mark.EXCELLENT));
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)

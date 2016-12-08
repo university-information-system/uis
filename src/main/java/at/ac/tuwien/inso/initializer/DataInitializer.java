@@ -2,25 +2,18 @@ package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
-import java.math.BigDecimal;
+import java.math.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.*;
+import java.util.stream.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
-@Configuration
-@Profile("demo")
+@Component
 public class DataInitializer {
 
     @Autowired
@@ -310,41 +303,35 @@ public class DataInitializer {
         }
     };
 
-    @Bean
-    CommandLineRunner initialize() {
-        return String -> {
+    @Transactional
+    public void initialize() {
+        userAccountRepository.save(new UserAccount("admin", "pass", Role.ADMIN));
 
-            userAccountRepository.save(new UserAccount("admin", "pass", Role.ADMIN));
+        createTags();
 
-            createTags();
+        createSubjects();
 
-            createSubjects();
+        createSemesters();
 
-            createSemesters();
+        createCourses();
 
-            createCourses();
+        createStudyPlans();
 
-            createStudyPlans();
+        createUsers();
 
-            createUsers();
+        registerStudentsToStudyPlans();
 
-            registerStudentsToStudyPlans();
+        addPreconditionsToSubjects();
 
-            addPreconditionsToSubjects();
+        registerSubjectsToLecturers();
 
-            registerSubjectsToLecturers();
+        addTagsToCourses();
 
-            addTagsToCourses();
+        addSubjectsToStudyPlans();
 
-            addSubjectsToStudyPlans();
+        registerCoursesToStudents();
 
-            registerCoursesToStudents();
-
-            registerStudentsToCourses();
-
-            giveGrades();
-
-        };
+        giveGrades();
     }
 
     private void createTags() {
@@ -391,7 +378,7 @@ public class DataInitializer {
         for (String subjectName : subjectsBachelorSoftwareAndInformationEngineering.keySet()) {
             coursesBachelorSoftwareAndInformationEngineering.put(
                     subjectName,
-                    new Course(subjectsBachelorSoftwareAndInformationEngineering.get(subjectName), semesters.get(1))
+                    new Course(subjectsBachelorSoftwareAndInformationEngineering.get(subjectName), semesters.get(1)).setStudentLimits(20)
             );
         }
     }
@@ -432,7 +419,7 @@ public class DataInitializer {
     private void registerStudentsToStudyPlans() {
         studentMap.get("John Terry").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
         studentMap.get("Caroline Black").addStudyplans(new StudyPlanRegistration(studyplans.get(1), semesters.get(1)));
-        studentMap.get("Emma Dowd").addStudyplans(new StudyPlanRegistration(studyplans.get(2), semesters.get(1)));
+        studentMap.get("Emma Dowd").addStudyplans(new StudyPlanRegistration(studyplans.get(2), semesters.get(0)));
         studentMap.get("Joan Watson").addStudyplans(new StudyPlanRegistration(studyplans.get(3), semesters.get(1)));
         studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(4), semesters.get(1)));
         studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(5), semesters.get(0)));
@@ -464,7 +451,6 @@ public class DataInitializer {
         s.addLecturers(lecturers.get(3));
         subjectRepository.save(s);
     }
-
 
 
     private void addTagsToCourses() {
@@ -636,16 +622,10 @@ public class DataInitializer {
         coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Caroline Black"));
 
         // John Terry
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addStudents(studentMap.get("John Terry"));
-    }
-
-    private void registerStudentsToCourses() {
-        // John Terry
-        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"));
-        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
-        studentMap.get("John Terry").addCourses(coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"));
-
-        uisUserRepository.save(studentMap.values());
+        Student john = studentMap.get("John Terry");
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addStudents(john);
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(john);
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").addStudents(john);
     }
 
 
@@ -654,21 +634,21 @@ public class DataInitializer {
         Student student = course.getStudents().get(0);
         Lecturer lecturer = course.getSubject().getLecturers().get(0);
 
-        Grade grade = new Grade(course, lecturer, student, BigDecimal.ONE);
+        Grade grade = new Grade(course, lecturer, student, Mark.EXCELLENT);
         gradeRepository.save(grade);
 
         course = coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik");
         student = studentMap.get("Emma Dowd");
         lecturer = course.getSubject().getLecturers().get(0);
 
-        grade = new Grade(course, lecturer, student, BigDecimal.ONE);
+        grade = new Grade(course, lecturer, student, Mark.EXCELLENT);
         gradeRepository.save(grade);
 
         course = coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik");
         student = studentMap.get("Emma Dowd");
         lecturer = course.getSubject().getLecturers().get(0);
 
-        grade = new Grade(course, lecturer, student, BigDecimal.valueOf(3));
+        grade = new Grade(course, lecturer, student, Mark.SATISFACTORY);
         gradeRepository.save(grade);
     }
 }

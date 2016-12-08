@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
 
 import java.math.*;
+import java.util.ArrayList;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -88,14 +89,11 @@ public class StudentTests {
         sepmSS2016 = courseRepository.save(sepmSS2016);
         sepmWS2016 = courseRepository.save(sepmWS2016);
         aseWS2016.setStudentLimits(10);
+        aseWS2016.addStudents(student2);
         aseWS2016 = courseRepository.save(aseWS2016);
         calculusWS2016 = courseRepository.save(calculusWS2016);
 
-
-        student2.addCourses(aseWS2016);
-        student2 = studentRepository.save(student2);
-
-        Grade grade = new Grade(aseWS2016, lecturer1, student2, BigDecimal.ONE);
+        Grade grade = new Grade(aseWS2016, lecturer1, student2, Mark.EXCELLENT);
         grade = gradeRepository.save(grade);
         grades.add(grade);
 

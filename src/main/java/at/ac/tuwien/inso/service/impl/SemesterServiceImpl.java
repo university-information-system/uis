@@ -32,4 +32,10 @@ public class SemesterServiceImpl implements SemesterService {
     public List<Semester> findAll() {
         return semesterRepository.findAllByOrderByIdDesc();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Semester> findAllSince(Semester semester) {
+        return semesterRepository.findAllSince(semester);
+    }
 }

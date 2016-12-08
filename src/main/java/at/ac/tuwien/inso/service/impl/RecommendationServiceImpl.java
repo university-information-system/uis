@@ -1,14 +1,11 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.utils.TagFrequency;
-import at.ac.tuwien.inso.service.RecommendationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.repository.utils.*;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
 import java.util.*;
 
@@ -27,6 +24,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         List<Course> coursesByCurrentSemester = courseRepository.findAllByCurrentSemesterWithTags();
         Map<Long, List<Course>> coursesToRecommendMap = new TreeMap<>(Collections.reverseOrder());
         List<Course> coursesToRecommendList = new ArrayList<>();
+        List<Course> studentCourses = courseRepository.findAllForStudent(student);
 
         long score;
         for (Course course : coursesByCurrentSemester) {
@@ -38,7 +36,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                     }
                 }
             }
-            if (student.getCourses().contains(course)) {
+            if (studentCourses.contains(course)) {
                 continue;
             }
             if (!coursesToRecommendMap.containsKey(score)) {

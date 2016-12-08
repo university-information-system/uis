@@ -1,9 +1,8 @@
 package at.ac.tuwien.inso.service;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
+import org.springframework.security.access.prepost.*;
 
 import javax.validation.constraints.*;
 import java.util.*;
@@ -24,4 +23,7 @@ public interface CourseService {
 
     @PreAuthorize("hasRole('STUDENT')")
     boolean registerStudentForCourse(Course course);
+
+    @PreAuthorize("isAuthenticated()")
+    List<Course> findAllForStudent(Student student);
 }

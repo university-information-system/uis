@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 public class Grade {
@@ -19,14 +18,14 @@ public class Grade {
     @ManyToOne
     private Student student;
 
-    @Column
-    private BigDecimal mark;
+    @Embedded
+    private Mark mark;
 
     protected Grade() {
 
     }
 
-    public Grade(Course course, Lecturer lecturer, Student student, BigDecimal mark) {
+    public Grade(Course course, Lecturer lecturer, Student student, Mark mark) {
         this.course = course;
         this.lecturer = lecturer;
         this.student = student;
@@ -37,20 +36,40 @@ public class Grade {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Course getCourse() {
         return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public Lecturer getLecturer() {
         return lecturer;
     }
 
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
+
     public Student getStudent() {
         return student;
     }
 
-    public BigDecimal getMark() {
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Mark getMark() {
         return mark;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
     }
 
     @Override
@@ -93,25 +112,5 @@ public class Grade {
                 ", student=" + student +
                 ", mark=" + mark +
                 '}';
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public void setLecturer(Lecturer lecturer) {
-        this.lecturer = lecturer;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public void setMark(BigDecimal mark) {
-        this.mark = mark;
     }
 }

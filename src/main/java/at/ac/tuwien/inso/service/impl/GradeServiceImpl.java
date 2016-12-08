@@ -1,23 +1,14 @@
 package at.ac.tuwien.inso.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.*;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Grade;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
-import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.repository.GradeRepository;
-import at.ac.tuwien.inso.service.CourseService;
-import at.ac.tuwien.inso.service.GradeService;
-import at.ac.tuwien.inso.service.LecturerService;
-import at.ac.tuwien.inso.service.StudentService;
-import at.ac.tuwien.inso.service.UserAccountService;
+import java.util.*;
 
 @Service
 public class GradeServiceImpl implements GradeService {
@@ -52,14 +43,11 @@ public class GradeServiceImpl implements GradeService {
         if (!course.getStudents().contains(student)) {
             throw new ValidationException("Student not registered for course!");
         }
-        return new Grade(course, lecturer, student, BigDecimal.valueOf(5));
+        return new Grade(course, lecturer, student, Mark.FAILED);
     }
 
     @Override
     public Grade saveNewGradeForStudentAndCourse(Grade grade) {
-        if (!isMarkValid(grade)) {
-            throw new ValidationException("Mark is not valid");
-        }
         if (!grade.getLecturer().equals(lecturerService.getLoggedInLecturer())) {
             throw new ValidationException("Lecturer is not valid!");
         }
@@ -72,15 +60,16 @@ public class GradeServiceImpl implements GradeService {
         return gradeRepository.findByStudentAccountId(studentId);
     }
 
-    private boolean isMarkValid(Grade grade) {
-        return (grade.getMark().compareTo(BigDecimal.ONE) > 0) &&
-                (grade.getMark().compareTo(BigDecimal.valueOf(5)) < 0);
-    }
-
     @Override
     public Grade getForValidation(String identifier) {
         Long gradeId = parseValidationIdentifier(identifier);
         return gradeRepository.findOne(gradeId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Grade> findAllOfStudent(Student student) {
+        return gradeRepository.findAllOfStudent(student);
     }
 
     private Long parseValidationIdentifier(String identifier) {

@@ -1,11 +1,10 @@
 package at.ac.tuwien.inso.service;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
+import at.ac.tuwien.inso.entity.*;
+import org.springframework.security.access.prepost.*;
+import org.springframework.stereotype.*;
 
-import java.util.List;
-
-import at.ac.tuwien.inso.entity.Grade;
+import java.util.*;
 
 @Service
 public interface GradeService {
@@ -21,4 +20,6 @@ public interface GradeService {
 
     Grade getForValidation(String identifier);
 
+    @PreAuthorize("isAuthenticated()")
+    List<Grade> findAllOfStudent(Student student);
 }

@@ -1,12 +1,17 @@
 package at.ac.tuwien.inso.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import at.ac.tuwien.inso.entity.*;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.*;
 
-import java.util.List;
-
-import at.ac.tuwien.inso.entity.Grade;
+import java.util.*;
 
 public interface GradeRepository extends CrudRepository<Grade, Long> {
 
     List<Grade> findByStudentAccountId(Long id);
+
+    @Query("select g " +
+            "from Grade g " +
+            "where g.student = ?1")
+    List<Grade> findAllOfStudent(Student student);
 }

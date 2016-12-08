@@ -16,13 +16,9 @@ header, main, footer {
   overflow: visible;
 }
 
-.collection .collection-item.avatar .letter-icon {
-  width: 42px;
-  height: 42px;
-  line-height: 42px;
-  text-align: center;
-  font-size: 26px;
-  font-weight: bold;
+.section-separator {
+  margin-top: 32px;
+  color: #757575;
 }
 
 @media only screen and (max-width : 992px) {
