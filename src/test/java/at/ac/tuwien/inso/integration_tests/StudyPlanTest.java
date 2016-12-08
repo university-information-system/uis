@@ -3,8 +3,6 @@ package at.ac.tuwien.inso.integration_tests;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.StudyPlanService;
-
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -348,11 +346,11 @@ public class StudyPlanTest {
         studentRepository.save(s);
         Lecturer l = lecturerRepository.save(new Lecturer("l1234563", "lecturer", "email"));
 
-        Grade g1 = gradeRepository.save(new Grade(courses.get(0), l, s, new BigDecimal(2)));
-        Grade g3 = gradeRepository.save(new Grade(courses.get(2), l, s, new BigDecimal(5)));
-        Grade g4 = gradeRepository.save(new Grade(courses.get(3), l, s, new BigDecimal(2)));
-        Grade g5 = gradeRepository.save(new Grade(courses.get(4), l, s, new BigDecimal(2)));
-        Grade g6 = gradeRepository.save(new Grade(courses.get(5), l, s, new BigDecimal(5)));
+        Grade g1 = gradeRepository.save(new Grade(courses.get(0), l, s, Mark.GOOD));
+        Grade g3 = gradeRepository.save(new Grade(courses.get(2), l, s, Mark.FAILED));
+        Grade g4 = gradeRepository.save(new Grade(courses.get(3), l, s, Mark.GOOD));
+        Grade g5 = gradeRepository.save(new Grade(courses.get(4), l, s, Mark.GOOD));
+        Grade g6 = gradeRepository.save(new Grade(courses.get(5), l, s, Mark.FAILED));
 
         // the student should see details of the study plan, containing separate lists of mandatory and optional subjects and grades
         mockMvc.perform(

@@ -11,8 +11,8 @@
         <div th:each="semesterProgress : ${studyProgress.semestersProgress}">
             <h6 class="section-separator" th:text="${semesterProgress.semester.label}"></h6>
 
-            <div th:if="${#lists.isEmpty(semesterProgress.courseRegistrations)}">
-                You have not registered to any course in this semester.
+            <div th:if="${#lists.isEmpty(semesterProgress.courseRegistrations)}"
+                 th:text="#{student.my.courses.no.semester.registrations}">
             </div>
 
             <ul class="collection z-depth-1" th:if="${not #lists.isEmpty(semesterProgress.courseRegistrations)}">

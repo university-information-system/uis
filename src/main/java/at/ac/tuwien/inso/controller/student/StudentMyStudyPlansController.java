@@ -1,17 +1,14 @@
 package at.ac.tuwien.inso.controller.student;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.StudentService;
-import at.ac.tuwien.inso.service.StudyPlanService;
-import at.ac.tuwien.inso.service.UserAccountService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.SyncTaskExecutor;
+import at.ac.tuwien.inso.service.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
-import org.springframework.ui.Model;
+import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
 @Controller
 @RequestMapping("/student/my-studyplans")
@@ -65,19 +62,19 @@ public class StudentMyStudyPlansController {
         // calculate study progress
         double progressMandatory = mandatory
                 .stream()
-                .filter(s-> s.getGrade() != null && s.getGrade().getMark().doubleValue() != 5)
+                .filter(s -> s.getGrade() != null && s.getGrade().getMark().isPositive())
                 .mapToDouble(s -> s.getSubjectForStudyPlan().getSubject().getEcts().doubleValue())
                 .sum();
 
         double progressOptional = optional
                 .stream()
-                .filter(s-> s.getGrade() != null && s.getGrade().getMark().doubleValue() != 5)
+                .filter(s -> s.getGrade() != null && s.getGrade().getMark().isPositive())
                 .mapToDouble(s -> s.getSubjectForStudyPlan().getSubject().getEcts().doubleValue())
                 .sum();
 
         double progressFreeChoice = freeChoice
                 .stream()
-                .filter(s-> s.getGrade().getMark().doubleValue() != 5)
+                .filter(s -> s.getGrade().getMark().isPositive())
                 .mapToDouble(s -> s.getGrade().getCourse().getSubject().getEcts().doubleValue())
                 .sum();
 
