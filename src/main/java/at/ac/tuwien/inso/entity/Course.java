@@ -107,8 +107,9 @@ public class Course {
         return studentLimits;
     }
 
-    public void setStudentLimits(int studentLimits) {
+    public Course setStudentLimits(int studentLimits) {
         this.studentLimits = studentLimits;
+        return this;
     }
 
     @Override

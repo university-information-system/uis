@@ -1,11 +1,10 @@
 package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.*;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
-import org.springframework.context.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
 import java.math.*;
 import java.util.ArrayList;
@@ -14,8 +13,7 @@ import java.util.stream.*;
 
 import static java.util.Arrays.*;
 
-@Configuration
-@Profile("demo")
+@Component
 public class DataInitializer {
 
     @Autowired
@@ -305,41 +303,35 @@ public class DataInitializer {
         }
     };
 
-    @Bean
-    CommandLineRunner initialize() {
-        return String -> {
+    @Transactional
+    public void initialize() {
+        userAccountRepository.save(new UserAccount("admin", "pass", Role.ADMIN));
 
-            userAccountRepository.save(new UserAccount("admin", "pass", Role.ADMIN));
+        createTags();
 
-            createTags();
+        createSubjects();
 
-            createSubjects();
+        createSemesters();
 
-            createSemesters();
+        createCourses();
 
-            createCourses();
+        createStudyPlans();
 
-            createStudyPlans();
+        createUsers();
 
-            createUsers();
+        registerStudentsToStudyPlans();
 
-            registerStudentsToStudyPlans();
+        addPreconditionsToSubjects();
 
-            addPreconditionsToSubjects();
+        registerSubjectsToLecturers();
 
-            registerSubjectsToLecturers();
+        addTagsToCourses();
 
-            addTagsToCourses();
+        addSubjectsToStudyPlans();
 
-            addSubjectsToStudyPlans();
+        registerCoursesToStudents();
 
-            registerCoursesToStudents();
-
-            registerStudentsToCourses();
-
-            giveGrades();
-
-        };
+        giveGrades();
     }
 
     private void createTags() {
@@ -386,7 +378,7 @@ public class DataInitializer {
         for (String subjectName : subjectsBachelorSoftwareAndInformationEngineering.keySet()) {
             coursesBachelorSoftwareAndInformationEngineering.put(
                     subjectName,
-                    new Course(subjectsBachelorSoftwareAndInformationEngineering.get(subjectName), semesters.get(1))
+                    new Course(subjectsBachelorSoftwareAndInformationEngineering.get(subjectName), semesters.get(1)).setStudentLimits(20)
             );
         }
     }
@@ -427,7 +419,7 @@ public class DataInitializer {
     private void registerStudentsToStudyPlans() {
         studentMap.get("John Terry").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
         studentMap.get("Caroline Black").addStudyplans(new StudyPlanRegistration(studyplans.get(1), semesters.get(1)));
-        studentMap.get("Emma Dowd").addStudyplans(new StudyPlanRegistration(studyplans.get(2), semesters.get(1)));
+        studentMap.get("Emma Dowd").addStudyplans(new StudyPlanRegistration(studyplans.get(2), semesters.get(0)));
         studentMap.get("Joan Watson").addStudyplans(new StudyPlanRegistration(studyplans.get(3), semesters.get(1)));
         studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(4), semesters.get(1)));
         studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(5), semesters.get(0)));
@@ -459,7 +451,6 @@ public class DataInitializer {
         s.addLecturers(lecturers.get(3));
         subjectRepository.save(s);
     }
-
 
 
     private void addTagsToCourses() {
@@ -631,17 +622,10 @@ public class DataInitializer {
         coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Caroline Black"));
 
         // John Terry
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addStudents(studentMap.get("John Terry"));
-    }
-
-    private void registerStudentsToCourses() {
-        // John Terry
         Student john = studentMap.get("John Terry");
         coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addStudents(john);
         coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(john);
         coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").addStudents(john);
-
-        uisUserRepository.save(studentMap.values());
     }
 
 

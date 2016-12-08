@@ -72,7 +72,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public boolean registerStudentForCourse(Course course) {
-        Student student = studentRepository.findOne(userAccountService.getCurrentLoggedInUser().getId());
+        Student student = studentRepository.findByUsername(userAccountService.getCurrentLoggedInUser().getUsername());
         if (course.getStudentLimits() <= course.getStudents().size()) {
             return false;
         } else if (course.getStudents().contains(student)) {
