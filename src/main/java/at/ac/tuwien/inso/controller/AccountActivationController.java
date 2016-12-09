@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.controller;
 
 import at.ac.tuwien.inso.controller.forms.*;
+import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -35,14 +36,16 @@ public class AccountActivationController {
                                   Model model,
                                   RedirectAttributes attributes,
                                   HttpServletResponse response) {
+        UisUser user = accountActivationService.findOne(activationCode).getForUser();
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", accountActivationService.findOne(activationCode).getForUser());
+            model.addAttribute("user", user);
 
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "account-activation";
         }
 
-        accountActivationService.activateAccount(activationCode, accountActivationForm.toUserAccount());
+        accountActivationService.activateAccount(activationCode, accountActivationForm.toUserAccount(user));
         attributes.addFlashAttribute("flashMessage", "account.activated");
 
         return "redirect:/login";

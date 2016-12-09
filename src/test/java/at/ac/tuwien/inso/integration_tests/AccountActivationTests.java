@@ -85,7 +85,7 @@ public class AccountActivationTests {
     @Test
     public void itReturnsErrorPageOnActivateAccountWithInvalidActivationCode() throws Exception {
         mockMvc.perform(
-                activateAccount("unknown", new AccountActivationForm("user", "pass", "pass"))
+                activateAccount("unknown", new AccountActivationForm("pass", "pass"))
         ).andExpect(
                 status().isNotFound()
         ).andExpect(
@@ -98,7 +98,6 @@ public class AccountActivationTests {
     private RequestBuilder activateAccount(String activationCode, AccountActivationForm accountActivationForm) {
         return post("/account_activation/" + activationCode)
                 .with(csrf())
-                .param("username", accountActivationForm.getUsername())
                 .param("password", accountActivationForm.getPassword())
                 .param("repeatPassword", accountActivationForm.getRepeatPassword());
     }
@@ -106,20 +105,20 @@ public class AccountActivationTests {
     @Test
     public void itDoesNotActivateAccountOnEmptyFormFields() throws Exception {
         mockMvc.perform(
-                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("", "", ""))
+                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("", ""))
         ).andExpect(
                 status().isBadRequest()
         ).andExpect(
                 model().attribute("user", pendingAccountActivation.getForUser())
         ).andExpect(
-                model().attributeHasFieldErrors("accountActivationForm", "username", "password", "repeatPassword")
+                model().attributeHasFieldErrors("accountActivationForm", "password", "repeatPassword")
         );
     }
 
     @Test
     public void itDoesNotActivateAccountIfRepeatPasswordDoesNotMatch() throws Exception {
         mockMvc.perform(
-                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("user", "pass1", "pass2"))
+                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("pass1", "pass2"))
         ).andExpect(
                 status().isBadRequest()
         ).andExpect(
@@ -130,22 +129,9 @@ public class AccountActivationTests {
     }
 
     @Test
-    public void itDoesNotActivateAccountIfUsernameIsNotUnique() throws Exception {
-        mockMvc.perform(
-                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("student", "pass", "pass"))
-        ).andExpect(
-                status().isBadRequest()
-        ).andExpect(
-                model().attribute("user", pendingAccountActivation.getForUser())
-        ).andExpect(
-                model().attributeHasFieldErrors("accountActivationForm", "username")
-        );
-    }
-
-    @Test
     public void itActivatesUserAccount() throws Exception {
         mockMvc.perform(
-                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("user", "pass", "pass"))
+                activateAccount(pendingAccountActivation.getId(), new AccountActivationForm("pass", "pass"))
         ).andExpect(
                 redirectedUrl("/login")
         ).andExpect(
@@ -163,7 +149,7 @@ public class AccountActivationTests {
 
     private void userCanLogin(MvcResult result) throws Exception {
         mockMvc.perform(
-                formLogin().user("user").password("pass")
+                formLogin().user("s1234567").password("pass")
         ).andExpect(
                 authenticated().withRoles(Role.STUDENT.name())
         );

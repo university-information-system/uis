@@ -21,14 +21,12 @@
                   th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${accountActivationForm}">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="username" th:field="*{username}" type="text"/>
+                        <input id="username" th:value="${user.identificationNumber}" type="text" disabled="disabled"/>
                         <label for="username" th:text="#{username}"></label>
-                        <span class="red-text" th:if="${#fields.hasErrors('username')}"
-                              th:text="#{username.error}"></span>
                     </div>
 
                     <div class="input-field col s12">
-                        <input id="password" th:field="*{password}" type="password"/>
+                        <input id="password" th:field="*{password}" type="password" autofocus="autofocus"/>
                         <label for="password" th:text="#{password}"></label>
                         <span class="red-text" th:if="${#fields.hasErrors('password')}"
                               th:text="#{password.error}"></span>

@@ -1,15 +1,10 @@
 package at.ac.tuwien.inso.controller.forms;
 
-import at.ac.tuwien.inso.controller.forms.validation.*;
 import at.ac.tuwien.inso.entity.*;
 import org.hibernate.validator.constraints.*;
 
 @ScriptAssert(lang = "javascript", script = "_this.password === _this.repeatPassword", message = "{repeat.password.error}")
 public class AccountActivationForm {
-
-    @NotEmpty
-    @UniqueUsername
-    private String username;
 
     @NotEmpty
     private String password;
@@ -21,23 +16,13 @@ public class AccountActivationForm {
 
     }
 
-    public AccountActivationForm(String username, String password, String repeatPassword) {
-        this.username = username;
+    public AccountActivationForm(String password, String repeatPassword) {
         this.password = password;
         this.repeatPassword = repeatPassword;
     }
 
-    public UserAccount toUserAccount() {
-        return new UserAccount(username, password);
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public AccountActivationForm setUsername(String username) {
-        this.username = username;
-        return this;
+    public UserAccount toUserAccount(UisUser user) {
+        return new UserAccount(user.getIdentificationNumber(), password);
     }
 
     public String getPassword() {
@@ -60,13 +45,11 @@ public class AccountActivationForm {
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         AccountActivationForm that = (AccountActivationForm) o;
 
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         return repeatPassword != null ? repeatPassword.equals(that.repeatPassword) : that.repeatPassword == null;
 
@@ -74,16 +57,8 @@ public class AccountActivationForm {
 
     @Override
     public int hashCode() {
-        int result = username != null ? username.hashCode() : 0;
-        result = 31 * result + (password != null ? password.hashCode() : 0);
+        int result = password != null ? password.hashCode() : 0;
         result = 31 * result + (repeatPassword != null ? repeatPassword.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "AccountActivationForm{" +
-                "username='" + username + '\'' +
-                '}';
     }
 }

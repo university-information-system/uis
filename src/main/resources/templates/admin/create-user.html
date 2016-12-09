@@ -31,7 +31,8 @@
                                 </div>
 
                                 <div class="input-field col s12">
-                                    <input id="identificationNumber" th:field="*{identificationNumber}" type="text"/>
+                                    <input id="identificationNumber" th:field="*{identificationNumber}" type="text"
+                                           autofocus="autofocus"/>
                                     <label for="identificationNumber"
                                            th:text="#{admin.users.create.form.identificationNumber}"></label>
                                     <span class="red-text" th:if="${#fields.hasErrors('identificationNumber')}"
