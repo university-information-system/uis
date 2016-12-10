@@ -39,11 +39,6 @@ public class AdminSubjectLecturersController {
         return subjectService.getAvailableLecturersForSubject(subjectId);
     }
 
-    @GetMapping("/lecturers")
-    public String addLecturerForm(AddLecturersToSubjectForm addLecturersToSubjectForm) {
-        return "/admin/add-lecturer-to-subject";
-    }
-
     @PostMapping("/lecturers")
     public String addLecturer(
             @PathVariable Long subjectId,
