@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.SubjectNotFoundException;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
@@ -53,7 +54,7 @@ public class SubjectServiceImpl implements SubjectService {
 
         if (subject == null) {
             String msg = "Subject with id " + lecturerUisUserId + " not found";
-            throw new BusinessObjectNotFoundException(msg);
+            throw new SubjectNotFoundException(msg);
         }
 
         subject.addLecturers(lecturer);
@@ -70,8 +71,7 @@ public class SubjectServiceImpl implements SubjectService {
         Subject subject = subjectRepository.findById(subjectId);
 
         if (subject == null) {
-            String msg = "Subject with id '" + subjectId + "' not found";
-            throw new BusinessObjectNotFoundException(msg);
+            throw new SubjectNotFoundException("Subject with id '" + subjectId + "' not found");
         }
 
         List<Lecturer> currentLecturers = subject.getLecturers();
