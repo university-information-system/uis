@@ -1,16 +1,22 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.SubjectNotFoundException;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.service.SubjectService;
+
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
