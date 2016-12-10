@@ -27,4 +27,7 @@ public interface SubjectService {
 
     @PreAuthorize("hasRole('ADMIN')")
     List<Lecturer> getAvailableLecturersForSubject(Long subjectId);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    void removeLecturerFromSubject(Long subjectId, Long lecturerId);
 }
