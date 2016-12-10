@@ -1,9 +1,12 @@
 package at.ac.tuwien.inso.controller.admin;
 
+import at.ac.tuwien.inso.controller.*;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.validation.*;
@@ -31,9 +34,13 @@ public class AdminUsersController {
     @GetMapping
     public String listUsers(
             @RequestParam(value = "search", defaultValue = "") String searchFilter,
+            @PageableDefault Pageable pageable,
             Model model
     ) {
-        model.addAttribute("users", uisUserService.findAllMatching(searchFilter));
+        if (pageable.getPageSize() > Constants.MAX_PAGE_SIZE) {
+            pageable = new PageRequest(pageable.getPageNumber(), Constants.MAX_PAGE_SIZE);
+        }
+        model.addAttribute("users", uisUserService.findAllMatching(searchFilter, pageable));
 
         return "admin/users";
     }

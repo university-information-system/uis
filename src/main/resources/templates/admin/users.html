@@ -32,9 +32,10 @@
         </nav>
 
         <ul class="collection z-depth-1">
-            <li class="collection-item" th:if="${#lists.isEmpty(users)}" th:text="#{admin.users.emptyusers}"></li>
+            <li class="collection-item" th:if="${#lists.isEmpty(users.content)}"
+                th:text="#{admin.users.emptyusers}"></li>
 
-            <li class="collection-item" th:each="user : ${users}">
+            <li class="collection-item" th:each="user : ${users.content}">
                 <div class="title">
                     <a class="teal-text" th:href="@{/admin/users/__${user.id}__}" th:text="${user.name}"></a>
                 </div>

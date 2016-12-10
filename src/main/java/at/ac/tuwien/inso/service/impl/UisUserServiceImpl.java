@@ -1,14 +1,13 @@
 package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
-
-import java.util.*;
 
 @Service
 public class UisUserServiceImpl implements UisUserService {
@@ -18,8 +17,8 @@ public class UisUserServiceImpl implements UisUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UisUser> findAllMatching(String searchFilter) {
-        return uisUserRepository.findAllMatching(searchFilter);
+    public Page<UisUser> findAllMatching(String searchFilter, Pageable pageable) {
+        return uisUserRepository.findAllMatching(searchFilter, pageable);
     }
 
     @Override
