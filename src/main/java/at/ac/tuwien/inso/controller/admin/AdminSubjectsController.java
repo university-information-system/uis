@@ -1,14 +1,19 @@
 package at.ac.tuwien.inso.controller.admin;
 
-import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.*;
-import org.springframework.ui.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.service.SubjectService;
 
 @Controller
 @RequestMapping("/admin/subjects")
