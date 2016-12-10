@@ -34,9 +34,9 @@
     </div>
 
     <div>
-        <ul class="pagination">
+        <ul class="pagination center">
             <li th:if="${page.isFirst()}" class="disabled">
-                <i class="material-icons disabled">chevron_left</i>
+                <a href="#"><i class="material-icons disabled">chevron_left</i></a>
             </li>
             <li th:if="${not page.isFirst()}">
                 <a th:href="@{/admin/subjects/page/__${page.getNumber()-1}__}"><i class="material-icons">chevron_left</i></a>
@@ -69,7 +69,7 @@
                 <a th:text="${page.getTotalPages()}" th:href="@{/admin/subjects/page/__${page.getTotalPages()-1}__}"></a>
             </li>
             <li th:if="${page.isLast()}" class="disabled">
-               <i class="material-icons">chevron_right</i>
+                <a href="#"><i class="material-icons disabled">chevron_right</i></a>
             </li>
             <li th:if="${!page.isLast()}">
                 <a th:href="@{/admin/subjects/page/__${page.getNumber()+1}__}"><i class="material-icons">chevron_right</i></a>
