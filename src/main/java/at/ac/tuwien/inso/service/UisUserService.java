@@ -1,15 +1,13 @@
 package at.ac.tuwien.inso.service;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import at.ac.tuwien.inso.entity.*;
-
-import java.util.*;
+import org.springframework.data.domain.*;
+import org.springframework.security.access.prepost.*;
 
 public interface UisUserService {
 
     @PreAuthorize("hasRole('ADMIN')")
-    List<UisUser> findAllMatching(String searchFilter);
+    Page<UisUser> findAllMatching(String searchFilter, Pageable pageable);
 
     @PreAuthorize("hasRole('ADMIN')")
     UisUser findOne(long id);
