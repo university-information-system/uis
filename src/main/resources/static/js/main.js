@@ -1,7 +1,8 @@
 
 import SideNav from "./side-nav";
 import CheckBoxes from "./checkboxes";
-import AutoComplete from "./autocomplete";
+import AutoCompleteSubjects from "./autocomplete-subjects";
+import AutoCompleteLecturerForSubjects from "./autocomplete-lecturer-for-subject";
 import Select from "./select";
 
 // Flash Messages
@@ -22,8 +23,15 @@ const init = () => {
     const sideNav = new SideNav();
     sideNav.initialize();
 
-    const autoComplete = new AutoComplete();
-    autoComplete.initialize();
+    const autoCompleteSubjects = new AutoCompleteSubjects();
+    autoCompleteSubjects.initialize();
+
+    $(function() {
+        const $wrapper = $('.autocomplete-wrapper');
+
+        const autocompleteLecturersToSubjects = new AutoCompleteLecturerForSubjects($wrapper);
+        autocompleteLecturersToSubjects.initialize();
+    });
 
     const select = new Select();
     select.initialize('select');
