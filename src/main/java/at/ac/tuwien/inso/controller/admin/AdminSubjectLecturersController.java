@@ -51,4 +51,13 @@ public class AdminSubjectLecturersController {
         return "redirect:/admin/subjects/" + subjectId;
     }
 
+    @GetMapping("/lecturers/{lecturerId}/delete")
+    public String removeLecturer(
+            @PathVariable Long subjectId,
+            @PathVariable Long lecturerId,
+            RedirectAttributes redirectAttributes
+    ) {
+            subjectService.removeLecturerFromSubject(subjectId, lecturerId);
+        return "redirect:/admin/subjects/" + subjectId;
+    }
 }
