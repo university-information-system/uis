@@ -42,14 +42,14 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional
     public Subject addLecturerToSubject(Long subjectId, Long lecturerUisUserId) {
-        Lecturer lecturer = lecturerRepository.findOne(lecturerUisUserId);
+        Lecturer lecturer = lecturerRepository.findById(lecturerUisUserId);
 
         if (lecturer == null) {
             String msg = "Lecturer with user id " + lecturerUisUserId + " not found";
             throw new BusinessObjectNotFoundException(msg);
         }
 
-        Subject subject = subjectRepository.findOne(subjectId);
+        Subject subject = subjectRepository.findById(subjectId);
 
         if (subject == null) {
             String msg = "Subject with id " + lecturerUisUserId + " not found";
