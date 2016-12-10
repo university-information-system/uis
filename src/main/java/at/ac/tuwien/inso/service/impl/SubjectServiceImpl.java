@@ -4,11 +4,12 @@ import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 import java.util.*;
-import java.util.stream.*;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
@@ -18,12 +19,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Subject> findAll() {
-        Iterable<Subject> subjects = subjectRepository.findAll();
-
-        return StreamSupport
-                .stream(subjects.spliterator(), false)
-                .collect(Collectors.toList());
+    public Page<Subject> findAll(Pageable pageable) {
+        return subjectRepository.findAll(pageable);
     }
 
     @Override

@@ -16,6 +16,11 @@ header, main, footer {
   overflow: visible;
 }
 
+.pagination li.active a {
+  background: teal;
+  color: #fff;
+}
+
 .section-separator {
   margin-top: 32px;
   color: #757575;
