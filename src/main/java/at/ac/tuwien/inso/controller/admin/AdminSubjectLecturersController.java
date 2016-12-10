@@ -42,7 +42,6 @@ public class AdminSubjectLecturersController {
     public String addLecturer(
             @PathVariable Long subjectId,
             @Valid AddLecturersToSubjectForm addLecturersToSubjectForm,
-            BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
 
