@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.controller.admin;
 
+import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
