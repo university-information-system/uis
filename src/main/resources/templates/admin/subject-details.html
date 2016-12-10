@@ -22,6 +22,10 @@
                         </li>
                         <li class="collection-item" th:each="lecturer : ${lecturers}">
                             <span th:text="${lecturer.getName()}"></span>
+                            <a class="secondary-content"
+                               data-th-href="@{/admin/subjects/{subjectId}/lecturers/{lecturerId}/delete(subjectId=${subject.id}, lecturerId=${lecturer.id})}">
+                                <i class="material-icons">delete</i>
+                            </a>
                         </li>
 						<li class="collection-item">
 
