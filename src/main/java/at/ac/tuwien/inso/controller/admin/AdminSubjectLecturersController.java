@@ -43,7 +43,8 @@ public class AdminSubjectLecturersController {
             @PathVariable Long subjectId,
             @Valid AddLecturersToSubjectForm addLecturersToSubjectForm,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes
+    ) {
 
         Long lecturerUisUserId = addLecturersToSubjectForm.toLecturerId();
         subjectService.addLecturerToSubject(subjectId, lecturerUisUserId);
