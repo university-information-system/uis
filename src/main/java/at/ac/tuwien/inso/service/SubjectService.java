@@ -28,6 +28,13 @@ public interface SubjectService {
     @PreAuthorize("hasRole('ADMIN')")
     List<Lecturer> getAvailableLecturersForSubject(Long subjectId);
 
+    /**
+     * Removes a lecturer from a subject
+     *
+     * @param subjectId
+     * @param lecturerUisUserId
+     * @return the removed lecturer
+     */
     @PreAuthorize("hasRole('ADMIN')")
     Lecturer removeLecturerFromSubject(Long subjectId, Long lecturerUisUserId);
 }
