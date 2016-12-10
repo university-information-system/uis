@@ -32,7 +32,11 @@ public class AdminSubjectsController {
     }
 
     @GetMapping("/{id}")
-    private String getSubject(@PathVariable Long id, Model model) {
+    private String getSubject(
+            @PathVariable Long id,
+            Model model,
+            AddLecturersToSubjectForm addLecturersToSubjectForm
+    ) {
         Subject subject = subjectService.findOne(id);
         model.addAttribute("subject", subject);
         model.addAttribute("lecturers", subject.getLecturers());
