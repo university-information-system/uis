@@ -36,3 +36,24 @@ header, main, footer {
     margin: 0;
   }
 }
+
+.input-field label {
+  left: 0;
+}
+
+.add-lecturer-to-subject-form {
+  display: flex;
+}
+
+.add-lecturer-to-subject-form button[type="submit"] {
+  margin-top: 2rem;
+}
+
+.add-lecturer-to-subject-form .ac-appender {
+  display: none;
+}
+
+.add-lecturer-to-subject-form .autocomplete-wrapper {
+  margin-right: 1rem;
+  flex-grow: 1;
+}
