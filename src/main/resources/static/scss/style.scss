@@ -16,6 +16,11 @@ header, main, footer {
   overflow: visible;
 }
 
+.pagination li.active a {
+  background: teal;
+  color: #fff;
+}
+
 .collection .collection-item.avatar .letter-icon {
   width: 42px;
   height: 42px;
