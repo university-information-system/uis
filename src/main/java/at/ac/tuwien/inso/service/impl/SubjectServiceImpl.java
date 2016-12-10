@@ -30,7 +30,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public Subject findOne(long id) {
-        return subjectRepository.findSubjectById(id);
+        return subjectRepository.findById(id);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public List<Lecturer> getAvailableLecturersForSubject(Long subjectId) {
-        Subject subject = subjectRepository.findOne(subjectId);
+        Subject subject = subjectRepository.findById(subjectId);
 
         if (subject == null) {
             String msg = "Subject with id '" + subjectId + "' not found";
