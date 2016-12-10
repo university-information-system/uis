@@ -49,7 +49,7 @@ public class AdminSubjectLecturersController {
         Long lecturerUisUserId = addLecturersToSubjectForm.toLecturerId();
         subjectService.addLecturerToSubject(subjectId, lecturerUisUserId);
 
-        return "/admin/add-lecturer-to-subject";
+        return "redirect:/admin/subjects/" + subjectId;
     }
 
 }
