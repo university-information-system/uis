@@ -94,6 +94,4 @@ public class SubjectServiceImpl implements SubjectService {
     public List<Subject> searchForSubjects(String word) {
         return subjectRepository.findByNameContainingIgnoreCase(word);
     }
-
-
 }
