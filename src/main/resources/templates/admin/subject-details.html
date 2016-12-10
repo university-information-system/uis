@@ -23,6 +23,38 @@
                         <li class="collection-item" th:each="lecturer : ${lecturers}">
                             <span th:text="${lecturer.getName()}"></span>
                         </li>
+						<li class="collection-item">
+
+                            <form
+                                th:action="@{/admin/subjects/{subjectId}/lecturers(subjectId=${subject.id})}"
+                                th:object="${addLecturersToSubjectForm}"
+                                method="POST"
+                                class="add-lecturer-to-subject-form"
+                            >
+                                <div
+                                    class="input-field autocomplete-wrapper"
+                                    th:attr="data-url=@{/admin/subjects/{subjectId}/availableLecturers.json(subjectId=${subject.id})}"
+                                >
+                                    <input type="hidden" th:field="*{lecturerId}" class="hidden-input"/>
+
+                                    <input
+                                        type="text"
+                                        id="add-lecturer-to-subject-input"
+                                        class="autocomplete"
+                                        data-activates="add-lecturer-to-subject-dropdown"
+                                        data-beloworigin="true"
+                                        autocomplete="off"
+                                    />
+
+                                    <label for="add-lecturer-to-subject-input">Add lecturer</label>
+
+                                    <ul id="add-lecturer-to-subject-dropdown" class="dropdown-content"></ul>
+                                </div>
+
+                                <button type="submit" class="btn waves-effect waves-light">Add</button>
+                            </form>
+
+                        </li>
                     </ul>
                 </div>
 
