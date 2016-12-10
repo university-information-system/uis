@@ -206,7 +206,7 @@ public class StudyPlanTest {
                         .spliterator(), false).collect(Collectors.toList());
         List<Subject> usedSubjects = subjectsForStudyPlan.stream()
                 .filter(SubjectForStudyPlan::getMandatory)
-                .map(s -> subjectRepository.findSubjectById(s.getSubject().getId())).collect(Collectors.toList());
+                .map(s -> subjectRepository.findById(s.getSubject().getId())).collect(Collectors.toList());
 
         assertTrue(usedSubjects.contains(subject));
     }
