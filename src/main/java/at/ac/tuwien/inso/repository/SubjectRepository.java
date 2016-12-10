@@ -13,7 +13,7 @@ public interface SubjectRepository extends CrudRepository<Subject, Long> {
 
     List<Subject> findByLecturers_Id(Long id);
 
-    Subject findSubjectById(Long id);
+    Subject findById(Long id);
 
     List<Subject> findByNameContainingIgnoreCase(String name);
 
