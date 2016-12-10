@@ -1,36 +1,21 @@
 package at.ac.tuwien.inso.service_tests;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
-import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.StudyPlanRepository;
-import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
 import at.ac.tuwien.inso.repository.utils.TagFrequency;
-import at.ac.tuwien.inso.service.RecommendationService;
-import at.ac.tuwien.inso.service.SubjectService;
-import at.ac.tuwien.inso.service.impl.RecommendationServiceImpl;
-import at.ac.tuwien.inso.service.impl.StudyPlanServiceImpl;
+import at.ac.tuwien.inso.service.course_recommendation.impl.RecommendationServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.MessageSource;
-import org.springframework.test.context.ActiveProfiles;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

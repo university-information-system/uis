@@ -1,11 +1,14 @@
-package at.ac.tuwien.inso.service.impl;
+package at.ac.tuwien.inso.service.course_recommendation.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.repository.utils.*;
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.utils.TagFrequency;
+import at.ac.tuwien.inso.service.course_recommendation.RecommendationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
