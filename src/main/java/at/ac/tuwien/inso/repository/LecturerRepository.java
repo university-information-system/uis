@@ -12,4 +12,6 @@ public interface LecturerRepository extends CrudRepository<Lecturer, Long> {
     Lecturer findLecturerByAccountId(Long id);
 
     public List<Lecturer> findAll();
+
+    public Lecturer findById(Long id);
 }
