@@ -1,4 +1,4 @@
-export default class AutoComplete {
+export default class AutoCompleteSubjects {
 
     initialize() {
         $( function() {
