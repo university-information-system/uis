@@ -40,7 +40,7 @@ public class AdminUsersController {
         if (pageable.getPageSize() > Constants.MAX_PAGE_SIZE) {
             pageable = new PageRequest(pageable.getPageNumber(), Constants.MAX_PAGE_SIZE);
         }
-        model.addAttribute("users", uisUserService.findAllMatching(searchFilter, pageable));
+        model.addAttribute("page", uisUserService.findAllMatching(searchFilter, pageable));
 
         return "admin/users";
     }

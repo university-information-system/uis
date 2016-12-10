@@ -32,10 +32,10 @@
         </nav>
 
         <ul class="collection z-depth-1">
-            <li class="collection-item" th:if="${#lists.isEmpty(users.content)}"
+            <li class="collection-item" th:if="${#lists.isEmpty(page.content)}"
                 th:text="#{admin.users.emptyusers}"></li>
 
-            <li class="collection-item" th:each="user : ${users.content}">
+            <li class="collection-item" th:each="user : ${page.content}">
                 <div class="title">
                     <a class="teal-text" th:href="@{/admin/users/__${user.id}__}" th:text="${user.name}"></a>
                 </div>
@@ -51,6 +51,49 @@
                     <span class="red-text" th:if="${!user.activated}"
                           th:text="'(' + (#{admin.users.inactive}) + ')'"></span>
                 </div>
+            </li>
+        </ul>
+
+        <ul th:if="${page.totalPages > 1}" class="pagination center">
+            <li th:if="${page.isFirst()}" class="disabled">
+                <a href="#"><i class="material-icons disabled">chevron_left</i></a>
+            </li>
+            <li th:if="${not page.isFirst()}">
+                <a th:href="@{/admin/users(page=__${page.getNumber()-1}__)}"><i class="material-icons">chevron_left</i></a>
+            </li>
+            <li th:if="${page.getNumber()-4 >= 0}" class="waves-effect"><a th:text="1"
+                                                                           th:href="@{/admin/users(page=0)}"></a></li>
+            <li th:if="${page.getNumber()-4 > 0}"><a th:text="..."></a></li>
+
+            <li th:if="${page.getNumber()-3 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()-2}" th:href="@{/admin/users(page=__${page.getNumber()-3}__)}"></a>
+            </li>
+            <li th:if="${page.getNumber()-2 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()-1}" th:href="@{/admin/users(page=__${page.getNumber()-2}__)}"></a>
+            </li>
+            <li th:if="${page.getNumber()-1 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()}" th:href="@{/admin/users(page=__${page.getNumber()-1}__)}"></a>
+            </li>
+            <li class="active teal"><a th:text="${page.getNumber()+1}"></a></li>
+            <li th:if="${page.getNumber()+1 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+2}" th:href="@{/admin/users(page=__${page.getNumber()+1}__)}"></a>
+            </li>
+            <li th:if="${page.getNumber()+2 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+3}" th:href="@{/admin/users(page=__${page.getNumber()+2}__)}"></a>
+            </li>
+            <li th:if="${page.getNumber()+3 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+4}" th:href="@{/admin/users(page=__${page.getNumber()+3}__)}"></a>
+            </li>
+
+            <li th:if="${page.getNumber()+4 &lt; page.getTotalPages()-1}"><a th:text="..."></a></li>
+            <li th:if="${page.getNumber()+4 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getTotalPages()}" th:href="@{/admin/users(page=__${page.getTotalPages()-1}__)}"></a>
+            </li>
+            <li th:if="${page.isLast()}" class="disabled">
+                <a href="#"><i class="material-icons">chevron_right</i></a>
+            </li>
+            <li th:if="${!page.isLast()}">
+                <a th:href="@{/admin/users(page=__${page.getNumber()+1}__)}"><i class="material-icons">chevron_right</i></a>
             </li>
         </ul>
 

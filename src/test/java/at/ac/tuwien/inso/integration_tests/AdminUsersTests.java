@@ -61,34 +61,9 @@ public class AdminUsersTests {
         return get("/admin/users").with(user("admin").roles(Role.ADMIN.name()));
     }
 
-    @Test
-    public void itListsAllUsersOnExplicitPage() throws Exception {
-        mockMvc.perform(
-                listUsers(2, 20)
-        ).andExpect(
-                resultHasUsersPage(page(2, 20, users.size(), users.stream().skip(40).limit(20).collect(Collectors.toList())))
-        );
-    }
-
-    @Test
-    public void onListAllItLimitsPageSize() throws Exception {
-        mockMvc.perform(
-                listUsers(0, 100)
-        ).andExpect(
-                resultHasUsersPage(page(0, 50, users.size(), users.stream().limit(50).collect(Collectors.toList())))
-        );
-    }
-
-    private MockHttpServletRequestBuilder listUsers(int page, int size) {
-        return get("/admin/users")
-                .param("page", page + "")
-                .param("size", size + "")
-                .with(user("admin").roles(Role.ADMIN.name()));
-    }
-
     private ResultMatcher resultHasUsersPage(Page<UisUser> page) {
         return result -> {
-            Page actualPage = (Page) result.getModelAndView().getModel().get("users");
+            Page actualPage = (Page) result.getModelAndView().getModel().get("page");
 
             assertNotNull(actualPage);
             assertThat(actualPage.getNumber(), equalTo(page.getNumber()));
@@ -100,6 +75,31 @@ public class AdminUsersTests {
 
     private <T> Page<T> page(int page, int size, int total, List<T> content) {
         return new PageImpl<>(content, new PageRequest(page, size), total);
+    }
+
+    @Test
+    public void itListsAllUsersOnExplicitPage() throws Exception {
+        mockMvc.perform(
+                listUsers(2, 20)
+        ).andExpect(
+                resultHasUsersPage(page(2, 20, users.size(), users.stream().skip(40).limit(20).collect(Collectors.toList())))
+        );
+    }
+
+    private MockHttpServletRequestBuilder listUsers(int page, int size) {
+        return get("/admin/users")
+                .param("page", page + "")
+                .param("size", size + "")
+                .with(user("admin").roles(Role.ADMIN.name()));
+    }
+
+    @Test
+    public void onListAllItLimitsPageSize() throws Exception {
+        mockMvc.perform(
+                listUsers(0, 100)
+        ).andExpect(
+                resultHasUsersPage(page(0, 50, users.size(), users.stream().limit(50).collect(Collectors.toList())))
+        );
     }
 
     @Test
