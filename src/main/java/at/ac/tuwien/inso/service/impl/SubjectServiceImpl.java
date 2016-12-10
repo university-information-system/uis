@@ -21,6 +21,8 @@ import at.ac.tuwien.inso.service.SubjectService;
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SubjectServiceImpl.class);
+
     @Autowired
     private SubjectRepository subjectRepository;
 
