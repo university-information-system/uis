@@ -37,7 +37,7 @@ public class AdminSubjectLecturersController {
     @GetMapping(value = "/availableLecturers.json")
     @ResponseBody
     public List<Lecturer> getAvailableLecturers(@PathVariable Long subjectId) {
-        return subjectService.getAvailableLecturersForSubject(subjectId);
+        return subjectService.getAvailableLecturersForSubject(subjectId, "");
     }
 
     @PostMapping("/lecturers")
