@@ -72,13 +72,20 @@ public class AdminSubjectLecturersController {
             return "redirect:/admin/subjects/" + subjectId;
 
         } catch (SubjectNotFoundException e) {
-            redirectAttributes.addFlashAttribute("flashMessage", "Subject not found");
+            redirectAttributes.addFlashAttribute("flashMessage", "admin.subjects.lecturer.subjectNotFound");
+
+            System.out.println("hnnnnnnnn");
+
             return "redirect:/admin/subjects";
         } catch (LecturerNotFoundException e) {
-            redirectAttributes.addFlashAttribute("flashMessage", "Lecturer not found");
+            String msgId = "admin.subjects.lecturer.lecturerNotFound";
+            redirectAttributes.addFlashAttribute("flashMessage", msgId);
+
             return "redirect:/admin/subjects/" + subjectId;
         } catch (RelationNotfoundException e) {
-            redirectAttributes.addFlashAttribute("flashMessage", "Person was not not a lecturer");
+            String msgId = "admin.subjects.lecturer.wasNoLecturer";
+            redirectAttributes.addFlashAttribute("flashMessage", msgId);
+
             return "redirect:/admin/subjects/" + subjectId;
         }
     }
