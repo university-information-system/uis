@@ -72,9 +72,8 @@ public class AdminSubjectLecturersController {
             return "redirect:/admin/subjects/" + subjectId;
 
         } catch (SubjectNotFoundException e) {
-            redirectAttributes.addFlashAttribute("flashMessage", "admin.subjects.lecturer.subjectNotFound");
-
-            System.out.println("hnnnnnnnn");
+            String msgId = "admin.subjects.lecturer.subjectNotFound";
+            redirectAttributes.addFlashAttribute("flashMessage", msgId);
 
             return "redirect:/admin/subjects";
 
