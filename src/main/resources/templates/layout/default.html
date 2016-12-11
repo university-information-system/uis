@@ -20,7 +20,10 @@
 <script type="text/javascript" src="/min/js/main.js"></script>
 
 <script th:if="${flashMessage}" th:inline="javascript">
-    showMessage([[#{__${flashMessage}__}]]);
+    var message = [[#{__${flashMessage}__}]];
+
+    console.log("flashMessage", message);
+    showMessage(message);
 </script>
 
 </body>
