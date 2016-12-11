@@ -41,7 +41,9 @@ public class UserCreationServiceImpl implements UserCreationService {
     @Transactional
     @Override
     public PendingAccountActivation create(UisUser user) {
-        PendingAccountActivation activation = pendingAccountActivationRepository.save(new PendingAccountActivation(user));
+        PendingAccountActivation activation = new PendingAccountActivation(user);
+
+        activation = pendingAccountActivationRepository.save(activation);
 
         mailSender.send(createActivationMail(activation));
 
