@@ -51,6 +51,7 @@ public class AdminSubjectsController {
         model.addAttribute("subject", subject);
 
         if (subject == null) {
+            logger.info("/admin/subjects: Subject with id " + id + " not found");
             return "redirect:/admin/subjects";
         }
 
