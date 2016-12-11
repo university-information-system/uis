@@ -25,8 +25,8 @@ public class AdminSubjectsController {
     private static final Integer SUBJECTS_PER_PAGE = 10;
 
     @GetMapping
-    private String listSubjects() {
-        return "redirect:/admin/subjects/page/0";
+    private String listSubjects(Model model) {
+        return listSubjectsForPage(0, model);
     }
 
     @GetMapping("/page/{nr}")
