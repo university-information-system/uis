@@ -1,4 +1,3 @@
-
 import SideNav from "./side-nav";
 import CheckBoxes from "./checkboxes";
 import AutoCompleteSubjects from "./autocomplete-subjects";
@@ -26,12 +25,10 @@ const init = () => {
     const autoCompleteSubjects = new AutoCompleteSubjects();
     autoCompleteSubjects.initialize();
 
-    $(function() {
-        const $wrapper = $('.autocomplete-wrapper');
+    const $wrapper = $('.autocomplete-wrapper');
 
-        const autocompleteLecturersToSubjects = new AutoCompleteLecturerForSubjects($wrapper);
-        autocompleteLecturersToSubjects.initialize();
-    });
+    const autocompleteLecturersToSubjects = new AutoCompleteLecturerForSubjects($wrapper);
+    autocompleteLecturersToSubjects.initialize();
 
     const select = new Select();
     select.initialize('select');
