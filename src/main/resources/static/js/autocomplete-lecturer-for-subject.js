@@ -18,7 +18,7 @@ export default class AutoCompleteSubjects {
                 itemTemplate: '<li class="ac-item" data-id="<%= item.id %>" data-text=\'<%= item.name %>\'><a href="javascript:void(0)"><%= item.name %></a></li>',
             },
             getData: function (value, callback) {
-                const url = jsonUrl + `?filter=${value}`;
+                const url = jsonUrl + `?search=${value}`;
 
                 $.ajax({
                    url: url,
