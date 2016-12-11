@@ -65,9 +65,10 @@ public class AdminSubjectLecturersController {
         try {
             Lecturer removed = subjectService.removeLecturerFromSubject(subjectId, lecturerId);
 
-            String name = removedLecturer.getName();
+            String name = removed.getName();
+            String msg = String.format("admin.subjects.lecturer.removed(${'%s'})", name);
+            redirectAttributes.addFlashAttribute("flashMessage", msg);
 
-            redirectAttributes.addFlashAttribute("flashMessage", "Lecturer " + name + " removed");
             return "redirect:/admin/subjects/" + subjectId;
 
         } catch (SubjectNotFoundException e) {
