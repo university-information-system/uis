@@ -1,17 +1,21 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.mail.javamail.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.*;
-import org.thymeleaf.*;
-import org.thymeleaf.context.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import at.ac.tuwien.inso.entity.PendingAccountActivation;
+import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.repository.PendingAccountActivationRepository;
+import at.ac.tuwien.inso.service.UserCreationService;
 
 @Service
 public class UserCreationServiceImpl implements UserCreationService {
