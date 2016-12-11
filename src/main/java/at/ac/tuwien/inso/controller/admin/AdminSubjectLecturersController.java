@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,9 @@ import javax.validation.Valid;
 import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
 import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.exception.LecturerNotFoundException;
+import at.ac.tuwien.inso.exception.RelationNotfoundException;
+import at.ac.tuwien.inso.exception.SubjectNotFoundException;
 import at.ac.tuwien.inso.service.SubjectService;
 
 @Controller
@@ -57,7 +61,26 @@ public class AdminSubjectLecturersController {
             @PathVariable Long lecturerId,
             RedirectAttributes redirectAttributes
     ) {
-            subjectService.removeLecturerFromSubject(subjectId, lecturerId);
-        return "redirect:/admin/subjects/" + subjectId;
+
+        try {
+            Lecturer removedLecturer = subjectService.removeLecturerFromSubject(subjectId,
+                    lecturerId);
+
+            String name = removedLecturer.getName();
+
+            redirectAttributes.addFlashAttribute("flashMessage", "Lecturer " + name + " removed");
+            return "redirect:/admin/subjects/" + subjectId;
+
+        } catch (SubjectNotFoundException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "Subject not found");
+            return "redirect:/admin/subjects";
+        } catch (LecturerNotFoundException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "Lecturer not found");
+            return "redirect:/admin/subjects/" + subjectId;
+        } catch (RelationNotfoundException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "Person was not not a lecturer");
+            return "redirect:/admin/subjects/" + subjectId;
+        }
     }
+
 }
