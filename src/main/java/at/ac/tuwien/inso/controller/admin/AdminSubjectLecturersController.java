@@ -52,7 +52,12 @@ public class AdminSubjectLecturersController {
     ) {
 
         Long lecturerUisUserId = addLecturersToSubjectForm.toLecturerId();
-        subjectService.addLecturerToSubject(subjectId, lecturerUisUserId);
+        Lecturer lecturer = subjectService.addLecturerToSubject(subjectId, lecturerUisUserId);
+
+        String name = lecturer.getName();
+
+        String msg = String.format("admin.subjects.lecturerAdded(${'%s'})", name);
+        redirectAttributes.addFlashAttribute("message", msg);
 
         return "redirect:/admin/subjects/" + subjectId;
     }
