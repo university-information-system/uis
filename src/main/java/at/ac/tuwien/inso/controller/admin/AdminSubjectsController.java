@@ -49,6 +49,11 @@ public class AdminSubjectsController {
     ) {
         Subject subject = subjectService.findOne(id);
         model.addAttribute("subject", subject);
+
+        if (subject == null) {
+            return "redirect:/admin/subjects";
+        }
+
         model.addAttribute("lecturers", subject.getLecturers());
         model.addAttribute("requiredSubjects", subject.getRequiredSubjects());
         return "admin/subject-details";
