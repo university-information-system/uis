@@ -57,3 +57,8 @@ header, main, footer {
   margin-right: 1rem;
   flex-grow: 1;
 }
+
+// Materialize autocomplete uses .ac-hover instead of .active
+.dropdown-content li.ac-hover {
+  background: #eee;
+}
