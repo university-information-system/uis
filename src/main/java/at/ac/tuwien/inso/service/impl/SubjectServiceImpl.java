@@ -105,6 +105,7 @@ public class SubjectServiceImpl implements SubjectService {
         return searchedLecturers
                 .stream()
                 .filter(lecturer -> !currentLecturers.contains(lecturer))
+                .limit(10)
                 .collect(Collectors.toList());
     }
 
