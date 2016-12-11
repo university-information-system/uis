@@ -39,9 +39,9 @@ public class AdminSubjectLecturersController {
     @ResponseBody
     public List<Lecturer> getAvailableLecturers(
             @PathVariable Long subjectId,
-            @RequestParam(value = "search", defaultValue = "") String searchFilter
+            @RequestParam(value = "search", defaultValue = "") String search
     ) {
-        return subjectService.getAvailableLecturersForSubject(subjectId, "");
+        return subjectService.getAvailableLecturersForSubject(subjectId, search);
     }
 
     @PostMapping("/lecturers")
