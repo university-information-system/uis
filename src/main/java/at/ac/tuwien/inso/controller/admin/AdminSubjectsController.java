@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.controller.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,8 @@ import at.ac.tuwien.inso.service.SubjectService;
 @Controller
 @RequestMapping("/admin/subjects")
 public class AdminSubjectsController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AdminSubjectsController.class);
 
     @Autowired
     private SubjectService subjectService;
