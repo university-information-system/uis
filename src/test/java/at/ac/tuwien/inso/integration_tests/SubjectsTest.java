@@ -76,7 +76,7 @@ public class SubjectsTest {
 
         // admin should see subject calculus without any lecturers or prerequisites
         mockMvc.perform(
-                get("/admin/subjects").param("id", id1.toString()).with(user("admin").roles("ADMIN"))
+                get("/admin/subjects/"+id1).with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", calculus)
         ).andExpect(
@@ -87,7 +87,7 @@ public class SubjectsTest {
 
         //admin should see subject sepm with lecturer1 and no required subject sepm
         mockMvc.perform(
-                get("/admin/subjects").param("id", id2.toString()).with(user("admin").roles("ADMIN"))
+                get("/admin/subjects/"+id2).with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", sepm)
         ).andExpect(
@@ -98,7 +98,7 @@ public class SubjectsTest {
 
         //admin should see subject ase with lecturer1 and lecturer2 and required subject sepm
         mockMvc.perform(
-                get("/admin/subjects").param("id", id3.toString()).with(user("admin").roles("ADMIN"))
+                get("/admin/subjects/"+id3).with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", ase)
         ).andExpect(
