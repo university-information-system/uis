@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.method.configuration.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.web.authentication.*;
 
 @Configuration
 @EnableWebSecurity
@@ -38,31 +37,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/lecturer/**").hasRole(Role.LECTURER.name())
 				.antMatchers("/student/**").hasRole(Role.STUDENT.name())
 				.anyRequest().authenticated()
-				.and().exceptionHandling().accessDeniedHandler((req, resp, e) -> resp.sendRedirect("/login"))
 				.and()
 				.formLogin()
 				.loginPage("/login")
+				.defaultSuccessUrl("/")
 				.failureUrl("/login?error")
-				.successHandler(authenticationSuccessHandler())
 				.permitAll()
 				.and()
 				.logout()
 				.logoutSuccessUrl("/login")
 				.permitAll();
-	}
-
-	private AuthenticationSuccessHandler authenticationSuccessHandler() {
-		return (req, resp, auth) -> {
-			UserAccount userAccount = (UserAccount) auth.getPrincipal();
-
-			if (userAccount.hasRole(Role.ADMIN)) {
-				resp.sendRedirect("/admin/studyplans");
-			} else if (userAccount.hasRole(Role.LECTURER)) {
-				resp.sendRedirect("/lecturer/courses");
-			} else {
-				resp.sendRedirect("/student/courses");
-			}
-        };
 	}
 
 	@Autowired
@@ -71,5 +55,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.userDetailsService(userAccountService)
 				.passwordEncoder(UserAccount.PASSWORD_ENCODER);
 	}
-
 }

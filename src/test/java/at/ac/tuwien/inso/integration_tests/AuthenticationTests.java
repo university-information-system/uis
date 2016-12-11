@@ -51,7 +51,7 @@ public class AuthenticationTests {
         ).andExpect(
                 authenticated().withRoles(Role.ADMIN.name())
         ).andExpect(
-                redirectedUrl("/admin/studyplans")
+                redirectedUrl("/")
         );
     }
 
@@ -64,7 +64,7 @@ public class AuthenticationTests {
         ).andExpect(
                 authenticated().withRoles(Role.LECTURER.name())
         ).andExpect(
-                redirectedUrl("/lecturer/courses")
+                redirectedUrl("/")
         );
     }
 
@@ -77,7 +77,7 @@ public class AuthenticationTests {
         ).andExpect(
                 authenticated().withRoles(Role.STUDENT.name())
         ).andExpect(
-                redirectedUrl("/student/courses")
+                redirectedUrl("/")
         );
     }
 
@@ -93,11 +93,11 @@ public class AuthenticationTests {
     }
 
     @Test
-    public void onUnauthorizedAccessItRedirectsToLoginPage() throws Exception {
+    public void onUnauthorizedAccessItReturnsAccessDenied() throws Exception {
         mockMvc.perform(
                 get("/admin").with(user("student"))
         ).andExpect(
-                redirectedUrl("/login")
+                status().isForbidden()
         );
     }
 }
