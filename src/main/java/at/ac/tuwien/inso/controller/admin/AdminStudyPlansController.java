@@ -3,17 +3,16 @@ package at.ac.tuwien.inso.controller.admin;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.*;
 
-import javax.validation.Valid;
+import javax.validation.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -160,7 +159,7 @@ public class AdminStudyPlansController {
 
       model.addAttribute("studyPlans", toShow);
 
-      return "admin/addStudyPlanToStudent";
+        return "admin/addStudyplanToStudent";
     }
 
     @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
