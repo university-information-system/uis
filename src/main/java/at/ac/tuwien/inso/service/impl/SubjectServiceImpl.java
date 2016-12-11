@@ -83,7 +83,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Lecturer> getAvailableLecturersForSubject(Long subjectId) {
+    public List<Lecturer> getAvailableLecturersForSubject(Long subjectId, String search) {
+        if (search == null) {
+            search = "";
+        }
+
         Subject subject = subjectRepository.findById(subjectId);
 
         if (subject == null) {

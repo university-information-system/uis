@@ -26,7 +26,7 @@ public interface SubjectService {
     Subject addLecturerToSubject(Long subjectId, Long lecturerUisUserId);
 
     @PreAuthorize("hasRole('ADMIN')")
-    List<Lecturer> getAvailableLecturersForSubject(Long subjectId);
+    List<Lecturer> getAvailableLecturersForSubject(Long subjectId, String search);
 
     /**
      * Removes a lecturer from a subject
