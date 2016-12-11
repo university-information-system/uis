@@ -62,7 +62,7 @@ public class SubjectServiceImpl implements SubjectService {
         if (lecturer == null) {
             String msg = "Lecturer with user id " + lecturerUisUserId + " not found";
             logger.info(msg);
-            throw new BusinessObjectNotFoundException(msg);
+            throw new LecturerNotFoundException(msg);
         }
 
         Subject subject = subjectRepository.findById(subjectId);
