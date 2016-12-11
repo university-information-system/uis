@@ -63,8 +63,7 @@ public class AdminSubjectLecturersController {
     ) {
 
         try {
-            Lecturer removedLecturer = subjectService.removeLecturerFromSubject(subjectId,
-                    lecturerId);
+            Lecturer removed = subjectService.removeLecturerFromSubject(subjectId, lecturerId);
 
             String name = removedLecturer.getName();
 
