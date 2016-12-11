@@ -76,11 +76,13 @@ public class AdminSubjectLecturersController {
             System.out.println("hnnnnnnnn");
 
             return "redirect:/admin/subjects";
+
         } catch (LecturerNotFoundException e) {
             String msgId = "admin.subjects.lecturer.lecturerNotFound";
             redirectAttributes.addFlashAttribute("flashMessage", msgId);
 
             return "redirect:/admin/subjects/" + subjectId;
+
         } catch (RelationNotfoundException e) {
             String msgId = "admin.subjects.lecturer.wasNoLecturer";
             redirectAttributes.addFlashAttribute("flashMessage", msgId);
