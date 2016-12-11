@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
 import at.ac.tuwien.inso.entity.Subject;
@@ -45,13 +46,18 @@ public class AdminSubjectsController {
     private String getSubject(
             @PathVariable Long id,
             Model model,
-            AddLecturersToSubjectForm addLecturersToSubjectForm
+            AddLecturersToSubjectForm addLecturersToSubjectForm,
+            RedirectAttributes redirectAttributes
     ) {
         Subject subject = subjectService.findOne(id);
         model.addAttribute("subject", subject);
 
         if (subject == null) {
             logger.info("/admin/subjects: Subject with id " + id + " not found");
+
+            String msgId = "admin.subjects.notFound";
+            redirectAttributes.addFlashAttribute("flashMessage", msgId);
+
             return "redirect:/admin/subjects";
         }
 
