@@ -96,9 +96,13 @@ public class SubjectServiceImpl implements SubjectService {
 
         List<Lecturer> currentLecturers = subject.getLecturers();
 
-        List<Lecturer> allLecturers = lecturerRepository.findAll();
+        List<Lecturer> searchedLecturers =
+                lecturerRepository.findAllByIdentificationNumberLikeIgnoreCaseOrNameLikeIgnoreCase(
+                        "%" + search + "%",
+                        "%" + search + "%"
+                );
 
-        return allLecturers
+        return searchedLecturers
                 .stream()
                 .filter(lecturer -> !currentLecturers.contains(lecturer))
                 .collect(Collectors.toList());
