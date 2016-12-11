@@ -1,10 +1,11 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.*;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.*;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+
+import at.ac.tuwien.inso.entity.Lecturer;
 
 public interface LecturerRepository extends CrudRepository<Lecturer, Long> {
 
