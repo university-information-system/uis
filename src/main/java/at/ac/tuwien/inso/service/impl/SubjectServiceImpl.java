@@ -53,7 +53,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public Subject addLecturerToSubject(Long subjectId, Long lecturerUisUserId) {
+    public Lecturer addLecturerToSubject(Long subjectId, Long lecturerUisUserId) {
         logger.info("addLecturerToSubject for subject {} and lecturer {}", subjectId,
                 lecturerUisUserId);
 
@@ -73,11 +73,14 @@ public class SubjectServiceImpl implements SubjectService {
             throw new SubjectNotFoundException(msg);
         }
 
-        subject.addLecturers(lecturer);
+        if (subject.getLecturers().contains(lecturer)) {
+            return lecturer;
+        }
 
+        subject.addLecturers(lecturer);
         Subject savedSubject = subjectRepository.save(subject);
 
-        return savedSubject;
+        return lecturer;
     }
 
 

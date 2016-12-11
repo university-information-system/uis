@@ -23,7 +23,7 @@ public interface SubjectService {
     Subject create(Subject subject);
 
     @PreAuthorize("hasRole('ADMIN')")
-    Subject addLecturerToSubject(Long subjectId, Long lecturerUisUserId);
+    Lecturer addLecturerToSubject(Long subjectId, Long lecturerUisUserId);
 
     @PreAuthorize("hasRole('ADMIN')")
     List<Lecturer> getAvailableLecturersForSubject(Long subjectId, String search);
