@@ -29,9 +29,9 @@ public class AdminSubjectsController {
         return listSubjectsForPage(0, model);
     }
 
-    @GetMapping("/page/{nr}")
-    private String listSubjectsForPage(@PathVariable Integer nr, Model model) {
-        Page<Subject> subjects = subjectService.findAll(new PageRequest(nr, SUBJECTS_PER_PAGE));
+    @GetMapping("/page/{pageNumber}")
+    private String listSubjectsForPage(@PathVariable Integer pageNumber, Model model) {
+        Page<Subject> subjects = subjectService.findAll(new PageRequest(pageNumber, SUBJECTS_PER_PAGE));
         model.addAttribute("subjects", subjects.getContent());
         model.addAttribute("page", subjects);
         return "admin/subjects";
