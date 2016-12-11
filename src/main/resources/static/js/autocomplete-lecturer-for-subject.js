@@ -9,8 +9,6 @@ export default class AutoCompleteSubjects {
         const $realInput = this.wrapper.find('input[type=hidden]');
         const jsonUrl = this.wrapper.data("url");
 
-        console.log("nana", 26);
-
         $input.materialize_autocomplete({
             multiple: {
                 enable: false
@@ -30,7 +28,6 @@ export default class AutoCompleteSubjects {
                 });
             },
             onSelect: function (item) {
-                console.log("onSelect");
                 $realInput.val(item.id);
             },
         });
