@@ -34,6 +34,9 @@ public class SubjectServiceImpl implements SubjectService {
     private LecturerRepository lecturerRepository;
 
     @Override
+    public Page<Subject> findBySearch(String search, Pageable pageable) {
+        String sqlSearch = "%" + search + "%";
+        return subjectRepository.findAllByNameLikeIgnoreCase(sqlSearch, pageable);
     }
 
     @Override
