@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
@@ -30,17 +31,40 @@ public class AdminSubjectsController {
     private static final Integer SUBJECTS_PER_PAGE = 10;
 
     @GetMapping
-    private String listSubjects(Model model) {
-        return listSubjectsForPage(0, model);
+    private String listSubjects(
+            @RequestParam(value = "search", required = false) String search,
+            Model model
+    ) {
+        return listSubjectsForPage(search, 0, model);
     }
 
     @GetMapping("/page/{pageNumber}")
-    private String listSubjectsForPage(@PathVariable Integer pageNumber, Model model) {
-        Page<Subject> subjects = subjectService.findAll(new PageRequest(pageNumber, SUBJECTS_PER_PAGE));
+    private String listSubjectsForPage(
+            @RequestParam(value = "search", required = false) String search,
+            @PathVariable Integer pageNumber,
+            Model model
+    ) {
+
+        final String searchString = getSearchString(search);
+        PageRequest page = new PageRequest(pageNumber, SUBJECTS_PER_PAGE);
+
+        Page<Subject> subjects = subjectService.findBySearch(searchString, page);
+
         model.addAttribute("subjects", subjects.getContent());
         model.addAttribute("page", subjects);
+
         return "admin/subjects";
     }
+
+    @ModelAttribute("search")
+    private String getSearchString(@RequestParam(value = "search", required = false) String search) {
+        if (search != null && !search.isEmpty()) {
+            return search;
+        }
+
+        return "";
+    }
+
 
     @GetMapping("/{id}")
     private String getSubject(
