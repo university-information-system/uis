@@ -21,7 +21,7 @@
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${mandatory}">
                             <div class="title">
-                                <a th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
+                                <a class="teal-text" th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
                             </div>
                             <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
                                 <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
@@ -43,7 +43,7 @@
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${optional}">
                             <div class="title">
-                                <a th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
+                                <a class="teal-text" th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
                             </div>
                             <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
                                 <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
