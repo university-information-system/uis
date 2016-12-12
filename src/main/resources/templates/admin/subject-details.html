@@ -35,7 +35,7 @@
                                     class="input-field autocomplete-wrapper"
                                     th:attr="data-url=@{/admin/subjects/{subjectId}/availableLecturers.json(subjectId=${subject.id})}"
                                 >
-                                    <!--/* <input type="hidden" th:field="*{lecturerId}" class="hidden-input"/> */-->
+                                    <input type="hidden" th:field="*{lecturerId}" class="hidden-input"/>
 
                                     <input
                                         type="text"

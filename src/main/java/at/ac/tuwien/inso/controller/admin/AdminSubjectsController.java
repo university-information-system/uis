@@ -4,6 +4,9 @@ import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.*;
+
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,12 +58,16 @@ public class AdminSubjectsController {
     
     @PostMapping("/add")
     private String addSubject(@ModelAttribute Subject subject, Model model) {
-        subject = subjectService.create(subject);
-        
-        model.addAttribute("subject", subject);
+      subject = subjectService.create(subject);
+
+      model.addAttribute("subject", subject);
+      if(subject.getLecturers()==null){
+        model.addAttribute("lecturers", new ArrayList<Lecturer>());
+      }else{
         model.addAttribute("lecturers", subject.getLecturers());
-        model.addAttribute("requiredSubjects", subject.getRequiredSubjects());
-    	return "admin/subject-details";
+      }
+      model.addAttribute("requiredSubjects", subject.getRequiredSubjects());
+      return "admin/subject-details";
     }
     
     @GetMapping("/delete/{id}")
