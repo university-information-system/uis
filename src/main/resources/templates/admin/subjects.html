@@ -26,10 +26,13 @@
                 <li class="collection-item" th:each="subject : ${subjects}">
                     <div>
                         <div class="title">
-                            <a class="teal-text" href="#" data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}"
+                            <a class="teal-text" href="#"
+                               data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}"
                                th:text="${subject.name}"></a>
-                            <a href="#!" style="margin-left:10px;" class="secondary-content"><i class="material-icons">delete</i></a>
-                            <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
+                            <a href="#!" style="margin-left:10px;" class="secondary-content"><i
+                                    class="material-icons">delete</i></a>
+                            <a href="#!" class="secondary-content"><i
+                                    class="material-icons">edit</i></a>
                         </div>
                         <div th:text="${subject.ects} + ' ECTS'"></div>
                     </div>
@@ -48,57 +51,95 @@
             <li th:if="${page.isFirst()}" class="disabled">
                 <a href="#"><i class="material-icons disabled">chevron_left</i></a>
             </li>
+
             <li th:if="${not page.isFirst()}">
-                <a th:href="@{/admin/subjects/page/__${page.getNumber()-1}__}"><i class="material-icons">chevron_left</i></a>
+                <a th:href="@{/admin/subjects/page/__${page.getNumber()-1}__?search=__${search}__}">
+                    <i class="material-icons">chevron_left</i>
+                </a>
             </li>
-            <li th:if="${page.getNumber()-4 >= 0}" class="waves-effect"><a th:text="1" th:href="@{/admin/subjects/page/0}"></a></li>
-            <li th:if="${page.getNumber()-4 > 0}"><a th:text="..."></a></li>
+
+            <li th:if="${page.getNumber()-4 >= 0}" class="waves-effect">
+                <a th:text="1" th:href="@{/admin/subjects/page/0?search=__${search}__}"></a>
+            </li>
+
+            <li th:if="${page.getNumber()-4 > 0}">
+                <a th:text="…"></a>
+            </li>
 
             <li th:if="${page.getNumber()-3 >= 0}" class="waves-effect">
-                <a th:text="${page.getNumber()-2}" th:href="@{/admin/subjects/page/__${page.getNumber()-3}__}"></a>
-            </li>
-            <li th:if="${page.getNumber()-2 >= 0}" class="waves-effect">
-                <a th:text="${page.getNumber()-1}" th:href="@{/admin/subjects/page/__${page.getNumber()-2}__}"></a>
-            </li>
-            <li th:if="${page.getNumber()-1 >= 0}" class="waves-effect">
-                <a th:text="${page.getNumber()}" th:href="@{/admin/subjects/page/__${page.getNumber()-1}__}"></a>
-            </li>
-            <li class="active"><a th:text="${page.getNumber()+1}"></a></li>
-            <li th:if="${page.getNumber()+1 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getNumber()+2}" th:href="@{/admin/subjects/page/__${page.getNumber()+1}__}"></a>
-            </li>
-            <li th:if="${page.getNumber()+2 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getNumber()+3}" th:href="@{/admin/subjects/page/__${page.getNumber()+2}__}"></a>
-            </li>
-            <li th:if="${page.getNumber()+3 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getNumber()+4}" th:href="@{/admin/subjects/page/__${page.getNumber()+3}__}"></a>
+                <a th:text="${page.getNumber()-2}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()-3}__?search=__${search}__}"></a>
             </li>
 
-            <li th:if="${page.getNumber()+4 &lt; page.getTotalPages()-1}"><a th:text="..."></a></li>
+            <li th:if="${page.getNumber()-2 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()-1}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()-2}__?search=__${search}__}"></a>
+            </li>
+
+            <li th:if="${page.getNumber()-1 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()-1}__?search=__${search}__}"></a>
+            </li>
+
+            <li class="active">
+                <a th:text="${page.getNumber()+1}"></a>
+            </li>
+
+            <li th:if="${page.getNumber()+1 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+2}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()+1}__?search=__${search}__}">
+                </a>
+            </li>
+
+            <li th:if="${page.getNumber()+2 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+3}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()+2}__?search=__${search}__}">
+                </a>
+            </li>
+
+            <li th:if="${page.getNumber()+3 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+4}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()+3}__?search=__${search}__}">
+                </a>
+            </li>
+
+            <li th:if="${page.getNumber()+4 &lt; page.getTotalPages()-1}">
+                <a>…</a>
+            </li>
+
             <li th:if="${page.getNumber()+4 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getTotalPages()}" th:href="@{/admin/subjects/page/__${page.getTotalPages()-1}__}"></a>
+                <a th:text="${page.getTotalPages()}"
+                   th:href="@{/admin/subjects/page/__${page.getTotalPages()-1}__?search=__${search}__}">
+                </a>
             </li>
+
             <li th:if="${page.isLast()}" class="disabled">
-                <a href="#"><i class="material-icons disabled">chevron_right</i></a>
+                <a href="#">
+                    <i class="material-icons disabled">chevron_right</i>
+                </a>
             </li>
+
             <li th:if="${!page.isLast()}">
-                <a th:href="@{/admin/subjects/page/__${page.getNumber()+1}__}"><i class="material-icons">chevron_right</i></a>
+                <a th:href="@{/admin/subjects/page/__${page.getNumber()+1}__?search=__${search}__}">
+                    <i class="material-icons">chevron_right</i>
+                </a>
             </li>
+
         </ul>
     </div>
 
     <!-- floating "+" button -->
     <div class="fixed-action-btn">
-		<a class="btn-floating btn-large red"> <i
-			class="large material-icons">add</i>
-		</a>
-		<ul>
-			<li><a href="/admin/subjects/add" class="btn-floating yellow darken-1"><i
-					class="material-icons">add</i></a></li>
-			<li><a class="btn-floating red"><i class="material-icons">delete</i></a></li>
-			<li><a class="btn-floating blue"><i class="material-icons">mode_edit</i></a></li>
-		</ul>
-	</div>
+        <a class="btn-floating btn-large red"> <i
+                class="large material-icons">add</i>
+        </a>
+        <ul>
+            <li><a href="/admin/subjects/add" class="btn-floating yellow darken-1"><i
+                    class="material-icons">add</i></a></li>
+            <li><a class="btn-floating red"><i class="material-icons">delete</i></a></li>
+            <li><a class="btn-floating blue"><i class="material-icons">mode_edit</i></a></li>
+        </ul>
+    </div>
 
 </main>
 
