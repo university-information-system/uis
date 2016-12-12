@@ -59,7 +59,7 @@
             </li>
 
             <li th:if="${page.getNumber()-4 >= 0}" class="waves-effect">
-                <a th:text="1" th:href="@{/admin/subjects/page/0?search=__${search}__}"></a>
+                <a th:text="1" th:href="@{/admin/subjects?search=__${search}__}"></a>
             </li>
 
             <li th:if="${page.getNumber()-4 > 0}">
