@@ -10,8 +10,6 @@ import java.util.*;
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Long> {
 
-    List<Course> findAllBySemester(Semester semester);
-
     List<Course> findAllBySemesterAndSubjectNameLikeIgnoreCase(Semester semester, String name);
 
     List<Course> findAllBySemesterAndSubject(Semester semester, Subject subject);
