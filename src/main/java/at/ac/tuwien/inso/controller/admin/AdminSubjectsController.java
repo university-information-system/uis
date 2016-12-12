@@ -75,6 +75,6 @@ public class AdminSubjectsController {
     @PostMapping("/add")
     private String addSubject(@ModelAttribute Subject subject) {
         subject = subjectService.create(subject);
-        return "admin/subject-details";
+        return "redirect:/admin/subjects/"+subject.getId();
     }
 }
