@@ -17,6 +17,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectRepository subjectRepository;
+    
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     private LecturerRepository lecturerRepository;
@@ -88,6 +91,17 @@ public class SubjectServiceImpl implements SubjectService {
     public List<Subject> searchForSubjects(String word) {
         return subjectRepository.findByNameContainingIgnoreCase(word);
     }
+
+	@Override
+	public boolean delete(Subject subject) throws ValidationException{
+		List<Course> courses = courseService.findCoursesForSubject(subject);
+		if(!courses.isEmpty()){
+			throw new ValidationException("Cannot delete Subject because there are courses");
+		}else{
+			subjectRepository.delete(subject);
+			return true;
+		}
+	}
 
 
 }

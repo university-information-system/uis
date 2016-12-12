@@ -46,6 +46,13 @@ public class CourseServiceImpl implements CourseService {
         subjectsForLecturer.forEach(subject -> courses.addAll(courseRepository.findAllBySemesterAndSubject(semester, subject)));
         return courses;
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Course> findCoursesForSubject(Subject subject) {    	
+    	return courseRepository.findAllBySubject(subject);    	
+    	
+    }
 
     @Override
     @Transactional

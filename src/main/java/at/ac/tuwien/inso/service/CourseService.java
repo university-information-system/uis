@@ -26,4 +26,7 @@ public interface CourseService {
 
     @PreAuthorize("isAuthenticated()")
     List<Course> findAllForStudent(Student student);
+
+    @PreAuthorize("isAuthenticated()")
+	List<Course> findCoursesForSubject(Subject subject);
 }

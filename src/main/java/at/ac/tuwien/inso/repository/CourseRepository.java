@@ -15,6 +15,8 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
     List<Course> findAllBySemesterAndSubjectNameLikeIgnoreCase(Semester semester, String name);
 
     List<Course> findAllBySemesterAndSubject(Semester semester, Subject subject);
+    
+    List<Course> findAllBySubject(Subject subject);
 
     @Query("select distinct c " +
             "from Course c join fetch c.tags " +
