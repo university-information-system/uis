@@ -1,3 +1,32 @@
+
+#THIS FILE SHOULD NOT BE USED. USE WIKI INSTEAD! #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # University information system #
 
 ## Setup and running ##
