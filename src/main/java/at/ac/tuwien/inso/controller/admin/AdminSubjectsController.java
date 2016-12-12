@@ -65,7 +65,6 @@ public class AdminSubjectsController {
     
     @GetMapping("/delete/{id}")
     private String deleteSubject(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-      //model.addAttribute("subject", new Subject());
       Subject subject = subjectService.findOne(id);  	
       if(subject == null){
         System.out.println("error1");
@@ -88,6 +87,6 @@ public class AdminSubjectsController {
       }
 
 
-      return "redirect:/admin/subjects/page/1";
+      return "redirect:/admin/subjects/page/0";
     }
 }

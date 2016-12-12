@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.*;
 import java.math.*;
 
 import static java.util.Arrays.*;
+import static org.junit.Assert.assertFalse;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -62,6 +63,24 @@ public class SubjectsTest {
                 .andExpect(model().attribute("subjects", asList(calculus, sepm, ase))
         );
     }
+    
+    @Test
+    public void adminShouldBeAbleToDeleteSubjects() throws Exception {
+
+        Subject cal = subjectRepository.save(calculus);
+        subjectRepository.save(sepm);
+        subjectRepository.save(ase);
+
+        // then the admin should see them all in the first page
+        mockMvc.perform(
+                get("/admin/subjects/delete/"+cal.getId()).with(user("admin").roles("ADMIN")))
+        .andExpect(
+            redirectedUrl("/admin/subjects/page/0")
+        );
+        
+        assertFalse(subjectRepository.exists(cal.getId()));
+    }
+
 
     @Test
     public void adminShouldSeeSubjectDetails() throws Exception {
