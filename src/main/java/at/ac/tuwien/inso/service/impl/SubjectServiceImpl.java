@@ -34,9 +34,6 @@ public class SubjectServiceImpl implements SubjectService {
     private LecturerRepository lecturerRepository;
 
     @Override
-    @Transactional(readOnly = true)
-    public Page<Subject> findAll(Pageable pageable) {
-        return subjectRepository.findAll(pageable);
     }
 
     @Override

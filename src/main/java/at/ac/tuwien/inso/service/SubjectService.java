@@ -11,7 +11,6 @@ import java.util.*;
 public interface SubjectService {
 
     @PreAuthorize("isAuthenticated()")
-    Page<Subject> findAll(Pageable pageable);
 
     @PreAuthorize("isAuthenticated()")
     Subject findOne(long id);
