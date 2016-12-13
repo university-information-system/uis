@@ -1,25 +1,30 @@
 package at.ac.tuwien.inso.integration_tests;
 
 
-import at.ac.tuwien.inso.controller.lecturer.forms.*;
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.autoconfigure.web.servlet.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
-import org.springframework.test.web.servlet.*;
-import org.springframework.transaction.annotation.*;
+import org.hamcrest.Matchers;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
-import static java.util.Arrays.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static java.util.Arrays.asList;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -106,7 +111,7 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", expectedCourses)
+                model().attribute("allCourses", Matchers.containsInAnyOrder(expectedCourses.toArray()))
         );
     }
 
@@ -115,7 +120,7 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses?search=").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", expectedCourses)
+                model().attribute("allCourses", Matchers.containsInAnyOrder(expectedCourses.toArray()))
         );
     }
 

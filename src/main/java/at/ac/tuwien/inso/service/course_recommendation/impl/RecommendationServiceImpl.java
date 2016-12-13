@@ -2,57 +2,42 @@ package at.ac.tuwien.inso.service.course_recommendation.impl;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Tag;
 import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.utils.TagFrequency;
 import at.ac.tuwien.inso.service.course_recommendation.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private CourseRepository courseRepository;
 
     @Autowired
-    private CourseRepository courseRepository;
+    private TagFrequencyScorer tagFrequencyScorer;
 
     @Override
     public List<Course> recommendCourses(Student student) {
-        List<TagFrequency> tagFrequencyForStudent = studentRepository.computeTagsFrequencyFor(student);
-        List<Course> coursesByCurrentSemester = courseRepository.findAllByCurrentSemesterWithTags();
-        Map<Long, List<Course>> coursesToRecommendMap = new TreeMap<>(Collections.reverseOrder());
-        List<Course> coursesToRecommendList = new ArrayList<>();
-        List<Course> studentCourses = courseRepository.findAllForStudent(student);
+        List<Course> coursesByStudent = courseRepository.findAllForStudent(student);
+        List<Course> coursesBySemester = courseRepository.findAllByCurrentSemester();
 
-        long score;
-        for (Course course : coursesByCurrentSemester) {
-            score = 0;
-            for (TagFrequency tagFrequency : tagFrequencyForStudent) {
-                for (Tag tag : course.getTags()) {
-                    if (tagFrequency.getTag().equals(tag)) {
-                        score += tagFrequency.getFrequency();
-                    }
-                }
-            }
-            if (studentCourses.contains(course)) {
-                continue;
-            }
-            if (!coursesToRecommendMap.containsKey(score)) {
-                coursesToRecommendMap.put(score, new ArrayList<>());
-            }
+        List<Course> courses = coursesBySemester.stream()
+                .filter(course -> !coursesByStudent.contains(course))
+                .collect(Collectors.toList());
 
-            coursesToRecommendMap.get(score).add(course);
-        }
+        Map<Course, Double> tagFrequencyCourses = tagFrequencyScorer.score(courses, student);
 
-        for (long key : coursesToRecommendMap.keySet()) {
-            coursesToRecommendList.addAll(coursesToRecommendMap.get(key));
-        }
+        List<Course> recommendedCourses = new ArrayList<>();
 
-        return coursesToRecommendList;
+        tagFrequencyCourses.entrySet().stream()
+                .sorted(Map.Entry.<Course, Double>comparingByValue()
+                        .reversed()).forEachOrdered(it -> recommendedCourses.add(it.getKey()));
+
+        return recommendedCourses;
     }
 }
