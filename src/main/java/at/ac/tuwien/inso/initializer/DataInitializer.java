@@ -2,16 +2,19 @@ package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.*;
-import java.util.stream.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 @Component
 public class DataInitializer {
@@ -38,6 +41,8 @@ public class DataInitializer {
     private GradeRepository gradeRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
 
     private List<StudyPlan> studyplans;
 
@@ -332,6 +337,8 @@ public class DataInitializer {
         registerCoursesToStudents();
 
         giveGrades();
+
+        giveFeedback();
     }
 
     private void createTags() {
@@ -650,5 +657,20 @@ public class DataInitializer {
 
         grade = new Grade(course, lecturer, student, Mark.SATISFACTORY);
         gradeRepository.save(grade);
+
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"),
+                lecturer,
+                studentMap.get("John Terry"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
+
+    }
+
+    private void giveFeedback() {
+        Course course = coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung");
+        Student johnTerry = studentMap.get("John Terry");
+        Feedback feedback = new Feedback(johnTerry, course);
+        feedbackRepository.save(feedback);
     }
 }

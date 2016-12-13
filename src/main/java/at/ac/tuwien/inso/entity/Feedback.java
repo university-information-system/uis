@@ -1,10 +1,6 @@
 package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Arrays.asList;
 
 @Entity
 public class Feedback {
@@ -12,21 +8,23 @@ public class Feedback {
     @Id
     @GeneratedValue
     private Long id;
-
+    @Column(nullable = false)
+    private Type type;
     @ManyToOne
     private Student student;
-
     @ManyToOne
     private Course course;
 
-    @ManyToMany
-    private List<Tag> tags = new ArrayList<>();
-
     protected Feedback() {}
 
-    public Feedback(Student student, Course course) {
+    public Feedback(Student student, Course course, Type type) {
         this.student = student;
         this.course = course;
+        this.type = type;
+    }
+
+    public Feedback(Student student, Course course) {
+        this(student, course, Type.LIKE);
     }
 
     public Long getId() {
@@ -41,16 +39,13 @@ public class Feedback {
         return course;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public Type getType() {
+        return type;
     }
 
-    public void addTags(Tag... tags) {
-        this.tags.addAll(asList(tags));
-    }
-
-    public void removeTags(Tag... tags) {
-        this.tags.removeAll(asList(tags));
+    public Feedback setType(Type type) {
+        this.type = type;
+        return this;
     }
 
     @Override
@@ -60,19 +55,19 @@ public class Feedback {
 
         Feedback feedback = (Feedback) o;
 
-        if (!id.equals(feedback.id)) return false;
-        if (!student.equals(feedback.student)) return false;
-        if (!course.equals(feedback.course)) return false;
-        return tags.equals(feedback.tags);
+        if (id != null ? !id.equals(feedback.id) : feedback.id != null) return false;
+        if (type != feedback.type) return false;
+        if (student != null ? !student.equals(feedback.student) : feedback.student != null) return false;
+        return course != null ? course.equals(feedback.course) : feedback.course == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + student.hashCode();
-        result = 31 * result + course.hashCode();
-        result = 31 * result + tags.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (student != null ? student.hashCode() : 0);
+        result = 31 * result + (course != null ? course.hashCode() : 0);
         return result;
     }
 
@@ -80,9 +75,14 @@ public class Feedback {
     public String toString() {
         return "Feedback{" +
                 "id=" + id +
+                ", type=" + type +
                 ", student=" + student +
                 ", course=" + course +
-                ", tags=" + tags +
                 '}';
+    }
+
+    public enum Type {
+        LIKE,
+        DISLIKE
     }
 }
