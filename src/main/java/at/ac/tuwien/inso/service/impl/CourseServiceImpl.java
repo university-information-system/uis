@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.slf4j.*;
@@ -68,7 +69,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public Course findOne(Long id) {
-        return courseRepository.findOne(id);
+        Course course = courseRepository.findOne(id);
+        if (course == null) {
+            throw new BusinessObjectNotFoundException("Course with id " + id + " does not exist");
+        }
+        return course;
     }
 
 

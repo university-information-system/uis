@@ -11,4 +11,7 @@ public interface FeedbackService {
 
     @PreAuthorize("isAuthenticated()")
     List<Feedback> findAllOfStudent(Student student);
+
+    @PreAuthorize("isAuthenticated()")
+    Feedback save(Feedback feedback);
 }
