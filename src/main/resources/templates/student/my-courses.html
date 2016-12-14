@@ -73,7 +73,6 @@
                          th:id="'give-feedback-' + ${courseRegistration.course.id}"
                          class="modal small">
                         <div class="modal-content">
-                            <!--<h4>Feedback</h4>-->
                             <h5 th:text="${courseRegistration.course.subject.name}"></h5>
                             <p class="grey-text text-darken-2">
                                 <span th:text="${courseRegistration.course.subject.ects}"></span>
@@ -100,7 +99,7 @@
                         <div class="modal-footer">
                             <a href="#" class="modal-action modal-close btn"
                                th:onclick="'$(\'#feedback-form-' + ${courseRegistration.course.id} + '\').submit()'"
-                               th:text="#{submit}"></a>
+                               th:text="#{student.my.courses.feedback.submit}"></a>
                             <a href="#" class=" modal-action modal-close waves-effect btn-flat"
                                th:text="#{cancel}"></a>
                         </div>
