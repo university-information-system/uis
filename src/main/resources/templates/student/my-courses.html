@@ -30,7 +30,10 @@
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).needs_feedback}"
                        data-position="bottom" data-delay="50" data-tooltip="Give feedback"
-                       href="#" class="secondary-content tooltipped"><i class="material-icons">thumbs_up_down</i></a>
+                       th:href="'#give-feedback-' + ${courseRegistration.course.id}"
+                       class="secondary-content tooltipped modal-trigger">
+                        <i class="material-icons">thumbs_up_down</i>
+                    </a>
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).complete_ok}"
                        data-position="bottom" data-delay="50" data-tooltip="Course successfully completed"
@@ -61,6 +64,44 @@
                                        class="modal-action modal-close btn"/>
                             </form>
                             <a href="#!" class=" modal-action modal-close waves-effect btn-flat"
+                               th:text="#{cancel}"></a>
+                        </div>
+                    </div>
+
+                    <!-- Give feedback modal -->
+                    <div th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).needs_feedback}"
+                         th:id="'give-feedback-' + ${courseRegistration.course.id}"
+                         class="modal small">
+                        <div class="modal-content">
+                            <!--<h4>Feedback</h4>-->
+                            <h5 th:text="${courseRegistration.course.subject.name}"></h5>
+                            <p class="grey-text text-darken-2">
+                                <span th:text="${courseRegistration.course.subject.ects}"></span>
+                                <span>ECTS,</span>
+                                <span th:text="${courseRegistration.course.semester.label}"></span>
+                            </p>
+                            <form th:action="@{/student/feedback}" method="post"
+                                  th:id="'feedback-form-' + ${courseRegistration.course.id}">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="suggestions" name="suggestions"
+                                                  class="materialize-textarea" length="1024"></textarea>
+                                        <label for="suggestions"
+                                               th:text="#{student.my.courses.feedback.suggestions}"></label>
+                                    </div>
+                                    <div class="col s12">
+                                        <input type="checkbox" name="like" id="like"/>
+                                        <label for="like" th:text="#{student.my.courses.feedback.like}"></label>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="course" th:value="${courseRegistration.course.id}"/>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="modal-action modal-close btn"
+                               th:onclick="'$(\'#feedback-form-' + ${courseRegistration.course.id} + '\').submit()'"
+                               th:text="#{submit}"></a>
+                            <a href="#" class=" modal-action modal-close waves-effect btn-flat"
                                th:text="#{cancel}"></a>
                         </div>
                     </div>
