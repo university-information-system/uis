@@ -90,4 +90,13 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAllForStudent(student);
     }
 
+    @Override
+    @Transactional
+    public void unregisterStudentFromCourse(Student student, Long courseId) {
+        Course course = courseRepository.findOne(courseId);
+        if (course == null) return;
+
+        course.removeStudents(student);
+    }
+
 }
