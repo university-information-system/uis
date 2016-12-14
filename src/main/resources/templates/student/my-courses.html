@@ -23,8 +23,10 @@
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).in_progress}"
                        data-position="bottom" data-delay="50" data-tooltip="Unregister"
-                       href="#unregister-confirm" class="secondary-content tooltipped modal-trigger"><i
-                            class="material-icons">remove_circle</i></a>
+                       th:href="'#unregister-confirm-' + ${courseRegistration.course.id}"
+                       class="secondary-content tooltipped modal-trigger">
+                        <i class="material-icons">remove_circle</i>
+                    </a>
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).needs_feedback}"
                        data-position="bottom" data-delay="50" data-tooltip="Give feedback"
@@ -45,10 +47,12 @@
                     </div>
 
                     <!-- Unregister confirmation modal -->
-                    <div id="unregister-confirm" class="modal small">
+                    <div th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).in_progress}"
+                         th:id="'unregister-confirm-' + ${courseRegistration.course.id}"
+                         class="modal small">
                         <div class="modal-content">
                             <h4 th:text="#{student.my.courses.unregister.modal.header}"></h4>
-                            <p th:text="#{student.my.courses.unregister.modal.content}"></p>
+                            <p th:text="#{student.my.courses.unregister.modal.content(${courseRegistration.course.subject.name})}"></p>
                         </div>
                         <div class="modal-footer">
                             <form method="post"
