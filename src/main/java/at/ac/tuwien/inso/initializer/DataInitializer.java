@@ -2,19 +2,16 @@ package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
+import java.math.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.*;
+import java.util.stream.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 @Component
 public class DataInitializer {
@@ -655,7 +652,7 @@ public class DataInitializer {
         student = studentMap.get("Emma Dowd");
         lecturer = course.getSubject().getLecturers().get(0);
 
-        grade = new Grade(course, lecturer, student, Mark.SATISFACTORY);
+        grade = new Grade(course, lecturer, student, Mark.FAILED);
         gradeRepository.save(grade);
 
         grade = new Grade(

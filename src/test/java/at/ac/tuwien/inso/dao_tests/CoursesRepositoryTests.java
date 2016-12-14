@@ -2,27 +2,23 @@ package at.ac.tuwien.inso.dao_tests;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import org.hamcrest.CoreMatchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.hamcrest.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.*;
+import java.util.*;
 
-import static at.ac.tuwien.inso.utils.IterableUtils.toList;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static at.ac.tuwien.inso.utils.IterableUtils.*;
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -129,5 +125,23 @@ public class CoursesRepositoryTests {
         List<Course> courses = courseRepository.findAllForStudent(student);
 
         assertThat(courses, equalTo(singletonList(course)));
+    }
+
+    @Test
+    public void testExistsCourseRegistrationForStudentRegisteredToCourse() throws Exception {
+        Course course = courses.get("Course1");
+        Student student = students.get(0);
+        course.addStudents(student);
+
+        assertTrue(courseRepository.existsCourseRegistration(student, course));
+    }
+
+    @Test
+    public void testExistsCourseRegistrationForStudentNotRegisteredToCourse() throws Exception {
+        Course course = courses.get("Course1");
+        Student student = students.get(0);
+        course.addStudents(student);
+
+        assertFalse(courseRepository.existsCourseRegistration(student, courses.get("Course2")));
     }
 }

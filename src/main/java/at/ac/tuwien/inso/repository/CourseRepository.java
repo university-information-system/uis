@@ -1,14 +1,11 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import at.ac.tuwien.inso.entity.*;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.*;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.*;
 
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Long> {
@@ -34,4 +31,10 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
             "from Course c " +
             "where ?1 member of c.students")
     List<Course> findAllForStudent(Student student);
+
+    @Query("select case when count(c) > 0 then true else false end " +
+            "from Course c " +
+            "where c = ?2 and ?1 member of c.students"
+    )
+    boolean existsCourseRegistration(Student student, Course course);
 }

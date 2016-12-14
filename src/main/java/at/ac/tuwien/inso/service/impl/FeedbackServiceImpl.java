@@ -10,7 +10,6 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 import java.util.*;
-import java.util.stream.*;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
@@ -20,7 +19,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
-    private CourseService courseService;
+    private CourseRepository courseRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -44,19 +43,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     private void guardSingleFeedback(Feedback feedback) {
-        List<Course> feedbackCourses = findAllOfStudent(feedback.getStudent())
-                .stream()
-                .map(Feedback::getCourse)
-                .collect(Collectors.toList());
-        if (feedbackCourses.contains(feedback.getCourse())) {
+        if (feedbackRepository.exists(feedback)) {
             throw new ActionNotAllowedException("Giving feedback multiple times for the same course is not allowed");
         }
     }
 
     private void guardStudentRegisteredForCourse(Student student, Course course) {
-        List<Course> studentCourses = courseService.findAllForStudent(student);
-
-        if (!studentCourses.contains(course)) {
+        if (!courseRepository.existsCourseRegistration(student, course)) {
             throw new ActionNotAllowedException("Student tried to give feedback for course he is not registered for");
         }
     }
