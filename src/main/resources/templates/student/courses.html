@@ -5,18 +5,6 @@
 <body>
 <main layout:fragment="main">
 
-
-    <!-- TODO: Move to a js. file -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js" />
-    <script>
-        $(document).ready(function(){
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-            $('.modal-trigger').leanModal();
-        });
-    </script>
-    <!-- -->
-
     <div class="container">
         <h2 th:text="#{student.courses.label}">Courses</h2>
 

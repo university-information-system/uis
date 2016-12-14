@@ -20,7 +20,8 @@
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).in_progress}"
                        data-position="bottom" data-delay="50" data-tooltip="Unregister"
-                       href="#" class="secondary-content tooltipped"><i class="material-icons">remove_circle</i></a>
+                       href="#unregister-confirm" class="secondary-content tooltipped modal-trigger"><i
+                            class="material-icons">remove_circle</i></a>
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).needs_feedback}"
                        data-position="bottom" data-delay="50" data-tooltip="Give feedback"
@@ -38,6 +39,22 @@
                     <div>
                         <span th:text="${courseRegistration.course.subject.ects}"></span>
                         <span> ECTS</span>
+                    </div>
+
+                    <!-- Unregister confirmation modal -->
+                    <div id="unregister-confirm" class="modal small">
+                        <div class="modal-content">
+                            <h4>Unregister</h4>
+                            <p>Are you sure you want to unregister?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form method="post"
+                                  th:action="@{/student/unregister(course=__${courseRegistration.course.id}__)}">
+                                <input type="submit" value="Unregister"
+                                       class="modal-action modal-close waves-effect btn"/>
+                            </form>
+                            <a href="#!" class=" modal-action modal-close waves-effect btn-flat">Cancel</a>
+                        </div>
                     </div>
                 </li>
             </ul>
