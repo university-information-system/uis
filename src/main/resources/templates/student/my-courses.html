@@ -47,16 +47,17 @@
                     <!-- Unregister confirmation modal -->
                     <div id="unregister-confirm" class="modal small">
                         <div class="modal-content">
-                            <h4>Unregister</h4>
-                            <p>Are you sure you want to unregister?</p>
+                            <h4 th:text="#{student.my.courses.unregister.modal.header}"></h4>
+                            <p th:text="#{student.my.courses.unregister.modal.content}"></p>
                         </div>
                         <div class="modal-footer">
                             <form method="post"
                                   th:action="@{/student/unregister(course=__${courseRegistration.course.id}__)}">
-                                <input type="submit" value="Unregister"
+                                <input type="submit" th:value="#{unregister}"
                                        class="modal-action modal-close waves-effect btn"/>
                             </form>
-                            <a href="#!" class=" modal-action modal-close waves-effect btn-flat">Cancel</a>
+                            <a href="#!" class=" modal-action modal-close waves-effect btn-flat"
+                               th:text="#{cancel}"></a>
                         </div>
                     </div>
                 </li>
