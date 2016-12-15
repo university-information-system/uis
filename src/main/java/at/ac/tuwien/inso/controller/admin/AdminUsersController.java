@@ -63,17 +63,14 @@ public class AdminUsersController {
         return "admin/lecturer-details";
     }
 
-    @GetMapping("/create")
-    public String createUserView(CreateUserForm createUserForm) {
-        return "admin/create-user";
-    }
-
     @PostMapping("/create")
     public String createUser(@Valid CreateUserForm form,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "admin/create-user";
+            redirectAttributes.addFlashAttribute("flashMessage", "admin.users.create.error." + bindingResult.getFieldError().getField());
+
+            return "redirect:/admin/users";
         }
 
         userCreationService.create(form.toUisUser());
