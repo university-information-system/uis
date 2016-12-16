@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml" layout:decorator="lecturer/index">
+<body>
+
+<main layout:fragment="main">
+
+
+    <div class="container">
+        <h2 th:text="${course.getSubject().getName()}"></h2>
+        <h5 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h5><br/>
+    </div>
+
+</main>
+
+</body>
+</html>
