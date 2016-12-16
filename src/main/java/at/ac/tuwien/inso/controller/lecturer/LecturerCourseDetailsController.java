@@ -20,4 +20,10 @@ public class LecturerCourseDetailsController {
         model.addAttribute("course", courseService.findOne(courseId));
         return "lecturer/course-details";
     }
+
+    @GetMapping("registrations")
+    private String getCourseRegistrations(@RequestParam("courseId") Long courseId, Model model) {
+        model.addAttribute("course", courseService.findOne(courseId));
+        return "lecturer/course-registrations";
+    }
 }
