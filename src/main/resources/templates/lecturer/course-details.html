@@ -10,6 +10,8 @@
     <div class="container">
         <h2 th:text="${course.getSubject().getName()}"></h2>
         <h5 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h5><br/>
+
+        <a th:text="#{lecturer.courses.registrations}" th:href="@{/lecturer/course-details/registrations(courseId=__${course.id}__)}"></a>
     </div>
 
 </main>
