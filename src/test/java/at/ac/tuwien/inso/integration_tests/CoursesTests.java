@@ -186,4 +186,37 @@ public class CoursesTests {
         );
     }
 
+    @Test
+    public void lecturersShouldSeeRegisteredStudentsToCourse() throws Exception {
+        // given lecturer1 and lecturer2 of the ase course
+
+        // when a student has registered to the ase course
+        aseWS2016.addStudents(student);
+
+        //lecturer1 should see the registered student
+        mockMvc.perform(
+                get("/lecturer/course-details/registrations")
+                        .param("courseId", aseWS2016.getId().toString())
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", aseWS2016)
+        ).andExpect(
+                model().attribute("students", asList(student))
+        );
+
+        //lecturer2 should see the registered student too
+        mockMvc.perform(
+                get("/lecturer/course-details/registrations")
+                        .param("courseId", aseWS2016.getId().toString())
+                        .with(user("lecturer2").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", aseWS2016)
+        ).andExpect(
+                model().attribute("students", asList(student))
+        );
+
+    }
+
 }
