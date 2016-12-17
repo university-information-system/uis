@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
+import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,9 @@ public class LecturerCourseDetailsController {
 
     @GetMapping("registrations")
     private String getCourseRegistrations(@RequestParam("courseId") Long courseId, Model model) {
-        model.addAttribute("course", courseService.findOne(courseId));
+        Course course = courseService.findOne(courseId);
+        model.addAttribute("course", course);
+        model.addAttribute("students", course.getStudents());
         return "lecturer/course-registrations";
     }
 }

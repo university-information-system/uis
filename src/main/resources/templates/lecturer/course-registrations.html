@@ -6,10 +6,25 @@
 
 <main layout:fragment="main">
 
-
     <div class="container">
-        <h2 th:text="${course.getSubject().getName()}"></h2>
-        <h5 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h5><br/>
+        <h2 th:text="${course.getSubject().getName()} + ' - ' + #{lecturer.courses.registrations}"></h2>
+        <h5 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h5>
+
+        <ul class="collection z-depth-1">
+            <li class="collection-item" th:if="${#lists.isEmpty(students)}"
+                th:text="#{lecturer.courses.registrations.zero}"></li>
+
+            <li class="collection-item" th:each="student : ${students}">
+                <div class="title">
+                    <a class="teal-text" th:text="${student.name}"></a>
+                </div>
+                <div>
+                    <span th:text="${student.identificationNumber}"></span>
+                    <br/>
+                    <span th:text="${student.email}"></span>
+                </div>
+            </li>
+        </ul>
     </div>
 
 </main>
