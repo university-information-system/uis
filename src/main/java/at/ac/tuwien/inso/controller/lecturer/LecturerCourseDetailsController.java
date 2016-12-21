@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.controller.lecturer;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,9 @@ public class LecturerCourseDetailsController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private GradeService gradeService;
+
     @GetMapping
     private String getCourseDetails(@RequestParam("courseId") Long courseId, Model model) {
         model.addAttribute("course", courseService.findOne(courseId));
@@ -28,5 +32,13 @@ public class LecturerCourseDetailsController {
         model.addAttribute("course", course);
         model.addAttribute("students", course.getStudents());
         return "lecturer/course-registrations";
+    }
+
+    @GetMapping("issued-grades")
+    private String getIssuedGrades(@RequestParam("courseId") Long courseId, Model model) {
+        Course course = courseService.findOne(courseId);
+        model.addAttribute("course", course);
+        model.addAttribute("grades", gradeService.getGradesForCourseOfLoggedInLecturer(courseId));
+        return "lecturer/issued-grades";
     }
 }
