@@ -21,4 +21,6 @@ public interface FeedbackRepository extends CrudRepository<Feedback, Long> {
             "where f.course = :#{#feedback.course} and f.student = :#{#feedback.student}"
     )
     boolean exists(@Param("feedback") Feedback feedback);
+
+    List<Feedback> findByCourseId(Long id);
 }
