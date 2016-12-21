@@ -14,4 +14,7 @@ public interface FeedbackService {
 
     @PreAuthorize("isAuthenticated()")
     Feedback save(Feedback feedback);
+
+    @PreAuthorize("isAuthenticated()")
+    List<Feedback> findFeedbackForCourse(Long id);
 }

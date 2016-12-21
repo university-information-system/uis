@@ -42,6 +42,11 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackRepository.save(feedback);
     }
 
+    @Override
+    public List<Feedback> findFeedbackForCourse(Long id) {
+        return feedbackRepository.findByCourseId(id);
+    }
+
     private void guardSingleFeedback(Feedback feedback) {
         if (feedbackRepository.exists(feedback)) {
             throw new ActionNotAllowedException("Giving feedback multiple times for the same course is not allowed");
