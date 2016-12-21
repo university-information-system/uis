@@ -106,5 +106,47 @@ public class GradesTests {
         );
     }
 
+    @Test
+    public void lecturersShouldSeeTheirIssuedGradesInCourseTest() throws Exception {
+
+        // given course ase held by lecturer1 and lecturer2 and 3 registered students
+        Student st2 = new Student("st2", "Student2", "st2@ude.nt", new UserAccount("st2", "pass", Role.STUDENT));
+        Student st3 = new Student("st3", "Student3", "st3@ude.nt", new UserAccount("st3", "pass", Role.STUDENT));
+        Student st4 = new Student("st4", "Student4", "st4@ude.nt", new UserAccount("st4", "pass", Role.STUDENT));
+        studentRepository.save(asList(st2, st3, st4));
+        aseWS2016.addStudents(st2, st3, st4);
+
+        // when: lecturer1 issues grades for st1 and st2
+        //       lecturer2 issues grades for st3
+        Grade gr1 = gradeRepository.save(new Grade(aseWS2016, lecturer1, st2, Mark.EXCELLENT));
+        Grade gr2 = gradeRepository.save(new Grade(aseWS2016, lecturer1, st3, Mark.FAILED));
+        Grade gr3 = gradeRepository.save(new Grade(aseWS2016, lecturer2, st4, Mark.GOOD));
+
+        // then lecturer1 and lecturer2 should see their issued grades
+        mockMvc.perform(
+                get("/lecturer/course-details/issued-grades")
+                        .param("courseId", aseWS2016.getId().toString())
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", aseWS2016)
+        ).andExpect(
+                model().attribute("grades", asList(gr1, gr2))
+        );
+
+        mockMvc.perform(
+                get("/lecturer/course-details/issued-grades")
+                        .param("courseId", aseWS2016.getId().toString())
+                        .with(user("lecturer2").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", aseWS2016)
+        ).andExpect(
+                model().attribute("grades", asList(gr3))
+        );
+
+
+    }
+
 
 }
