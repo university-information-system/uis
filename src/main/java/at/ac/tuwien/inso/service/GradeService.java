@@ -15,6 +15,9 @@ public interface GradeService {
     @PreAuthorize("hasRole('LECTURER')")
     Grade saveNewGradeForStudentAndCourse(Grade grade);
 
+    @PreAuthorize("hasRole('LECTURER')")
+    List<Grade> getGradesForCourseOfLoggedInLecturer(Long courseId);
+
     @PreAuthorize("hasRole('STUDENT')")
     List<Grade> getGradesForLoggedInStudent();
 
