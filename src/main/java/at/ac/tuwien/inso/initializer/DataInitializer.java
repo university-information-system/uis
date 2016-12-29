@@ -38,6 +38,8 @@ public class DataInitializer {
     private GradeRepository gradeRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
 
     private List<StudyPlan> studyplans;
 
@@ -332,6 +334,8 @@ public class DataInitializer {
         registerCoursesToStudents();
 
         giveGrades();
+
+        giveFeedback();
     }
 
     private void createTags() {
@@ -648,7 +652,63 @@ public class DataInitializer {
         student = studentMap.get("Emma Dowd");
         lecturer = course.getSubject().getLecturers().get(0);
 
-        grade = new Grade(course, lecturer, student, Mark.SATISFACTORY);
+        grade = new Grade(course, lecturer, student, Mark.FAILED);
         gradeRepository.save(grade);
+
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"),
+                lecturer,
+                studentMap.get("John Terry"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
+
+    }
+
+    private void giveFeedback() {
+        Course course = coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung");
+        Student johnTerry = studentMap.get("John Terry");
+        Feedback feedback = new Feedback(johnTerry, course);
+        feedbackRepository.save(feedback);
+
+        course = coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik");
+        Student joanWatson =  studentMap.get("Joan Watson");
+        Student emmaDowd = studentMap.get("Emma Dowd");
+        Student carolineBlack = studentMap.get("Caroline Black");
+        Feedback feedback1 = new Feedback(
+                joanWatson,
+                course,
+                Feedback.Type.LIKE, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec enim ligula. " +
+                "Sed eget posuere tellus. Aenean fermentum maximus tempor. Ut ultricies dapibus nulla vitae mollis. " +
+                "Suspendisse a nunc nisi. Sed ut sapien eu odio sodales laoreet eu ac turpis. " +
+                "In id sapien id ante sollicitudin consectetur at laoreet mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                "Suspendisse quam sem, ornare eget pellentesque sit amet, tincidunt id metus. Sed scelerisque neque sed laoreet elementum. " +
+                "Integer eros neque, vulputate a hendrerit at, ullamcorper in orci. Donec sit amet risus hendrerit, hendrerit magna non, dapibus nibh. " +
+                "Suspendisse sed est feugiat, dapibus ante non, aliquet neque. Cras magna sapien, pharetra ut ante ut, malesuada hendrerit erat. " +
+                "Mauris fringilla mattis dapibus. Nullam iaculis nunc in tortor gravida, id tempor justo elementum.");
+        Feedback feedback2 = new Feedback(
+                emmaDowd,
+                course,
+                Feedback.Type.DISLIKE, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec enim ligula. " +
+                "Sed eget posuere tellus. Aenean fermentum maximus tempor. Ut ultricies dapibus nulla vitae mollis. " +
+                "Suspendisse a nunc nisi. Sed ut sapien eu odio sodales laoreet eu ac turpis. " +
+                "In id sapien id ante sollicitudin consectetur at laoreet mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                "Suspendisse quam sem, ornare eget pellentesque sit amet, tincidunt id metus. Sed scelerisque neque sed laoreet elementum. " +
+                "Integer eros neque, vulputate a hendrerit at, ullamcorper in orci. Donec sit amet risus hendrerit, hendrerit magna non, dapibus nibh. " +
+                "Suspendisse sed est feugiat, dapibus ante non, aliquet neque. Cras magna sapien, pharetra ut ante ut, malesuada hendrerit erat. " +
+                "Mauris fringilla mattis dapibus. Nullam iaculis nunc in tortor gravida, id tempor justo elementum.");
+        Feedback feedback3 = new Feedback(
+                carolineBlack,
+                course,
+                Feedback.Type.LIKE, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec enim ligula. " +
+                "Sed eget posuere tellus. Aenean fermentum maximus tempor. Ut ultricies dapibus nulla vitae mollis. " +
+                "Suspendisse a nunc nisi. Sed ut sapien eu odio sodales laoreet eu ac turpis. " +
+                "In id sapien id ante sollicitudin consectetur at laoreet mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                "Suspendisse quam sem, ornare eget pellentesque sit amet, tincidunt id metus. Sed scelerisque neque sed laoreet elementum. " +
+                "Integer eros neque, vulputate a hendrerit at, ullamcorper in orci. Donec sit amet risus hendrerit, hendrerit magna non, dapibus nibh. " +
+                "Suspendisse sed est feugiat, dapibus ante non, aliquet neque. Cras magna sapien, pharetra ut ante ut, malesuada hendrerit erat. " +
+                "Mauris fringilla mattis dapibus. Nullam iaculis nunc in tortor gravida, id tempor justo elementum.");
+
+        feedbackRepository.save(asList(feedback1, feedback2, feedback3));
+
     }
 }

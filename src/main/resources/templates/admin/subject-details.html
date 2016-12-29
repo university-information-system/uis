@@ -1,57 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	xmlns="http://www.w3.org/1999/xhtml" layout:decorator="admin/index">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml" layout:decorator="admin/index">
 <body>
 
-	<main layout:fragment="main">
+<main layout:fragment="main">
 
 
-
-	<div class="container">
-		<h2 th:text="${subject.getName()}"></h2>
-		<h5 th:text="${subject.getEcts()} +' ECTS'"></h5><br/>
+    <div class="container">
+        <h2 th:text="${subject.getName()}"></h2>
+        <h5 th:text="${subject.getEcts()} +' ECTS'"></h5><br/>
 
         <div class="row">
             <div class="col s12 m7">
                 <div class="card-content">
                     <ul class="collection with-header">
-                        <li class="collection-header"><h4 th:text="#{admin.subjectdetails.lecturers}"></h4></li>
-                        <li th:if="${#lists.isEmpty(lecturers)}" class="collection-item">
-                            No lecturers yet :)
-                        </li>
+                        <li class="collection-header"><h4
+                                th:text="#{admin.subjectdetails.lecturers}"></h4></li>
+                        <li th:if="${#lists.isEmpty(lecturers)}" class="collection-item" th:text="#{admin.subjectdetails.noLecturers}"></li>
                         <li class="collection-item" th:each="lecturer : ${lecturers}">
-                            <span th:text="${lecturer.getName()}"></span>
+                            <a class="teal-text" th:text="${lecturer.getName()}"
+                               th:href="@{/admin/users/{lecturerId}(lecturerId=${lecturer.id})}"
+                            ></a>
+
+                            <a class="secondary-content"
+                               data-th-href="@{/admin/subjects/{subjectId}/lecturers/{lecturerId}/delete(subjectId=${subject.id}, lecturerId=${lecturer.id})}">
+                                <i class="material-icons">delete</i>
+                            </a>
+
+                            <div th:text="${lecturer.identificationNumber}"></div>
                         </li>
-						<li class="collection-item">
+                        <li class="collection-item">
 
                             <form
-                                th:action="@{/admin/subjects/{subjectId}/lecturers(subjectId=${subject.id})}"
-                                th:object="${addLecturersToSubjectForm}"
-                                method="POST"
-                                class="add-lecturer-to-subject-form"
+                                    th:action="@{/admin/subjects/{subjectId}/lecturers(subjectId=${subject.id})}"
+                                    th:object="${addLecturersToSubjectForm}"
+                                    method="POST"
+                                    class="add-lecturer-to-subject-form"
                             >
                                 <div
-                                    class="input-field autocomplete-wrapper"
-                                    th:attr="data-url=@{/admin/subjects/{subjectId}/availableLecturers.json(subjectId=${subject.id})}"
+                                        class="input-field autocomplete-wrapper"
+                                        th:attr="data-url=@{/admin/subjects/{subjectId}/availableLecturers.json(subjectId=${subject.id})}"
                                 >
-                                    <input type="hidden" th:field="*{lecturerId}" class="hidden-input"/>
+                                    <input type="hidden" th:field="*{lecturerId}"
+                                           class="hidden-input"/>
 
                                     <input
-                                        type="text"
-                                        id="add-lecturer-to-subject-input"
-                                        class="autocomplete"
-                                        data-activates="add-lecturer-to-subject-dropdown"
-                                        data-beloworigin="true"
-                                        autocomplete="off"
+                                            type="text"
+                                            id="add-lecturer-to-subject-input"
+                                            class="autocomplete"
+                                            data-activates="add-lecturer-to-subject-dropdown"
+                                            data-beloworigin="true"
+                                            autocomplete="off"
                                     />
 
                                     <label for="add-lecturer-to-subject-input">Add lecturer</label>
 
-                                    <ul id="add-lecturer-to-subject-dropdown" class="dropdown-content"></ul>
+                                    <ul id="add-lecturer-to-subject-dropdown"
+                                        class="dropdown-content"></ul>
                                 </div>
 
-                                <button type="submit" class="btn waves-effect waves-light">Add</button>
+                                <button type="submit" class="btn waves-effect waves-light">Add
+                                </button>
                             </form>
 
                         </li>
@@ -61,26 +71,28 @@
             </div>
         </div>
 
-		<div th:if="${not #lists.isEmpty(requiredSubjects)}">
-			<div class="row">
-				<div class="col s12 m7">
-					<div class="card-content">
-						<ul class="collection with-header">
-							<li class="collection-header"><h4 th:text="#{admin.subjectdetails.prerequisites}"></h4></li>
-							<li class="collection-item"
-								th:each="requiredSubject : ${requiredSubjects}"><a href="#"
-								data-th-href="@{/admin/subjects/{id}(id=${requiredSubject.id})}"
-								th:text="${requiredSubject.name}"></a></li>
-						</ul>
-					</div>
+        <div th:if="${not #lists.isEmpty(requiredSubjects)}">
+            <div class="row">
+                <div class="col s12 m7">
+                    <div class="card-content">
+                        <ul class="collection with-header">
+                            <li class="collection-header"><h4
+                                    th:text="#{admin.subjectdetails.prerequisites}"></h4></li>
+                            <li class="collection-item"
+                                th:each="requiredSubject : ${requiredSubjects}"><a class="teal-text" href="#"
+                                                                                   data-th-href="@{/admin/subjects/{id}(id=${requiredSubject.id})}"
+                                                                                   th:text="${requiredSubject.name}"></a>
+                            </li>
+                        </ul>
+                    </div>
 
-				</div>
-			</div>
-		</div>
+                </div>
+            </div>
+        </div>
 
-	</div>
+    </div>
 
-	</main>
+</main>
 
 </body>
 </html>

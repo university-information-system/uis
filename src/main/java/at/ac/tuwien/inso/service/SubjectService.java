@@ -11,7 +11,7 @@ import java.util.*;
 public interface SubjectService {
 
     @PreAuthorize("isAuthenticated()")
-    Page<Subject> findAll(Pageable pageable);
+    Page<Subject> findBySearch(String search, Pageable pageable);
 
     @PreAuthorize("isAuthenticated()")
     Subject findOne(long id);
@@ -23,10 +23,20 @@ public interface SubjectService {
     Subject create(Subject subject);
 
     @PreAuthorize("hasRole('ADMIN')")
-    Subject addLecturerToSubject(Long subjectId, Long lecturerUisUserId);
+    Lecturer addLecturerToSubject(Long subjectId, Long lecturerUisUserId);
 
     @PreAuthorize("hasRole('ADMIN')")
-    List<Lecturer> getAvailableLecturersForSubject(Long subjectId);
+    List<Lecturer> getAvailableLecturersForSubject(Long subjectId, String search);
+
+    /**
+     * Removes a lecturer from a subject
+     *
+     * @param subjectId
+     * @param lecturerUisUserId
+     * @return the removed lecturer
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    Lecturer removeLecturerFromSubject(Long subjectId, Long lecturerUisUserId);
 
     @PreAuthorize("hasRole('ADMIN')")
 	boolean delete(Subject subject);

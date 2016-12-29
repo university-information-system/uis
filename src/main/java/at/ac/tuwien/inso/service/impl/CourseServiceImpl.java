@@ -2,8 +2,10 @@ package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -14,6 +16,8 @@ import java.util.stream.*;
 
 @Service
 public class CourseServiceImpl implements CourseService {
+
+    private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     @Autowired
     private SemesterService semesterService;
@@ -72,7 +76,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public Course findOne(Long id) {
-        return courseRepository.findOne(id);
+        Course course = courseRepository.findOne(id);
+        if (course == null) {
+            throw new BusinessObjectNotFoundException("Course with id " + id + " does not exist");
+        }
+        return course;
     }
 
 
@@ -95,6 +103,20 @@ public class CourseServiceImpl implements CourseService {
     @Transactional(readOnly = true)
     public List<Course> findAllForStudent(Student student) {
         return courseRepository.findAllForStudent(student);
+    }
+
+    @Override
+    @Transactional
+    public void unregisterStudentFromCourse(Student student, Long courseId) {
+        log.info("Unregistering student with id {} from course with id {}", student.getId(), courseId);
+
+        Course course = courseRepository.findOne(courseId);
+        if (course == null) {
+            log.warn("Course with id {} not found. Nothing to unregister", courseId);
+            return;
+        }
+
+        course.removeStudents(student);
     }
 
 }

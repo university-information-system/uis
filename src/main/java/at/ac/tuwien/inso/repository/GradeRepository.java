@@ -14,4 +14,6 @@ public interface GradeRepository extends CrudRepository<Grade, Long> {
             "from Grade g " +
             "where g.student = ?1")
     List<Grade> findAllOfStudent(Student student);
+
+    List<Grade> findByLecturerIdAndCourseId(Long lecturerId, Long courseId);
 }

@@ -14,7 +14,7 @@
         <ul class="collection" th:unless="${allCourses.isEmpty()}">
             <li class="collection-item" th:each="course : ${allCourses}">
                 <a th:href="@{/lecturer/editCourse(courseId=__${course.id}__)}" class="secondary-content"><i class="material-icons">edit</i></a>
-                <div class="title" th:text="${course.subject.name}"></div>
+                <a class="title teal-text" th:text="${course.subject.name}" th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"></a>
                 <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
 
             </li>

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.*;
 
 import static java.util.Arrays.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -107,7 +109,7 @@ public class StudentTests {
     }
 
     @Test
-    public void itDoesNotRegisterStudent() throws Exception{
+    public void itDoesNotRegisterStudent() throws Exception {
         mockMvc.perform(
                 get("/student/register").with(user(studentUser))
                         .param("courseId", sepmWS2016.getId().toString())
@@ -119,7 +121,7 @@ public class StudentTests {
     }
 
     @Test
-    public void itRegistersStudent() throws Exception{
+    public void itRegistersStudent() throws Exception {
         mockMvc.perform(
                 get("/student/register").with(user(studentUser))
                         .param("courseId", aseWS2016.getId().toString())
@@ -131,7 +133,7 @@ public class StudentTests {
     }
 
     @Test
-    public void itShowsEmptyGrades() throws Exception{
+    public void itShowsEmptyGrades() throws Exception {
         mockMvc.perform(
                 get("/student/grades").with(user(studentUser))
         ).andExpect(
@@ -140,7 +142,7 @@ public class StudentTests {
     }
 
     @Test
-    public void itShowsGrades() throws Exception{
+    public void itShowsGrades() throws Exception {
         mockMvc.perform(
                 get("/student/grades").with(user(student2User))
         ).andExpect(
@@ -148,4 +150,19 @@ public class StudentTests {
         );
     }
 
+    @Test
+    public void itUnregistersStudentFromCourseAndRedirectsToMyCoursesPage() throws Exception {
+        mockMvc.perform(
+                post("/student/unregister")
+                        .with(csrf())
+                        .param("course", aseWS2016.getId().toString())
+                        .with(user(student2User))
+        ).andExpect(result ->
+                assertThat(courseRepository.findOne(aseWS2016.getId()).getStudents(), empty())
+        ).andExpect(
+                redirectedUrl("/student/myCourses")
+        ).andExpect(
+                flash().attribute("flashMessage", "student.my.courses.unregister.success")
+        );
+    }
 }

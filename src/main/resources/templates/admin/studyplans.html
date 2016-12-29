@@ -18,7 +18,7 @@
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
-                            <a href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"
+                            <a class="teal-text" href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"
                                th:text="${studyPlan.name}"></a>
                             <span th:if="${studyPlan.enabled} == false"  style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_outline</i></span>
                             <a href="#" th:if="${studyPlan.enabled} == true" data-th-href="@{/admin/studyplans/disable/(id=${studyPlan.id})}" style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_open</i></a>

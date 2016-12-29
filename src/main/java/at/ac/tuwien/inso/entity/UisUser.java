@@ -50,6 +50,10 @@ public abstract class UisUser {
         return email;
     }
 
+    public UserAccount getAccount() {
+        return account;
+    }
+
     @Transient
     public boolean isActivated() {
         return account != null;

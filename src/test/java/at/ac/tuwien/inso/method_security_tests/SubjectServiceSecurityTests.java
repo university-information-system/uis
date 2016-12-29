@@ -52,17 +52,6 @@ public class SubjectServiceSecurityTests {
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    public void findAllNotAuthenticated() {
-        subjectService.findAll(null);
-    }
-
-    @Test
-    @WithMockUser
-    public void findAllAuthenticated() {
-        subjectService.findAll(null);
-    }
-
-    @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void findOneNotAuthenticated() {
         subjectService.findOne(Long.valueOf(1));
     }

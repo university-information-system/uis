@@ -1,127 +1,147 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	xmlns="http://www.w3.org/1999/xhtml" layout:decorator="admin/index">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="admin/index">
 <body>
 
-	<main layout:fragment="main"> <!-- TODO: Move to a js. file. copied from courses.html -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" />
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js" />
-	<script>
-        $(document).ready(function(){
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-            $('.modal-trigger').leanModal();
-        });
-    </script> <!-- -->
+<main layout:fragment="main">
 
-	<div class="container">
-		<h2 th:text="#{admin.nav.subjects}"></h2>
+    <div class="container">
+        <h2 th:text="#{admin.nav.subjects}"></h2>
 
-		<div th:if="${not #lists.isEmpty(subjects)}">
+        <form>
+            <input id="search"
+                   name="search"
+                   th:placeholder="#{admin.subjects.search}"
+                   th:value="${search}"
+                   type="text"
+            />
+        </form>
 
-			<ul class="collection">
-				<li class="collection-item" th:each="subject : ${subjects}">
-					<div>
-						<div class="title">
-							<a href="#"
-								data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}"
-								th:text="${subject.name}"></a> <a
-								th:href="'#modal'+__${subject.id}__"
-								class="secondary-content modal-trigger"><i
-								class="material-icons">delete</i></a> <a href="#!"
-								class="secondary-content"><i class="material-icons">edit</i></a>
-						</div>
-						<div th:text="${subject.ects} + ' ECTS'"></div>
-					</div>
 
-					<div th:id="'modal'+__${subject.id}__" class="modal">
-						<div class="modal-content">
-							<h5 class="center-align" th:text="${subject.name}"></h5>
-							<h6 class="center-align" th:text="#{admin.subjects.delete}"></h6>
-						</div>
-						<div class="modal-footer">
-							<a href="#"
-								class="modal-action modal-close waves-effect btn-flat"
-								th:text="#{admin.subjects.no}">toReplaceCancel</a>
-							<div />
-							<a
-								class="modal-action modal-close btn waves-effect waves-light btn-flat"
-								th:href="@{/admin/subjects/delete/__${subject.id}__}"
-								th:text="#{admin.subjects.yes}">toreplaceYes</a>
-						</div>
+        <div th:if="${not #lists.isEmpty(subjects)}">
 
-					</div>
+            <ul class="collection">
+                <li class="collection-item" th:each="subject : ${subjects}">
+                    <div>
+                        <div class="title">
+                            <a class="teal-text" href="#"
+                               data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}"
+                               th:text="${subject.name}"></a>
+                            <a href="#!" style="margin-left:10px;" class="secondary-content"><i
+                                    class="material-icons">delete</i></a>
+                            <a href="#!" class="secondary-content"><i
+                                    class="material-icons">edit</i></a>
+                        </div>
+                        <div th:text="${subject.ects} + ' ECTS'"></div>
+                    </div>
 
-				</li>
-			</ul>
-		</div>
+                </li>
+            </ul>
+        </div>
 
-		<div th:if="${#lists.isEmpty(subjects)}">
-			<p th:text="#{admin.subjects.notfound}"></p>
-		</div>
-	</div>
+        <div th:if="${#lists.isEmpty(subjects)}">
+            <p th:text="#{admin.subjects.noSubjectFound}"></p>
+        </div>
+    </div>
 
-	<div>
-		<ul class="pagination center">
-			<li th:if="${page.isFirst()}" class="disabled"><a href="#"><i
-					class="material-icons disabled">chevron_left</i></a></li>
-			<li th:if="${not page.isFirst()}"><a
-				th:href="@{/admin/subjects/page/__${page.getNumber()-1}__}"><i
-					class="material-icons">chevron_left</i></a></li>
-			<li th:if="${page.getNumber()-4 >= 0}" class="waves-effect"><a
-				th:text="1" th:href="@{/admin/subjects/page/0}"></a></li>
-			<li th:if="${page.getNumber()-4 > 0}"><a th:text="..."></a></li>
+    <div>
+        <ul class="pagination center">
+            <li th:if="${page.isFirst()}" class="disabled">
+                <a href="#"><i class="material-icons disabled">chevron_left</i></a>
+            </li>
 
-			<li th:if="${page.getNumber()-3 >= 0}" class="waves-effect"><a
-				th:text="${page.getNumber()-2}"
-				th:href="@{/admin/subjects/page/__${page.getNumber()-3}__}"></a></li>
-			<li th:if="${page.getNumber()-2 >= 0}" class="waves-effect"><a
-				th:text="${page.getNumber()-1}"
-				th:href="@{/admin/subjects/page/__${page.getNumber()-2}__}"></a></li>
-			<li th:if="${page.getNumber()-1 >= 0}" class="waves-effect"><a
-				th:text="${page.getNumber()}"
-				th:href="@{/admin/subjects/page/__${page.getNumber()-1}__}"></a></li>
-			<li class="active"><a th:text="${page.getNumber()+1}"></a></li>
-			<li th:if="${page.getNumber()+1 &lt;= page.getTotalPages()-1}"
-				class="waves-effect"><a th:text="${page.getNumber()+2}"
-				th:href="@{/admin/subjects/page/__${page.getNumber()+1}__}"></a></li>
-			<li th:if="${page.getNumber()+2 &lt;= page.getTotalPages()-1}"
-				class="waves-effect"><a th:text="${page.getNumber()+3}"
-				th:href="@{/admin/subjects/page/__${page.getNumber()+2}__}"></a></li>
-			<li th:if="${page.getNumber()+3 &lt;= page.getTotalPages()-1}"
-				class="waves-effect"><a th:text="${page.getNumber()+4}"
-				th:href="@{/admin/subjects/page/__${page.getNumber()+3}__}"></a></li>
+            <li th:if="${not page.isFirst()}">
+                <a th:href="@{/admin/subjects/page/__${page.getNumber()-1}__?search=__${search}__}">
+                    <i class="material-icons">chevron_left</i>
+                </a>
+            </li>
 
-			<li th:if="${page.getNumber()+4 &lt; page.getTotalPages()-1}"><a
-				th:text="..."></a></li>
-			<li th:if="${page.getNumber()+4 &lt;= page.getTotalPages()-1}"
-				class="waves-effect"><a th:text="${page.getTotalPages()}"
-				th:href="@{/admin/subjects/page/__${page.getTotalPages()-1}__}"></a>
-			</li>
-			<li th:if="${page.isLast()}" class="disabled"><a href="#"><i
-					class="material-icons disabled">chevron_right</i></a></li>
-			<li th:if="${!page.isLast()}"><a
-				th:href="@{/admin/subjects/page/__${page.getNumber()+1}__}"><i
-					class="material-icons">chevron_right</i></a></li>
-		</ul>
-	</div>
+            <li th:if="${page.getNumber()-4 >= 0}" class="waves-effect">
+                <a th:text="1" th:href="@{/admin/subjects?search=__${search}__}"></a>
+            </li>
 
-	<!-- floating "+" button -->
-	<div class="fixed-action-btn">
-		<a class="btn-floating btn-large red"> <i
-			class="large material-icons">add</i>
-		</a>
-		<ul>
-			<li><a href="/admin/subjects/add"
-				class="btn-floating yellow darken-1"><i class="material-icons">add</i></a></li>
-			<li><a class="btn-floating red"><i class="material-icons">delete</i></a></li>
-			<li><a class="btn-floating blue"><i class="material-icons">mode_edit</i></a></li>
-		</ul>
-	</div>
+            <li th:if="${page.getNumber()-4 > 0}">
+                <a th:text="…"></a>
+            </li>
 
-	</main>
+            <li th:if="${page.getNumber()-3 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()-2}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()-3}__?search=__${search}__}"></a>
+            </li>
+
+            <li th:if="${page.getNumber()-2 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()-1}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()-2}__?search=__${search}__}"></a>
+            </li>
+
+            <li th:if="${page.getNumber()-1 >= 0}" class="waves-effect">
+                <a th:text="${page.getNumber()}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()-1}__?search=__${search}__}"></a>
+            </li>
+
+            <li class="active">
+                <a th:text="${page.getNumber()+1}"></a>
+            </li>
+
+            <li th:if="${page.getNumber()+1 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+2}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()+1}__?search=__${search}__}">
+                </a>
+            </li>
+
+            <li th:if="${page.getNumber()+2 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+3}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()+2}__?search=__${search}__}">
+                </a>
+            </li>
+
+            <li th:if="${page.getNumber()+3 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getNumber()+4}"
+                   th:href="@{/admin/subjects/page/__${page.getNumber()+3}__?search=__${search}__}">
+                </a>
+            </li>
+
+            <li th:if="${page.getNumber()+4 &lt; page.getTotalPages()-1}">
+                <a>…</a>
+            </li>
+
+            <li th:if="${page.getNumber()+4 &lt;= page.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${page.getTotalPages()}"
+                   th:href="@{/admin/subjects/page/__${page.getTotalPages()-1}__?search=__${search}__}">
+                </a>
+            </li>
+
+            <li th:if="${page.isLast()}" class="disabled">
+                <a href="#">
+                    <i class="material-icons disabled">chevron_right</i>
+                </a>
+            </li>
+
+            <li th:if="${!page.isLast()}">
+                <a th:href="@{/admin/subjects/page/__${page.getNumber()+1}__?search=__${search}__}">
+                    <i class="material-icons">chevron_right</i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    <!-- floating "+" button -->
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red"> <i
+                class="large material-icons">add</i>
+        </a>
+        <ul>
+            <li><a href="/admin/subjects/add" class="btn-floating yellow darken-1"><i
+                    class="material-icons">add</i></a></li>
+            <li><a class="btn-floating red"><i class="material-icons">delete</i></a></li>
+            <li><a class="btn-floating blue"><i class="material-icons">mode_edit</i></a></li>
+        </ul>
+    </div>
+
+</main>
 
 </body>
 </html>

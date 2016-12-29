@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml" layout:decorator="lecturer/index">
+<body>
+
+<main layout:fragment="main">
+
+
+    <div class="container">
+        <h2 th:text="${course.getSubject().getName()}"></h2>
+        <h5 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h5><br/>
+
+        <div>
+            <a th:text="#{lecturer.courses.registrations}" th:href="@{/lecturer/course-details/registrations(courseId=__${course.id}__)}"></a>
+        </div>
+
+        <div>
+            <a th:text="#{lecturer.courses.issuedgrades}" th:href="@{/lecturer/course-details/issued-grades(courseId=__${course.id}__)}"></a>
+        </div>
+
+        <div>
+            <a th:text="#{lecturer.courses.feedback}" th:href="@{/lecturer/course-details/feedback(courseId=__${course.id}__)}"></a>
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

@@ -1,10 +1,6 @@
 package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Arrays.asList;
 
 @Entity
 public class Feedback {
@@ -13,20 +9,33 @@ public class Feedback {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @Column(nullable = false)
+    private Type type;
+
+    @Column(length = 1024)
+    private String suggestions;
+
+    @ManyToOne(optional = false)
     private Student student;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Course course;
-
-    @ManyToMany
-    private List<Tag> tags = new ArrayList<>();
 
     protected Feedback() {}
 
-    public Feedback(Student student, Course course) {
+    public Feedback(Student student, Course course, Type type) {
+        this(student, course, type, "");
+    }
+
+    public Feedback(Student student, Course course, Type type, String suggestions) {
         this.student = student;
         this.course = course;
+        this.type = type;
+        this.suggestions = suggestions;
+    }
+
+    public Feedback(Student student, Course course) {
+        this(student, course, Type.LIKE);
     }
 
     public Long getId() {
@@ -41,16 +50,17 @@ public class Feedback {
         return course;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public Type getType() {
+        return type;
     }
 
-    public void addTags(Tag... tags) {
-        this.tags.addAll(asList(tags));
+    public Feedback setType(Type type) {
+        this.type = type;
+        return this;
     }
 
-    public void removeTags(Tag... tags) {
-        this.tags.removeAll(asList(tags));
+    public String getSuggestions() {
+        return suggestions;
     }
 
     @Override
@@ -60,19 +70,23 @@ public class Feedback {
 
         Feedback feedback = (Feedback) o;
 
-        if (!id.equals(feedback.id)) return false;
-        if (!student.equals(feedback.student)) return false;
-        if (!course.equals(feedback.course)) return false;
-        return tags.equals(feedback.tags);
+        if (getId() != null ? !getId().equals(feedback.getId()) : feedback.getId() != null) return false;
+        if (getType() != feedback.getType()) return false;
+        if (getSuggestions() != null ? !getSuggestions().equals(feedback.getSuggestions()) : feedback.getSuggestions() != null)
+            return false;
+        if (getStudent() != null ? !getStudent().equals(feedback.getStudent()) : feedback.getStudent() != null)
+            return false;
+        return getCourse() != null ? getCourse().equals(feedback.getCourse()) : feedback.getCourse() == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + student.hashCode();
-        result = 31 * result + course.hashCode();
-        result = 31 * result + tags.hashCode();
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        result = 31 * result + (getSuggestions() != null ? getSuggestions().hashCode() : 0);
+        result = 31 * result + (getStudent() != null ? getStudent().hashCode() : 0);
+        result = 31 * result + (getCourse() != null ? getCourse().hashCode() : 0);
         return result;
     }
 
@@ -80,9 +94,15 @@ public class Feedback {
     public String toString() {
         return "Feedback{" +
                 "id=" + id +
+                ", type=" + type +
+                ", suggestions='" + suggestions + '\'' +
                 ", student=" + student +
                 ", course=" + course +
-                ", tags=" + tags +
                 '}';
+    }
+
+    public enum Type {
+        LIKE,
+        DISLIKE
     }
 }

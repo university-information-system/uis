@@ -1,6 +1,9 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class Semester {
@@ -35,15 +38,15 @@ public class Semester {
 
         Semester semester = (Semester) o;
 
-        if (!id.equals(semester.id)) return false;
-        return label.equals(semester.label);
+        if (id != null ? !id.equals(semester.id) : semester.id != null) return false;
+        return label != null ? label.equals(semester.label) : semester.label == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + label.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (label != null ? label.hashCode() : 0);
         return result;
     }
 

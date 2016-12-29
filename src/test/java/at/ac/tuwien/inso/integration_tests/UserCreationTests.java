@@ -131,22 +131,58 @@ public class UserCreationTests {
     }
 
     @Test
-    public void onInvalidUserItSetsAttributeErrors() throws Exception {
+    public void onInvalidUserTypeItSetsAttributeError() throws Exception {
         createUser(
-                new CreateUserForm("unknown", "", "", "invalid")
+                new CreateUserForm("unknown", "1", "name", "mail@uis.at")
         ).andExpect(
-                model().attributeHasFieldErrors("createUserForm", "type", "identificationNumber", "name", "email")
+                flash().attribute("flashMessage", "admin.users.create.error.type")
         );
     }
 
     @Test
-    public void onDuplicateIdentificationNumberItSetsAttributeError() throws Exception {
+    public void onEmptyUserIdentificationNumberItSetsAttributeError() throws Exception {
+        createUser(
+                new CreateUserForm(CreateUserForm.LECTURER, "", "name", "mail@uis.at")
+        ).andExpect(
+                flash().attribute("flashMessage", "admin.users.create.error.identificationNumber")
+        );
+    }
+
+    @Test
+    public void onEmptyUserNameItSetsAttributeError() throws Exception {
+        createUser(
+                new CreateUserForm(CreateUserForm.LECTURER, "1", "", "mail@uis.at")
+        ).andExpect(
+                flash().attribute("flashMessage", "admin.users.create.error.name")
+        );
+    }
+
+    @Test
+    public void onEmptyUserEmailItSetsAttributeError() throws Exception {
+        createUser(
+                new CreateUserForm(CreateUserForm.LECTURER, "1", "name", "")
+        ).andExpect(
+                flash().attribute("flashMessage", "admin.users.create.error.email")
+        );
+    }
+
+    @Test
+    public void onInvalidUserEmailItSetsAttributeError() throws Exception {
+        createUser(
+                new CreateUserForm(CreateUserForm.LECTURER, "1", "name", "mail@invalid")
+        ).andExpect(
+                flash().attribute("flashMessage", "admin.users.create.error.email")
+        );
+    }
+
+    @Test
+    public void onDuplicateUserIdentificationNumberItSetsAttributeError() throws Exception {
         uisUserRepository.save(new Student("1234567", "student", "student@uis.at"));
 
         createUser(
                 new CreateUserForm(CreateUserForm.LECTURER, "1234567", "lecturer", "lecturer@uis.at")
         ).andExpect(
-                model().attributeHasFieldErrors("createUserForm", "identificationNumber")
+                flash().attribute("flashMessage", "admin.users.create.error.identificationNumber")
         );
     }
 }

@@ -55,6 +55,12 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    public List<Grade> getGradesForCourseOfLoggedInLecturer(Long courseId) {
+        Lecturer lecturer = lecturerService.getLoggedInLecturer();
+        return gradeRepository.findByLecturerIdAndCourseId(lecturer.getId(), courseId);
+    }
+
+    @Override
     public List<Grade> getGradesForLoggedInStudent() {
         Long studentId =  userAccountService.getCurrentLoggedInUser().getId();
         return gradeRepository.findByStudentAccountId(studentId);

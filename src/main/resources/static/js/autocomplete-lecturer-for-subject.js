@@ -9,8 +9,6 @@ export default class AutoCompleteSubjects {
         const $realInput = this.wrapper.find('input[type=hidden]');
         const jsonUrl = this.wrapper.data("url");
 
-        console.log("nana", 26);
-
         $input.materialize_autocomplete({
             multiple: {
                 enable: false
@@ -20,7 +18,7 @@ export default class AutoCompleteSubjects {
                 itemTemplate: '<li class="ac-item" data-id="<%= item.id %>" data-text=\'<%= item.name %>\'><a href="javascript:void(0)"><%= item.name %></a></li>',
             },
             getData: function (value, callback) {
-                const url = jsonUrl + `?filter=${value}`;
+                const url = jsonUrl + `?search=${value}`;
 
                 $.ajax({
                    url: url,
@@ -30,7 +28,6 @@ export default class AutoCompleteSubjects {
                 });
             },
             onSelect: function (item) {
-                console.log("onSelect");
                 $realInput.val(item.id);
             },
         });

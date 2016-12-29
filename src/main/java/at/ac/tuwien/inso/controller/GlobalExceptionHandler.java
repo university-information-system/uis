@@ -1,20 +1,17 @@
 package at.ac.tuwien.inso.controller;
 
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
+import at.ac.tuwien.inso.exception.*;
+import org.slf4j.*;
+import org.springframework.beans.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.*;
+import org.springframework.context.i18n.*;
+import org.springframework.dao.*;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,6 +35,16 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ModelAndView handleBusinessObjectNotFoundExceptions(HttpServletRequest request, BusinessObjectNotFoundException ex) {
         logger.info("BusinessObjectNotFoundException: " + ex.getMessage() + "\n url="+request.getRequestURL());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("message", ex.getMessage());
+        mav.setViewName("error");
+        return mav;
+    }
+
+    @ExceptionHandler(ActionNotAllowedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public ModelAndView handleActionNotAllowedExceptions(HttpServletRequest request, ActionNotAllowedException ex) {
+        logger.info("ActionNotAllowedException: " + ex.getMessage() + "\n url=" + request.getRequestURL());
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", ex.getMessage());
         mav.setViewName("error");

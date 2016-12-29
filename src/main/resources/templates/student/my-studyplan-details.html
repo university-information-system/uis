@@ -21,14 +21,14 @@
                         </li>
                         <li class="collection-item" th:each="subjectWithGrade : ${mandatory}">
                             <div class="title">
-                                <a th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
-                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark() != 5}"><i class="material-icons">done</i></span>
+                                <a class="teal-text" th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
+                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5}"><i class="material-icons">done</i></span>
                             </div>
                             <div th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}">
                                 <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. Semester'"></div>
                             </div>
                             <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getEcts()} + ' ECTS'"></div>
-                            <h5 th:if="${subjectWithGrade.getGrade() != null}" th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark()}"></h5>
+                            <h5 th:if="${subjectWithGrade.getGrade() != null}" th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark().getMark()}"></h5>
                         </li>
                     </ul>
                 </div>
@@ -45,14 +45,14 @@
                         </li>
                         <li class="collection-item" th:each="subjectWithGrade : ${optional}">
                             <div class="title">
-                                <a th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
-                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark() != 5}"><i class="material-icons">done</i></span>
+                                <a class="teal-text" th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
+                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5}"><i class="material-icons">done</i></span>
                             </div>
                             <div th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}">
                                 <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. Semester'"></div>
                             </div>
                             <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getEcts()} + ' ECTS'"></div>
-                            <h5 th:if="${subjectWithGrade.getGrade() != null}" th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark()}"></h5>
+                            <h5 th:if="${subjectWithGrade.getGrade() != null}" th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark().getMark()}"></h5>
                         </li>
                     </ul>
                 </div>
@@ -69,13 +69,13 @@
                             <h6 th:text="${progressFreeChoice + ' / ' + studyPlan.getEctsDistribution().getFreeChoice() + ' ECTS'}"></h6>
                         </li>
                         <li class="collection-item" th:each="subjectWithGrade : ${freeChoice}">
-                            <div th:if="${subjectWithGrade.getGrade().getMark() != 5}">
+                            <div th:if="${subjectWithGrade.getGrade().getMark().getMark() != 5}">
                                 <div class="title">
-                                    <a th:text="${subjectWithGrade.getGrade().getCourse().getSubject().getName()}"></a>
+                                    <a class="teal-text" th:text="${subjectWithGrade.getGrade().getCourse().getSubject().getName()}"></a>
                                     <span class="secondary-content"><i class="material-icons">done</i></span>
                                 </div>
                                 <div th:text="${subjectWithGrade.getGrade().getCourse().getSubject().getEcts()} + ' ECTS'"></div>
-                                <h5 th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark()}"></h5>
+                                <h5 th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark().getMark()}"></h5>
                             </div>
                         </li>
                     </ul>

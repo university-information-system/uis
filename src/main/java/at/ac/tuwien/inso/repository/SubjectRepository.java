@@ -18,4 +18,6 @@ public interface SubjectRepository extends CrudRepository<Subject, Long> {
     List<Subject> findByNameContainingIgnoreCase(String name);
 
     Page<Subject> findAll(Pageable pageable);
+
+    Page<Subject> findAllByNameLikeIgnoreCase(String name, Pageable pageable);
 }

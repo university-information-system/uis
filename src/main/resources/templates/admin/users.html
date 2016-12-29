@@ -14,10 +14,10 @@
             </div>
 
             <div class="col s12">
-                <a class="right amber btn hide-on-small-only" href="/admin/users/create">Create new user</a>
+                <a class="right amber btn hide-on-small-only modal-trigger" href="#create-user-modal"
+                   th:text="#{admin.users.create}"></a>
             </div>
         </div>
-
 
         <nav>
             <div class="nav-wrapper white black-text">
@@ -54,6 +54,7 @@
             </li>
         </ul>
 
+        <!-- Pagination -->
         <ul th:if="${page.totalPages > 1}" class="pagination center">
             <li th:if="${page.isFirst()}" class="disabled">
                 <a href="#"><i class="material-icons disabled">chevron_left</i></a>
@@ -99,13 +100,78 @@
 
     </div>
 
+    <!-- Create user FAB -->
     <div class="fixed-action-btn hide-on-med-and-up">
-        <a class="btn-floating btn-large amber modal-trigger" href="/admin/users/create">
+        <a class="btn-floating btn-large amber modal-trigger" href="#create-user-modal">
             <i class="large material-icons">add</i>
         </a>
     </div>
 
+    <!-- Create user modal -->
+    <div id="create-user-modal" class="modal small">
+        <div class="modal-content">
+            <form th:action="@{/admin/users/create}" method="post" id="create-user-form">
+                <div class="row">
+
+                    <div class="col s12">
+                        <h5 th:text="#{admin.users.create.form.header}"></h5>
+                    </div>
+
+                    <div class="col s12">
+                        <p>
+                            <input name="type" type="radio" class="with-gap" id="student" value="Student"
+                                   checked="checked"/>
+                            <label for="student" th:text="#{admin.users.create.form.type.student}"></label>
+
+                            <input name="type" type="radio" class="with-gap" id="lecturer" value="Lecturer"/>
+                            <label for="lecturer" th:text="#{admin.users.create.form.type.lecturer}"></label>
+                        </p>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="identificationNumber" name="identificationNumber" type="text"
+                               required="required"
+                               th:attr="data-msg-required=#{admin.users.create.form.identificationNumber.error}"/>
+                        <label for="identificationNumber"
+                               th:text="#{admin.users.create.form.identificationNumber}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="name" name="name" type="text"
+                               required="required"
+                               th:attr="data-msg-required=#{admin.users.create.form.name.error}"/>
+                        <label for="name" th:text="#{admin.users.create.form.name}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="email" name="email" type="email"
+                               required="required"
+                               th:attr="data-msg-required=#{admin.users.create.form.email.error}"/>
+                        <label for="email" th:text="#{admin.users.create.form.email}"></label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-action waves-effect btn teal"
+               onclick="$('#create-user-form').submit()"
+               th:text="#{admin.users.create.form.create}"></a>
+            <a href="#" class="modal-action modal-close waves-effect btn-flat"
+               th:text="#{cancel}"></a>
+        </div>
+    </div>
+
 </main>
+
+<div layout:fragment="scripts">
+    <script type="application/javascript">
+        $("#create-user-form").validate({
+            errorElement: 'span',
+            validClass: '',
+            errorClass: 'red-text',
+        });
+    </script>
+</div>
 
 </body>
 </html>

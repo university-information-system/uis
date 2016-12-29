@@ -102,7 +102,7 @@ public class CoursesRepositoryTests {
 
     @Test
     public void itReturnsCoursesForCurrentSemester() throws Exception {
-        List<Course> actual = courseRepository.findAllByCurrentSemesterWithTags();
+        List<Course> actual = courseRepository.findAllByCurrentSemester();
 
         assertThat(actual, CoreMatchers.hasItems(courses.get("Course1"), courses.get("Course2"), courses.get("Course3")));
     }
@@ -125,5 +125,23 @@ public class CoursesRepositoryTests {
         List<Course> courses = courseRepository.findAllForStudent(student);
 
         assertThat(courses, equalTo(singletonList(course)));
+    }
+
+    @Test
+    public void testExistsCourseRegistrationForStudentRegisteredToCourse() throws Exception {
+        Course course = courses.get("Course1");
+        Student student = students.get(0);
+        course.addStudents(student);
+
+        assertTrue(courseRepository.existsCourseRegistration(student, course));
+    }
+
+    @Test
+    public void testExistsCourseRegistrationForStudentNotRegisteredToCourse() throws Exception {
+        Course course = courses.get("Course1");
+        Student student = students.get(0);
+        course.addStudents(student);
+
+        assertFalse(courseRepository.existsCourseRegistration(student, courses.get("Course2")));
     }
 }

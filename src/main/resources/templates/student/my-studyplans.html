@@ -17,7 +17,7 @@
                 <li class="collection-item" th:each="studyPlanRegistration : ${studyPlanRegistrations}">
                     <div>
                         <div class="title">
-                            <a href="#" data-th-href="@{/student/my-studyplans/(id=${studyPlanRegistration.getStudyplan().getId()})}" th:text="${studyPlanRegistration.getStudyplan().getName()}"></a>
+                            <a class="teal-text" href="#" data-th-href="@{/student/my-studyplans/(id=${studyPlanRegistration.getStudyplan().getId()})}" th:text="${studyPlanRegistration.getStudyplan().getName()}"></a>
                             <span th:if="${studyPlanRegistration.getStudyplan().enabled}" class="secondary-content"><i class="material-icons">lock_open</i></span>
                             <span th:if="${not studyPlanRegistration.getStudyplan().enabled}" class="secondary-content"><i class="material-icons">lock_outline</i></span>
                         </div>

@@ -38,12 +38,26 @@ public class FeedbackRepositoryTests {
 
     private List<Student> students;
 
+    private Course course;
+
     @Before
     public void setUp() throws Exception {
+        prepareStudents();
+        prepareCourse();
+    }
+
+    private void prepareStudents() {
         students = toList(studentRepository.save(asList(
                 new Student("123", "student", "student@uis.at"),
                 new Student("456", "student", "student@uis.at")
         )));
+    }
+
+    private void prepareCourse() {
+        Subject subject = subjectRepository.save(new Subject("subject", BigDecimal.ONE));
+        Semester semester = semesterRepository.save(new Semester("current"));
+
+        course = courseRepository.save(new Course(subject, semester));
     }
 
     @Test
@@ -56,10 +70,6 @@ public class FeedbackRepositoryTests {
     }
 
     private Feedback prepareFeedbackFor(Student student) {
-        Subject subject = subjectRepository.save(new Subject("subject", BigDecimal.ONE));
-        Semester semester = semesterRepository.save(new Semester("current"));
-        Course course = courseRepository.save(new Course(subject, semester));
-
         return feedbackRepository.save(new Feedback(student, course));
     }
 
@@ -70,5 +80,19 @@ public class FeedbackRepositoryTests {
         List<Feedback> feedbackEntries = feedbackRepository.findAllOfStudent(students.get(0));
 
         assertThat(feedbackEntries, equalTo(singletonList(feedback)));
+    }
+
+    @Test
+    public void testExistsForExistentFeedback() throws Exception {
+        Feedback feedback = prepareFeedbackFor(students.get(0));
+
+        assertTrue(feedbackRepository.exists(feedback));
+    }
+
+    @Test
+    public void testExistsForNonExistentFeedback() throws Exception {
+        Feedback feedback = new Feedback(students.get(0), course);
+
+        assertFalse(feedbackRepository.exists(feedback));
     }
 }

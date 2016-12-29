@@ -29,4 +29,7 @@ public interface CourseService {
 
     @PreAuthorize("isAuthenticated()")
 	List<Course> findCoursesForSubject(Subject subject);
+
+    @PreAuthorize("isAuthenticated()")
+    void unregisterStudentFromCourse(Student student, Long courseId);
 }

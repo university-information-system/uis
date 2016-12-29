@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml" layout:decorator="lecturer/index">
+<body>
+
+<main layout:fragment="main">
+
+    <div class="container">
+        <h2 th:text="${course.getSubject().getName()} + ' - ' + #{lecturer.courses.issuedgrades}"></h2>
+        <h5 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h5>
+
+        <ul class="collection z-depth-1">
+            <li class="collection-item" th:if="${#lists.isEmpty(grades)}" th:text="#{lecturer.courses.issuedgrades.zero}"></li>
+
+            <li class="collection-item" th:each="grade : ${grades}">
+                <h4 th:text="${grade.getMark().getMark()}" class="secondary-content"></h4>
+
+                <div class="title">
+                    <a class="teal-text" th:text="${grade.getStudent().getName()}"></a>
+                </div>
+                <div>
+                    <span th:text="${grade.getStudent().getIdentificationNumber()}"></span>
+                    <br/>
+                    <span th:text="${grade.getStudent().getEmail()}"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</main>
+
+</body>
+</html>
