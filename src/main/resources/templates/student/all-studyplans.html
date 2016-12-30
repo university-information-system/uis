@@ -18,8 +18,8 @@
                     <div>
                         <div class="title">
                             <a class="teal-text" href="#" data-th-href="@{/student/all-studyplans/(id=${studyPlan.id})}" th:text="${studyPlan.name}"></a>
-                            <span th:if="${studyPlan.enabled}" class="secondary-content"><i class="material-icons">lock_open</i></span>
-                            <span th:if="${not studyPlan.enabled}" class="secondary-content"><i class="material-icons">lock_outline</i></span>
+                            <span th:if="${studyPlan.enabled}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.studyplan.enabled}">lock_open</i></span>
+                            <span th:if="${not studyPlan.enabled}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.studyplan.disabled}">lock_outline</i></span>
                         </div>
                     </div>
 
