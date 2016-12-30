@@ -18,11 +18,10 @@
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
-                            <a class="teal-text" href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"
-                               th:text="${studyPlan.name}"></a>
+                            <a class="teal-text" href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"  th:text="${studyPlan.name}"></a>
                             <span th:if="${studyPlan.enabled} == false"  style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_outline</i></span>
-                            <a href="#" th:if="${studyPlan.enabled} == true" data-th-href="@{/admin/studyplans/disable/(id=${studyPlan.id})}" style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_open</i></a>
-                            <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
+                            <a href="#" th:if="${studyPlan.enabled} == true" data-th-href="@{/admin/studyplans/disable/(id=${studyPlan.id})}" style="margin-left:10px;" class="secondary-content tooltipped" th:attr="data-tooltip=#{admin.studyplan.disable}"><i class="material-icons">lock_open</i></a>
+                            <a href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}" class="secondary-content tooltipped" th:attr="data-tooltip=#{admin.studyplan.edit}"><i class="material-icons">edit</i></a>
                         </div>
                     </div>
 
