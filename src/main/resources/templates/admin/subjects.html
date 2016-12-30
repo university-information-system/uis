@@ -30,9 +30,9 @@
                                data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}"
                                th:text="${subject.name}"></a>
                             <a href="#!" style="margin-left:10px;" class="secondary-content"><i
-                                    class="material-icons">delete</i></a>
-                            <a href="#!" class="secondary-content"><i
-                                    class="material-icons">edit</i></a>
+                                    class="material-icons tooltipped" th:attr="data-tooltip=#{admin.subjects.remove}">delete</i></a>
+                            <a href="#" data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}" class="secondary-content"><i
+                                    class="material-icons tooltipped" th:attr="data-tooltip=#{admin.subjects.edit}">edit</i></a>
                         </div>
                         <div th:text="${subject.ects} + ' ECTS'"></div>
                     </div>
