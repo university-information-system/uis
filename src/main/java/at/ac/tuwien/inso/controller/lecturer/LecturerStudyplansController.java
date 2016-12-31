@@ -49,6 +49,6 @@ public class LecturerStudyplansController {
         model.addAttribute("mandatory", mandatory);
         model.addAttribute("optional", optional);
 
-        return "student/studyplan-details";
+        return "lecturer/studyplan-details";
     }
 }
