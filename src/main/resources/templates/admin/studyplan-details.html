@@ -24,13 +24,26 @@
                             <div class="title">
                                 <a class="teal-text" href="#" data-th-href="@{/admin/subjects/{id}(id=${subjectForStudyPlan.getSubject().getId()})}"
                                    th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
-                                <a href="#"  data-th-href="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}" 
-                                   class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{admin.studyplandetails.subject.remove}">delete</i></a>
+                                <a th:href="'#delete-mandatory-confirm-' + ${subjectForStudyPlan.getSubject().getId()}"
+                                   class="secondary-content modal-trigger"><i class="material-icons tooltipped" th:attr="data-tooltip=#{admin.studyplandetails.subject.remove}">delete</i></a>
                             </div>
                             <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
                                 <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
                             </div>
                             <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
+
+                            <!-- Delete confirmation modal for mandatory subjects -->
+                            <div th:id="'delete-mandatory-confirm-' + ${subjectForStudyPlan.getSubject().getId()}" class="modal small">
+                                <div class="modal-content">
+                                    <h4 th:text="#{admin.studyplan.details.subject.remove.modal.header}"></h4>
+                                    <p th:text="#{admin.studyplan.details.subject.remove.modal.content(${subjectForStudyPlan.getSubject().getName()}, ${studyPlan.getName()})}"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="modal-action modal-close btn" th:text="#{remove}" th:href="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}"></a>
+                                    <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                                </div>
+                            </div>
+
                         </li>
                         <li>
                             <div class="row">
@@ -83,13 +96,26 @@
                             <div class="title">
                                 <a class="teal-text" href="#" data-th-href="@{/admin/subjects/(id=${subjectForStudyPlan.getSubject().getId()})}"
                                    th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
-                                <a href="#"  data-th-href="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}"
-                                   class="secondary-content tooltipped" th:attr="data-tooltip=#{admin.studyplandetails.subject.remove}"><i class="material-icons">delete</i></a>
+                                <a th:href="'#delete-optional-confirm-' + ${subjectForStudyPlan.getSubject().getId()}"
+                                   class="secondary-content tooltipped modal-trigger" th:attr="data-tooltip=#{admin.studyplandetails.subject.remove}"><i class="material-icons">delete</i></a>
                             </div>
                             <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
                                 <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
                             </div>
                             <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
+
+                            <!-- Delete confirmation modal for optional subjects -->
+                            <div th:id="'delete-optional-confirm-' + ${subjectForStudyPlan.getSubject().getId()}" class="modal small">
+                                <div class="modal-content">
+                                    <h4 th:text="#{admin.studyplan.details.subject.remove.modal.header}"></h4>
+                                    <p th:text="#{admin.studyplan.details.subject.remove.modal.content(${subjectForStudyPlan.getSubject().getName()}, ${studyPlan.getName()})}"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="modal-action modal-close btn" th:text="#{remove}" th:href="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}"></a>
+                                    <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                                </div>
+                            </div>
+
                         </li>
 
                         <li>
