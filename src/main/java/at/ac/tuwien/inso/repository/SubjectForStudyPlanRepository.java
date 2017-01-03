@@ -10,4 +10,6 @@ import java.util.*;
 public interface SubjectForStudyPlanRepository extends CrudRepository<SubjectForStudyPlan, Long> {
 
     List<SubjectForStudyPlan> findByStudyPlanIdOrderBySemesterRecommendation(Long id);
+
+    List<SubjectForStudyPlan> findBySubject(Subject subject);
 }

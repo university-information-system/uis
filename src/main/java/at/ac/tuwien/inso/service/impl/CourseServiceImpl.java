@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
+import at.ac.tuwien.inso.dto.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
@@ -33,6 +34,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserAccountService userAccountService;
+
+    @Autowired
+    private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -112,4 +116,17 @@ public class CourseServiceImpl implements CourseService {
         course.removeStudents(student);
     }
 
+    @Override
+    public CourseDetailsForStudent courseDetailsFor(Student student, Long courseId) {
+        Course course = findOne(courseId);
+
+        return new CourseDetailsForStudent(course)
+                .setCanEnroll(canEnrollToCourse(student, course))
+                .setStudyplans(subjectForStudyPlanRepository.findBySubject(course.getSubject()));
+    }
+
+    private boolean canEnrollToCourse(Student student, Course course) {
+        return course.getSemester().equals(semesterService.getCurrentSemester()) &&
+                !courseRepository.existsCourseRegistration(student, course);
+    }
 }

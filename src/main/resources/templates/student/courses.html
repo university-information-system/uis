@@ -16,7 +16,9 @@
         <ul class="collection">
             <li class="collection-item" th:each="course : ${allCourses}">
                 <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.courses.register}">add</i></a>
-                <div class="title teal-text" th:text="${course.subject.name}"></div>
+                <a th:href="@{/student/courses/__${course.id}__}"
+                   class="title teal-text"
+                   th:text="${course.subject.name}"></a>
                 <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
 
                 <div th:id="'modal'+__${course.id}__" class="modal small">
