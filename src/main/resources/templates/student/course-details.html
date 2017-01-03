@@ -12,7 +12,8 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-title">
-                            <a href="#" class="teal-text right" th:if="${course.canEnroll}">
+                            <a th:href="@{/student/register(courseId=__${course.id}__)}"
+                               class="teal-text right" th:if="${course.canEnroll}">
                                 <i class="material-icons tooltipped"
                                    data-position="bottom" data-delay="50" th:attr="data-tooltip=#{enroll}">
                                     add
@@ -96,7 +97,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 </main>
