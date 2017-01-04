@@ -61,7 +61,10 @@
                             <p th:text="#{admin.subject.disable.modal.content(${subject.name})}"></p>
                         </div>
                         <div class="modal-footer">
-                            <a class="modal-action modal-close btn" th:text="#{remove}"></a>
+                            <a class="modal-action modal-close btn" 
+                            th:text="#{remove}"
+                             href="#"
+                             data-th-href="@{'/admin/subjects/remove/{id}'(id=${subject.id})}"></a>
                             <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
                         </div>
                     </div>
