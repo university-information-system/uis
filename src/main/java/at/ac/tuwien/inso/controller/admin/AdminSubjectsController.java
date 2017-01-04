@@ -117,12 +117,9 @@ public class AdminSubjectsController {
         try{
           subjectService.remove(subject);
         }catch (ValidationException e) {
-          //error
-          System.out.println("error"+e);
-          model.addAttribute("message", "test2");
-          redirectAttributes.addFlashAttribute("error", "test22");
-          redirectAttributes.addFlashAttribute("message", "test32");
-          return "redirect:/error";
+          redirectAttributes.addFlashAttribute("flashMessage", "admin.subjects.remove.error.courseexists");
+          return "redirect:/admin/subjects";
+          //return "redirect:/error";
         }
       }
 
