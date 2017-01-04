@@ -38,6 +38,12 @@ public interface SubjectService {
     @PreAuthorize("hasRole('ADMIN')")
     Lecturer removeLecturerFromSubject(Long subjectId, Long lecturerUisUserId);
 
+    /**
+     * removes a subject from the system. is only possible if there exist no courses for this subject.
+     * if courses exist, a validation exception will be thrown.
+     * @param subject
+     * @return
+     */
     @PreAuthorize("hasRole('ADMIN')")
 	boolean remove(Subject subject);
 }
