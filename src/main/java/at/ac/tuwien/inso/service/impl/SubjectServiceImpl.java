@@ -164,7 +164,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
 	@Override
-	public boolean delete(Subject subject) throws ValidationException{
+	public boolean remove(Subject subject) throws ValidationException{
 		List<Course> courses = courseService.findCoursesForSubject(subject);
 		if(!courses.isEmpty()){
 			String msg = "";

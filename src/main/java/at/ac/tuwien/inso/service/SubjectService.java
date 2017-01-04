@@ -39,5 +39,5 @@ public interface SubjectService {
     Lecturer removeLecturerFromSubject(Long subjectId, Long lecturerUisUserId);
 
     @PreAuthorize("hasRole('ADMIN')")
-	boolean delete(Subject subject);
+	boolean remove(Subject subject);
 }

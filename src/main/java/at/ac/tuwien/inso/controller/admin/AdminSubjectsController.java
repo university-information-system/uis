@@ -103,8 +103,8 @@ public class AdminSubjectsController {
         return "redirect:/admin/subjects/"+subject.getId();
     }
     
-    @GetMapping("/delete/{id}")
-    private String deleteSubject(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+    @GetMapping("/remove/{id}")
+    private String removeSubject(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
       Subject subject = subjectService.findOne(id);  	
       if(subject == null){
         System.out.println("error1");
@@ -115,7 +115,7 @@ public class AdminSubjectsController {
         return "redirect:/error";
       }else{
         try{
-          subjectService.delete(subject);
+          subjectService.remove(subject);
         }catch (ValidationException e) {
           //error
           System.out.println("error"+e);
