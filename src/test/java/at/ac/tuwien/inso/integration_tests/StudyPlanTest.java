@@ -372,4 +372,42 @@ public class StudyPlanTest {
         );
     }
 
+    @Test
+    public void lecturerShouldSeeAllStudyPlansTest() throws Exception {
+
+        // given study plans
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+
+        // the lecturer should see them all
+        mockMvc.perform(
+                get("/lecturer/studyplans").with(user("lecturer").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("studyPlans", asList(studyPlan1, studyPlan2, studyPlan3))
+        );
+    }
+
+    @Test
+    public void lecturerShouldSeeDetailsOfStudyPlanInAllStudyPlansTest() throws Exception {
+
+        // given subjects in a study plan
+        StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
+        SubjectForStudyPlan s1 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(0), studyPlan, true, 1));
+        SubjectForStudyPlan s2 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(1), studyPlan, true, 1));
+        SubjectForStudyPlan s3 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(2), studyPlan, true, 2));
+        SubjectForStudyPlan s4 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(3), studyPlan, false, 3));
+        SubjectForStudyPlan s5 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(4), studyPlan, false, 2));
+        SubjectForStudyPlan s6 = subjectForStudyPlanRepository.save(new SubjectForStudyPlan(subjects.get(5), studyPlan, true, 2));
+
+        // the lecturer should see details of the study plan, containing separate lists of mandatory and optional subjects
+        mockMvc.perform(
+                get("/lecturer/studyplans").param("id", studyPlan.getId().toString()).with(user("lecturer").roles("LECTURER"))
+        ).andExpect(
+                model().attribute("studyPlan", studyPlan)
+        ).andExpect(
+                model().attribute("mandatory", asList(s1, s2, s3, s6))
+        ).andExpect(
+                model().attribute("optional", asList(s5, s4))
+        );
+    }
+
 }

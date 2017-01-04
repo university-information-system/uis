@@ -18,11 +18,22 @@
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
-                            <a class="teal-text" href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"
-                               th:text="${studyPlan.name}"></a>
+                            <a class="teal-text" href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}"  th:text="${studyPlan.name}"></a>
                             <span th:if="${studyPlan.enabled} == false"  style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_outline</i></span>
-                            <a href="#" th:if="${studyPlan.enabled} == true" data-th-href="@{/admin/studyplans/disable/(id=${studyPlan.id})}" style="margin-left:10px;" class="secondary-content"><i class="material-icons">lock_open</i></a>
-                            <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
+                            <a href="#" th:if="${studyPlan.enabled} == true" th:href="'#disable-confirm-' + ${studyPlan.id}" style="margin-left:10px;" class="secondary-content tooltipped modal-trigger" th:attr="data-tooltip=#{admin.studyplan.disable}"><i class="material-icons">lock_open</i></a>
+                            <a href="#" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}" class="secondary-content tooltipped" th:attr="data-tooltip=#{admin.studyplan.edit}"><i class="material-icons">edit</i></a>
+                        </div>
+                    </div>
+
+                    <!-- Disable confirmation modal -->
+                    <div th:id="'disable-confirm-' + ${studyPlan.id}" class="modal small">
+                        <div class="modal-content">
+                            <h4 th:text="#{admin.studyplan.disable.modal.header}"></h4>
+                            <p th:text="#{admin.studyplan.disable.modal.content(${studyPlan.name})}"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="modal-action modal-close btn" th:text="#{disable}" th:href="@{/admin/studyplans/disable/(id=${studyPlan.id})}"></a>
+                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
                         </div>
                     </div>
 

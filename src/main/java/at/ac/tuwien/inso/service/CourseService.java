@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.service;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
+import at.ac.tuwien.inso.dto.*;
 import at.ac.tuwien.inso.entity.*;
 import org.springframework.security.access.prepost.*;
 
@@ -32,4 +33,7 @@ public interface CourseService {
 
     @PreAuthorize("isAuthenticated()")
     void unregisterStudentFromCourse(Student student, Long courseId);
+
+    @PreAuthorize("isAuthenticated()")
+    CourseDetailsForStudent courseDetailsFor(Student student, Long courseId);
 }

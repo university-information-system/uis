@@ -15,22 +15,23 @@
 
         <ul class="collection">
             <li class="collection-item" th:each="course : ${allCourses}">
-                <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i class="material-icons">add</i></a>
-                <div class="title teal-text" th:text="${course.subject.name}"></div>
+                <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.courses.register}">add</i></a>
+                <a th:href="@{/student/courses/__${course.id}__}"
+                   class="title teal-text"
+                   th:text="${course.subject.name}"></a>
                 <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
 
-                <div th:id="'modal'+__${course.id}__" class="modal">
+                <div th:id="'modal'+__${course.id}__" class="modal small">
                     <div class="modal-content">
                         <h5 class="center-align" th:text="${course.subject.name}"></h5>
                         <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="modal-action modal-close waves-effect btn-flat"
-                           th:text="#{students.no}">Cancel</a>
-                        <div />
-                        <a class="modal-action modal-close btn waves-effect waves-light btn-flat"
+                        <a class="modal-action modal-close btn"
                            th:href="@{/student/register(courseId=__${course.id}__)}"
-                           th:text="#{students.yes}">Apply</a>
+                           th:text="#{enroll}">Apply</a>
+                        <a href="#" class="modal-action modal-close waves-effect btn-flat"
+                           th:text="#{cancel}">Cancel</a>
                     </div>
                 </div>
             </li>

@@ -9,7 +9,7 @@
 
     <div class="container">
         <h2 th:if="${studyPlan.enabled}" th:text="${studyPlan.getName()}"></h2>
-        <h2 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons">lock_outline</i></h2>
+        <h2 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons tooltipped" th:attr="data-tooltip=#{student.studyplan.disabled}">lock_outline</i></h2>
 
         <div class="row">
             <div class="col s12 m7">
@@ -22,7 +22,7 @@
                         <li class="collection-item" th:each="subjectWithGrade : ${mandatory}">
                             <div class="title">
                                 <a class="teal-text" th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
-                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5}"><i class="material-icons">done</i></span>
+                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5}"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.studyplan.details.course.completed}">done</i></span>
                             </div>
                             <div th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}">
                                 <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. Semester'"></div>
@@ -46,7 +46,7 @@
                         <li class="collection-item" th:each="subjectWithGrade : ${optional}">
                             <div class="title">
                                 <a class="teal-text" th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
-                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5}"><i class="material-icons">done</i></span>
+                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5}"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.studyplan.details.course.completed}">done</i></span>
                             </div>
                             <div th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}">
                                 <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. Semester'"></div>
@@ -72,7 +72,7 @@
                             <div th:if="${subjectWithGrade.getGrade().getMark().getMark() != 5}">
                                 <div class="title">
                                     <a class="teal-text" th:text="${subjectWithGrade.getGrade().getCourse().getSubject().getName()}"></a>
-                                    <span class="secondary-content"><i class="material-icons">done</i></span>
+                                    <span class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.studyplan.details.course.completed}">done</i></span>
                                 </div>
                                 <div th:text="${subjectWithGrade.getGrade().getCourse().getSubject().getEcts()} + ' ECTS'"></div>
                                 <h5 th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark().getMark()}"></h5>

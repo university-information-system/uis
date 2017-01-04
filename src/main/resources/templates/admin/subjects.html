@@ -29,12 +29,24 @@
                             <a class="teal-text" href="#"
                                data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}"
                                th:text="${subject.name}"></a>
-                            <a href="#!" style="margin-left:10px;" class="secondary-content"><i
-                                    class="material-icons">delete</i></a>
-                            <a href="#!" class="secondary-content"><i
-                                    class="material-icons">edit</i></a>
+                            <a th:href="'#delete-confirm-' + ${subject.id}" style="margin-left:10px;" class="secondary-content modal-trigger"><i
+                                    class="material-icons tooltipped" th:attr="data-tooltip=#{admin.subjects.remove}">delete</i></a>
+                            <a href="#" data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}" class="secondary-content"><i
+                                    class="material-icons tooltipped" th:attr="data-tooltip=#{admin.subjects.edit}">edit</i></a>
                         </div>
                         <div th:text="${subject.ects} + ' ECTS'"></div>
+                    </div>
+
+                    <!-- Delete confirmation modal -->
+                    <div th:id="'delete-confirm-' + ${subject.id}" class="modal small">
+                        <div class="modal-content">
+                            <h4 th:text="#{admin.subject.disable.modal.header}"></h4>
+                            <p th:text="#{admin.subject.disable.modal.content(${subject.name})}"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="modal-action modal-close btn" th:text="#{remove}"></a>
+                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                        </div>
                     </div>
 
                 </li>

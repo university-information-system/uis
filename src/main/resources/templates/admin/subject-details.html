@@ -23,12 +23,24 @@
                                th:href="@{/admin/users/{lecturerId}(lecturerId=${lecturer.id})}"
                             ></a>
 
-                            <a class="secondary-content"
-                               data-th-href="@{/admin/subjects/{subjectId}/lecturers/{lecturerId}/delete(subjectId=${subject.id}, lecturerId=${lecturer.id})}">
-                                <i class="material-icons">delete</i>
+                            <a class="secondary-content modal-trigger"
+                               th:href="'#delete-confirm-' + ${lecturer.id}" >
+                                <i class="material-icons tooltipped" th:attr="data-tooltip=#{admin.subjects.lecturers.remove}">delete</i>
                             </a>
 
                             <div th:text="${lecturer.identificationNumber}"></div>
+
+                            <!-- Delete confirmation modal for lecturers -->
+                            <div th:id="'delete-confirm-' + ${lecturer.id}" class="modal small">
+                                <div class="modal-content">
+                                    <h4 th:text="#{admin.subject.details.remove.modal.header}"></h4>
+                                    <p th:text="#{admin.subject.details.remove.modal.content(${lecturer.name}, ${subject.name})}"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="modal-action modal-close btn" th:text="#{remove}" th:href="@{/admin/subjects/{subjectId}/lecturers/{lecturerId}/delete(subjectId=${subject.id}, lecturerId=${lecturer.id})}"></a>
+                                    <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                                </div>
+                            </div>
                         </li>
                         <li class="collection-item">
 

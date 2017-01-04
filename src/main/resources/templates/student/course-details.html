@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="student/index">
+<body>
+<main layout:fragment="main">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-title">
+                            <a th:href="@{/student/register(courseId=__${course.id}__)}"
+                               class="teal-text right" th:if="${course.canEnroll}">
+                                <i class="material-icons tooltipped"
+                                   data-position="bottom" data-delay="50" th:attr="data-tooltip=#{enroll}">
+                                    add
+                                </i>
+                            </a>
+                            <span th:text="${course.name}"></span>
+                        </div>
+
+                        <div class="grey-text text-darken-1">
+                            <span th:text="${course.semester}"></span>
+                            <span>, </span>
+                            <span th:text="${course.ects}"></span>
+                            <span> ECTS</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="vspace">
+                            <span th:each="tag : ${course.tags}" class="chip" th:text="${tag}"></span>
+                        </div>
+
+                        <div>
+                            <div class="section-separator" th:text="#{student.course.details.description}"></div>
+
+                            <p class="text-content" th:text="${course.description}"></p>
+                        </div>
+
+                        <div>
+                            <div class="section-separator" th:text="#{student.course.details.lecturers}"></div>
+
+                            <ul class="collection borderless">
+                                <li class="collection-item"
+                                    th:each="lecturer : ${course.lecturers}">
+                                    <span class="title" th:text="${lecturer.name}"></span>
+                                    <p>
+                                        <a th:href="'mailto:' + ${lecturer.email}"
+                                           class="teal-text"
+                                           th:text="${lecturer.email}"></a>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <div class="section-separator" th:text="#{student.course.details.studyplans}"></div>
+
+                            <ul class="collection borderless">
+                                <li class="collection-item"
+                                    th:each="studyplan : ${course.studyplans}">
+                                    <div class="title">
+                                        <a th:href="@{/student/all-studyplans(id=__${studyplan.studyPlan.id}__)}"
+                                           class="teal-text"
+                                           th:text="${studyplan.studyPlan.name}"></a>
+                                    </div>
+                                    <p class="grey-text">
+                                        <span th:if="${studyplan.semesterRecommendation} == null"
+                                              th:text="#{student.course.details.no_semester}">
+                                        </span>
+                                        <span th:if="${studyplan.semesterRecommendation} != null"
+                                              th:text="'Semester ' + ${studyplan.semesterRecommendation}"></span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${not #lists.isEmpty(course.preconditions)}">
+                            <div class="section-separator" th:text="#{student.course.details.preconditions}"></div>
+
+                            <ul class="collection borderless">
+                                <li class="collection-item"
+                                    th:each="subject : ${course.preconditions}">
+                                    <div class="title teal-text" th:text="${subject.name}"></div>
+                                    <p class="grey-text">
+                                        <span th:text="${subject.ects}"></span>
+                                        <span> ECTS</span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

@@ -19,8 +19,20 @@
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
-                        	<span th:text="${studyPlan.name}"></span>
-                            <a href="#!" data-th-href="@{/admin/studyplans/registerStudent/(studentId=${user.id},studyPlanId=${studyPlan.id})}" class="secondary-content"><i class="material-icons">add</i></a>
+                        	<a class="teal-text" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}" th:text="${studyPlan.name}"></a>
+                            <a th:href="'#register-confirm-' + ${studyPlan.id}" class="secondary-content modal-trigger"><i class="material-icons">add</i></a>
+                        </div>
+                    </div>
+
+                    <!-- Register to study plan confirmation -->
+                    <div th:id="'register-confirm-' + ${studyPlan.id}" class="modal small">
+                        <div class="modal-content">
+                            <h4 th:text="#{admin.user.registerToStudyPlan.modal.header}"></h4>
+                            <p th:text="#{admin.user.registerToStudyPlan.modal.content(${user.getName()}, ${studyPlan.name})}"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="modal-action modal-close btn" th:text="#{register}" th:href="@{/admin/studyplans/registerStudent/(studentId=${user.id},studyPlanId=${studyPlan.id})}"></a>
+                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
                         </div>
                     </div>
 

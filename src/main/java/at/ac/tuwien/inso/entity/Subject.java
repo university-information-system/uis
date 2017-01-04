@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.math.*;
@@ -49,12 +49,12 @@ public class Subject {
 		return name;
 	}
 
-	public BigDecimal getEcts() {
-		return ects;
-	}
-
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public BigDecimal getEcts() {
+		return ects;
 	}
 
 	public void setEcts(BigDecimal ects) {
@@ -71,8 +71,9 @@ public class Subject {
 		return requiredSubjects;
 	}
 
-	public void addLecturers(Lecturer... lecturers) {
+	public Subject addLecturers(Lecturer... lecturers) {
 		this.lecturers.addAll(asList(lecturers));
+		return this;
 	}
 
 	public void removeLecturers(Lecturer... lecturers) {

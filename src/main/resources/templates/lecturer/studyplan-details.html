@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml" layout:decorator="lecturer/index">
+
+<body>
+
+<main layout:fragment="main">
+
+    <div class="container">
+        <h2 th:if="${studyPlan.enabled}" th:text="${studyPlan.getName()}"></h2>
+        <h2 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons">lock_outline</i></h2>
+
+        <div class="row">
+            <div class="col s12 m7">
+                <div class="card-content">
+                    <ul class="collection with-header">
+                        <li class="collection-header">
+                            <h4 th:text="#{lecturer.studyplandetails.mandatory}"></h4>
+                            <h6 th:text="${studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"></h6>
+                        </li>
+                        <li class="collection-item" th:each="subjectForStudyPlan : ${mandatory}">
+                            <div class="title">
+                                <a class="teal-text" th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
+                            </div>
+                            <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
+                                <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
+                            </div>
+                            <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m7">
+                <div class="card-content">
+                    <ul class="collection with-header">
+                        <li class="collection-header">
+                            <h4 th:text="#{lecturer.studyplandetails.optional}"></h4>
+                            <h6 th:text="${studyPlan.getEctsDistribution().getOptional() + ' ECTS'}"></h6>
+                        </li>
+                        <li class="collection-item" th:each="subjectForStudyPlan : ${optional}">
+                            <div class="title">
+                                <a class="teal-text" th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
+                            </div>
+                            <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
+                                <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
+                            </div>
+                            <div th:text="${subjectForStudyPlan.getSubject().getEcts()} + ' ECTS'"></div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m7">
+                <div class="card-content">
+                    <ul class="collection with-header">
+                        <li class="collection-header">
+                            <h4 th:text="#{lecturer.studyplandetails.free}"></h4>
+                            <h6 th:text="${studyPlan.getEctsDistribution().getFreeChoice() + ' ECTS'}"></h6>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

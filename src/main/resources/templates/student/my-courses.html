@@ -43,7 +43,9 @@
                        data-position="bottom" data-delay="50" data-tooltip="Course unsatisfactory completed"
                        class="secondary-content tooltipped"><i class="material-icons grey-text">warning</i></a>
 
-                    <a class="title teal-text" href="#" th:text="${courseRegistration.course.subject.name}"></a>
+                    <a th:href="@{/student/courses/__${courseRegistration.course.id}__}"
+                       class="title teal-text"
+                       th:text="${courseRegistration.course.subject.name}"></a>
                     <div>
                         <span th:text="${courseRegistration.course.subject.ects}"></span>
                         <span> ECTS</span>

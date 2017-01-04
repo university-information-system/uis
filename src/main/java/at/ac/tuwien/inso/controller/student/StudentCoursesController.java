@@ -1,23 +1,22 @@
 package at.ac.tuwien.inso.controller.student;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.service.CourseService;
-import at.ac.tuwien.inso.service.StudentService;
-import at.ac.tuwien.inso.service.UserAccountService;
-import at.ac.tuwien.inso.service.course_recommendation.RecommendationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.course_recommendation.*;
+import org.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.ui.*;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.security.*;
+import java.util.*;
 
 @Controller
 @RequestMapping("/student/courses")
 public class StudentCoursesController {
+
+    private static final Logger log = LoggerFactory.getLogger(StudentMyCoursesController.class);
 
     @Autowired
     private CourseService courseService;
@@ -57,6 +56,19 @@ public class StudentCoursesController {
     @GetMapping
     public String courses() {
         return "/student/courses";
+    }
+
+    @GetMapping("/{id}")
+    public String course(@PathVariable Long id,
+                         Model model,
+                         Principal principal) {
+        log.debug("Student " + principal.getName() + " requesting course " + id + " details");
+
+        Student student = studentService.findByUsername(principal.getName());
+
+        model.addAttribute("course", courseService.courseDetailsFor(student, id));
+
+        return "/student/course-details";
     }
 
 }
