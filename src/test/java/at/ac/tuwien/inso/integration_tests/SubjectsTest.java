@@ -16,6 +16,7 @@ import java.math.*;
 
 import static java.util.Arrays.*;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -36,11 +37,15 @@ public class SubjectsTest {
     private Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
     private Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
     private Subject ase = new Subject("ASE", new BigDecimal(6.0));
+
+    @Autowired
+    private CourseRepository courseRepository;
     @Autowired
     private SubjectRepository subjectRepository;
     @Autowired
     private LecturerRepository lecturerRepository;
-
+    @Autowired
+    private SemesterRepository semesterRepository;
 
     @Before
     public void setUp() {
@@ -73,12 +78,37 @@ public class SubjectsTest {
 
         // then the admin should see them all in the first page
         mockMvc.perform(
-                get("/admin/subjects/delete/"+cal.getId()).with(user("admin").roles("ADMIN")))
+                get("/admin/subjects/remove/"+cal.getId()).with(user("admin").roles("ADMIN")))
         .andExpect(
             redirectedUrl("/admin/subjects/page/0")
         );
         
         assertFalse(subjectRepository.exists(cal.getId()));
+    }
+    
+    @Test
+    public void adminSubjectShouldNotBeRemovedIfItContainsCourses() throws Exception {
+
+        Subject cal = subjectRepository.save(calculus);
+        subjectRepository.save(sepm);
+        subjectRepository.save(ase);
+        
+        Semester ws2016 = new Semester("WS2016");
+        semesterRepository.save(ws2016);
+        Course calculusWS2016o = new Course(cal, ws2016);
+        
+        Course calculusWS2016 = courseRepository.save(calculusWS2016o);
+        
+        
+
+        // then the admin should see them all in the first page
+        mockMvc.perform(
+                get("/admin/subjects/remove/"+cal.getId()).with(user("admin").roles("ADMIN")))
+        .andExpect(
+            redirectedUrl("/admin/subjects")
+        );
+        
+        assertTrue(subjectRepository.exists(cal.getId()));
     }
 
 
