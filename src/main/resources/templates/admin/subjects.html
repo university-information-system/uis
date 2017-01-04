@@ -27,6 +27,18 @@
                    type="text"
             />
         </form>
+        
+        <nav>
+            <div class="nav-wrapper white black-text">
+                <form>
+                    <div class="input-field">
+                        <input id="search" name="search" type="search"
+                               th:value="${param.search != null} ? ${param.search[0]} : ''"/>
+                        <label for="search"><i class="material-icons black-text">search</i></label>
+                    </div>
+                </form>
+            </div>
+        </nav>
 
 
         <div th:if="${not #lists.isEmpty(subjects)}">
