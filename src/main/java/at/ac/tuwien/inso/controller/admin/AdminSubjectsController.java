@@ -107,19 +107,14 @@ public class AdminSubjectsController {
     private String removeSubject(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
       Subject subject = subjectService.findOne(id);  	
       if(subject == null){
-        System.out.println("error1");
-
-        model.addAttribute("message", "test");
-        redirectAttributes.addFlashAttribute("error", "test2");
-        redirectAttributes.addFlashAttribute("message", "test3");
-        return "redirect:/error";
+    	  redirectAttributes.addFlashAttribute("flashMessage", "admin.subjects.remove.error.nosubjectfound");
+          return "redirect:/admin/subjects";
       }else{
         try{
           subjectService.remove(subject);
         }catch (ValidationException e) {
           redirectAttributes.addFlashAttribute("flashMessage", "admin.subjects.remove.error.courseexists");
           return "redirect:/admin/subjects";
-          //return "redirect:/error";
         }
       }
 
