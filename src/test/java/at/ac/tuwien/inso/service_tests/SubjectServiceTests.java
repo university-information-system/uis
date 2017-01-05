@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.lowagie.text.List;
 
@@ -24,6 +25,7 @@ import at.ac.tuwien.inso.service.SubjectService;
 import at.ac.tuwien.inso.service.impl.SubjectServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
+@ActiveProfiles("test")
 public class SubjectServiceTests {
 
 	@Mock
@@ -49,7 +51,6 @@ public class SubjectServiceTests {
 	@Test(expected = ValidationException.class)
 	public void testRemoveWithNullInputThrowsException(){
 		subjectService.remove(null);
-		fail();
 		
 	}
 	
