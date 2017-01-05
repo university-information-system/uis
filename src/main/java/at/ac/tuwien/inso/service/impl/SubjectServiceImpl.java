@@ -164,14 +164,16 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
 	@Override
+	@Transactional
 	public boolean remove(Subject subject) throws ValidationException{
+		if(subject==null){
+			throw new ValidationException("Subject is null.");
+		}
 		List<Course> courses = courseService.findCoursesForSubject(subject);
 		if(!courses.isEmpty()){
 			String msg = "";
 			if(subject!=null){
 				msg = "Cannot delete subject [Name: "+subject.getName()+"] because there are courses";
-			}else{
-				msg = "Cannot delete subject because there are courses";
 			}
 			logger.info(msg);
 			throw new ValidationException(msg);
