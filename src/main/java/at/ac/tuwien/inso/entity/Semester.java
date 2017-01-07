@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import at.ac.tuwien.inso.dto.SemesterDto;
+
 @Entity
 public class Semester {
 
@@ -25,6 +27,10 @@ public class Semester {
 
     public Long getId() {
         return id;
+    }
+    
+    public void setId(Long id){
+    	this.id = id;
     }
 
     public String getLabel() {
@@ -56,5 +62,11 @@ public class Semester {
                 "id=" + id +
                 ", label='" + label + '\'' +
                 '}';
+    }
+    
+    public SemesterDto toDto(){
+    	SemesterDto dto = new SemesterDto(label);
+    	if(id!=null){dto.setId(id);}
+		return dto;
     }
 }

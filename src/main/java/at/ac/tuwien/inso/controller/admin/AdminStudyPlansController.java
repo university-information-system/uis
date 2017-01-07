@@ -102,7 +102,7 @@ public class AdminStudyPlansController {
     
     @GetMapping(value = "/disable", params = {"id"})
     public String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
-      System.out.println("Disabling "+id);
+      //System.out.println("Disabling "+id);
       studyPlanService.disableStudyPlan(id);
       return "redirect:/admin/studyplans";
     }

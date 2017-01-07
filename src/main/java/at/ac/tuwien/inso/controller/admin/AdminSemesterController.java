@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.controller.admin;
 
 import at.ac.tuwien.inso.controller.admin.forms.*;
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
@@ -19,12 +20,12 @@ public class AdminSemesterController {
     private SemesterService semesterService;
 
     @ModelAttribute("allSemesters")
-    private Iterable<Semester> getAllSemesters() {
+    private Iterable<SemesterDto> getAllSemesters() {
         return semesterService.findAll();
     }
 
     @ModelAttribute("currentSemester")
-    private Semester getCurrentSemester() {
+    private SemesterDto getCurrentSemester() {
         return semesterService.getCurrentSemester();
     }
 
@@ -46,9 +47,9 @@ public class AdminSemesterController {
             return "admin/create-semester";
         }
 
-        Semester submittedSemester = form.toSemester();
+        SemesterDto submittedSemester = form.toSemesterDto();
 
-        System.out.println(submittedSemester);
+        //System.out.println(submittedSemester);
 
         semesterService.create(submittedSemester);
 

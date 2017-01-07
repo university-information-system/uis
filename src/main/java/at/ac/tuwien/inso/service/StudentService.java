@@ -1,9 +1,14 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.security.access.prepost.*;
+import java.util.List;
 
-import java.util.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import at.ac.tuwien.inso.dto.SemesterDto;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.UserAccount;
 
 public interface StudentService {
 
@@ -23,5 +28,5 @@ public interface StudentService {
     void registerStudentToStudyPlan(Student student, StudyPlan studyPlan);
 
     @PreAuthorize("hasRole('ADMIN')")
-    void registerStudentToStudyPlan(Student student, StudyPlan studyPlan, Semester currentSemester);
+    void registerStudentToStudyPlan(Student student, StudyPlan studyPlan, SemesterDto currentSemester);
 }

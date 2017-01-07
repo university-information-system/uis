@@ -1,15 +1,22 @@
 package at.ac.tuwien.inso.dto;
 
+import at.ac.tuwien.inso.entity.Semester;
+
 public class SemesterDto {
 
 	private Long id;
 
 	private String label;
 
+
+    public SemesterDto(String label) {
+        this.label = label;
+    }
+	
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -36,9 +43,20 @@ public class SemesterDto {
 
 	@Override
 	public String toString() {
-		return "Semester{" +
+		return "SemesterDto{" +
 				"id=" + id +
 				", label='" + label + '\'' +
 				'}';
 	}	
+	
+	/**
+	 * sets the label to a new Semester instance. The Id will not be persisted.
+	 * @return
+	 */
+	public Semester toEntity(){
+		Semester semesterEntity = new Semester(label);
+		semesterEntity.setId(id);
+		return semesterEntity;
+	}
+
 }

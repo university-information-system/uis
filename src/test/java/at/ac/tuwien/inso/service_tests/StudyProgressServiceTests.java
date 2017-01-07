@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.service_tests;
 
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.study_progress.*;
@@ -35,23 +36,23 @@ public class StudyProgressServiceTests {
     @InjectMocks
     private StudyProgressService studyProgressService = new StudyProgressServiceImpl();
 
-    private List<Semester> semesters;
-    private Semester pastSemester;
-    private Semester currentSemester;
+    private List<SemesterDto> dtoSemesters;
+    private SemesterDto pastSemester;
+    private SemesterDto currentSemester;
 
     private Student student = new Student("123", "student", "mail@uis.at");
 
     @Before
     public void setUp() throws Exception {
-        semesters = new ArrayList<>();
+    	dtoSemesters = new ArrayList<>();
         LongStream.range(1, 5).forEach(it -> {
-            Semester semester = mock(Semester.class);
+            SemesterDto semester = mock(SemesterDto.class);
             when(semester.getId()).thenReturn(it);
 
-            semesters.add(semester);
+            dtoSemesters.add(semester);
         });
-        pastSemester = semesters.get(semesters.size() - 2);
-        currentSemester = semesters.get(semesters.size() - 1);
+        pastSemester = dtoSemesters.get(dtoSemesters.size() - 2);
+        currentSemester = dtoSemesters.get(dtoSemesters.size() - 1);
 
         when(semesterService.getCurrentSemester()).thenReturn(currentSemester);
     }
@@ -72,27 +73,32 @@ public class StudyProgressServiceTests {
 
     @Test
     public void studyProgressForStudentWithEmptyCourseRegistrations() throws Exception {
-        prepareStudyPlanRegistrationsFor(semesters.get(2), semesters.get(1));
+        prepareStudyPlanRegistrationsFor(dtoSemesters.get(2), dtoSemesters.get(1));
 
         checkStudentHasSemestersProgress(
-                new SemesterProgress(semesters.get(3), emptyList()),
-                new SemesterProgress(semesters.get(2), emptyList()),
-                new SemesterProgress(semesters.get(1), emptyList())
+                new SemesterProgress(dtoSemesters.get(3), emptyList()),
+                new SemesterProgress(dtoSemesters.get(2), emptyList()),
+                new SemesterProgress(dtoSemesters.get(1), emptyList())
         );
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    private List<StudyPlanRegistration> prepareStudyPlanRegistrationsFor(Semester... semesters) {
+    private List<StudyPlanRegistration> prepareStudyPlanRegistrationsFor(SemesterDto... semesters) {
         Stream.of(semesters)
-                .map(it -> new StudyPlanRegistration(mock(StudyPlan.class), it))
+                .map(it -> new StudyPlanRegistration(mock(StudyPlan.class), it.toEntity()))
                 .forEach(it -> student.addStudyplans(it));
 
-        Semester firstSemester = Stream.of(semesters).min(comparing(Semester::getId)).get();
-        List<Semester> studentSemesters = this.semesters.stream()
+        SemesterDto firstSemester = Stream.of(semesters).min(comparing(SemesterDto::getId)).get();
+        List<SemesterDto> studentSemesters = this.dtoSemesters.stream()
                 .filter(it -> it.getId() >= firstSemester.getId())
                 .collect(Collectors.toList());
         Collections.reverse(studentSemesters);
-        when(semesterService.findAllSince(firstSemester)).thenReturn(studentSemesters);
+        List<SemesterDto> studentSemestersDtos = new ArrayList<SemesterDto>();
+        for(SemesterDto s : studentSemesters){
+        	studentSemestersDtos.add(s);
+        }
+        
+        when(semesterService.findAllSince(firstSemester)).thenReturn(studentSemestersDtos);
 
 
         return student.getStudyplans();
@@ -115,9 +121,9 @@ public class StudyProgressServiceTests {
         );
     }
 
-    private List<Course> prepareCoursesFor(Semester... semesters) {
+    private List<Course> prepareCoursesFor(SemesterDto... semesters) {
         List<Course> courses = Stream.of(semesters)
-                .map(it -> new Course(mock(Subject.class), it))
+                .map(it -> new Course(mock(Subject.class), it.toEntity()))
                 .collect(Collectors.toList());
 
         when(courseService.findAllForStudent(student)).thenReturn(courses);

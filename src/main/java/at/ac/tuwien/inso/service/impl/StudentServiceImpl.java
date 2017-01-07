@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.service.impl;
 
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
@@ -48,8 +49,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional
-    public void registerStudentToStudyPlan(Student student, StudyPlan studyPlan, Semester currentSemester) {
-
+    public void registerStudentToStudyPlan(Student student, StudyPlan studyPlan, SemesterDto currentSemesterDto) {
+    	Semester currentSemester = currentSemesterDto.toEntity();
+    	//TODO DTO
+    	
         StudyPlanRegistration studyPlanRegistration = new StudyPlanRegistration(studyPlan, currentSemester);
 
         student.addStudyplans(studyPlanRegistration);

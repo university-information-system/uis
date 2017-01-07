@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
-import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.dto.SemesterDto;
 
 public class CreateSemesterForm {
 
@@ -20,8 +20,8 @@ public class CreateSemesterForm {
     }
 
     @NotNull
-    public Semester toSemester() {
-        return new Semester(getLabel());
+    public SemesterDto toSemesterDto() {
+        return new SemesterDto(getLabel());
     }
 
     public String getLabel() {

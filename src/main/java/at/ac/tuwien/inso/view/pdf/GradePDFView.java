@@ -40,6 +40,7 @@ public class GradePDFView extends AbstractPdfView {
     }
 
     private String generateHeaderString(Grade grade) {
+    	//TODO DTO
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(grade.getStudent().getName());
         stringBuilder.append(" actively participated in the course ");

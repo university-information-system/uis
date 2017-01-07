@@ -1,21 +1,22 @@
 package at.ac.tuwien.inso.service.study_progress;
 
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.*;
 
 import java.util.*;
 
 public class StudyProgress {
 
-    private Semester currentSemester;
+    private SemesterDto currentSemester;
 
     private List<SemesterProgress> semestersProgress;
 
-    public StudyProgress(Semester currentSemester, List<SemesterProgress> semestersProgress) {
+    public StudyProgress(SemesterDto currentSemester, List<SemesterProgress> semestersProgress) {
         this.currentSemester = currentSemester;
         this.semestersProgress = semestersProgress;
     }
 
-    public Semester getCurrentSemester() {
+    public SemesterDto getCurrentSemester() {
         return currentSemester;
     }
 

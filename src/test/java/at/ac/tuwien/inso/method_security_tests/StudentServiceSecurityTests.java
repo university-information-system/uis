@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.EctsDistribution;
 import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.entity.Student;
@@ -39,12 +40,12 @@ public class StudentServiceSecurityTests {
     @Autowired
     private StudyPlanRepository studyPlanRepository;
 
-    private Semester semester;
+    private SemesterDto semester;
     private StudyPlan studyPlan;
 
     @Before
     public void setUp() {
-        semester = semesterRepository.save(new Semester("WS2016"));
+        semester = semesterRepository.save(new Semester("WS2016")).toDto();
         studyPlan = studyPlanRepository.save(new StudyPlan("TestStudyPlan",
                 new EctsDistribution(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE)));
     }

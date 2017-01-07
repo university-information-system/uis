@@ -38,9 +38,9 @@ public class SemestersTest {
         mockMvc.perform(
                 get("/admin/semester").with(user("admin").roles("ADMIN"))
         ).andExpect(
-                model().attribute("allSemesters", asList(ws2016, ss2016))
+                model().attribute("allSemesters", asList(ws2016.toDto(), ss2016.toDto()))
         ).andExpect(
-                model().attribute("currentSemester", ws2016)
+                model().attribute("currentSemester", ws2016.toDto())
         );
     }
 

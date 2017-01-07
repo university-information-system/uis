@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.service.SemesterService;
 
@@ -32,25 +33,25 @@ public class SemesterServiceSecurityTests {
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void createNotAuthenticated() {
-        semesterService.create(new Semester("WS2016"));
+        semesterService.create(new SemesterDto("WS2016"));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
     public void createAuthenticatedAsStudent() {
-        semesterService.create(new Semester("WS2016"));
+        semesterService.create(new SemesterDto("WS2016"));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "LECTURER")
     public void createAuthenticatedAsLecturer() {
-        semesterService.create(new Semester("WS2016"));
+        semesterService.create(new SemesterDto("WS2016"));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void createAuthenticatedAsAdmin() {
-        Semester result = semesterService.create(new Semester("WS2016"));
+    	SemesterDto result = semesterService.create(new SemesterDto("WS2016"));
         assertEquals(result.getLabel(), "WS2016");
     }
 
@@ -62,7 +63,7 @@ public class SemesterServiceSecurityTests {
     @Test
     @WithMockUser
     public void getCurrentSemesterAuthenticated() {
-        Semester result = semesterService.getCurrentSemester();
+    	SemesterDto result = semesterService.getCurrentSemester();
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
@@ -73,7 +74,7 @@ public class SemesterServiceSecurityTests {
     @Test
     @WithMockUser
     public void findAllAuthenticated() {
-        List<Semester> result = semesterService.findAll();
+        List<SemesterDto> result = semesterService.findAll();
         assertNotNull(result);
     }
 }

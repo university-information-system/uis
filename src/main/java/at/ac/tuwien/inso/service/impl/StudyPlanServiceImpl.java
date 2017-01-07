@@ -167,7 +167,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
      */
     @Override
     public void removeSubjectFromStudyPlan(StudyPlan sp, Subject s) {
-      System.out.println(sp.getId()+", "+s.getId());
+      //System.out.println(sp.getId()+", "+s.getId());
       if(sp==null||sp.getId()==null||s==null||s.getId()==null){
         throw new ValidationException();
       }

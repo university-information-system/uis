@@ -2,6 +2,8 @@ package at.ac.tuwien.inso.entity;
 
 import javax.persistence.*;
 
+import at.ac.tuwien.inso.dto.StudyPlanRegistrationDto;
+
 @Entity
 public class StudyPlanRegistration {
 
@@ -48,6 +50,14 @@ public class StudyPlanRegistration {
         if (studyplan != null ? !studyplan.equals(that.studyplan) : that.studyplan != null) return false;
         return registeredSince != null ? registeredSince.equals(that.registeredSince) : that.registeredSince == null;
 
+    }
+    
+    public StudyPlanRegistrationDto toDto(){
+    	StudyPlanRegistrationDto dto = new StudyPlanRegistrationDto();
+    	dto.setRegisteredSince(registeredSince.toDto());
+    	dto.setStudyplan(studyplan);
+    	return dto;
+    	
     }
 
     @Override

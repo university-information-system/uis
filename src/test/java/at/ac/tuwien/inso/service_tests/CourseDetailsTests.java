@@ -24,7 +24,6 @@ public class CourseDetailsTests {
 
     private Semester olderSemester = new Semester("older");
     private Semester currentSemester = new Semester("current");
-
     private Subject subject = new Subject("subject", BigDecimal.ONE);
 
     private Student student = new Student("1", "student", "student@uis.at");
@@ -43,7 +42,7 @@ public class CourseDetailsTests {
 
     @Before
     public void setUp() throws Exception {
-        when(semesterService.getCurrentSemester()).thenReturn(currentSemester);
+        when(semesterService.getCurrentSemester()).thenReturn(currentSemester.toDto());
 
         when(subjectForStudyPlanRepository.findBySubject(subject)).thenReturn(emptyList());
 

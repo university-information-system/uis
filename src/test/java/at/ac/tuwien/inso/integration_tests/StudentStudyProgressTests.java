@@ -130,15 +130,15 @@ public class StudentStudyProgressTests {
                 get("/student/myCourses").with(user("student").roles(Role.STUDENT.name()))
         ).andExpect(
                 model().attribute("studyProgress", new StudyProgress(
-                        semesters.get(3),
+                        semesters.get(3).toDto(),
                         asList(
-                                new SemesterProgress(semesters.get(3), asList(
+                                new SemesterProgress(semesters.get(3).toDto(), asList(
                                         new CourseRegistration(courses.get(4), CourseRegistrationState.complete_ok),
                                         new CourseRegistration(courses.get(5), CourseRegistrationState.needs_grade),
                                         new CourseRegistration(courses.get(6), CourseRegistrationState.in_progress)
                                 )),
-                                new SemesterProgress(semesters.get(2), emptyList()),
-                                new SemesterProgress(semesters.get(1), asList(
+                                new SemesterProgress(semesters.get(2).toDto(), emptyList()),
+                                new SemesterProgress(semesters.get(1).toDto(), asList(
                                         new CourseRegistration(courses.get(1), CourseRegistrationState.complete_ok),
                                         new CourseRegistration(courses.get(2), CourseRegistrationState.complete_not_ok),
                                         new CourseRegistration(courses.get(3), CourseRegistrationState.needs_feedback)

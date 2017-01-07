@@ -29,7 +29,8 @@ public class LecturerAddCourseController {
     @ModelAttribute("addCourseForm")
     private AddCourseForm getAddCourseForm(@RequestParam("subjectId") Long subjectId) {
         AddCourseForm form = new AddCourseForm(
-                new Course(getSubject(subjectId), semesterService.getCurrentSemester())
+        		//TODO DTO
+                new Course(getSubject(subjectId), semesterService.getCurrentSemester().toEntity())
         );
         form.setInitialTags(tagService.findAll());
         return form;
