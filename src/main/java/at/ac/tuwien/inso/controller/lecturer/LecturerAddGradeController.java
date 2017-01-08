@@ -27,15 +27,17 @@ public class LecturerAddGradeController {
     public String getPage(@RequestParam("courseId") Long courseId,
                           @RequestParam("studentId") Long studentId,
                           Model model) {
-        model.addAttribute("grade",
-                gradeService.getDefaultGradeForStudentAndCourse(studentId, courseId));
+        model.addAttribute("gradeAuthorizationDTO",
+                gradeService.getDefaultGradeAuthorizationDTOForStudentAndCourse(studentId, courseId));
+        model.addAttribute("markOptions", gradeService.getMarkOptions());
         return "lecturer/addGrade";
     }
 
     @PostMapping
-    public String saveGrade(@Valid @ModelAttribute("grade") Grade grade,
+    public String saveGrade(@Valid @ModelAttribute("gradeAuthorizationDTO")
+                                        GradeAuthorizationDTO gradeAuthorizationDTO,
                             RedirectAttributes redirectAttributes) {
-        grade = gradeService.saveNewGradeForStudentAndCourse(grade);
+        Grade grade = gradeService.saveNewGradeForStudentAndCourse(gradeAuthorizationDTO);
         redirectAttributes.addFlashAttribute("addedGrade", grade);
         return "redirect:/lecturer/courses";
     }

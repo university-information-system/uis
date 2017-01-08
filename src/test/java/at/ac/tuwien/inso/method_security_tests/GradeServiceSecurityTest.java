@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.method_security_tests;
 
+import at.ac.tuwien.inso.controller.lecturer.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
@@ -72,42 +73,42 @@ public class GradeServiceSecurityTest {
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void getDefaultGradeForStudentAndCourseNotAuthenticated() {
-        gradeService.getDefaultGradeForStudentAndCourse(student.getId(), course.getId());
+        gradeService.getDefaultGradeAuthorizationDTOForStudentAndCourse(student.getId(), course.getId());
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
     public void getDefaultGradeForStudentAndCourseAuthenticatedAsStudent() {
-        gradeService.getDefaultGradeForStudentAndCourse(student.getId(), course.getId());
+        gradeService.getDefaultGradeAuthorizationDTOForStudentAndCourse(student.getId(), course.getId());
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "ADMIN")
     public void getDefaultGradeForStudentAndCourseAuthenticatedAsAdmin() {
-        gradeService.getDefaultGradeForStudentAndCourse(student.getId(), course.getId());
+        gradeService.getDefaultGradeAuthorizationDTOForStudentAndCourse(student.getId(), course.getId());
     }
 
     @Test(expected = ValidationException.class)
     @WithUserDetails("lecturer1")
     public void getDefaultGradeForStudentAndCourseAuthenticatedAsLecturer() {
-        gradeService.getDefaultGradeForStudentAndCourse(student.getId(), course.getId());
+        gradeService.getDefaultGradeAuthorizationDTOForStudentAndCourse(student.getId(), course.getId());
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void saveNewGradeForStudentAndCourseNotAuthenticated() {
-        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, Mark.EXCELLENT));
+        gradeService.saveNewGradeForStudentAndCourse(new GradeAuthorizationDTO(new Grade(course, lecturer, student, Mark.EXCELLENT)));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
     public void saveNewGradeForStudentAndCourseAuthenticatedAsStudent() {
-        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, Mark.EXCELLENT));
+        gradeService.saveNewGradeForStudentAndCourse(new GradeAuthorizationDTO(new Grade(course, lecturer, student, Mark.EXCELLENT)));
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "ADMIN")
     public void saveNewGradeForStudentAndCourseAuthenticatedAsAdmin() {
-        gradeService.saveNewGradeForStudentAndCourse(new Grade(course, lecturer, student, Mark.EXCELLENT));
+        gradeService.saveNewGradeForStudentAndCourse(new GradeAuthorizationDTO(new Grade(course, lecturer, student, Mark.EXCELLENT)));
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
