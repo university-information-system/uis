@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.integration_tests;
 
+import at.ac.tuwien.inso.controller.lecturer.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import org.junit.*;
@@ -102,7 +103,7 @@ public class GradesTests {
                 get("/lecturer/addGrade?studentId=" + student.getId() + "&courseId=" + aseWS2016.getId())
                         .with(user(user1))
         ).andExpect(
-                model().attribute("grade", new Grade(aseWS2016, lecturer1, student, Mark.FAILED))
+                model().attributeExists("gradeAuthorizationDTO")
         );
     }
 
