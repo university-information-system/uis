@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.entity;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -16,7 +17,11 @@ public class Mark implements Comparable<Mark> {
     @Max(5)
     private int mark;
 
-    protected Mark() {
+    public void setMark(int mark) {
+        this.mark = mark;
+    }
+
+    public Mark() {
 
     }
 
@@ -60,4 +65,5 @@ public class Mark implements Comparable<Mark> {
                 "mark=" + mark +
                 '}';
     }
+
 }
