@@ -33,18 +33,18 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     @Override
     @Transactional(readOnly = true)
     public StudyProgress studyProgressFor(Student student) {
-        SemesterDto currentSemester = semesterService.getCurrentSemester();
-
+    	SemesterDto currentSemester = semesterService.getCurrentSemester();
+        
         List<SemesterDto> semesters = studentSemesters(student);
         List<Course> courses = courseService.findAllForStudent(student);
         List<Grade> grades = gradeService.findAllOfStudent(student);
         List<Feedback> feedbacks = feedbackService.findAllOfStudent(student);
-
         
+      
         List<SemesterProgress> semestersProgress = semesters.stream()
                 .map(it -> new SemesterProgress(it, courseRegistrations(it, currentSemester, courses, grades, feedbacks)))
                 .collect(Collectors.toList());
-
+        
         return new StudyProgress(currentSemester, semestersProgress);
     }
 
@@ -61,6 +61,7 @@ public class StudyProgressServiceImpl implements StudyProgressService {
         List<StudyPlanRegistration> registrations = student.getStudyplans();
     	SemesterDto min = new SemesterDto("biggest");
     	min.setId(Long.MAX_VALUE);
+    	
     	
     	for(StudyPlanRegistration spr: registrations){
     		if(min!=null&spr!=null&&spr.getRegisteredSince()!=null&&min.getId() > spr.getRegisteredSince().getId()){

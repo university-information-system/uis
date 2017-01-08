@@ -46,8 +46,9 @@ public class StudyProgressServiceTests {
     public void setUp() throws Exception {
     	dtoSemesters = new ArrayList<>();
         LongStream.range(1, 5).forEach(it -> {
-            SemesterDto semester = mock(SemesterDto.class);
-            when(semester.getId()).thenReturn(it);
+            SemesterDto semester = new SemesterDto("label"+it);
+            //when(semester.getId()).thenReturn(it);
+            semester.setId(it);
 
             dtoSemesters.add(semester);
         });
@@ -84,10 +85,11 @@ public class StudyProgressServiceTests {
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     private List<StudyPlanRegistration> prepareStudyPlanRegistrationsFor(SemesterDto... semesters) {
-        Stream.of(semesters)
+        
+    	Stream.of(semesters)
                 .map(it -> new StudyPlanRegistration(mock(StudyPlan.class), it.toEntity()))
-                .forEach(it -> student.addStudyplans(it));
-
+                .forEach(it2 -> student.addStudyplans(it2));
+    	
         SemesterDto firstSemester = Stream.of(semesters).min(comparing(SemesterDto::getId)).get();
         List<SemesterDto> studentSemesters = this.dtoSemesters.stream()
                 .filter(it -> it.getId() >= firstSemester.getId())
@@ -106,7 +108,7 @@ public class StudyProgressServiceTests {
 
     private void checkStudentHasSemestersProgress(SemesterProgress... semestersProgress) {
         StudyProgress studyProgress = studyProgressService.studyProgressFor(student);
-
+        
         assertEquals(asList(semestersProgress), studyProgress.getSemestersProgress());
     }
 
