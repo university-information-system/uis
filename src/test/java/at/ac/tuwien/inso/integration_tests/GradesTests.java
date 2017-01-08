@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.controller.lecturer.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import org.junit.*;

@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.controller.lecturer.GradeAuthorizationDTO;
+import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.*;
 import org.springframework.security.access.prepost.*;
 import org.springframework.stereotype.*;

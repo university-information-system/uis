@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.Grade;
 import at.ac.tuwien.inso.service.GradeService;
 
@@ -34,8 +35,7 @@ public class LecturerAddGradeController {
     }
 
     @PostMapping
-    public String saveGrade(@Valid @ModelAttribute("gradeAuthorizationDTO")
-                                        GradeAuthorizationDTO gradeAuthorizationDTO,
+    public String saveGrade(@Valid @ModelAttribute("gradeAuthorizationDTO") GradeAuthorizationDTO gradeAuthorizationDTO,
                             RedirectAttributes redirectAttributes) {
         Grade grade = gradeService.saveNewGradeForStudentAndCourse(gradeAuthorizationDTO);
         redirectAttributes.addFlashAttribute("addedGrade", grade);

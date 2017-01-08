@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.service_tests;
 
-import at.ac.tuwien.inso.controller.lecturer.GradeAuthorizationDTO;
+import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;

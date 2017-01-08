@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.controller.lecturer;
+package at.ac.tuwien.inso.dto;
 
 import at.ac.tuwien.inso.entity.Grade;
 
