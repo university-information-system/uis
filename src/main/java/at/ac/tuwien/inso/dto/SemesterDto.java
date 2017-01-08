@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.dto;
 
 import at.ac.tuwien.inso.entity.Semester;
 
+//finished transformation on 8.1.
 public class SemesterDto {
 
 	private Long id;
