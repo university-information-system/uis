@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.service;
 
+import at.ac.tuwien.inso.controller.lecturer.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.*;
 import org.springframework.security.access.prepost.*;
 import org.springframework.stereotype.*;
@@ -10,10 +11,10 @@ import java.util.*;
 public interface GradeService {
 
     @PreAuthorize("hasRole('LECTURER')")
-    Grade getDefaultGradeForStudentAndCourse(Long studentId, Long courseId);
+    GradeAuthorizationDTO getDefaultGradeAuthorizationDTOForStudentAndCourse(Long studentId, Long courseId);
 
     @PreAuthorize("hasRole('LECTURER')")
-    Grade saveNewGradeForStudentAndCourse(Grade grade);
+    Grade saveNewGradeForStudentAndCourse(GradeAuthorizationDTO grade);
 
     @PreAuthorize("hasRole('LECTURER')")
     List<Grade> getGradesForCourseOfLoggedInLecturer(Long courseId);
@@ -25,4 +26,7 @@ public interface GradeService {
 
     @PreAuthorize("isAuthenticated()")
     List<Grade> findAllOfStudent(Student student);
+
+    @PreAuthorize("isAuthenticated()")
+    List<Mark> getMarkOptions();
 }
