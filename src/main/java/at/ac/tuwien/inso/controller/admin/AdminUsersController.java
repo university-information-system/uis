@@ -13,6 +13,8 @@ import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.validation.*;
 
 @Controller
@@ -46,7 +48,7 @@ public class AdminUsersController {
     }
 
     @GetMapping("/{userId}")
-    public String userDetails(@PathVariable Long userId, Model model) {
+    public String userDetails(@PathVariable Long userId, Model model) throws UnsupportedEncodingException {
         UisUser user = uisUserService.findOne(userId);
         model.addAttribute("user", user);
 
@@ -59,6 +61,8 @@ public class AdminUsersController {
 
         Iterable<Subject> subjects = lecturerService.findSubjectsFor((Lecturer) user);
         model.addAttribute("subjects", subjects);
+        String qr = lecturerService.generateQRUrl((Lecturer) user);
+        model.addAttribute("qr", qr);
 
         return "admin/lecturer-details";
     }

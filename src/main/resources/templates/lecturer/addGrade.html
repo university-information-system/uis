@@ -7,23 +7,59 @@
 <main layout:fragment="main">
     <div class="container">
         <div class="row card-panel">
-            <form th:object="${grade}" th:action="@{/lecturer/addGrade}" method="post">
-                <h4 th:text="*{course.subject.name} + ' ' + *{course.semester.label}"></h4>
-                <h5 th:text="*{student.name}"></h5>
-                <input type="hidden" th:field="*{course}"/>
-                <input type="hidden" th:field="*{student}"/>
-                <input type="hidden" th:field="*{lecturer}"/>
-                <span class="" for="mark" th:text="#{lecturer.addGrade.note}"></span>
-                <div class="row">
-                    <input class="col s1" id="mark" type="number" th:field="*{mark}" min="1" max="5"/>
+            <form th:object="${gradeAuthorizationDTO}" th:action="@{/lecturer/addGrade}" method="post">
+                <h4 th:text="*{grade.course.subject.name} + ' ' + *{grade.course.semester.label}"></h4>
+                <h5 th:text="*{grade.student.name}"></h5>
+                <input type="hidden" th:field="*{grade.course}"/>
+                <input type="hidden" th:field="*{grade.student}"/>
+                <input type="hidden" th:field="*{grade.lecturer}"/>
+                <div class="valign-wrapper">
+                    <div class="input-field col s4">
+                        <input type="text" id="auth" th:field="*{authCode}"/>
+                        <label for="auth" th:text="#{lecturer.addAuthCode}"></label>
+                    </div>
+                    <div class="valign">
+                        <div class="input-field col s12">
+                            <select class="col s12" id="mark" th:field="*{grade.mark.mark}">
+                                <option th:each="markInstance, status: ${markOptions}"
+                                        th:value="${markOptions[__${status.index}__].mark}"
+                                        th:text="${markOptions[__${status.index}__].mark}">
+                                </option>
+                            </select>
+                            <label class="" for="mark" th:text="#{lecturer.addGrade.note}"></label>
+                        </div>
+                    </div>
+                    <div class="valign col s12">
+                        <button class="btn right " type="submit" th:text="#{lecturer.addGrade.submit}"></button>
+                    </div>
                 </div>
-                <button class="btn right" type="submit" th:text="#{lecturer.addGrade.submit}"></button>
             </form>
 
         </div>
     </div>
 
+
+    <!--TODO: MOVE THIS TO THE CSS AND JS FILES -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css"/>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+    </script>
+
+
+
+
 </main>
+
 
 
 </body>

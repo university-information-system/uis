@@ -15,6 +15,17 @@
             </li>
         </ul>
     </div>
+    <div>
+        <h2 th:text="#{admin.auth.qr}">
+            Auth-code:
+        </h2>
+        <div class="card z-depth-2">
+            <div id="qr">
+
+                <img th:src="${qr}"/>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

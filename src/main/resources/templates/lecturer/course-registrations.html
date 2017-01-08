@@ -19,6 +19,7 @@
                     <a class="teal-text" th:text="${student.name}"></a>
                 </div>
                 <div>
+                    <a th:href="@{/lecturer/addGrade(courseId=__${course.id}__, studentId=__${student.id}__)}" class="secondary-content"><i class="material-icons">send</i></a>
                     <span th:text="${student.identificationNumber}"></span>
                     <br/>
                     <span th:text="${student.email}"></span>

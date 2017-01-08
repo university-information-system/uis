@@ -21,7 +21,7 @@ public class Grade {
     @Embedded
     private Mark mark;
 
-    protected Grade() {
+    public Grade() {
 
     }
 
