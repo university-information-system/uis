@@ -1,9 +1,12 @@
 package at.ac.tuwien.inso.service.impl;
 
+import at.ac.tuwien.inso.controller.lecturer.GradeAuthorizationDTO;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
+
+import org.jboss.aerogear.security.otp.Totp;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -33,7 +36,7 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public Grade getDefaultGradeForStudentAndCourse(Long studentId, Long courseId) {
+    public GradeAuthorizationDTO getDefaultGradeAuthorizationDTOForStudentAndCourse(Long studentId, Long courseId) {
         Student student = studentService.findOne(studentId);
         Lecturer lecturer = lecturerService.getLoggedInLecturer();
         Course course = courseService.findOne(courseId);
@@ -43,13 +46,19 @@ public class GradeServiceImpl implements GradeService {
         if (!course.getStudents().contains(student)) {
             throw new ValidationException("Student not registered for course!");
         }
-        return new Grade(course, lecturer, student, Mark.FAILED);
+        return new GradeAuthorizationDTO(new Grade(course, lecturer, student, Mark.FAILED));
     }
 
     @Override
-    public Grade saveNewGradeForStudentAndCourse(Grade grade) {
+    public Grade saveNewGradeForStudentAndCourse(GradeAuthorizationDTO gradeAuthorizationDTO) {
+        Grade grade = gradeAuthorizationDTO.getGrade();
         if (!grade.getLecturer().equals(lecturerService.getLoggedInLecturer())) {
             throw new ValidationException("Lecturer is not valid!");
+        }
+        String oneTimePassword = gradeAuthorizationDTO.getAuthCode();
+        Totp authenticator = new Totp(grade.getLecturer().getTwoFactorSecret());
+        if(!authenticator.verify(oneTimePassword)) {
+            throw new ValidationException("Auth-code is not valid!");
         }
         return gradeRepository.save(grade);
     }
@@ -76,6 +85,11 @@ public class GradeServiceImpl implements GradeService {
     @Transactional(readOnly = true)
     public List<Grade> findAllOfStudent(Student student) {
         return gradeRepository.findAllOfStudent(student);
+    }
+
+    @Override
+    public List<Mark> getMarkOptions() {
+        return Arrays.asList(Mark.EXCELLENT, Mark.GOOD, Mark.SATISFACTORY, Mark.SUFFICIENT, Mark.FAILED);
     }
 
     private Long parseValidationIdentifier(String identifier) {
