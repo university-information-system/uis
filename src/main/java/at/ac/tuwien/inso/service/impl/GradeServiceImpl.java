@@ -41,13 +41,16 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public GradeAuthorizationDTO getDefaultGradeAuthorizationDTOForStudentAndCourse(Long studentId, Long courseId) {
+    	log.info("getting default grade authorization dto for student with id "+studentId+" and course with id "+courseId);
         Student student = studentService.findOne(studentId);
         Lecturer lecturer = lecturerService.getLoggedInLecturer();
         Course course = courseService.findOne(courseId);
         if (course == null || lecturer == null || student == null) {
+        	log.warn("Wrong student or course id");
             throw new BusinessObjectNotFoundException("Wrong student or course id");
         }
         if (!course.getStudents().contains(student)) {
+        	log.warn("student not registered for course");
             throw new ValidationException("Student not registered for course!");
         }
         return new GradeAuthorizationDTO(new Grade(course, lecturer, student, Mark.FAILED));
@@ -55,13 +58,16 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Grade saveNewGradeForStudentAndCourse(GradeAuthorizationDTO gradeAuthorizationDTO) {
+    	log.info("saving new grade for student and course");
         Grade grade = gradeAuthorizationDTO.getGrade();
         if (!grade.getLecturer().equals(lecturerService.getLoggedInLecturer())) {
+        	log.warn("Lecturer is not valid");
             throw new ValidationException("Lecturer is not valid!");
         }
         String oneTimePassword = gradeAuthorizationDTO.getAuthCode();
         Totp authenticator = new Totp(grade.getLecturer().getTwoFactorSecret());
         if(!authenticator.verify(oneTimePassword)) {
+        	log.warn("Auth-code is not valid");
             throw new ValidationException("Auth-code is not valid!");
         }
         return gradeRepository.save(grade);
