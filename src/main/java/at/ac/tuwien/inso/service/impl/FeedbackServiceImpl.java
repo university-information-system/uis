@@ -44,17 +44,22 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> findFeedbackForCourse(Long id) {
+    	log.info("finding feedback for course "+id);
         return feedbackRepository.findByCourseId(id);
     }
 
     private void guardSingleFeedback(Feedback feedback) {
+    	log.info("guading single feedback, if no warn log line follows its fine.");
         if (feedbackRepository.exists(feedback)) {
+        	log.warn("Giving feedback multiple times for the same course is not allowed");
             throw new ActionNotAllowedException("Giving feedback multiple times for the same course is not allowed");
         }
     }
 
     private void guardStudentRegisteredForCourse(Student student, Course course) {
+    	log.info("guarding student is registered for course already");
         if (!courseRepository.existsCourseRegistration(student, course)) {
+        	log.warn("Student tried to give feedback for course he is not registered for");
             throw new ActionNotAllowedException("Student tried to give feedback for course he is not registered for");
         }
     }

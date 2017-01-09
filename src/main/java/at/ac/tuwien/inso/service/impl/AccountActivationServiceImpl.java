@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.*;
 @Service
 public class AccountActivationServiceImpl implements AccountActivationService {
 
-	private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(AccountActivationServiceImpl.class);
 	
     @Autowired
     private PendingAccountActivationRepository pendingAccountActivationRepository;
