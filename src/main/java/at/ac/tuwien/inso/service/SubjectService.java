@@ -14,7 +14,7 @@ public interface SubjectService {
     Page<Subject> findBySearch(String search, Pageable pageable);
 
     @PreAuthorize("isAuthenticated()")
-    Subject findOne(long id);
+    Subject findOne(Long id);
 
     @PreAuthorize("isAuthenticated()")
     List<Subject> searchForSubjects(String word);

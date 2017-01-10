@@ -47,7 +47,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional(readOnly = true)
-    public Subject findOne(long id) {
+    public Subject findOne(Long id) {
+        if(id == null  || id < 0) {
+            logger.warn("subject not found because the id is wrong");
+            throw new BusinessObjectNotFoundException();
+        }
         return subjectRepository.findById(id);
     }
 

@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.controller.admin;
 
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.impl.Messages;
@@ -96,14 +97,14 @@ public class AdminStudyPlansController {
 
         StudyPlan studyPlan = new StudyPlan();
         studyPlan.setId(studyPlanId);
-        Subject subject = subjectService.findOne(subjectId);
         try {
+            Subject subject = subjectService.findOne(subjectId);
             studyPlanService.addSubjectToStudyPlan(new SubjectForStudyPlan(subject, studyPlan, mandatory, semester));
             String successMsg = messages.msg("admin.studyplans.details.subject.add.success", subject.getName());
             redirectAttributes.addFlashAttribute("flashMessageNotLocalized", successMsg);
         }
-        catch (ValidationException e) {
-            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", e.getMessage());
+        catch (ValidationException | BusinessObjectNotFoundException e) {
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("error.subject.missing"));
         }
 
         return "redirect:/admin/studyplans/?id=" + studyPlanId;
