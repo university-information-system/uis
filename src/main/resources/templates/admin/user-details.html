@@ -35,7 +35,7 @@
                 <div class="row">
                     <div class="col s12 m3 l2" th:text="#{admin.user.details.email}"></div>
                     <div class="col s12 m9 l10">
-                        <span th:text="${user.email}"></span>
+                        <a class="teal-text" th:text="${user.email}" th:href="'mailto:'+${user.email}"></a>
                         <span class="red-text" th:if="${!user.activated}"
                               th:text="'(' + (#{admin.users.inactive}) + ')'"></span>
                     </div>
