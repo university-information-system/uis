@@ -27,6 +27,13 @@
     showMessage(message);
 </script>
 
+<script th:if="${flashMessageNotLocalized}" th:inline="javascript">
+    var message = [[${flashMessageNotLocalized}]];
+
+    console.log("flashMessage", message);
+    showMessage(message);
+</script>
+
 <div layout:fragment="scripts"></div>
 
 </body>
