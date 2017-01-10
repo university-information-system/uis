@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.controller.admin;
 
+import at.ac.tuwien.inso.controller.admin.forms.CreateSubjectForm;
+import at.ac.tuwien.inso.service.impl.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,8 @@ import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.SubjectService;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/admin/subjects")
 public class AdminSubjectsController {
@@ -28,6 +33,9 @@ public class AdminSubjectsController {
 
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private Messages messages;
 
     private static final Integer SUBJECTS_PER_PAGE = 10;
 
@@ -91,16 +99,18 @@ public class AdminSubjectsController {
         return "admin/subject-details";
     }
 
-    @GetMapping("/add")
-    private String addSubject(Model model) {
-        model.addAttribute("subject", new Subject());
-        return "admin/subject-add";
-    }
+    @PostMapping("/create")
+    private String createSubject(@Valid CreateSubjectForm form,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("flashMessage", "admin.subjects.create.error");
+            return "redirect:/admin/subjects";
+        }
+        Subject subject = subjectService.create(form.toSubject());
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("admin.subjects.create.success", subject.getName()));
 
-    @PostMapping("/add")
-    private String addSubject(@ModelAttribute Subject subject) {
-        subject = subjectService.create(subject);
-        return "redirect:/admin/subjects/"+subject.getId();
+        return "redirect:/admin/subjects/" + subject.getId();
     }
     
     @GetMapping("/remove/{id}")
