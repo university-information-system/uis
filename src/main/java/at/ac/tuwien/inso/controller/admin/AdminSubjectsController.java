@@ -128,7 +128,7 @@ public class AdminSubjectsController {
         }
       }
 
-
-      return "redirect:/admin/subjects/page/0";
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("admin.subjects.remove.success", subject.getName()));
+        return "redirect:/admin/subjects/page/0";
     }
 }
