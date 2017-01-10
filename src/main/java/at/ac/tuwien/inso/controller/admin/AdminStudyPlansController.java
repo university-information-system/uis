@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.controller.admin;
 import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -28,9 +27,6 @@ public class AdminStudyPlansController {
     
     @Autowired
     private StudentService studentService;
-    
-    @Autowired
-    private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
     @GetMapping
     public String getStudyplansView() {
@@ -63,17 +59,18 @@ public class AdminStudyPlansController {
         return "admin/studyplan-details";
     }
 
-    @GetMapping("/create")
-    public String getCreateStudyplanView(CreateStudyPlanForm form) {
-        return "admin/create-studyplan";
-    }
-
     @PostMapping("/create")
-    public String createStudyPlan(@Valid CreateStudyPlanForm form, BindingResult bindingResult, Model model) {
+    public String createStudyPlan(@Valid CreateStudyPlanForm form,
+                                  BindingResult bindingResult,
+                                  Model model,
+                                  RedirectAttributes redirectAttributes
+                                  ) {
         if (bindingResult.hasErrors()) {
-            return "admin/create-studyplan";
+            redirectAttributes.addFlashAttribute("flashMessage", "admin.studyplans.create.error");
+            return "redirect:/admin/studyplans";
         }
-        model.addAttribute("studyPlan",studyPlanService.create(form.toStudyPlan()));
+        model.addAttribute("studyPlan", studyPlanService.create(form.toStudyPlan()));
+        model.addAttribute("flashMessage", "admin.studyplans.create.success");
 
         return "admin/studyplan-details";
     }

@@ -8,13 +8,23 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h2 th:text="#{admin.nav.studyplans}"></h2>
 
-        <a href="/admin/studyplans/create" th:text="#{admin.studyplans.create.header}"></a>
+        <!-- Header with create button -->
+        <div class="row">
+            <div class="col s12">
+                <h1 th:text="#{admin.nav.studyplans}"></h1>
+            </div>
 
+            <div class="col s12">
+                <a class="right amber btn hide-on-small-only modal-trigger" href="#create-studyplan-modal"
+                   th:text="#{admin.studyplans.create.header}"></a>
+            </div>
+        </div>
+
+        <!-- List of study plans -->
         <div th:if="${not #lists.isEmpty(studyPlans)}">
 
-            <ul class="collection">
+            <ul class="collection z-depth-1">
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
@@ -44,9 +54,70 @@
         <div th:if="${#lists.isEmpty(studyPlans)}">
             <p th:text="#{admin.studyplan.notfound}"></p>
         </div>
+
+    </div>
+
+    <!-- Create study plan FAB -->
+    <div class="fixed-action-btn hide-on-med-and-up">
+        <a class="btn-floating btn-large amber modal-trigger" href="#create-studyplan-modal">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <!-- Create study plan modal -->
+    <div id="create-studyplan-modal" class="modal small">
+        <div class="modal-content">
+            <form th:action="@{/admin/studyplans/create}" method="post"
+                  id="create-studyplan-form">
+                <div class="row">
+
+                    <div class="input-field col s12">
+                        <input id="name" name="name" type="text" required="required"
+                               th:attr="data-msg-required=#{admin.studyplans.create.form.name.error}"/>
+                        <label for="name" th:text="#{admin.studyplans.create.form.name}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="mandatory" name="mandatory" type="number" required="required" min="1"
+                               th:attr="data-msg-required=#{admin.studyplans.create.form.mandatory.error}"/>
+                        <label for="mandatory" th:text="#{admin.studyplans.create.form.mandatory}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="optional" name="optional" type="number" required="required" min="1"
+                               th:attr="data-msg-required=#{admin.studyplans.create.form.optional.error}"/>
+                        <label for="mandatory" th:text="#{admin.studyplans.create.form.optional}"></label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="freeChoice" name="freeChoice" type="number" required="required" min="1"
+                               th:attr="data-msg-required=#{admin.studyplans.create.form.free.error}"/>
+                        <label for="freeCHoice" th:text="#{admin.studyplans.create.form.free}"></label>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-action waves-effect btn teal"
+               onclick="$('#create-studyplan-form').submit()"
+               th:text="#{create}"></a>
+            <a href="#" class="modal-action modal-close waves-effect btn-flat"
+               th:text="#{cancel}"></a>
+        </div>
     </div>
 
 </main>
+
+<div layout:fragment="scripts">
+    <script type="application/javascript">
+        $("#create-studyplan-form").validate({
+            errorElement: 'span',
+            validClass: '',
+            errorClass: 'red-text',
+        });
+    </script>
+</div>
 
 </body>
 </html>
