@@ -178,7 +178,7 @@ public class AdminStudyPlansController {
 
       model.addAttribute("studyPlans", toShow);
 
-        return "admin/addStudyplanToStudent";
+        return "admin/add-study-plan-to-student";
     }
 
 
