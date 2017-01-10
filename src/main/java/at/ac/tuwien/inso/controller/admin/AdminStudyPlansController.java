@@ -139,13 +139,15 @@ public class AdminStudyPlansController {
      * @return
      */
     @GetMapping(value = "/registerStudent", params = "studentId")
-    public String registerStudent(@RequestParam Long studentId, @RequestParam Long studyPlanId) {
-      StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
-      Student student = studentService.findOne(studentId);
+    public String registerStudent(RedirectAttributes redirectAttributes,
+                                  @RequestParam Long studentId,
+                                  @RequestParam Long studyPlanId) {
+        StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+        Student student = studentService.findOne(studentId);
+        studentService.registerStudentToStudyPlan(student, studyPlan);
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("admin.student.register.success", studyPlan.getName()));
 
-      studentService.registerStudentToStudyPlan(student, studyPlan);
-
-      return "redirect:/admin/users/"+student.getId();
+        return "redirect:/admin/users/"+student.getId();
     }
 
     /**
