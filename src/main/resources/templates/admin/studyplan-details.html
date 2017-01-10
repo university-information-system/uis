@@ -8,8 +8,8 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h2 th:if="${studyPlan.enabled}" th:text="${studyPlan.getName()}"></h2>
-        <h2 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons">lock_outline</i></h2>
+        <h1 th:if="${studyPlan.enabled}" th:text="${studyPlan.getName()}"></h1>
+        <h1 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons">lock_outline</i></h1>
         <p th:if="${error}" class="red-text col s12" th:text="${error}"/>
 
         <div class="row">
