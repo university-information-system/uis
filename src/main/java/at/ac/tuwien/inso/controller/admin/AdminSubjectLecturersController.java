@@ -51,13 +51,16 @@ public class AdminSubjectLecturersController {
             RedirectAttributes redirectAttributes
     ) {
 
-        Long lecturerUisUserId = addLecturersToSubjectForm.toLecturerId();
-        Lecturer lecturer = subjectService.addLecturerToSubject(subjectId, lecturerUisUserId);
-
-        String name = lecturer.getName();
-
-        String msg = String.format("admin.subjects.lecturerAdded(${'%s'})", name);
-        redirectAttributes.addFlashAttribute("message", msg);
+        try {
+            Long lecturerUisUserId = addLecturersToSubjectForm.toLecturerId();
+            Lecturer lecturer = subjectService.addLecturerToSubject(subjectId, lecturerUisUserId);
+            String name = lecturer.getName();
+            String msg = String.format("admin.subjects.lecturerAdded(${'%s'})", name);
+            redirectAttributes.addFlashAttribute("flashMessage", msg);
+        }
+        catch (LecturerNotFoundException e) {
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", e.getMessage());
+        }
 
         return "redirect:/admin/subjects/" + subjectId;
     }
