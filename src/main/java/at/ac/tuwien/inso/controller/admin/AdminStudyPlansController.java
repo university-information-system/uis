@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.controller.admin.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.impl.Messages;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
@@ -27,6 +28,9 @@ public class AdminStudyPlansController {
     
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private Messages messages;
 
     @GetMapping
     public String getStudyplansView() {
@@ -59,6 +63,12 @@ public class AdminStudyPlansController {
         return "admin/studyplan-details";
     }
 
+    @GetMapping(value = "/disable", params = {"id"})
+    public String disableStudyPlan(@RequestParam(value = "id") Long id) {
+        studyPlanService.disableStudyPlan(id);
+        return "redirect:/admin/studyplans";
+    }
+
     @PostMapping("/create")
     public String createStudyPlan(@Valid CreateStudyPlanForm form,
                                   BindingResult bindingResult,
@@ -69,40 +79,48 @@ public class AdminStudyPlansController {
             redirectAttributes.addFlashAttribute("flashMessage", "admin.studyplans.create.error");
             return "redirect:/admin/studyplans";
         }
-        model.addAttribute("studyPlan", studyPlanService.create(form.toStudyPlan()));
-        model.addAttribute("flashMessage", "admin.studyplans.create.success");
+        StudyPlan studyPlan = studyPlanService.create(form.toStudyPlan());
+        model.addAttribute("studyPlan", studyPlan);
+        model.addAttribute("flashMessageNotLocalized", messages.msg("admin.studyplans.create.success", studyPlan.getName()));
 
         return "admin/studyplan-details";
     }
 
     @PostMapping(value = "/addSubject", params = {"subjectId", "studyPlanId", "semester", "mandatory"})
-    public String addSubjectToStudyPlan(
-            RedirectAttributes redirectAttributes,
-            @RequestParam Long subjectId,
-            @RequestParam Long studyPlanId,
-            @RequestParam Integer semester,
-            @RequestParam Boolean mandatory) {
+    public String addSubjectToStudyPlan(RedirectAttributes redirectAttributes,
+                                        @RequestParam Long subjectId,
+                                        @RequestParam Long studyPlanId,
+                                        @RequestParam Integer semester,
+                                        @RequestParam Boolean mandatory) {
 
         StudyPlan studyPlan = new StudyPlan();
         studyPlan.setId(studyPlanId);
-        Subject subject = new Subject();
-        subject.setId(subjectId);
+        Subject subject = subjectService.findOne(subjectId);
         try {
             studyPlanService.addSubjectToStudyPlan(new SubjectForStudyPlan(subject, studyPlan, mandatory, semester));
+            String successMsg = messages.msg("admin.studyplans.details.subject.add.success", subject.getName());
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", successMsg);
         }
         catch (ValidationException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", e.getMessage());
         }
 
         return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
-    
-    @GetMapping(value = "/disable", params = {"id"})
-    public String disableStudyPlan(@RequestParam(value = "id") Long id, Model model) {
-      //System.out.println("Disabling "+id);
-      studyPlanService.disableStudyPlan(id);
-      return "redirect:/admin/studyplans";
+
+    @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
+    public String removeSubjectFromStudyPlan(RedirectAttributes redirectAttributes,
+                                             @RequestParam Long studyPlanId,
+                                             @RequestParam Long subjectId){
+        StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
+        Subject subject = subjectService.findOne(subjectId);
+        studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
+        String successMsg = messages.msg("admin.studyplans.details.subject.remove.success", subject.getName());
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", successMsg);
+        return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
+    
+
 
 
     @GetMapping(value = "/json/availableSubjects", params = {"id", "query"})
@@ -159,12 +177,6 @@ public class AdminStudyPlansController {
         return "admin/addStudyplanToStudent";
     }
 
-    @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
-    public String removeSubjectFromStudyPlan(@RequestParam Long studyPlanId, @RequestParam Long subjectId, Model model){
-        StudyPlan studyPlan = studyPlanService.findOne(studyPlanId);
-        Subject subject = subjectService.findOne(subjectId);
-        studyPlanService.removeSubjectFromStudyPlan(studyPlan, subject);
-        return "redirect:/admin/studyplans/?id=" + studyPlanId;
-    }
+
 
 }

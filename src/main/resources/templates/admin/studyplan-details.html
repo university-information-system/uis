@@ -10,8 +10,8 @@
     <div class="container">
         <h1 th:if="${studyPlan.enabled}" th:text="${studyPlan.getName()}"></h1>
         <h1 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons">lock_outline</i></h1>
-        <p th:if="${error}" class="red-text col s12" th:text="${error}"/>
 
+        <!-- Mandatory subjects -->
         <div class="row">
             <div class="col s12 m7">
                 <div class="card-content z-depth-1">
@@ -84,6 +84,8 @@
 
             </div>
         </div>
+
+        <!-- Optional subjects -->
         <div class="row">
             <div class="col s12 m7">
                 <div class="card-content z-depth-1">
@@ -157,6 +159,7 @@
             </div>
         </div>
 
+        <!-- Free choice subjects -->
         <div class="row">
             <div class="col s12 m7">
                 <div class="card-content z-depth-1">
