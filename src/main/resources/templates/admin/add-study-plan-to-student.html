@@ -8,9 +8,9 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h2 th:text="#{admin.users.student.addtostudyplan}"></h2>
+        <h1 th:text="#{admin.users.student.addtostudyplan}"></h1>
 		  <div>
-            <p th:text="#{admin.users.header} +': '+ ${user.getName()}"></p>
+            <h4 th:text="#{admin.users.header} +': '+ ${user.getName()}"></h4>
         </div>
 		
         <div th:if="${not #lists.isEmpty(studyPlans)}">
