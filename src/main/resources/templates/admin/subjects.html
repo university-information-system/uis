@@ -15,7 +15,7 @@
 
             <div class="col s12">
                 <a class="right amber btn hide-on-small-only modal-trigger" href="/admin/subjects/add"
-                   th:text="#{admin.subjects.add}"></a>
+                   th:text="#{admin.subjects.create}"></a>
             </div>
         </div>
         
@@ -39,7 +39,7 @@
 
         <div th:if="${not #lists.isEmpty(subjects)}">
 
-            <ul class="collection">
+            <ul class="collection z-depth-1">
                 <li class="collection-item" th:each="subject : ${subjects}">
                     <div>
                         <div class="title">
