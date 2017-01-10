@@ -71,6 +71,10 @@
                   id="create-studyplan-form">
                 <div class="row">
 
+                    <div class="col s12">
+                        <h5 th:text="#{admin.studyplans.create.form.header}"></h5>
+                    </div>
+
                     <div class="input-field col s12">
                         <input id="name" name="name" type="text" required="required"
                                th:attr="data-msg-required=#{admin.studyplans.create.form.name.error}"/>
