@@ -2,7 +2,6 @@ package at.ac.tuwien.inso.service;
 
 import at.ac.tuwien.inso.entity.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -35,7 +34,7 @@ public interface StudyPlanService {
      * @param id
      */
     @PreAuthorize("hasRole('ADMIN')")
-    void disableStudyPlan(Long id);
+    StudyPlan disableStudyPlan(Long id);
 
 	/**
 	 * removes a given subject s from the studyplan sp

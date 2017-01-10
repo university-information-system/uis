@@ -155,10 +155,11 @@ public class StudyPlanServiceImpl implements StudyPlanService {
      * disables a studyplan by the given id
      */
     @Override
-    public void disableStudyPlan(Long id) {
+    public StudyPlan disableStudyPlan(Long id) {
       StudyPlan studyPlan = findOne(id);
       studyPlan.setEnabled(false);
       studyPlanRepository.save(studyPlan);
+        return studyPlan;
     }
 
     /**
