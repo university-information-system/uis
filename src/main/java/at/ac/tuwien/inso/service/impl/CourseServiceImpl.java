@@ -111,17 +111,19 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
-    public void unregisterStudentFromCourse(Student student, Long courseId) {
+    public Course unregisterStudentFromCourse(Student student, Long courseId) {
         log.info("Unregistering student with id {} from course with id {}", student.getId(), courseId);
 
         Course course = courseRepository.findOne(courseId);
         if (course == null) {
             log.warn("Course with id {} not found. Nothing to unregister", courseId);
-            return;
+            throw new BusinessObjectNotFoundException();
         }
 
         course.removeStudents(student);
+        return course;
     }
+
 
     @Override
     public CourseDetailsForStudent courseDetailsFor(Student student, Long courseId) {

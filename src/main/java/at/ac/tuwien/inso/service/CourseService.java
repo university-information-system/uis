@@ -32,7 +32,7 @@ public interface CourseService {
 	List<Course> findCoursesForSubject(Subject subject);
 
     @PreAuthorize("isAuthenticated()")
-    void unregisterStudentFromCourse(Student student, Long courseId);
+    Course unregisterStudentFromCourse(Student student, Long courseId);
 
     @PreAuthorize("isAuthenticated()")
     CourseDetailsForStudent courseDetailsFor(Student student, Long courseId);
