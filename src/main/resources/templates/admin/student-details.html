@@ -7,7 +7,7 @@
 <div layout:fragment="specific-details">
     <div th:if="${not #lists.isEmpty(studyplans)}">
         <h2 class="col s12 m3 l1" th:text="#{admin.user.studyplans}"></h2>
-        <ul class="collection z-depth-2">
+        <ul class="collection z-depth-1">
             <li class="collection-item" th:each="studyplan : ${studyplans}">
                 <div class="row">
                     <a class="col s12 m9 l11 teal-text" data-th-href="@{/admin/studyplans/(id=${studyplan.studyplan.id})}" th:text="${studyplan.studyplan.name}"></a>

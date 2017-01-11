@@ -13,9 +13,12 @@
             <h4 th:text="#{admin.users.header} +': '+ ${user.getName()}"></h4>
         </div>
 		
-        <div th:if="${not #lists.isEmpty(studyPlans)}">
+        <div>
 
             <ul class="collection z-depth-1">
+
+                <li class="collection-item" th:if="${#lists.isEmpty(studyPlans)}" th:text="#{admin.studyplan.notfound}"></li>
+
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
@@ -40,9 +43,6 @@
             </ul>
         </div>
 
-        <div th:if="${#lists.isEmpty(studyPlans)}">
-            <p th:text="#{admin.studyplan.notfound}"></p>
-        </div>
     </div>
 
 </main>

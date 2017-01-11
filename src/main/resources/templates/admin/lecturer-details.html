@@ -7,7 +7,7 @@
 <div layout:fragment="specific-details">
     <div th:if="${not #lists.isEmpty(subjects)}">
         <h2 class="col s12 m3 l1" th:text="#{admin.user.subjects}"></h2>
-        <ul class="collection z-depth-2">
+        <ul class="collection z-depth-1">
             <li class="collection-item" th:each="subject : ${subjects}">
                 <div class="row">
                     <a class="col s12 m9 l11 teal-text" data-th-href="@{'/admin/subjects/{id}'(id=${subject.id})}" th:text="${subject.name}"></a>
@@ -19,7 +19,7 @@
         <h2 th:text="#{admin.auth.qr}">
             Auth-code:
         </h2>
-        <div class="card z-depth-2">
+        <div class="card z-depth-1">
             <div id="qr">
 
                 <img th:src="${qr}"/>

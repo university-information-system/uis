@@ -38,9 +38,12 @@
         </nav>
 
 
-        <div th:if="${not #lists.isEmpty(subjects)}">
+        <div>
 
             <ul class="collection z-depth-1">
+
+                <li class="collection-item" th:if="${#lists.isEmpty(subjects)}" th:text="#{admin.subjects.noSubjectFound}"></li>
+
                 <li class="collection-item" th:each="subject : ${subjects}">
                     <div>
                         <div class="title">
@@ -72,10 +75,6 @@
 
                 </li>
             </ul>
-        </div>
-
-        <div th:if="${#lists.isEmpty(subjects)}">
-            <p th:text="#{admin.subjects.noSubjectFound}"></p>
         </div>
 
         <!-- Pagination -->
