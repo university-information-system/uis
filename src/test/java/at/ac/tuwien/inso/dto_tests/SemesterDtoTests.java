@@ -8,39 +8,40 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import at.ac.tuwien.inso.dto.SemesterDto;
+import at.ac.tuwien.inso.entity.SemesterType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SemesterDtoTests {
 
-	private SemesterDto getA(){
-		SemesterDto a = new SemesterDto("A");
+	private SemesterDto getWS2016WithoutId() {
+		return new SemesterDto(2016, SemesterType.WinterSemester);
+	}
+
+	private SemesterDto getWS2016(){
+		SemesterDto a = getWS2016WithoutId();
 		a.setId(1L);
 		return a;
 	}
 	
-	private SemesterDto getB(){
-		SemesterDto b = new SemesterDto("B");
+	private SemesterDto getSS2015(){
+		SemesterDto b = new SemesterDto(2015, SemesterType.SummerSemester);
 		b.setId(2L);
 		return b;
 	}
+
 	
-	private SemesterDto getANoId(){
-		SemesterDto a = new SemesterDto("A");
-		return a;
+	@Test
+	public void testEquals() {
+		assertTrue(getWS2016().equals(getWS2016()));
 	}
 	
 	@Test
-	public void testSemesterDtoEqualsisEqual(){
-		assertTrue(getA().equals(getA()));
+	public void testEqualsDifferntValues() {
+		assertFalse(getWS2016().equals(getSS2015()));
 	}
 	
 	@Test
-	public void testSemesterDtoEqualsisNotEqual(){
-		assertFalse(getA().equals(getB()));
-	}
-	
-	@Test
-	public void testSemesterDtoisEqual(){
-		assertFalse(getA().equals(getANoId()));
+	public void testEqualsNoId() {
+		assertFalse(getWS2016().equals(getWS2016WithoutId()));
 	}
 }
