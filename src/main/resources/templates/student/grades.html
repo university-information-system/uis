@@ -7,12 +7,13 @@
 
     <div class="container">
 
-        <h2 th:text="#{student.nav.my.grades}">Grades</h2>
+        <h1 th:text="#{student.nav.my.grades}">Grades</h1>
 
-        <div th:if="${grades.isEmpty()}">
-            <span th:text="#{student.grades.none}"></span>
-        </div>
-        <ul class="collection" th:unless="${grades.isEmpty()}">
+
+        <ul class="collection z-depth-1">
+
+            <li class="collection-item" th:if="${grades.isEmpty()}" th:text="#{student.grades.none}"></li>
+
             <li class="collection-item" th:each="grade : ${grades}">
                 <a class="secondary-content" target="_blank"
                    th:href="@{/public/grade(identifier=__${grade.id}__)}"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.grades.certificate}">description</i></a>
