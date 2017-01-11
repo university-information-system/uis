@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Feedback;
 import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.StudyPlanRegistration;
 import at.ac.tuwien.inso.service.*;
@@ -71,7 +72,8 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     private SemesterDto getFirstSemesterFor(Student student) {
         List<StudyPlanRegistration> registrations = student.getStudyplans();
 
-    	SemesterDto min = new SemesterDto("biggest");
+        // TODO refactor: this is not a valid way to treat Semesters
+    	SemesterDto min = new SemesterDto(Integer.MAX_VALUE, SemesterType.SummerSemester);
     	min.setId(Long.MAX_VALUE);
     	
     	for(StudyPlanRegistration spr: registrations){
