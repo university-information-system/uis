@@ -95,17 +95,6 @@ public class GradesTests {
         ));
     }
 
-
-    @Test
-    public void addGradeGetTest() throws Exception{
-        mockMvc.perform(
-                get("/lecturer/addGrade?studentId=" + student.getId() + "&courseId=" + aseWS2016.getId())
-                        .with(user(user1))
-        ).andExpect(
-                model().attributeExists("gradeAuthorizationDTO")
-        );
-    }
-
     @Test
     public void lecturersShouldSeeTheirIssuedGradesInCourseTest() throws Exception {
 
