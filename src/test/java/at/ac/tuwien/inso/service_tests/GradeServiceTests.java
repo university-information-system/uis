@@ -32,19 +32,30 @@ public class GradeServiceTests {
     private static final Long INVALID_STUDENT_ID = 1337L;
     private static final Long VALID_COURSE_ID = 3L;
     private static final Long INVALID_COURSE_ID = 337L;
+
     private GradeService gradeService;
+
     @Mock
     private LecturerService lecturerService;
+
     @Mock
     private StudentService studentService;
+
     @Mock
     private CourseService courseService;
+
     @Mock
     private UserAccountService userAccountService;
+
     @Mock
     private GradeRepository gradeRepository;
-    private Course course = new Course(new Subject("ASE", BigDecimal.ONE), new Semester("WS16"));
+
+    private Semester ws2016 = new Semester(2016, SemesterType.WinterSemester);
+
+    private Course course = new Course(new Subject("ASE", BigDecimal.ONE), ws2016);
+
     private Student student = new Student("Student", "Student", "Student@student.com");
+
     private Student unregisteredStudent = new Student("Student2", "Student2", "not@registered.com");
 
     private UserAccount user = new UserAccount("lecturer1", "pass", Role.LECTURER);
