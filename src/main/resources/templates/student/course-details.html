@@ -7,27 +7,24 @@
 
     <div class="container">
 
+        <div class="card-title">
+            <a href="#register-to-course-modal"
+               class="teal-text right modal-trigger" th:if="${course.canEnroll}">
+                <i class="material-icons large tooltipped"
+                   data-position="bottom" data-delay="50" th:attr="data-tooltip=#{enroll}">
+                    add
+                </i>
+            </a>
+            <h1 th:text="${course.name}"></h1>
+        </div>
+
+        <h4 th:text="${course.semester} + ', ' + ${course.ects + ' ECTS'}"></h4>
+
         <div class="row">
             <div class="col s12">
                 <div class="card">
                     <div class="card-content">
-                        <div class="card-title">
-                            <a th:href="@{/student/register(courseId=__${course.id}__)}"
-                               class="teal-text right" th:if="${course.canEnroll}">
-                                <i class="material-icons tooltipped"
-                                   data-position="bottom" data-delay="50" th:attr="data-tooltip=#{enroll}">
-                                    add
-                                </i>
-                            </a>
-                            <span th:text="${course.name}"></span>
-                        </div>
 
-                        <div class="grey-text text-darken-1">
-                            <span th:text="${course.semester}"></span>
-                            <span>, </span>
-                            <span th:text="${course.ects}"></span>
-                            <span> ECTS</span>
-                        </div>
 
                         <div class="divider row"></div>
 
@@ -96,6 +93,20 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="register-to-course-modal" class="modal small">
+        <div class="modal-content">
+            <h5 class="center-align" th:text="${course.name}"></h5>
+            <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action modal-close btn"
+               th:href="@{/student/register(courseId=__${course.id}__)}"
+               th:text="#{enroll}">Apply</a>
+            <a href="#" class="modal-action modal-close waves-effect btn-flat"
+               th:text="#{cancel}">Cancel</a>
         </div>
     </div>
 
