@@ -30,7 +30,7 @@
                 <a th:href="@{/student/courses/__${course.id}__}"
                    class="title teal-text"
                    th:text="${course.subject.name}"></a>
-                <div th:text="'123.456 VO ' + ${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
+                <div th:text="${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
 
                 <div th:id="'modal'+__${course.id}__" class="modal small">
                     <div class="modal-content">
