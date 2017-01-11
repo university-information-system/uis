@@ -5,6 +5,9 @@ import at.ac.tuwien.inso.entity.*;
 
 import java.util.*;
 
+/**
+ * Study progress for a student
+ */
 public class StudyProgress {
 
     private SemesterDto currentSemester;
