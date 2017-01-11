@@ -11,9 +11,12 @@
 
         <h1 th:text="#{lecturer.nav.studyplans}"></h1>
 
-        <div th:if="${not #lists.isEmpty(studyPlans)}">
+        <div>
 
             <ul class="collection z-depth-1">
+
+                <li class="collection-item" th:if="${#lists.isEmpty(studyPlans)}" th:text="#{lecturer.studyplan.notfound}"></li>
+
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
@@ -27,9 +30,6 @@
             </ul>
         </div>
 
-        <div th:if="${#lists.isEmpty(studyPlans)}">
-            <p th:text="#{lecturer.studyplan.notfound}"></p>
-        </div>
     </div>
 
 </main>
