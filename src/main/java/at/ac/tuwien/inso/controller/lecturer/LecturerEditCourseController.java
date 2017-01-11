@@ -46,7 +46,7 @@ public class LecturerEditCourseController {
                                 RedirectAttributes redirectAttributes) {
         Course course = courseService.saveCourse(form);
 
-        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.edit.success"));
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.edit.success", course.getSubject().getName()));
         return "redirect:/lecturer/courses";
     }
 

@@ -4,6 +4,7 @@ package at.ac.tuwien.inso.integration_tests;
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.impl.Messages;
 import org.hamcrest.*;
 import org.junit.*;
 import org.junit.runner.*;
@@ -60,6 +61,8 @@ public class CoursesTests {
     private StudentRepository studentRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private Messages messages;
 
     private List<Course> expectedCourses;
     private List<Course> expectedCoursesForLecturer1;
@@ -155,21 +158,18 @@ public class CoursesTests {
         ).andExpect(
                 redirectedUrl("/lecturer/courses")
         ).andExpect(
-               flash().attributeExists("createdCourse")
+               flash().attributeExists("flashMessageNotLocalized")
         );
     }
 
     @Test
     public void itEditsCourse() throws Exception {
         AddCourseForm form = new AddCourseForm(sepmWS2016);
-        Course expected = sepmWS2016;
         form.setInitialTags(tagRepository.findAll());
         form.setInitialActiveTags(sepmWS2016.getTags());
         String testDescription = "TEST DESCRIPTION";
         form.getCourse().setDescription(testDescription);
-        expected.setDescription(testDescription);
-        expected.setStudentLimits(1);
-        expected.setId(sepmWS2016.getId());
+        String expected = "Changes for course " + form.getCourse().getSubject().getName() + " updated";
         mockMvc.perform(
                 post("/lecturer/editCourse").with(user("lecturer").roles(Role.LECTURER.name()))
                         .content(form.toString())
@@ -178,9 +178,9 @@ public class CoursesTests {
         ).andExpect(
                 redirectedUrl("/lecturer/courses")
         ).andExpect(
-                flash().attributeExists("editedCourse")
+                flash().attributeExists("flashMessageNotLocalized")
         ).andExpect(
-                flash().attribute("editedCourse", expected)
+                flash().attribute("flashMessageNotLocalized", expected)
         );
     }
 
