@@ -132,6 +132,11 @@ public class CourseServiceImpl implements CourseService {
                 .setStudyplans(subjectForStudyPlanRepository.findBySubject(course.getSubject()));
     }
 
+    @Override
+    public List<SubjectForStudyPlan> getSubjectForStudyPlanList(Course course) {
+        return subjectForStudyPlanRepository.findBySubject(course.getSubject());
+    }
+
     private boolean canEnrollToCourse(Student student, Course course) {
         return course.getSemester().toDto().equals(semesterService.getCurrentSemester()) &&
                 !courseRepository.existsCourseRegistration(student, course);

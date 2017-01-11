@@ -36,4 +36,7 @@ public interface CourseService {
 
     @PreAuthorize("isAuthenticated()")
     CourseDetailsForStudent courseDetailsFor(Student student, Long courseId);
+
+    @PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
+    List<SubjectForStudyPlan> getSubjectForStudyPlanList(Course course);
 }
