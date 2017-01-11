@@ -69,10 +69,10 @@ public class StudentStudyProgressTests {
 
     private void prepareSemesters() {
         semesters = toList(semesterRepository.save(asList(
-                new Semester("1"),
-                new Semester("2"),
-                new Semester("3"),
-                new Semester("4")
+                new Semester(2016, SemesterType.SummerSemester),
+                new Semester(2015, SemesterType.WinterSemester),
+                new Semester(2014, SemesterType.SummerSemester),
+                new Semester(2014, SemesterType.WinterSemester)
         )));
     }
 

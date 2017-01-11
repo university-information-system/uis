@@ -55,7 +55,7 @@ public class FeedbackRepositoryTests {
 
     private void prepareCourse() {
         Subject subject = subjectRepository.save(new Subject("subject", BigDecimal.ONE));
-        Semester semester = semesterRepository.save(new Semester("current"));
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.SummerSemester));
 
         course = courseRepository.save(new Course(subject, semester));
     }

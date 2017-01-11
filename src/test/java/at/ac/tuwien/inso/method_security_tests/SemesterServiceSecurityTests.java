@@ -16,6 +16,7 @@ import java.util.List;
 
 import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.service.SemesterService;
 
 import static junit.framework.TestCase.assertEquals;
@@ -33,26 +34,31 @@ public class SemesterServiceSecurityTests {
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void createNotAuthenticated() {
-        semesterService.create(new SemesterDto("WS2016"));
+        SemesterDto ws2016 = new SemesterDto(2016, SemesterType.WinterSemester);
+        semesterService.create(ws2016);
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "STUDENT")
     public void createAuthenticatedAsStudent() {
-        semesterService.create(new SemesterDto("WS2016"));
+        SemesterDto ws2016 = new SemesterDto(2016, SemesterType.WinterSemester);
+        semesterService.create(ws2016);
     }
 
     @Test(expected = AccessDeniedException.class)
     @WithMockUser(roles = "LECTURER")
     public void createAuthenticatedAsLecturer() {
-        semesterService.create(new SemesterDto("WS2016"));
+        SemesterDto ws2016 = new SemesterDto(2016, SemesterType.WinterSemester);
+        semesterService.create(ws2016);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void createAuthenticatedAsAdmin() {
-    	SemesterDto result = semesterService.create(new SemesterDto("WS2016"));
-        assertEquals(result.getLabel(), "WS2016");
+        SemesterDto ws2016 = new SemesterDto(2016, SemesterType.WinterSemester);
+
+    	SemesterDto result = semesterService.create(ws2016);
+        assertEquals(result.getLabel(), "2016 WS");
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)

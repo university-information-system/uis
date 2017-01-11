@@ -22,8 +22,9 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class CourseDetailsTests {
 
-    private Semester olderSemester = new Semester("older");
-    private Semester currentSemester = new Semester("current");
+    private Semester olderSemester = new Semester(2015, SemesterType.WinterSemester);
+    private Semester currentSemester = new Semester(2016, SemesterType.WinterSemester);
+
     private Subject subject = new Subject("subject", BigDecimal.ONE);
 
     private Student student = new Student("1", "student", "student@uis.at");

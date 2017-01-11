@@ -46,7 +46,7 @@ public class RecommendationServiceTests {
 
     private HashMap<String, Semester> semesters = new HashMap<String, Semester>() {
         {
-            put("WS16", new Semester("WS16"));
+            put("WS16", new Semester(2016, SemesterType.WinterSemester));
         }
     };
 

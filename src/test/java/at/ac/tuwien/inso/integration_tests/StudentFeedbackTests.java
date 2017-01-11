@@ -39,18 +39,25 @@ public class StudentFeedbackTests {
 
     @Autowired
     private UisUserRepository uisUserRepository;
+
     @Autowired
     private CourseRepository courseRepository;
+
     @Autowired
     private SubjectRepository subjectRepository;
+
     @Autowired
     private SemesterRepository semesterRepository;
+
     @Autowired
     private FeedbackRepository feedbackRepository;
+
     @Autowired
     private StudentRepository studentRepository;
+
     @Autowired
     private GradeRepository gradeRepository;
+
     @Autowired
     private LecturerRepository lecturerRepository;
 
@@ -69,7 +76,7 @@ public class StudentFeedbackTests {
 
     private void prepareCourses() {
         Subject subject = subjectRepository.save(new Subject("subject", BigDecimal.ONE));
-        Semester semester = semesterRepository.save(new Semester("current"));
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
 
         courses = toList(courseRepository.save(asList(
                 new Course(subject, semester),
@@ -174,7 +181,7 @@ public class StudentFeedbackTests {
         Student st1 = studentRepository.save(new Student("st1", "Student2", "st1@ude.nt", new UserAccount("st1", "pass", Role.STUDENT)));
         Student st2 = studentRepository.save(new Student("st2", "Student3", "st2@ude.nt", new UserAccount("st2", "pass", Role.STUDENT)));
         Subject ase = subjectRepository.save(new Subject("ASE", new BigDecimal(6.0)));
-        Semester ws2016 = semesterRepository.save(new Semester("WS2016"));
+        Semester ws2016 = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
         Course aseWS2016 = courseRepository.save(new Course(ase, ws2016).addStudents(st1,st2));
         gradeRepository.save(new Grade(aseWS2016, lecturer1, st1, Mark.EXCELLENT));
         gradeRepository.save(new Grade(aseWS2016, lecturer1, st2, Mark.GOOD));

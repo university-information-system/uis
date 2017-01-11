@@ -93,7 +93,7 @@ public class SubjectsTest {
         subjectRepository.save(sepm);
         subjectRepository.save(ase);
         
-        Semester ws2016 = new Semester("WS2016");
+        Semester ws2016 = new Semester(2016, SemesterType.WinterSemester);
         semesterRepository.save(ws2016);
         Course calculusWS2016o = new Course(cal, ws2016);
         

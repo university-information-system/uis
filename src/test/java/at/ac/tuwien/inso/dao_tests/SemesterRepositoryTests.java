@@ -32,8 +32,8 @@ public class SemesterRepositoryTests {
     @Before
     public void setUp() throws Exception {
         semesters = toList(semesterRepository.save(asList(
-                new Semester("1"),
-                new Semester("2")
+                new Semester(2016, SemesterType.WinterSemester),
+                new Semester(2016, SemesterType.SummerSemester)
         )));
     }
 

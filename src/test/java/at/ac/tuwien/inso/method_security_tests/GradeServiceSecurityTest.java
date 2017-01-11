@@ -67,7 +67,7 @@ public class GradeServiceSecurityTest {
         Subject subject = subjectRepository.save(new Subject("ASE", BigDecimal.valueOf(6)));
         subject.addLecturers(lecturer);
         subjectRepository.save(subject);
-        Semester semester = semesterRepository.save(new Semester("2016WS"));
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
         course = courseRepository.save(new Course(subject, semester));
     }
 

@@ -32,8 +32,8 @@ public class GradesTests {
     Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
     Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
     Student student = new Student("st1", "Student", "st@ude.nt", new UserAccount("st1", "pass", Role.STUDENT));
-    Semester ss2016 = new Semester("SS2016");
-    Semester ws2016 = new Semester("WS2016");
+    Semester ss2016 = new Semester(2016, SemesterType.SummerSemester);
+    Semester ws2016 = new Semester(2016, SemesterType.WinterSemester);
     Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
     Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
     Subject ase = new Subject("ASE", new BigDecimal(6.0));

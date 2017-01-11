@@ -66,7 +66,8 @@ public class StudyPlanTest {
 
     @Before
     public void setUp() {
-        ws = semesterRepository.save(new Semester("WS2016"));
+        ws = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
+
         Iterable<Subject> subjects = subjectRepository.save(asList(
                 new Subject("Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik", new BigDecimal(3.0)),
                 new Subject("Software Engineering and Project Management", new BigDecimal(6.0)),
@@ -77,6 +78,7 @@ public class StudyPlanTest {
                 new Subject("Datenbanksysteme", new BigDecimal(6.0)),
                 new Subject("Verteile Systeme", new BigDecimal(3.0))
         ));
+
         this.subjects = StreamSupport.stream(subjects.spliterator(), false).collect(Collectors.toList());
 
         Iterable<Course> courses = courseRepository.save(asList(

@@ -45,15 +45,15 @@ public class StudyProgressServiceTests {
     @Before
     public void setUp() throws Exception {
     	dtoSemesters = new ArrayList<>();
-        LongStream.range(1, 5).forEach(it -> {
-            SemesterDto semester = new SemesterDto("label"+it);
-            //when(semester.getId()).thenReturn(it);
-            semester.setId(it);
 
-            dtoSemesters.add(semester);
-        });
-        pastSemester = dtoSemesters.get(dtoSemesters.size() - 2);
-        currentSemester = dtoSemesters.get(dtoSemesters.size() - 1);
+        currentSemester = new SemesterDto(2016, SemesterType.WinterSemester);
+        pastSemester = new SemesterDto(2016, SemesterType.SummerSemester);
+
+        dtoSemesters.add(currentSemester);
+        dtoSemesters.add(pastSemester);
+        dtoSemesters.add(new SemesterDto(2015, SemesterType.WinterSemester));
+        dtoSemesters.add(new SemesterDto(2015, SemesterType.SummerSemester));
+        dtoSemesters.add(new SemesterDto(2014, SemesterType.WinterSemester));
 
         when(semesterService.getCurrentSemester()).thenReturn(currentSemester);
     }
