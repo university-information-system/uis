@@ -60,6 +60,12 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     	}
     }
 
+    /**
+     * Get the first semester the student registered for
+     *
+     * @param student
+     * @return
+     */
     private SemesterDto getFirstSemesterFor(Student student) {
         List<StudyPlanRegistration> registrations = student.getStudyplans();
     	SemesterDto min = new SemesterDto("biggest");
