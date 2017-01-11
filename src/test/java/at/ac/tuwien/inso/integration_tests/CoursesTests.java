@@ -169,7 +169,7 @@ public class CoursesTests {
         form.setInitialActiveTags(sepmWS2016.getTags());
         String testDescription = "TEST DESCRIPTION";
         form.getCourse().setDescription(testDescription);
-        String expected = "Changes for course " + form.getCourse().getSubject().getName() + " updated";
+        String expected = "Changes for course \"" + form.getCourse().getSubject().getName() + "\" updated";
         mockMvc.perform(
                 post("/lecturer/editCourse").with(user("lecturer").roles(Role.LECTURER.name()))
                         .content(form.toString())

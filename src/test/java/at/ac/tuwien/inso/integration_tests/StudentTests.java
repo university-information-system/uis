@@ -110,25 +110,27 @@ public class StudentTests {
 
     @Test
     public void itDoesNotRegisterStudent() throws Exception {
+        String expect = "Cannot register to course \"" + sepmWS2016.getSubject().getName() + "\"";
         mockMvc.perform(
                 get("/student/register").with(user(studentUser))
                         .param("courseId", sepmWS2016.getId().toString())
         ).andExpect(
                 redirectedUrl("/student/courses")
         ).andExpect(
-                flash().attribute("notRegisteredForCourse", sepmWS2016.getSubject().getName())
+                flash().attribute("flashMessageNotLocalized", expect)
         );
     }
 
     @Test
     public void itRegistersStudent() throws Exception {
+        String expect = "Registered to course \"" + aseWS2016.getSubject().getName() + "\"";
         mockMvc.perform(
                 get("/student/register").with(user(studentUser))
                         .param("courseId", aseWS2016.getId().toString())
         ).andExpect(
                 redirectedUrl("/student/courses")
         ).andExpect(
-                flash().attribute("registeredForCourse", aseWS2016.getSubject().getName())
+                flash().attribute("flashMessageNotLocalized", expect)
         );
     }
 
@@ -152,6 +154,7 @@ public class StudentTests {
 
     @Test
     public void itUnregistersStudentFromCourseAndRedirectsToMyCoursesPage() throws Exception {
+        String expected = "Unregistered from course \"" + aseWS2016.getSubject().getName() + "\"";
         mockMvc.perform(
                 post("/student/unregister")
                         .with(csrf())
@@ -162,7 +165,7 @@ public class StudentTests {
         ).andExpect(
                 redirectedUrl("/student/myCourses")
         ).andExpect(
-                flash().attribute("flashMessage", "student.my.courses.unregister.success")
+                flash().attribute("flashMessageNotLocalized", expected)
         );
     }
 }
