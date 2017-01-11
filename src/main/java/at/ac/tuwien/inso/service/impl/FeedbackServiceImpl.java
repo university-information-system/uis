@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -15,7 +16,8 @@ import java.util.*;
 public class FeedbackServiceImpl implements FeedbackService {
 
     private static final Logger log = LoggerFactory.getLogger(FeedbackServiceImpl.class);
-
+    @Autowired
+    StudentSubjectPreferenceStore studentSubjectPreferenceStore;
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
@@ -38,6 +40,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         guardSingleFeedback(feedback);
         guardStudentRegisteredForCourse(feedback.getStudent(), feedback.getCourse());
+
+        studentSubjectPreferenceStore.studentGaveCourseFeedback(feedback.getStudent(), feedback);
 
         return feedbackRepository.save(feedback);
     }

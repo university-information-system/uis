@@ -6,6 +6,7 @@ import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -37,6 +38,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
+
+    @Autowired
+    private StudentSubjectPreferenceStore studentSubjectPreferenceStore;
 
     @Override
     @Transactional(readOnly = true)
@@ -99,6 +103,7 @@ public class CourseServiceImpl implements CourseService {
         } else {
             course.addStudents(student);
             courseRepository.save(course);
+            studentSubjectPreferenceStore.studentRegisteredCourse(student, course);
             return true;
         }
     }
@@ -121,6 +126,7 @@ public class CourseServiceImpl implements CourseService {
         }
 
         course.removeStudents(student);
+        studentSubjectPreferenceStore.studentUnregisteredCourse(student, course);
     }
 
     @Override
