@@ -26,7 +26,9 @@ public class LecturerCourseDetailsController {
 
     @GetMapping
     private String getCourseDetails(@RequestParam("courseId") Long courseId, Model model) {
-        model.addAttribute("course", courseService.findOne(courseId));
+        Course course = courseService.findOne(courseId);
+        model.addAttribute("course", course);
+        model.addAttribute("studyPlans", courseService.getSubjectForStudyPlanList(course));
         return "lecturer/course-details";
     }
 

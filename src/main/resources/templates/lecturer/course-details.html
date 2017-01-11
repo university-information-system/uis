@@ -8,20 +8,104 @@
 
 
     <div class="container">
-        <h2 th:text="${course.getSubject().getName()}"></h2>
-        <h5 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h5><br/>
 
-        <div>
-            <a th:text="#{lecturer.courses.registrations}" th:href="@{/lecturer/course-details/registrations(courseId=__${course.id}__)}"></a>
+        <h1 th:text="${course.getSubject().getName()}"></h1>
+        <h4 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts() + ' ECTS'}"></h4>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+
+                        <div class="vspace">
+                            <span th:each="tag : ${course.getTags()}" class="chip" th:text="${tag.name}"></span>
+                        </div>
+
+                        <div th:if="${!course.description.isEmpty()}">
+                            <div class="section-separator" th:text="#{lecturer.course.details.description}"></div>
+
+                            <p class="text-content" th:text="${course.description}"></p>
+                        </div>
+
+                        <div>
+                            <div class="section-separator" th:text="#{lecturer.course.details.lecturers}"></div>
+
+                            <ul class="collection borderless">
+                                <li class="collection-item"
+                                    th:each="lecturer : ${course.getSubject().getLecturers()}">
+                                    <span class="title" th:text="${lecturer.name}"></span>
+                                    <p>
+                                        <a th:href="'mailto:' + ${lecturer.email}"
+                                           class="teal-text"
+                                           th:text="${lecturer.email}"></a>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <div class="section-separator" th:text="#{lecturer.course.details.studyplans}"></div>
+
+                            <ul class="collection borderless">
+                                <li class="collection-item"
+                                    th:each="studyplan : ${studyPlans}">
+                                    <div class="title">
+                                        <a th:href="@{/lecturer/studyplans(id=__${studyplan.studyPlan.id}__)}"
+                                           class="teal-text"
+                                           th:text="${studyplan.studyPlan.name}"></a>
+                                    </div>
+                                    <p class="grey-text">
+                                        <span th:if="${studyplan.semesterRecommendation} == null"
+                                              th:text="#{lecturer.course.details.no_semester}">
+                                        </span>
+                                        <span th:if="${studyplan.semesterRecommendation} != null"
+                                              th:text="'Semester ' + ${studyplan.semesterRecommendation}"></span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${not #lists.isEmpty(course.getSubject().getRequiredSubjects())}">
+                            <div class="section-separator" th:text="#{lecturer.course.details.preconditions}"></div>
+
+                            <ul class="collection borderless">
+                                <li class="collection-item"
+                                    th:each="subject : ${course.getSubject().getRequiredSubjects()}">
+                                    <div class="title teal-text" th:text="${subject.name}"></div>
+                                    <p class="grey-text">
+                                        <span th:text="${subject.ects}"></span>
+                                        <span> ECTS</span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <div class="section-separator" th:text="#{lecturer.course.details.students}"></div>
+
+                            <ul class="collection borderless">
+
+
+                                <li class="collection-item">
+                                    <div>
+                                        <a class="teal-text" th:text="#{lecturer.courses.registrations}" th:href="@{/lecturer/course-details/registrations(courseId=__${course.id}__)}"></a>
+                                    </div>
+                                    <div>
+                                        <a class="teal-text" th:text="#{lecturer.courses.issuedgrades}" th:href="@{/lecturer/course-details/issued-grades(courseId=__${course.id}__)}"></a>
+                                    </div>
+                                    <div>
+                                        <a class="teal-text" th:text="#{lecturer.courses.feedback}" th:href="@{/lecturer/course-details/feedback(courseId=__${course.id}__)}"></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <a th:text="#{lecturer.courses.issuedgrades}" th:href="@{/lecturer/course-details/issued-grades(courseId=__${course.id}__)}"></a>
-        </div>
 
-        <div>
-            <a th:text="#{lecturer.courses.feedback}" th:href="@{/lecturer/course-details/feedback(courseId=__${course.id}__)}"></a>
-        </div>
 
     </div>
 
