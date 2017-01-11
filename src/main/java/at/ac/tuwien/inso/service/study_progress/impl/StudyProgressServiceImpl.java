@@ -63,20 +63,23 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     /**
      * Get the first semester the student registered for
      *
+     * TODO: WTF does this code? Please clean up!
+     *
      * @param student
      * @return
      */
     private SemesterDto getFirstSemesterFor(Student student) {
         List<StudyPlanRegistration> registrations = student.getStudyplans();
+
     	SemesterDto min = new SemesterDto("biggest");
     	min.setId(Long.MAX_VALUE);
-    	
     	
     	for(StudyPlanRegistration spr: registrations){
     		if(min!=null&spr!=null&&spr.getRegisteredSince()!=null&&min.getId() > spr.getRegisteredSince().getId()){
     			min = spr.getRegisteredSince().toDto();
     		}
     	}
+
     	if(min.getId().longValue()==Long.MAX_VALUE){
     		return null;
     	}
