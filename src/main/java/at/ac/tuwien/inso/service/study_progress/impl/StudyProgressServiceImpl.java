@@ -23,10 +23,13 @@ public class StudyProgressServiceImpl implements StudyProgressService {
 
     @Autowired
     private SemesterService semesterService;
+
     @Autowired
     private CourseService courseService;
+
     @Autowired
     private GradeService gradeService;
+
     @Autowired
     private FeedbackService feedbackService;
 
