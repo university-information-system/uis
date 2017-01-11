@@ -6,14 +6,25 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h2 th:text="#{student.courses.label}">Courses</h2>
 
-        <form>
-            <input id="search" name="search" th:placeholder="#{student.courses.search}" th:value="${searchString}"
-                   type="text"/>
-        </form>
+        <h1 th:text="#{student.courses.label}">Courses</h1>
 
-        <ul class="collection">
+        <nav>
+            <div class="nav-wrapper white black-text">
+                <form>
+                    <div class="input-field">
+                        <input id="search" name="search" th:placeholder="#{student.courses.search}" th:value="${searchString}"
+                               type="text"/>
+                        <label for="search"><i class="material-icons black-text">search</i></label>
+                    </div>
+                </form>
+            </div>
+        </nav>
+
+        <ul class="collection z-depth-1">
+
+            <li class="collection-item" th:if="${#lists.isEmpty(allCourses)}" th:text="#{student.courses.notfound}"></li>
+
             <li class="collection-item" th:each="course : ${allCourses}">
                 <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.courses.register}">add</i></a>
                 <a th:href="@{/student/courses/__${course.id}__}"
