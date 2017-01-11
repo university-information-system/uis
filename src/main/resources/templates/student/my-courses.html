@@ -9,16 +9,18 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h2 th:text="#{student.my.courses.label}"></h2>
+        <h1 th:text="#{student.my.courses.label}"></h1>
 
         <div th:each="semesterProgress : ${studyProgress.semestersProgress}">
+
             <h6 class="section-separator" th:text="${semesterProgress.semester.label}"></h6>
 
-            <div th:if="${#lists.isEmpty(semesterProgress.courseRegistrations)}"
-                 th:text="#{student.my.courses.no.semester.registrations}">
-            </div>
+            <ul class="collection z-depth-1">
 
-            <ul class="collection z-depth-1" th:if="${not #lists.isEmpty(semesterProgress.courseRegistrations)}">
+                <li class="collection-item" th:if="${#lists.isEmpty(semesterProgress.courseRegistrations)}"
+                    th:text="#{student.my.courses.no.semester.registrations}">
+                </li>
+
                 <li class="collection-item" th:each="courseRegistration : ${semesterProgress.courseRegistrations}">
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).in_progress}"
