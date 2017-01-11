@@ -7,10 +7,11 @@
 <main layout:fragment="main">
 
 	<div class="container">
-		<h2 th:text="#{lecturer.nav.subjects}"></h2>
+
+		<h1 th:text="#{lecturer.nav.subjects}"></h1>
 
 		<div th:if="${not #lists.isEmpty(ownedSubjects)}">
-			<ul class="collection">
+			<ul class="collection z-depth-1">
 				<li class="collection-item" th:each="subject : ${ownedSubjects}">
 					<a th:href="@{/lecturer/addCourse(subjectId=__${subject.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.subjects.createCourse}">add</i></a>
 					<div class="title teal-text" th:text="${subject.name}"></div>

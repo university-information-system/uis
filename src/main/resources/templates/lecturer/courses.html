@@ -7,11 +7,12 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h2 th:text="#{lecturer.courses.label}">Courses</h2>
 
-        <h4 th:if="${allCourses.isEmpty()}"  th:text="#{lecturer.courses.none}"></h4>
+        <h1 th:text="#{lecturer.courses.label}">Courses</h1>
 
-        <ul class="collection" th:unless="${allCourses.isEmpty()}">
+        <p th:if="${allCourses.isEmpty()}"  th:text="#{lecturer.courses.none}"></p>
+
+        <ul class="collection z-depth-1" th:unless="${allCourses.isEmpty()}">
             <li class="collection-item" th:each="course : ${allCourses}">
                 <a th:href="@{/lecturer/editCourse(courseId=__${course.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.courses.edit}">edit</i></a>
                 <a class="title teal-text" th:text="${course.subject.name}" th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"></a>
