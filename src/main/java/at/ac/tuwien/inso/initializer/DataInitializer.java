@@ -363,8 +363,8 @@ public class DataInitializer {
 
     private void createSemesters() {
         Iterable<Semester> semesters = semesterRepository.save(asList(
-                new Semester("SS2016"),
-                new Semester("WS2016")
+                new Semester(2016, SemesterType.SummerSemester),
+                new Semester(2016, SemesterType.WinterSemester)
         ));
 
         this.semesters = StreamSupport.stream(semesters.spliterator(), false).collect(Collectors.toList());
