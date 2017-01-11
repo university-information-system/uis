@@ -26,7 +26,7 @@
             <li class="collection-item" th:if="${#lists.isEmpty(allCourses)}" th:text="#{student.courses.notfound}"></li>
 
             <li class="collection-item" th:each="course : ${allCourses}">
-                <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.courses.register}">add</i></a>
+                <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i class="material-icons tooltipped" th:attr="data-tooltip=#{enroll}">add</i></a>
                 <a th:href="@{/student/courses/__${course.id}__}"
                    class="title teal-text"
                    th:text="${course.subject.name}"></a>
