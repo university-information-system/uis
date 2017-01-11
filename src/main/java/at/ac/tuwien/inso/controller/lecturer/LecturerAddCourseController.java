@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.controller.lecturer;
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.impl.Messages;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,9 @@ public class LecturerAddCourseController {
     private CourseService courseService;
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private Messages messages;
 
     @ModelAttribute("subject")
     private Subject getSubject(@RequestParam("subjectId") Long subjectId) {
@@ -47,7 +51,7 @@ public class LecturerAddCourseController {
                                 RedirectAttributes redirectAttributes) {
         Course course = courseService.saveCourse(form);
 
-        redirectAttributes.addFlashAttribute("createdCourse", course);
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.add.success", course.getSubject().getName()));
         return "redirect:/lecturer/courses";
     }
 
