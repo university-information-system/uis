@@ -78,6 +78,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SubjectWithGrade> getSubjectsWithGradesForStudyPlan(Long id) {
         validator.validateStudyPlanId(id);
         List<SubjectForStudyPlan> subjectsForStudyPlan = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
