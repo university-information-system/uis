@@ -41,6 +41,16 @@ public class GlobalExceptionHandler {
         return mav;
     }
 
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ModelAndView handleValidationExceptions(HttpServletRequest request, ValidationException ex) {
+        logger.info("ValidationException: " + ex.getMessage() + "\n url="+request.getRequestURL());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("message", ex.getMessage());
+        mav.setViewName("error");
+        return mav;
+    }
+
     @ExceptionHandler(ActionNotAllowedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ModelAndView handleActionNotAllowedExceptions(HttpServletRequest request, ActionNotAllowedException ex) {
