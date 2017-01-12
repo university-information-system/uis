@@ -44,7 +44,7 @@ public class StudyPlanValidator {
     private void validateStudyPlan(StudyPlan studyPlan) {
 
         if(studyPlan == null) {
-            throw new ValidationException("No study plans found to create");
+            throw new ValidationException("Study plan not found");
         }
 
     }
