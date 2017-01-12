@@ -6,6 +6,8 @@ import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.validator.CourseValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -19,6 +21,8 @@ import java.util.stream.*;
 public class CourseServiceImpl implements CourseService {
 
     private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
+    private ValidatorFactory validatorFactory = new ValidatorFactory();
+    private CourseValidator validator = validatorFactory.getCourseValidator();
 
     @Autowired
     private SemesterService semesterService;
@@ -66,6 +70,7 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public Course saveCourse(AddCourseForm form) {
         Course course = form.getCourse();
+        validator.validateNewCourse(course);
         List<Tag> tags = form.getActiveAndInactiveTags().stream()
                 .filter(tagBooleanEntry -> tagBooleanEntry.isActive())
                 .map(tagBooleanEntry -> tagBooleanEntry.getTag())
@@ -91,6 +96,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public boolean registerStudentForCourse(Course course) {
+        validator.validateCourse(course);
+        validator.validateCourseId(course.getId());
         Student student = studentRepository.findByUsername(userAccountService.getCurrentLoggedInUser().getUsername());
         if (course.getStudentLimits() <= course.getStudents().size()) {
             return false;
@@ -113,7 +120,7 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public Course unregisterStudentFromCourse(Student student, Long courseId) {
         log.info("Unregistering student with id {} from course with id {}", student.getId(), courseId);
-
+        validator.validateCourseId(courseId);
         Course course = courseRepository.findOne(courseId);
         if (course == null) {
             log.warn("Course with id {} not found. Nothing to unregister", courseId);
@@ -127,7 +134,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDetailsForStudent courseDetailsFor(Student student, Long courseId) {
+        validator.validateCourseId(courseId);
+        validator.validateStudent(student);
         Course course = findOne(courseId);
+        if (course == null) {
+            log.warn("Course with id {} not found. Nothing to unregister", courseId);
+            throw new BusinessObjectNotFoundException();
+        }
 
         return new CourseDetailsForStudent(course)
                 .setCanEnroll(canEnrollToCourse(student, course))
@@ -136,10 +149,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<SubjectForStudyPlan> getSubjectForStudyPlanList(Course course) {
+        validator.validateCourse(course);
         return subjectForStudyPlanRepository.findBySubject(course.getSubject());
     }
 
     private boolean canEnrollToCourse(Student student, Course course) {
+        validator.validateCourse(course);
+        validator.validateStudent(student);
         return course.getSemester().toDto().equals(semesterService.getCurrentSemester()) &&
                 !courseRepository.existsCourseRegistration(student, course);
     }

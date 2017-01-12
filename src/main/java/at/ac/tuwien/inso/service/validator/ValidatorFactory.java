@@ -10,6 +10,10 @@ public class ValidatorFactory {
         return new SubjectValidator();
     }
 
+    public CourseValidator getCourseValidator() {
+        return new CourseValidator();
+    }
+
     public UisUserValidator getUisUserValidator() {
         return new UisUserValidator();
     }
