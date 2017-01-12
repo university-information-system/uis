@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.service.impl;
 
+import at.ac.tuwien.inso.service.validator.SubjectValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ import at.ac.tuwien.inso.service.SubjectService;
 public class SubjectServiceImpl implements SubjectService {
 
     private static final Logger logger = LoggerFactory.getLogger(SubjectServiceImpl.class);
+    private ValidatorFactory validatorFactory = new ValidatorFactory();
+    private SubjectValidator validator = validatorFactory.getSubjectValidator();
 
     @Autowired
     private SubjectRepository subjectRepository;
@@ -48,16 +52,21 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public Subject findOne(Long id) {
-        if(id == null  || id < 0) {
-            logger.warn("subject not found because the id is wrong");
-            throw new BusinessObjectNotFoundException();
+        validator.validateSubjectId(id);
+        Subject subject = subjectRepository.findOne(id);
+
+        if(subject == null) {
+            logger.warn("Subject not found");
+            throw new SubjectNotFoundException();
         }
-        return subjectRepository.findById(id);
+
+        return subject;
     }
 
     @Override
     @Transactional
     public Subject create(Subject subject) {
+        validator.validateNewSubject(subject);
         return subjectRepository.save(subject);
     }
 
@@ -67,6 +76,7 @@ public class SubjectServiceImpl implements SubjectService {
         logger.info("addLecturerToSubject for subject {} and lecturer {}", subjectId,
                 lecturerUisUserId);
 
+        validator.validateSubjectId(subjectId);
         Lecturer lecturer = lecturerRepository.findById(lecturerUisUserId);
 
         if (lecturer == null) {
@@ -97,6 +107,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public List<Lecturer> getAvailableLecturersForSubject(Long subjectId, String search) {
+        validator.validateSubjectId(subjectId);
         if (search == null) {
             search = "";
         }
@@ -124,6 +135,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Lecturer removeLecturerFromSubject(Long subjectId, Long lecturerUisUserId) {
+        validator.validateSubjectId(subjectId);
         logger.info("removeLecturerFromSubject for subject {} and lecturer {}", subjectId,
                 lecturerUisUserId);
 
@@ -170,9 +182,7 @@ public class SubjectServiceImpl implements SubjectService {
 	@Override
 	@Transactional
 	public boolean remove(Subject subject) throws ValidationException{
-		if(subject==null){
-			throw new ValidationException("Subject is null.");
-		}
+        validator.validateNewSubject(subject);
 		List<Course> courses = courseService.findCoursesForSubject(subject);
 		if(!courses.isEmpty()){
 			String msg = "";

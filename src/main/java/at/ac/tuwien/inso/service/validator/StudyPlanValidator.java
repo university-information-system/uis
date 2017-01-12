@@ -19,7 +19,7 @@ public class StudyPlanValidator {
             throw new ValidationException("Mandatory ects of the study plan cannot be empty");
         }
 
-        if(studyPlan.getEctsDistribution().getMandatory().intValue() <= 0) {
+        if(studyPlan.getEctsDistribution().getMandatory().doubleValue() <= 0) {
             throw new ValidationException("Mandatory ects of the study plan needs to be greater than 0");
         }
 
@@ -27,7 +27,7 @@ public class StudyPlanValidator {
             throw new ValidationException("Optional ects of the study plan cannot be empty");
         }
 
-        if(studyPlan.getEctsDistribution().getOptional().intValue() <= 0) {
+        if(studyPlan.getEctsDistribution().getOptional().doubleValue() <= 0) {
             throw new ValidationException("Optional ects of the study plan needs to be greater than 0");
         }
 
@@ -35,7 +35,7 @@ public class StudyPlanValidator {
             throw new ValidationException("Free choice ects of the study plan cannot be empty");
         }
 
-        if(studyPlan.getEctsDistribution().getFreeChoice().intValue() <= 0) {
+        if(studyPlan.getEctsDistribution().getFreeChoice().doubleValue() <= 0) {
             throw new ValidationException("Free choice ects of the study plan needs to be greater than 0");
         }
 
