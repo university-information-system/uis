@@ -220,7 +220,7 @@ public class CoursesTests {
     @Test
     public void onCourseDetailsForStudentWithUnknownCourseItReturnsError() throws Exception {
         mockMvc.perform(
-                get("/student/courses/0").with(user(student.getAccount()))
+                get("/student/courses/100000").with(user(student.getAccount()))
         ).andExpect(
                 status().isNotFound()
         );

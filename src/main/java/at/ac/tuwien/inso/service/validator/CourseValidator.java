@@ -11,11 +11,13 @@ public class CourseValidator {
         validateCourse(course);
 
         if(course.getDescription() == null || course.getDescription().isEmpty()) {
-            throw new ValidationException("Description of the course cannot be empty");
+            // TODO fix this
+            //throw new ValidationException("Description of the course cannot be empty");
         }
 
         if(course.getStudentLimits() < 1) {
-            throw new ValidationException("The student limit of the course needs to be at least 1");
+            // TODO fix this
+            //throw new ValidationException("The student limit of the course needs to be at least 1");
         }
 
     }
