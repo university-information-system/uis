@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.impl.Messages;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.validation.*;
@@ -81,9 +82,15 @@ public class AdminStudyPlansController {
             redirectAttributes.addFlashAttribute("flashMessage", "admin.studyplans.create.error");
             return "redirect:/admin/studyplans";
         }
-        StudyPlan studyPlan = studyPlanService.create(form.toStudyPlan());
-        model.addAttribute("studyPlan", studyPlan);
-        model.addAttribute("flashMessageNotLocalized", messages.msg("admin.studyplans.create.success", studyPlan.getName()));
+        try {
+            StudyPlan studyPlan = studyPlanService.create(form.toStudyPlan());
+            model.addAttribute("studyPlan", studyPlan);
+            model.addAttribute("flashMessageNotLocalized", messages.msg("admin.studyplans.create.success", studyPlan.getName()));
+        } catch(DataAccessException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "admin.studyplans.create.error");
+            return "redirect:/admin/studyplans";
+        }
+
 
         return "admin/studyplan-details";
     }
