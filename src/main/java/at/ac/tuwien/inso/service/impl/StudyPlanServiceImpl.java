@@ -5,6 +5,8 @@ import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.validator.StudyPlanValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,6 +24,8 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     private SubjectService subjectService;
     private MessageSource messageSource;
     private GradeService gradeService;
+    private ValidatorFactory validatorFactory = new ValidatorFactory();
+    private StudyPlanValidator validator = validatorFactory.getStudyPlanValidator();
 
     @Autowired
     public StudyPlanServiceImpl(
@@ -40,6 +44,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional
     public StudyPlan create(StudyPlan studyPlan) {
+        validator.validateNewStudyPlan(studyPlan);
         return studyPlanRepository.save(studyPlan);
     }
 
@@ -56,6 +61,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional(readOnly = true)
     public StudyPlan findOne(Long id) {
+        validator.validateStudyPlanId(id);
         StudyPlan studyPlan = studyPlanRepository.findOne(id);
         if(studyPlan == null) {
             String msg = messageSource.getMessage("error.studyplan.notfound", null, LocaleContextHolder.getLocale());
@@ -67,11 +73,13 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional(readOnly = true)
     public List<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id) {
+        validator.validateStudyPlanId(id);
         return subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
     }
 
     @Override
     public List<SubjectWithGrade> getSubjectsWithGradesForStudyPlan(Long id) {
+        validator.validateStudyPlanId(id);
         List<SubjectForStudyPlan> subjectsForStudyPlan = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
         List<Grade> grades = gradeService.getGradesForLoggedInStudent();
         List<SubjectWithGrade> subjectsWithGrades = new ArrayList<>();
