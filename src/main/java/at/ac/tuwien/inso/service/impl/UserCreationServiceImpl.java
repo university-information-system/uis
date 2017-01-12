@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.service.impl;
 
+import at.ac.tuwien.inso.service.validator.UisUserValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,6 +24,8 @@ public class UserCreationServiceImpl implements UserCreationService {
 
     public static final String MAIL_SUBJECT = "user.account.activation.mail.subject";
     private static final String MAIL_TEMPLATE = "emails/user-account-activation-mail";
+    private ValidatorFactory validatorFactory = new ValidatorFactory();
+    private UisUserValidator validator = validatorFactory.getUisUserValidator();
 
     @Autowired
     private PendingAccountActivationRepository pendingAccountActivationRepository;
@@ -41,6 +45,7 @@ public class UserCreationServiceImpl implements UserCreationService {
     @Transactional
     @Override
     public PendingAccountActivation create(UisUser user) {
+        validator.validateNewUisUser(user);
         PendingAccountActivation activation = new PendingAccountActivation(user);
 
         activation = pendingAccountActivationRepository.save(activation);

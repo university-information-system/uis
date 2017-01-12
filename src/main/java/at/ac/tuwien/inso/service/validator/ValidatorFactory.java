@@ -9,4 +9,8 @@ public class ValidatorFactory {
     public SubjectValidator getSubjectValidator() {
         return new SubjectValidator();
     }
+
+    public UisUserValidator getUisUserValidator() {
+        return new UisUserValidator();
+    }
 }
