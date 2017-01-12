@@ -2,7 +2,6 @@ package at.ac.tuwien.inso.service.impl;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
-import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.validator.StudyPlanValidator;
@@ -133,21 +132,14 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional
     public void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan) {
-        if(subjectForStudyPlan.getSubject() == null || subjectForStudyPlan.getSubject().getId() == null) {
-            String msg = messageSource.getMessage("error.subject.missing", null, LocaleContextHolder.getLocale());
-            throw new ValidationException(msg);
-        }
-        if(subjectForStudyPlan.getStudyPlan() == null || subjectForStudyPlan.getStudyPlan().getId() == null) {
-            String msg = messageSource.getMessage("error.studyplan.missing", null, LocaleContextHolder.getLocale());
-            throw new ValidationException(msg);
-        }
-
+        validator.validateNewSubjectForStudyPlan(subjectForStudyPlan);
         subjectForStudyPlanRepository.save(subjectForStudyPlan);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Subject> getAvailableSubjectsForStudyPlan(Long id, String query) {
+        validator.validateStudyPlanId(id);
         List<SubjectForStudyPlan> subjectsForStudyPlan = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
         List<Subject> subjectsOfStudyPlan = subjectsForStudyPlan
                 .stream()
@@ -159,34 +151,31 @@ public class StudyPlanServiceImpl implements StudyPlanService {
 
     }
 
-    /**
-     * @author m.pazourek
-     * disables a studyplan by the given id
-     */
     @Override
+    @Transactional
     public StudyPlan disableStudyPlan(Long id) {
-      StudyPlan studyPlan = findOne(id);
-      studyPlan.setEnabled(false);
-      studyPlanRepository.save(studyPlan);
+        validator.validateStudyPlanId(id);
+        StudyPlan studyPlan = findOne(id);
+        if(studyPlan == null) {
+            String msg = messageSource.getMessage("error.studyplan.notfound", null, LocaleContextHolder.getLocale());
+            throw new BusinessObjectNotFoundException(msg);
+        }
+        studyPlan.setEnabled(false);
+        studyPlanRepository.save(studyPlan);
         return studyPlan;
     }
 
-    /**
-     * @author m.pazourek
-     * removes a subject from the studyplan
-     */
     @Override
+    @Transactional
     public void removeSubjectFromStudyPlan(StudyPlan sp, Subject s) {
-      //System.out.println(sp.getId()+", "+s.getId());
-      if(sp==null||sp.getId()==null||s==null||s.getId()==null){
-        throw new ValidationException();
-      }
+        validator.validateRemovingSubjectFromStudyPlan(sp, s);
       
-      List<SubjectForStudyPlan> sfsp = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(sp.getId());
-      for(SubjectForStudyPlan each:sfsp){
-        if(each.getSubject().getId() == s.getId()){
-          subjectForStudyPlanRepository.delete(each);
+        List<SubjectForStudyPlan> sfsp = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(sp.getId());
+        for(SubjectForStudyPlan each : sfsp){
+            if(each.getSubject().getId().equals(s.getId())){
+                subjectForStudyPlanRepository.delete(each);
+                break;
+            }
         }
-      }      
     }
 }
