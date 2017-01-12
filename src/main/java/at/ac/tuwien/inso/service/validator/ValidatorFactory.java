@@ -17,4 +17,8 @@ public class ValidatorFactory {
     public UisUserValidator getUisUserValidator() {
         return new UisUserValidator();
     }
+
+    public FeedbackValidator getFeedbackValidator() {
+        return new FeedbackValidator();
+    }
 }
