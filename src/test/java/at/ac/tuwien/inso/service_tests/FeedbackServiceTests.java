@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.impl.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.*;
 import org.junit.*;
 import org.junit.runner.*;
 import org.mockito.*;
@@ -21,6 +22,8 @@ public class FeedbackServiceTests {
     private CourseRepository courseRepository;
     @Mock
     private FeedbackRepository feedbackRepository;
+    @Mock
+    private StudentSubjectPreferenceStore studentSubjectPreferenceStore;
 
     @InjectMocks
     private FeedbackService feedbackService = new FeedbackServiceImpl();
@@ -43,6 +46,13 @@ public class FeedbackServiceTests {
     @Test
     public void onSaveItPersistsFeedback() throws Exception {
         assertThat(feedbackService.save(feedback), equalTo(savedFeedback));
+    }
+
+    @Test
+    public void onSaveItNotifiesStudentSubjectPreferenceStore() throws Exception {
+        feedbackService.save(feedback);
+
+        verify(studentSubjectPreferenceStore).studentGaveCourseFeedback(student, feedback);
     }
 
     @Test(expected = ActionNotAllowedException.class)
