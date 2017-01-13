@@ -16,15 +16,18 @@ import java.util.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.apache.commons.lang.ArrayUtils.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudentNeighborhoodStoreImplTest {
 
     @Mock
     private MongoTemplate mongoTemplate;
+    @Mock
+    private StudentNeighborhoodStore cacheStudentNeighborhoodStore;
 
     @InjectMocks
-    private StudentNeighborhoodStore neighborhoodStore = new StudentNeighborhoodStoreImpl();
+    private StudentNeighborhoodStoreImpl neighborhoodStore;
 
     @Test
     public void itBuildsStudentNeighborhood() throws Exception {
@@ -41,6 +44,13 @@ public class StudentNeighborhoodStoreImplTest {
         );
 
         thenCheckSimilarStudents(1L, singletonList(3L));
+    }
+
+    @Test
+    public void testRebuildOfStudentNeighborhood() throws Exception {
+        neighborhoodStore.rebuildStudentNeighborhood();
+
+        verify(cacheStudentNeighborhoodStore).getStudentNeighborhood();
     }
 
     private void givenStudentPreferences(StudentSubjectPreference... studentSubjectPreferences) {

@@ -34,6 +34,9 @@ public class StudentNeighborhoodStoreImpl implements StudentNeighborhoodStore {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private StudentNeighborhoodStore studentNeighborhoodStore; // needed for the cache proxy, to rebuild cache
+
     @Override
     @Cacheable(STUDENT_NEIGHBORHOOD_CACHE_NAME)
     public UserNeighborhood getStudentNeighborhood() {
@@ -82,7 +85,9 @@ public class StudentNeighborhoodStoreImpl implements StudentNeighborhoodStore {
 
     @Scheduled(cron = STUDENT_NEIGHBORHOOD_CACHE_EVICT_CRON)
     @CacheEvict(value = STUDENT_NEIGHBORHOOD_CACHE_NAME, allEntries = true)
-    public void clearStudentNeighborhoodCache() {
+    public void rebuildStudentNeighborhood() {
         log.info("Cleared student neighborhood cache");
+
+        studentNeighborhoodStore.getStudentNeighborhood(); // causes the data model to be rebuilt and cached
     }
 }
