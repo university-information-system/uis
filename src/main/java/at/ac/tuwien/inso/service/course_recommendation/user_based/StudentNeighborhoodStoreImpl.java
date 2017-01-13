@@ -29,7 +29,7 @@ public class StudentNeighborhoodStoreImpl implements StudentNeighborhoodStore {
     private static final Logger log = LoggerFactory.getLogger(StudentNeighborhoodStoreImpl.class);
 
     private static final String STUDENT_NEIGHBORHOOD_CACHE_NAME = "student-neighborhood";
-    private static final String STUDENT_NEIGHBORHOOD_CACHE_EVICT_CRON = "0 0 * * 0"; // Every Sunday at midnight
+    private static final String STUDENT_NEIGHBORHOOD_CACHE_EVICT_CRON = "0 0 0 * * 0"; // Every Sunday at midnight
 
     @Autowired
     private MongoTemplate mongoTemplate;
