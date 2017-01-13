@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.integration_tests;
 import at.ac.tuwien.inso.controller.student.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.*;
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -53,6 +54,8 @@ public class StudentFeedbackTests {
     private GradeRepository gradeRepository;
     @Autowired
     private LecturerRepository lecturerRepository;
+    @Autowired
+    private StudentSubjectPreferenceStore studentSubjectPreferenceStore;
 
     private Student student;
     private List<Course> courses;
@@ -75,6 +78,8 @@ public class StudentFeedbackTests {
                 new Course(subject, semester),
                 new Course(subject, semester).addStudents(student)
         )));
+
+        studentSubjectPreferenceStore.studentRegisteredCourse(student, courses.get(1));
     }
 
     @Test

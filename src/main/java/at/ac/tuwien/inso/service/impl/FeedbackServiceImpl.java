@@ -6,6 +6,7 @@ import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.validator.FeedbackValidator;
 import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import at.ac.tuwien.inso.service.student_subject_prefs.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -20,6 +21,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     private ValidatorFactory validatorFactory = new ValidatorFactory();
     private FeedbackValidator validator = validatorFactory.getFeedbackValidator();
 
+    @Autowired
+    StudentSubjectPreferenceStore studentSubjectPreferenceStore;
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
@@ -43,6 +46,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         guardSingleFeedback(feedback);
         guardStudentRegisteredForCourse(feedback.getStudent(), feedback.getCourse());
+
+        studentSubjectPreferenceStore.studentGaveCourseFeedback(feedback.getStudent(), feedback);
 
         return feedbackRepository.save(feedback);
     }

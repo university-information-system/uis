@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -40,6 +41,8 @@ public class DataInitializer {
     private StudentRepository studentRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
+    @Autowired
+    private StudentSubjectPreferenceStore studentSubjectPreferenceStore;
 
     private List<StudyPlan> studyplans;
 
@@ -614,24 +617,28 @@ public class DataInitializer {
 
     private void registerCoursesToStudents() {
         // Joan Watson
-        coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch").addStudents(studentMap.get("Joan Watson"));
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Joan Watson"));
-        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(studentMap.get("Joan Watson"));
+        register(studentMap.get("Joan Watson"), coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch"));
+        register(studentMap.get("Joan Watson"), coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik"));
+        register(studentMap.get("Joan Watson"), coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
 
         // Emma Dowd
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Emma Dowd"));
-        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(studentMap.get("Emma Dowd"));
+        register(studentMap.get("Emma Dowd"), coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik"));
+        register(studentMap.get("Emma Dowd"), coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
 
         // Caroline Black
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addStudents(studentMap.get("Caroline Black"));
+        register(studentMap.get("Caroline Black"), coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik"));
 
         // John Terry
         Student john = studentMap.get("John Terry");
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addStudents(john);
-        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").addStudents(john);
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").addStudents(john);
+        register(john, coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"));
+        register(john, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
+        register(john, coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"));
     }
 
+    private void register(Student student, Course course) {
+        course.addStudents(student);
+        studentSubjectPreferenceStore.studentRegisteredCourse(student, course);
+    }
 
     private void giveGrades() {
         Course course = coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch");
@@ -668,7 +675,6 @@ public class DataInitializer {
         Course course = coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung");
         Student johnTerry = studentMap.get("John Terry");
         Feedback feedback = new Feedback(johnTerry, course);
-        feedbackRepository.save(feedback);
 
         course = coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik");
         Student joanWatson =  studentMap.get("Joan Watson");
@@ -708,7 +714,13 @@ public class DataInitializer {
                 "Suspendisse sed est feugiat, dapibus ante non, aliquet neque. Cras magna sapien, pharetra ut ante ut, malesuada hendrerit erat. " +
                 "Mauris fringilla mattis dapibus. Nullam iaculis nunc in tortor gravida, id tempor justo elementum.");
 
-        feedbackRepository.save(asList(feedback1, feedback2, feedback3));
+        giveFeedback(feedback, feedback1, feedback2, feedback3);
+    }
 
+    private void giveFeedback(Feedback... feedbacks) {
+        for (Feedback feedback : feedbacks) {
+            feedbackRepository.save(feedback);
+            studentSubjectPreferenceStore.studentGaveCourseFeedback(feedback.getStudent(), feedback);
+        }
     }
 }
