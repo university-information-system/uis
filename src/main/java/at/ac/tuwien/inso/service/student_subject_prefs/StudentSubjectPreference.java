@@ -9,11 +9,11 @@ public class StudentSubjectPreference {
     @Id
     public String id;
 
-    public Long studentId;
+    private Long studentId;
 
-    public Long subjectId;
+    private Long subjectId;
 
-    public Double preferenceValue;
+    private Double preferenceValue;
 
     protected StudentSubjectPreference() {
 
@@ -29,9 +29,26 @@ public class StudentSubjectPreference {
     public String toString() {
         return "StudentSubjectPreference{" +
                 "id='" + id + '\'' +
-                ", studentId=" + studentId +
-                ", subjectId=" + subjectId +
-                ", preferenceValue=" + preferenceValue +
+                ", studentId=" + getStudentId() +
+                ", subjectId=" + getSubjectId() +
+                ", preferenceValue=" + getPreferenceValue() +
                 '}';
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public Double getPreferenceValue() {
+        return preferenceValue;
+    }
+
+    public StudentSubjectPreference setPreferenceValue(Double preferenceValue) {
+        this.preferenceValue = preferenceValue;
+        return this;
     }
 }

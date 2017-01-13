@@ -38,7 +38,7 @@ public class StudentSubjectPreferenceStoreImpl implements StudentSubjectPreferen
         StudentSubjectPreference preference =
                 preferenceRepository.findByStudentIdAndSubjectId(student.getId(), feedback.getCourse().getSubject().getId());
 
-        preference.preferenceValue = feedback.getType() == Feedback.Type.LIKE ? LIKE_PREF_VALUE : UNLIKE_PREF_VALUE;
+        preference.setPreferenceValue(feedback.getType() == Feedback.Type.LIKE ? LIKE_PREF_VALUE : UNLIKE_PREF_VALUE);
 
         log.debug("Updating student subject preference due to course feedback: " + preference);
 
