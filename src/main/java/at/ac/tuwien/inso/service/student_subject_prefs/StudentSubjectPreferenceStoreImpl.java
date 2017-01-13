@@ -10,12 +10,16 @@ public class StudentSubjectPreferenceStoreImpl implements StudentSubjectPreferen
 
     private static final Logger log = LoggerFactory.getLogger(StudentSubjectPreferenceStoreImpl.class);
 
+    private static final Double REGISTER_PREF_VALUE = 3.0;
+    private static final Double LIKE_PREF_VALUE = 5.0;
+    private static final Double UNLIKE_PREF_VALUE = 1.0;
+
     @Autowired
     private StudentSubjectPreferenceRepository preferenceRepository;
 
     @Override
     public void studentRegisteredCourse(Student student, Course course) {
-        StudentSubjectPreference preference = new StudentSubjectPreference(student.getId(), course.getSubject().getId(), 1.0);
+        StudentSubjectPreference preference = new StudentSubjectPreference(student.getId(), course.getSubject().getId(), REGISTER_PREF_VALUE);
 
         log.debug("Storing student subject preference due to course registration: " + preference);
 
@@ -34,7 +38,7 @@ public class StudentSubjectPreferenceStoreImpl implements StudentSubjectPreferen
         StudentSubjectPreference preference =
                 preferenceRepository.findByStudentIdAndSubjectId(student.getId(), feedback.getCourse().getSubject().getId());
 
-        preference.preferenceValue = feedback.getType() == Feedback.Type.LIKE ? 2.0 : -1.0;
+        preference.preferenceValue = feedback.getType() == Feedback.Type.LIKE ? LIKE_PREF_VALUE : UNLIKE_PREF_VALUE;
 
         log.debug("Updating student subject preference due to course feedback: " + preference);
 
