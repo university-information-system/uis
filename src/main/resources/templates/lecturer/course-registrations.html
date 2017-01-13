@@ -19,11 +19,54 @@
                     <a class="teal-text" th:text="${student.name}"></a>
                 </div>
                 <div>
-                    <a th:href="@{/lecturer/addGrade(courseId=__${course.id}__, studentId=__${student.id}__)}" class="secondary-content"><i class="material-icons">send</i></a>
+                    <a th:href="'#issue-certificate-' + ${student.id}"
+                       class="secondary-content tooltipped modal-trigger"
+                       th:attr="data-tooltip=#{lecturer.courses.registrations.issueCertificate}">
+
+                        <i class="material-icons">send</i>
+
+                    </a>
                     <span th:text="${student.identificationNumber}"></span>
                     <br/>
                     <span th:text="${student.email}"></span>
                 </div>
+
+                <!-- Issue certificate  modal -->
+                <div th:id="'issue-certificate-' + ${student.id}" class="modal small">
+                    <div class="modal-content">
+                        <h4 th:text="#{lecturer.courses.registrations.issueCertificate}"></h4>
+
+                        <form th:action="@{/lecturer/course-details/addGrade}" method="post" th:id="'add-grade-form-' + ${student.id}">
+
+                            <input id="studentId" name="studentId" th:value="${student.id}" type="hidden"/>
+                            <input id="courseId" name="courseId" th:value="${course.id}" type="hidden"/>
+
+                            <div class="input-field col s12">
+                                <input id="authCode" name="authCode" type="number" required="required"/>
+                                <label for="authCode" th:text="'Auth code'"></label>
+                            </div>
+
+                            <div class="input-field col s12">
+                                <select class="col s12" id="mark" name="mark">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5" selected="">5</option>
+                                </select>
+                                <label for="mark" th:text="#{lecturer.addGrade.note}"></label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="modal-action waves-effect btn teal"
+                           th:onclick="'$(\'#add-grade-form-' + ${student.id} + '\').submit()'"
+                           th:text="#{lecturer.addGrade.submit}"></a>
+                        <a href="#" class="modal-action modal-close waves-effect btn-flat"
+                           th:text="#{cancel}"></a>
+                    </div>
+                </div>
+
             </li>
         </ul>
     </div>
