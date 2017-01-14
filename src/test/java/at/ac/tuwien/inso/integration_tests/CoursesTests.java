@@ -10,6 +10,7 @@ import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.context.*;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.web.servlet.*;
@@ -23,6 +24,7 @@ import static java.util.Collections.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
+import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -114,10 +116,17 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", containsInAnyOrder(expectedCourses.toArray()))
+                responseHasCourses(expectedCourses)
         ).andExpect(
                 model().attributeExists("recommendedCourses")
         );
+    }
+
+    private ResultMatcher responseHasCourses(List<Course> courses) {
+        return result -> {
+            Page<Course> page = (Page<Course>) result.getModelAndView().getModel().get("allCourses");
+            assertThat(page.getContent(), containsInAnyOrder(courses.toArray()));
+        };
     }
 
     @Test
@@ -125,7 +134,7 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses?search=").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", containsInAnyOrder(expectedCourses.toArray()))
+                responseHasCourses(expectedCourses)
         );
     }
 
@@ -134,7 +143,7 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses?search=sep").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", singletonList(sepmWS2016))
+                responseHasCourses(singletonList(sepmWS2016))
         );
     }
 
@@ -162,7 +171,7 @@ public class CoursesTests {
         ).andExpect(
                 redirectedUrl("/lecturer/courses")
         ).andExpect(
-               flash().attributeExists("flashMessageNotLocalized")
+                flash().attributeExists("flashMessageNotLocalized")
         );
     }
 

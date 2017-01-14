@@ -6,11 +6,11 @@ import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.validator.CourseValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import at.ac.tuwien.inso.service.student_subject_prefs.*;
+import at.ac.tuwien.inso.service.validator.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
@@ -48,9 +48,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Course> findCourseForCurrentSemesterWithName(@NotNull String name) {
+    public Page<Course> findCourseForCurrentSemesterWithName(@NotNull String name, Pageable pageable) {
         Semester semester = semesterService.getCurrentSemester().toEntity();
-        return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%");
+        return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%", pageable);
     }
 
     @Override

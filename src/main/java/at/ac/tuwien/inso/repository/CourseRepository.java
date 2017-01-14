@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.repository;
 
 import at.ac.tuwien.inso.entity.*;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.*;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.util.*;
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Long> {
 
-    List<Course> findAllBySemesterAndSubjectNameLikeIgnoreCase(Semester semester, String name);
+    Page<Course> findAllBySemesterAndSubjectNameLikeIgnoreCase(Semester semester, String name, Pageable pageable);
 
     List<Course> findAllBySemesterAndSubject(Semester semester, Subject subject);
     

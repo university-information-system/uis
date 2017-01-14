@@ -56,10 +56,10 @@
 
         <ul class="collection z-depth-1">
 
-            <li class="collection-item" th:if="${#lists.isEmpty(allCourses)}"
+            <li class="collection-item" th:if="${#lists.isEmpty(allCourses.getContent())}"
                 th:text="#{student.courses.notfound}"></li>
 
-            <li class="collection-item" th:each="course : ${allCourses}">
+            <li class="collection-item" th:each="course : ${allCourses.getContent()}">
                 <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i
                         class="material-icons tooltipped" th:attr="data-tooltip=#{enroll}">add</i></a>
                 <a th:href="@{/student/courses/__${course.id}__}"
@@ -83,13 +83,61 @@
             </li>
         </ul>
 
-    </div>
+        <!-- Pagination -->
+        <ul th:if="${allCourses.totalPages > 1}" class="pagination center">
+            <li th:if="${allCourses.isFirst()}" class="disabled">
+                <a href="#"><i class="material-icons disabled">chevron_left</i></a>
+            </li>
+            <li th:if="${not allCourses.isFirst()}">
+                <a th:href="@{/student/courses(page=__${allCourses.getNumber()-1}__, search=__${searchString}__)}"><i
+                        class="material-icons">chevron_left</i></a>
+            </li>
 
-    <div id="flashAttributesRegistered" th:if="${registeredForCourse != null}"
-         th:text="#{student.registered}">
-    </div>
-    <div id="flashAttributesNotRegistered" th:if="${notRegisteredForCourse != null}"
-         th:text="#{student.notRegistered}">
+            <li th:if="${allCourses.getNumber()-4 >= 0}" class="waves-effect">
+                <a th:text="1" th:href="@{/student/courses(page=0, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCourses.getNumber()-4 > 0}"><a th:text="..."></a></li>
+
+            <li th:if="${allCourses.getNumber()-3 >= 0}" class="waves-effect">
+                <a th:text="${allCourses.getNumber()-2}"
+                   th:href="@{/student/courses(page=__${allCourses.getNumber()-3}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCourses.getNumber()-2 >= 0}" class="waves-effect">
+                <a th:text="${allCourses.getNumber()-1}"
+                   th:href="@{/student/courses(page=__${allCourses.getNumber()-2}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCourses.getNumber()-1 >= 0}" class="waves-effect">
+                <a th:text="${allCourses.getNumber()}"
+                   th:href="@{/student/courses(page=__${allCourses.getNumber()-1}__, search=__${searchString}__)}"></a>
+            </li>
+            <li class="active teal"><a th:text="${allCourses.getNumber()+1}"></a></li>
+            <li th:if="${allCourses.getNumber()+1 &lt;= allCourses.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${allCourses.getNumber()+2}"
+                   th:href="@{/student/courses(page=__${allCourses.getNumber()+1}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCourses.getNumber()+2 &lt;= allCourses.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${allCourses.getNumber()+3}"
+                   th:href="@{/student/courses(page=__${allCourses.getNumber()+2}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCourses.getNumber()+3 &lt;= allCourses.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${allCourses.getNumber()+4}"
+                   th:href="@{/student/courses(page=__${allCourses.getNumber()+3}__, search=__${searchString}__)}"></a>
+            </li>
+
+            <li th:if="${allCourses.getNumber()+4 &lt; allCourses.getTotalPages()-1}"><a th:text="..."></a></li>
+            <li th:if="${allCourses.getNumber()+4 &lt;= allCourses.getTotalPages()-1}" class="waves-effect">
+                <a th:text="${allCourses.getTotalPages()}"
+                   th:href="@{/student/courses(page=__${allCourses.getTotalPages()-1}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCourses.isLast()}" class="disabled">
+                <a href="#"><i class="material-icons">chevron_right</i></a>
+            </li>
+            <li th:if="${!allCourses.isLast()}">
+                <a th:href="@{/student/courses(page=__${allCourses.getNumber()+1}__, search=__${searchString}__)}"><i
+                        class="material-icons">chevron_right</i></a>
+            </li>
+        </ul>
+
     </div>
 
 </main>

@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso.controller.student;
 
+import at.ac.tuwien.inso.controller.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.course_recommendation.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +34,13 @@ public class StudentCoursesController {
     private RecommendationService recommendationService;
 
     @ModelAttribute("allCourses")
-    private List<Course> getAllCourses(@RequestParam(value = "search", defaultValue = "") String search) {
-        return courseService.findCourseForCurrentSemesterWithName(search);
+    private Page<Course> getAllCourses(@RequestParam(value = "search", defaultValue = "") String search,
+                                       @PageableDefault Pageable pageable) {
+        if (pageable.getPageSize() > Constants.MAX_PAGE_SIZE) {
+            pageable = new PageRequest(pageable.getPageNumber(), Constants.MAX_PAGE_SIZE);
+        }
+
+        return courseService.findCourseForCurrentSemesterWithName(search, pageable);
     }
 
     @ModelAttribute("recommendedCourses")

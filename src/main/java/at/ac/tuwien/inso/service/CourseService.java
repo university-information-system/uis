@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.service;
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.dto.*;
 import at.ac.tuwien.inso.entity.*;
+import org.springframework.data.domain.*;
 import org.springframework.security.access.prepost.*;
 
 import javax.validation.constraints.*;
@@ -11,7 +12,7 @@ import java.util.*;
 public interface CourseService {
 
     @PreAuthorize("isAuthenticated()")
-    List<Course> findCourseForCurrentSemesterWithName(@NotNull String name);
+    Page<Course> findCourseForCurrentSemesterWithName(@NotNull String name, Pageable pageable);
 
     @PreAuthorize("isAuthenticated()")
     List<Course> findCoursesForCurrentSemesterForLecturer(Lecturer lecturer);
