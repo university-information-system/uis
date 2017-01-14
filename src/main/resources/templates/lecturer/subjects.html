@@ -17,6 +17,7 @@
 
 				<li class="collection-item" th:each="subject : ${ownedSubjects}">
 					<a th:href="@{/lecturer/addCourse(subjectId=__${subject.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.subjects.createCourse}">add</i></a>
+					<a th:href="@{/lecturer/removeCourse(subjectId=__${subject.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.subjects.removeCourse}">remove</i></a>
 					<div class="title teal-text" th:text="${subject.name}"></div>
 					<div th:text="${subject.ects} + ' ECTS'"></div>
 				</li>
