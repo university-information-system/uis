@@ -1,5 +1,6 @@
 import SideNav from "./side-nav";
 import CheckBoxes from "./checkboxes";
+import AutoCompleteCourseTags from "./autocomplete-course-tags"
 import AutoCompleteSubjects from "./autocomplete-subjects";
 import AutoCompleteLecturerForSubjects from "./autocomplete-lecturer-for-subject";
 import Select from "./select";
@@ -22,6 +23,9 @@ const init = () => {
 
     const sideNav = new SideNav();
     sideNav.initialize();
+
+    const autoCompleteCourseTags = new AutoCompleteCourseTags();
+    autoCompleteCourseTags.initialize();
 
     const autoCompleteSubjects = new AutoCompleteSubjects();
     autoCompleteSubjects.initialize();
