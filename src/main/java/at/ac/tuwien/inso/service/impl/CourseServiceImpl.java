@@ -52,7 +52,7 @@ public class CourseServiceImpl implements CourseService {
     @Transactional(readOnly = true)
     public Page<Course> findCourseForCurrentSemesterWithName(@NotNull String name, Pageable pageable) {
     	log.info("try to find course for current semester with semestername: "+name+"and pageable "+pageable);
-        Semester semester = semesterService.getCurrentSemester().toEntity();
+        Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
         return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%", pageable);
     }
 
@@ -60,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
     @Transactional(readOnly = true)
     public List<Course> findCoursesForCurrentSemesterForLecturer(Lecturer lecturer) {
     	log.info("try finding courses for current semester for lecturer with id "+lecturer.getId());
-        Semester semester = semesterService.getCurrentSemester().toEntity();
+        Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
         Iterable<Subject> subjectsForLecturer = subjectRepository.findByLecturers_Id(lecturer.getId());
         List<Course> courses = new ArrayList<>();
         subjectsForLecturer.forEach(subject -> courses.addAll(courseRepository.findAllBySemesterAndSubject(semester, subject)));
@@ -194,7 +194,7 @@ public class CourseServiceImpl implements CourseService {
     private boolean canEnrollToCourse(Student student, Course course) {
         validator.validateCourse(course);
         validator.validateStudent(student);
-        return course.getSemester().toDto().equals(semesterService.getCurrentSemester()) &&
+        return course.getSemester().toDto().equals(semesterService.getOrCreateCurrentSemester()) &&
                 !courseRepository.existsCourseRegistration(student, course);
     }
 }

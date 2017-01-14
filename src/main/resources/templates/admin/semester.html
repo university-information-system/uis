@@ -10,8 +10,6 @@
     <div class="container">
         <h1 th:text="#{admin.semesters.label}"></h1>
 
-        <a href="/admin/semester/create" th:text="#{admin.semesters.create.header}"></a>
-
         <ul class="collection z-depth-1">
             <li class="collection-item" th:each="semester : ${allSemesters}">
                 <div th:if="${semester} eq ${currentSemester}">

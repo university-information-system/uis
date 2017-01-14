@@ -2,8 +2,11 @@ package at.ac.tuwien.inso.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import at.ac.tuwien.inso.dto.SemesterDto;
 
@@ -15,14 +18,22 @@ public class Semester {
     private Long id;
 
     @Column
-    private String label;
+    private int year;
 
-    protected Semester() {
+    /**
+     * WS or SS
+     */
+    @Column
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private SemesterType type;
 
+    public Semester() {
     }
 
-    public Semester(String label) {
-        this.label = label;
+    public Semester(int year, SemesterType type) {
+        this.year = year;
+        this.type = type;
     }
 
     public Long getId() {
@@ -33,40 +44,38 @@ public class Semester {
     	this.id = id;
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public SemesterType getType() {
+        return type;
+    }
+
+    public void setType(SemesterType type) {
+        this.type = type;
+    }
+
     public String getLabel() {
-        return label;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Semester semester = (Semester) o;
-
-        if (id != null ? !id.equals(semester.id) : semester.id != null) return false;
-        return label != null ? label.equals(semester.label) : semester.label == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (label != null ? label.hashCode() : 0);
-        return result;
+        return getType() + " " + getYear();
     }
 
     @Override
     public String toString() {
-        return "Semester{" +
-                "id=" + id +
-                ", label='" + label + '\'' +
-                '}';
+        return getLabel();
     }
     
     public SemesterDto toDto(){
-    	SemesterDto dto = new SemesterDto(label);
-    	if(id!=null){dto.setId(id);}
+    	SemesterDto dto = new SemesterDto(year, type);
+
+    	if (id!=null) {
+    	    dto.setId(id);
+    	}
+
 		return dto;
     }
 }

@@ -17,6 +17,7 @@ import com.lowagie.text.List;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.SubjectRepository;
@@ -40,7 +41,7 @@ public class SubjectServiceTests {
 	@Test
 	public void testRemoveWithValidInput(){
 		Subject s = new Subject("testSubject", new BigDecimal(11));
-		ArrayList<Course> toReturn = new ArrayList<Course>();
+		ArrayList<Course> toReturn = new ArrayList<>();
 		when(courseService.findCoursesForSubject(s)).thenReturn(toReturn);
 
 		assertTrue(subjectService.remove(s));
@@ -49,19 +50,23 @@ public class SubjectServiceTests {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void testRemoveWithNullInputThrowsException(){
+	public void testRemoveWithNullInputThrowsException() {
 		subjectService.remove(null);
 		
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void testRemoveWithContaingCoursesInput(){
-		Subject s = new Subject("testSubject", new BigDecimal(11));
-		ArrayList<Course> toReturn = new ArrayList<Course>();
-		toReturn.add(new Course(s, new Semester("oldSemester")));
-		when(courseService.findCoursesForSubject(s)).thenReturn(toReturn);
+	public void testRemoveWithContainingCoursesInput() {
 
-        subjectService.remove(s);
+		Subject subject = new Subject("testSubject", new BigDecimal(11));
 
+		Semester oldSemester = new Semester(2000, SemesterType.WinterSemester);
+
+		ArrayList<Course> toReturn = new ArrayList<>();
+		toReturn.add(new Course(subject, oldSemester));
+
+		when(courseService.findCoursesForSubject(subject)).thenReturn(toReturn);
+
+        subjectService.remove(subject);
 	}
 }

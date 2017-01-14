@@ -63,8 +63,8 @@ public class CoursesRepositoryTests {
 
     private Map<String, Semester> semesters = new HashMap<String, Semester>() {
         {
-            put("WS2015", new Semester("WS2015"));
-            put("WS2016", new Semester("WS2016"));
+            put("WS2015", new Semester(2015, SemesterType.WinterSemester));
+            put("WS2016", new Semester(2016, SemesterType.WinterSemester));
         }
     };
 

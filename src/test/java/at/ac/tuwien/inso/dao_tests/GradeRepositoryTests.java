@@ -59,7 +59,7 @@ public class GradeRepositoryTests {
 
     private Grade prepareGradeFor(Student student) {
         Subject subject = subjectRepository.save(new Subject("subject", BigDecimal.ONE));
-        Semester semester = semesterRepository.save(new Semester("current"));
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.SummerSemester));
         Course course = courseRepository.save(new Course(subject, semester));
         Lecturer lecturer = lecturerRepository.save(new Lecturer("abc", "lecturer", "lecturer@uis.at"));
 

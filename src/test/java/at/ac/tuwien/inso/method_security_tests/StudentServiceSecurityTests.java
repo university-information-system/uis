@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.EctsDistribution;
 import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.StudyPlan;
 import at.ac.tuwien.inso.repository.SemesterRepository;
@@ -45,9 +46,14 @@ public class StudentServiceSecurityTests {
 
     @Before
     public void setUp() {
-        semester = semesterRepository.save(new Semester("WS2016")).toDto();
-        studyPlan = studyPlanRepository.save(new StudyPlan("TestStudyPlan",
-                new EctsDistribution(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE)));
+        Semester localSemester = new Semester(2016, SemesterType.WinterSemester);
+
+        semester = semesterRepository.save(localSemester).toDto();
+
+        StudyPlan localStudyPlan = new StudyPlan("TestStudyPlan",
+                new EctsDistribution(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE));
+
+        studyPlan = studyPlanRepository.save(localStudyPlan);
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)

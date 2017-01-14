@@ -32,8 +32,8 @@ public class SemestersTest {
 
     @Test
     public void itListsAllSemesters() throws Exception {
-        Semester ss2016 = semesterRepository.save(new Semester("SS2016"));
-        Semester ws2016 = semesterRepository.save(new Semester("WS2016"));
+        Semester ss2016 = semesterRepository.save(new Semester(2016, SemesterType.SummerSemester));
+        Semester ws2016 = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
 
         mockMvc.perform(
                 get("/admin/semester").with(user("admin").roles("ADMIN"))

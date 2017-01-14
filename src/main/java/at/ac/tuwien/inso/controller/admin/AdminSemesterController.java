@@ -26,33 +26,11 @@ public class AdminSemesterController {
 
     @ModelAttribute("currentSemester")
     private SemesterDto getCurrentSemester() {
-        return semesterService.getCurrentSemester();
+        return semesterService.getOrCreateCurrentSemester();
     }
 
     @GetMapping
     public String semester() {
         return "admin/semester";
-    }
-
-    @GetMapping("/create")
-    public String createSemesterView(CreateSemesterForm createSemesterForm) {
-        return "admin/create-semester";
-    }
-
-    @PostMapping("/create")
-    public String createSemester(@Valid CreateSemesterForm form,
-                                 BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            return "admin/create-semester";
-        }
-
-        SemesterDto submittedSemester = form.toSemesterDto();
-
-        //System.out.println(submittedSemester);
-
-        semesterService.create(submittedSemester);
-
-        return "redirect:/admin/semester";
     }
 }

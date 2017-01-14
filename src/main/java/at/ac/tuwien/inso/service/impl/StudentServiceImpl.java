@@ -54,8 +54,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public void registerStudentToStudyPlan(Student student, StudyPlan studyPlan) {
-    	log.info("for current semester, registering student "+student.toString()+" to StudyPlan "+studyPlan.toString());
-        registerStudentToStudyPlan(student, studyPlan, semesterService.getCurrentSemester());
+        log.info("for current semester, registering student "+student.toString()+" to StudyPlan "+studyPlan.toString());
+
+        SemesterDto semester = semesterService.getOrCreateCurrentSemester();
+
+        registerStudentToStudyPlan(student, studyPlan, semester);
     }
 
     @Override

@@ -24,6 +24,7 @@ import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.UserAccount;
@@ -86,7 +87,7 @@ public class LecturerServiceSecurityTests {
         Subject subject = subjectRepository.save(new Subject("ASE", BigDecimal.valueOf(6)));
         subject.addLecturers(lecturer);
         subjectRepository.save(subject);
-        Semester semester = semesterRepository.save(new Semester("2016WS"));
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
         course = courseRepository.save(new Course(subject, semester));
     }
 
