@@ -14,6 +14,9 @@ public interface SemesterService {
     SemesterDto getCurrentSemester();
 
     @PreAuthorize("isAuthenticated()")
+    SemesterDto getOrCreateCurrentSemester();
+
+    @PreAuthorize("isAuthenticated()")
     List<SemesterDto> findAll();
 
     @PreAuthorize("isAuthenticated()")
