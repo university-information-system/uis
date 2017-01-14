@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import at.ac.tuwien.inso.service.validator.UisUserValidator;
 import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import at.ac.tuwien.inso.service.UserCreationService;
 @Service
 public class UserCreationServiceImpl implements UserCreationService {
 
+
+	private static final Logger log = LoggerFactory.getLogger(UserCreationServiceImpl.class);
+		
     public static final String MAIL_SUBJECT = "user.account.activation.mail.subject";
     private static final String MAIL_TEMPLATE = "emails/user-account-activation-mail";
     private ValidatorFactory validatorFactory = new ValidatorFactory();
@@ -45,17 +50,21 @@ public class UserCreationServiceImpl implements UserCreationService {
     @Transactional
     @Override
     public PendingAccountActivation create(UisUser user) {
+    	log.info("creating pendingaccountactivation by user "+user.toString());
+   
         validator.validateNewUisUser(user);
         PendingAccountActivation activation = new PendingAccountActivation(user);
 
         activation = pendingAccountActivationRepository.save(activation);
 
+        log.info("sending activation mail now!");
         mailSender.send(createActivationMail(activation));
 
         return activation;
     }
 
     private MimeMessage createActivationMail(PendingAccountActivation activation) {
+    	log.info("creating activation mail for pending activation");
         MimeMessage mimeMsg = mailSender.createMimeMessage();
         MimeMessageHelper msg = new MimeMessageHelper(mimeMsg, "UTF-8");
 
@@ -64,6 +73,7 @@ public class UserCreationServiceImpl implements UserCreationService {
             msg.setSubject(messages.get(MAIL_SUBJECT));
             msg.setText(messageContent(activation), true);
         } catch (MessagingException e) {
+        	log.warn("activation message creation FAILED! throwing runtime-exception now");
             throw new RuntimeException(e);
         }
 
@@ -71,10 +81,11 @@ public class UserCreationServiceImpl implements UserCreationService {
     }
 
     private String messageContent(PendingAccountActivation activation) {
+    	log.info("getting message context for PendingAccountActivation "+activation);
         Context context = new Context(Messages.LOCALE);
         context.setVariable("user", activation.getForUser());
         context.setVariable("activationUrl", activationUrlPrefix + activation.getId());
-
+        
         return templateEngine.process(MAIL_TEMPLATE, context);
     }
 }
