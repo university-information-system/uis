@@ -1,9 +1,18 @@
 package at.ac.tuwien.inso.dto;
 
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.entity.SemesterType;
+
+import static java.util.Calendar.SECOND;
 
 //finished transformation on 8.1.
 public class SemesterDto {
