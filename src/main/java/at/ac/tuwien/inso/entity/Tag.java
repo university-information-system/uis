@@ -36,16 +36,13 @@ public class Tag {
 
         Tag tag = (Tag) o;
 
-        if (id != null ? !id.equals(tag.id) : tag.id != null) return false;
-        return name != null ? name.equals(tag.name) : tag.name == null;
+        return name.equals(tag.name);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+        return name.hashCode();
     }
 
     @Override
