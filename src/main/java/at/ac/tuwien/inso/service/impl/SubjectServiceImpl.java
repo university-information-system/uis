@@ -28,7 +28,7 @@ import at.ac.tuwien.inso.service.SubjectService;
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SubjectServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(SubjectServiceImpl.class);
 
     @Autowired
     private SubjectRepository subjectRepository;
@@ -41,6 +41,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Page<Subject> findBySearch(String search, Pageable pageable) {
+    	log.info("finding search by word "+search);
         String sqlSearch = "%" + search + "%";
         return subjectRepository.findAllByNameLikeIgnoreCase(sqlSearch, pageable);
     }
@@ -48,26 +49,28 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public Subject findOne(long id) {
+    	log.info("finding subject by id "+id);
         return subjectRepository.findById(id);
     }
 
     @Override
     @Transactional
     public Subject create(Subject subject) {
+    	log.info("creating subject "+subject.toString());
         return subjectRepository.save(subject);
     }
 
     @Override
     @Transactional
     public Lecturer addLecturerToSubject(Long subjectId, Long lecturerUisUserId) {
-        logger.info("addLecturerToSubject for subject {} and lecturer {}", subjectId,
+        log.info("addLecturerToSubject for subject {} and lecturer {}", subjectId,
                 lecturerUisUserId);
 
         Lecturer lecturer = lecturerRepository.findById(lecturerUisUserId);
 
         if (lecturer == null) {
             String msg = "Lecturer with user id " + lecturerUisUserId + " not found";
-            logger.info(msg);
+            log.info(msg);
             throw new LecturerNotFoundException(msg);
         }
 
@@ -75,7 +78,7 @@ public class SubjectServiceImpl implements SubjectService {
 
         if (subject == null) {
             String msg = "Subject with id " + lecturerUisUserId + " not found";
-            logger.info(msg);
+            log.info(msg);
             throw new SubjectNotFoundException(msg);
         }
 
@@ -93,13 +96,16 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public List<Lecturer> getAvailableLecturersForSubject(Long subjectId, String search) {
-        if (search == null) {
+    	if (search == null) {
             search = "";
         }
-
+    	log.info("getting available lectureres for subject with subject id "+subjectId+" and search string "+search);
+        
+    	
         Subject subject = subjectRepository.findById(subjectId);
 
         if (subject == null) {
+        	log.warn("Subject with id '" + subjectId + "' not found");
             throw new SubjectNotFoundException("Subject with id '" + subjectId + "' not found");
         }
 
@@ -120,14 +126,14 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Lecturer removeLecturerFromSubject(Long subjectId, Long lecturerUisUserId) {
-        logger.info("removeLecturerFromSubject for subject {} and lecturer {}", subjectId,
+        log.info("removeLecturerFromSubject for subject {} and lecturer {}", subjectId,
                 lecturerUisUserId);
 
         Subject subject = subjectRepository.findById(subjectId);
 
         if (subject == null) {
             String msg = "Subject with id '" + subjectId + "' not found";
-            logger.info(msg);
+            log.info(msg);
             throw new SubjectNotFoundException(msg);
         }
 
@@ -135,7 +141,7 @@ public class SubjectServiceImpl implements SubjectService {
 
         if (lecturer == null) {
             String msg = "Lecturer with id '" + lecturerUisUserId + "' not found";
-            logger.info(msg);
+            log.info(msg);
             throw new LecturerNotFoundException(msg);
         }
 
@@ -146,7 +152,7 @@ public class SubjectServiceImpl implements SubjectService {
         if (!isLecturer) {
             String msg = "Lecturer with id " + lecturerUisUserId + " not found for subject " +
                     subjectId;
-            logger.info(msg);
+            log.info(msg);
             throw new RelationNotfoundException(msg);
         }
 
@@ -160,22 +166,26 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public List<Subject> searchForSubjects(String word) {
+    	log.info("seachring for subjects with search word "+word);
         return subjectRepository.findByNameContainingIgnoreCase(word);
     }
 
 	@Override
 	@Transactional
 	public boolean remove(Subject subject) throws ValidationException{
+		log.info("trying to remove subject");
 		if(subject==null){
+			log.info("Subject is null.");
 			throw new ValidationException("Subject is null.");
 		}
+		log.info("removing subject "+subject+" now.");
 		List<Course> courses = courseService.findCoursesForSubject(subject);
 		if(!courses.isEmpty()){
 			String msg = "";
 			if(subject!=null){
 				msg = "Cannot delete subject [Name: "+subject.getName()+"] because there are courses";
 			}
-			logger.info(msg);
+			log.info(msg);
 			throw new ValidationException(msg);
 		}else{
 			subjectRepository.delete(subject);
