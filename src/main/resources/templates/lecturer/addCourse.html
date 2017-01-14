@@ -8,6 +8,8 @@
     <div class="container">
         <h3 th:text="${subject.name}">Courses</h3>
 
+        <input id="tags" class="typeahead form-control" type="text" />
+
         <form class="row"
               th:object="${addCourseForm}"
               th:action="@{addCourse(subjectId=__${subject.id}__)}"
