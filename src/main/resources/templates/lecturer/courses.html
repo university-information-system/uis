@@ -17,6 +17,7 @@
             <li class="collection-item" th:each="course : ${allCourses}">
                 <a th:href="@{/lecturer/editCourse(courseId=__${course.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.courses.edit}">edit</i></a>
                 <a class="title teal-text" th:text="${course.subject.name}" th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"></a>
+                <a th:href="@{/lecturer/removeCourse(courseId=__${course.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.course.removeCourse}">delete</i></a>
                 <div th:text="${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
 
             </li>
