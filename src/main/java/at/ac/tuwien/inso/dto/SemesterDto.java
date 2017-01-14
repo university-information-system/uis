@@ -68,6 +68,37 @@ public class SemesterDto {
         return getStart().before(now);
     }
 
+    /**
+     * The semester following after this
+     */
+    public SemesterDto nextSemester() {
+        int currentYear = this.getYear();
+
+        List<SemesterDto> allSemesters = new LinkedList<>();
+
+        int[] possibleYears = {currentYear, currentYear + 1};
+
+        // Create a list of all possible semesters in those 3 years
+        for (int year : possibleYears) {
+            for (SemesterType type : SemesterType.values()) {
+                allSemesters.add(new SemesterDto(year, type));
+            }
+        }
+
+        // Add a second, so that the same semester does not get propsed again
+        Calendar startLimit = getStart();
+        startLimit.add(Calendar.SECOND, 1);
+
+        SemesterDto next = allSemesters
+                .stream()
+                .filter(s -> ! s.isStartInPast(startLimit))
+                .sorted(Comparator.comparing(SemesterDto::getStart))
+                .findFirst()
+                .get();
+
+        return next;
+    }
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) {
