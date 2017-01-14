@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.service.impl;
 
+import com.sun.istack.internal.Nullable;
+
 import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
@@ -31,6 +33,31 @@ public class SemesterServiceImpl implements SemesterService {
         }else{
         	return null;
         }
+    }
+
+    @Override
+    public SemesterDto getOrCreateCurrentSemester() {
+        Calendar now = new GregorianCalendar();
+        return getOrCreateCurrentSemester(now);
+    }
+
+    /**
+     * If now is still in the current semester, we return the semester
+     *
+     * Otherwise all semesters until now are created and the newest one returned.
+     *
+     * @param now date to compare with
+     */
+    public SemesterDto getOrCreateCurrentSemester(Calendar now) {
+        SemesterDto current = getCurrentSemester();
+
+        // Recursion, to create all missing semesters
+        if (!current.isCurrent(now)) {
+            create(current.nextSemester());
+            return getOrCreateCurrentSemester();
+        }
+
+        return current;
     }
 
     @Override
