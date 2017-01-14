@@ -41,14 +41,14 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public List<Course> findCourseForCurrentSemesterWithName(@NotNull String name) {
-        Semester semester = semesterService.getCurrentSemester().toEntity();
+        Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
         return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%");
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Course> findCoursesForCurrentSemesterForLecturer(Lecturer lecturer) {
-        Semester semester = semesterService.getCurrentSemester().toEntity();
+        Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
         Iterable<Subject> subjectsForLecturer = subjectRepository.findByLecturers_Id(lecturer.getId());
         List<Course> courses = new ArrayList<>();
         subjectsForLecturer.forEach(subject -> courses.addAll(courseRepository.findAllBySemesterAndSubject(semester, subject)));
@@ -140,7 +140,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private boolean canEnrollToCourse(Student student, Course course) {
-        return course.getSemester().toDto().equals(semesterService.getCurrentSemester()) &&
+        return course.getSemester().toDto().equals(semesterService.getOrCreateCurrentSemester()) &&
                 !courseRepository.existsCourseRegistration(student, course);
     }
 }

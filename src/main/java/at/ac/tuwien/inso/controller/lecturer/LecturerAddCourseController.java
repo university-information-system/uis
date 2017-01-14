@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.impl.Messages;
@@ -32,10 +33,12 @@ public class LecturerAddCourseController {
 
     @ModelAttribute("addCourseForm")
     private AddCourseForm getAddCourseForm(@RequestParam("subjectId") Long subjectId) {
-        AddCourseForm form = new AddCourseForm(
-        		//TODO DTO
-                new Course(getSubject(subjectId), semesterService.getCurrentSemester().toEntity())
-        );
+        Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
+
+        // TODO use DTO
+        Course course = new Course(getSubject(subjectId), semester);
+
+        AddCourseForm form = new AddCourseForm(course);
         form.setInitialTags(tagService.findAll());
         return form;
     }

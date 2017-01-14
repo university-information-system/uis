@@ -37,7 +37,7 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     @Override
     @Transactional(readOnly = true)
     public StudyProgress studyProgressFor(Student student) {
-    	SemesterDto currentSemester = semesterService.getCurrentSemester();
+    	SemesterDto currentSemester = semesterService.getOrCreateCurrentSemester();
         
         List<SemesterDto> semesters = studentSemesters(student);
         List<Course> courses = courseService.findAllForStudent(student);

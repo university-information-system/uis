@@ -35,6 +35,9 @@ public class Course {
     protected Course() {
     }
 
+    /*
+     * TODO use DTO here
+     */
     public Course(Subject subject, Semester semester) {
         this(subject, semester, "");
     }

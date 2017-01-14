@@ -26,7 +26,7 @@ public class AdminSemesterController {
 
     @ModelAttribute("currentSemester")
     private SemesterDto getCurrentSemester() {
-        return semesterService.getCurrentSemester();
+        return semesterService.getOrCreateCurrentSemester();
     }
 
     @GetMapping
