@@ -125,4 +125,8 @@ public class SemesterDto {
 		return semesterEntity;
 	}
 
+    @Override
+    public String toString() {
+        return "SemesterDto{" + "id=" + id + ", year=" + year + ", type=" + type + '}';
+    }
 }
