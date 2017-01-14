@@ -11,6 +11,7 @@ import at.ac.tuwien.inso.entity.Tag;
 public class AddCourseForm {
 
     private Course course;
+    private ArrayList<String> tags;
 
     private List<AddCourseTag> activeAndInactiveTags = new ArrayList<>();
 
@@ -19,7 +20,14 @@ public class AddCourseForm {
 
     public AddCourseForm(Course course) {
         this.course = course;
+    }
 
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     public AddCourseForm setInitialTags(List<Tag> tags) {
