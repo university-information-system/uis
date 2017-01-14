@@ -10,4 +10,7 @@ public interface TagService {
 
     @PreAuthorize("isAuthenticated()")
     List<Tag> findAll();
+
+    @PreAuthorize("isAuthenticated()")
+    Tag findByName(String name);
 }
