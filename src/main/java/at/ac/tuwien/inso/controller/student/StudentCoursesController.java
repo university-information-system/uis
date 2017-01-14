@@ -31,26 +31,20 @@ public class StudentCoursesController {
     private RecommendationService recommendationService;
 
     @ModelAttribute("allCourses")
-    private List<Course> getAllCourses(@RequestParam(value = "search", required = false) String search) {
-        if (search == null || search.isEmpty()) {
-            Student student = studentService.findOne(userAccountService.getCurrentLoggedInUser());
-            List<Course> recommendedCourses = recommendationService.recommendCourses(student);
-            if (!recommendedCourses.isEmpty()) {
-                return recommendedCourses;
-            }
-        }
+    private List<Course> getAllCourses(@RequestParam(value = "search", defaultValue = "") String search) {
+        return courseService.findCourseForCurrentSemesterWithName(search);
+    }
 
-        final String searchString = getSearchString(search);
-        return courseService.findCourseForCurrentSemesterWithName(searchString);
+    @ModelAttribute("recommendedCourses")
+    private List<Course> getRecommendedCourses(Principal principal) {
+        Student student = studentService.findByUsername(principal.getName());
+
+        return recommendationService.recommendCourses(student);
     }
 
     @ModelAttribute("searchString")
-    private String getSearchString(@RequestParam(value = "search", required = false) String search) {
-        if (search != null && !search.isEmpty()) {
-            return search;
-        }
-
-        return "";
+    private String getSearchString(@RequestParam(value = "search", defaultValue = "") String search) {
+        return search;
     }
 
     @GetMapping

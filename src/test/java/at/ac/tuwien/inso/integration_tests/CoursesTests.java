@@ -4,8 +4,7 @@ package at.ac.tuwien.inso.integration_tests;
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.impl.Messages;
-import org.hamcrest.*;
+import at.ac.tuwien.inso.service.impl.*;
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -20,9 +19,12 @@ import java.math.*;
 import java.util.*;
 
 import static java.util.Arrays.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.beans.HasPropertyWithValue.*;
+import static java.util.Collections.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -112,7 +114,9 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", Matchers.containsInAnyOrder(expectedCourses.toArray()))
+                model().attribute("allCourses", containsInAnyOrder(expectedCourses.toArray()))
+        ).andExpect(
+                model().attributeExists("recommendedCourses")
         );
     }
 
@@ -121,7 +125,7 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses?search=").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", Matchers.containsInAnyOrder(expectedCourses.toArray()))
+                model().attribute("allCourses", containsInAnyOrder(expectedCourses.toArray()))
         );
     }
 
@@ -130,7 +134,7 @@ public class CoursesTests {
         mockMvc.perform(
                 get("/student/courses?search=sep").with(user("student").roles("STUDENT"))
         ).andExpect(
-                model().attribute("allCourses", Arrays.asList(sepmWS2016))
+                model().attribute("allCourses", singletonList(sepmWS2016))
         );
     }
 
