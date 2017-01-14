@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.*;
 
 import javax.validation.constraints.*;
 import java.util.*;
-import java.util.stream.*;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -39,6 +38,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserAccountService userAccountService;
+
+    @Autowired
+    private TagService tagService;
 
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
@@ -75,11 +77,29 @@ public class CourseServiceImpl implements CourseService {
     public Course saveCourse(AddCourseForm form) {
         Course course = form.getCourse();
         validator.validateNewCourse(course);
-        List<Tag> tags = form.getActiveAndInactiveTags().stream()
-                .filter(tagBooleanEntry -> tagBooleanEntry.isActive())
-                .map(tagBooleanEntry -> tagBooleanEntry.getTag())
-                .collect(Collectors.toList());
-        tags.forEach(tag -> course.addTags(tag));
+
+        ArrayList<Tag> currentTagsOfCourse = new ArrayList<>(form.getCourse().getTags());
+
+        for(String tag : form.getTags()) {
+            Tag newTag = tagService.findByName(tag);
+
+            // tag doesn't exist, so create a new one.
+            if(newTag == null) {
+                course.addTags(new Tag(tag));
+            }
+            // tag exists, but not in this course
+            else if(!course.getTags().contains(newTag)) {
+                course.addTags(newTag);
+            }
+            // tag already exists for this course
+            else {
+                currentTagsOfCourse.remove(newTag);
+            }
+        }
+
+        // the remaining tags are to be removed
+        course.removeTags(currentTagsOfCourse);
+
         if (!(course.getStudentLimits() > 0)) {
             course.setStudentLimits(1);
         }
