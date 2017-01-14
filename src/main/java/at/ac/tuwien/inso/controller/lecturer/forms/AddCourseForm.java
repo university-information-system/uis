@@ -11,7 +11,7 @@ import at.ac.tuwien.inso.entity.Tag;
 public class AddCourseForm {
 
     private Course course;
-    private ArrayList<String> tags;
+    private ArrayList<String> tags = new ArrayList<>();
 
     private List<AddCourseTag> activeAndInactiveTags = new ArrayList<>();
 
