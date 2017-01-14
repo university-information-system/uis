@@ -50,6 +50,16 @@ public class SemesterDto {
 		this.type = type;
 	}
 
+	/**
+	 * The start date of the semester
+	 *
+	 * Calculated from automatic start of the semester type.
+	 */
+	public Calendar getStart() {
+		Calendar calendar = new GregorianCalendar(getYear(), getType().getStartMonth(), getType().getStartDay());
+		return calendar;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) {
