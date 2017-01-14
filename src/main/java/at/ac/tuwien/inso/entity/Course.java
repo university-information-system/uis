@@ -90,8 +90,8 @@ public class Course {
         return this;
     }
 
-    public void removeTags(Tag... tags) {
-        this.tags.removeAll(asList(tags));
+    public void removeTags(List<Tag> tags) {
+        this.tags.removeAll(tags);
     }
 
     public Course addStudents(Student... students) {
