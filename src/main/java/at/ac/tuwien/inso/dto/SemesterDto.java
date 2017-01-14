@@ -60,6 +60,14 @@ public class SemesterDto {
 		return calendar;
 	}
 
+    /**
+     * If the semester started in the past
+     * @param now date to compare with (needed for testing)
+     */
+    public boolean isStartInPast(Calendar now) {
+        return getStart().before(now);
+    }
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) {
