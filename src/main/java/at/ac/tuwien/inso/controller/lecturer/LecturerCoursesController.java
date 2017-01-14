@@ -1,9 +1,10 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class LecturerCoursesController {
     private CourseService courseService;
     @Autowired
     private LecturerService lecturerService;
+    @Autowired
+    private TagService tagService;
 
 
     @ModelAttribute("allCourses")
@@ -31,5 +34,18 @@ public class LecturerCoursesController {
     @GetMapping
     public String courses() {
         return "lecturer/courses";
+    }
+
+    @GetMapping("json/tags")
+    @ResponseBody
+    private List<Tag> getTagsJson() {
+        return tagService.findAll();
+    }
+
+    @GetMapping(value = "json/tags", params = "courseId")
+    @ResponseBody
+    private List<Tag> getTagsForCourseJson(@RequestParam("courseId") Long courseId) {
+        Course course = courseService.findOne(courseId);
+        return course.getTags();
     }
 }
