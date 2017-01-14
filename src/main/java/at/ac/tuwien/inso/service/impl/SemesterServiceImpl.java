@@ -44,17 +44,16 @@ public class SemesterServiceImpl implements SemesterService {
     /**
      * If now is still in the current semester, we return the semester
      *
-     * Otherwise all semesters until now are created and the newest one returned.
+     * Otherwise the current semester will be created and returned
      *
      * @param now date to compare with
      */
     public SemesterDto getOrCreateCurrentSemester(Calendar now) {
         SemesterDto current = getCurrentSemester();
 
-        // Recursion, to create all missing semesters
-        if (!current.isCurrent(now)) {
-            create(current.nextSemester());
-            return getOrCreateCurrentSemester();
+        if (current == null || !current.isCurrent(now)) {
+            // TODO logging!!!
+            create(SemesterDto.calculateCurrentSemester(now));
         }
 
         return current;
