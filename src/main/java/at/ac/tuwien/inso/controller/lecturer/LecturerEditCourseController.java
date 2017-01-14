@@ -6,6 +6,7 @@ import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.impl.Messages;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 
@@ -37,12 +38,14 @@ public class LecturerEditCourseController {
 
 
     @GetMapping
-    private String getAddCoursesPage(@RequestParam("courseId") Long courseId) {
+    private String getEditCoursePage(@RequestParam("courseId") Long courseId, Model model) {
+        Course course = courseService.findOne(courseId);
+        model.addAttribute("course", course);
         return "lecturer/editCourse";
     }
 
     @PostMapping
-    private String createCourse(@ModelAttribute AddCourseForm form,
+    private String updateCourse(@ModelAttribute AddCourseForm form,
                                 RedirectAttributes redirectAttributes) {
         Course course = courseService.saveCourse(form);
 
