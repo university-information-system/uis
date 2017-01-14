@@ -6,6 +6,8 @@ import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.validator.StudyPlanValidator;
 import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -17,6 +19,8 @@ import java.util.stream.*;
 
 @Service
 public class StudyPlanServiceImpl implements StudyPlanService {
+
+	private static final Logger log = LoggerFactory.getLogger(StudyPlanServiceImpl.class);
 
     private StudyPlanRepository studyPlanRepository;
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
@@ -43,13 +47,15 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional
     public StudyPlan create(StudyPlan studyPlan) {
-        validator.validateNewStudyPlan(studyPlan);
+    	log.info("creating studyplan "+studyPlan.toString());
+    	validator.validateNewStudyPlan(studyPlan);
         return studyPlanRepository.save(studyPlan);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<StudyPlan> findAll() {
+    	log.info("getting all studyplans");
         Iterable<StudyPlan> studyplans = studyPlanRepository.findAll();
 
         return StreamSupport
@@ -60,10 +66,12 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional(readOnly = true)
     public StudyPlan findOne(Long id) {
+    	log.info("trying to find one studyplan by id "+id);
         validator.validateStudyPlanId(id);
         StudyPlan studyPlan = studyPlanRepository.findOne(id);
         if(studyPlan == null) {
             String msg = messageSource.getMessage("error.studyplan.notfound", null, LocaleContextHolder.getLocale());
+            log.warn("no studyplan was found by the given id "+id);
             throw new BusinessObjectNotFoundException(msg);
         }
         return studyPlan;
@@ -73,6 +81,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Transactional(readOnly = true)
     public List<SubjectForStudyPlan> getSubjectsForStudyPlan(Long id) {
         validator.validateStudyPlanId(id);
+    	log.info("get subjects for studypolan by id "+id);
         return subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
     }
 
@@ -80,10 +89,11 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Transactional(readOnly = true)
     public List<SubjectWithGrade> getSubjectsWithGradesForStudyPlan(Long id) {
         validator.validateStudyPlanId(id);
+    	log.info("getting subjects with grades for studyplan width id "+id);
         List<SubjectForStudyPlan> subjectsForStudyPlan = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
         List<Grade> grades = gradeService.getGradesForLoggedInStudent();
         List<SubjectWithGrade> subjectsWithGrades = new ArrayList<>();
-
+        
         for(SubjectForStudyPlan subjectForStudyPlan : subjectsForStudyPlan) {
 
             if(grades.isEmpty()) {
@@ -132,15 +142,19 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional
     public void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan) {
+
         validator.validateNewSubjectForStudyPlan(subjectForStudyPlan);
+        log.info("adding subject to studyplan with "+subjectForStudyPlan);
+
         subjectForStudyPlanRepository.save(subjectForStudyPlan);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Subject> getAvailableSubjectsForStudyPlan(Long id, String query) {
-        validator.validateStudyPlanId(id);
-        List<SubjectForStudyPlan> subjectsForStudyPlan = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
+    	log.info("getting available subjects for studyplan with id "+id+" and search word "+query);
+    	validator.validateStudyPlanId(id);
+    	List<SubjectForStudyPlan> subjectsForStudyPlan = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(id);
         List<Subject> subjectsOfStudyPlan = subjectsForStudyPlan
                 .stream()
                 .map(SubjectForStudyPlan::getSubject)
@@ -154,10 +168,13 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional
     public StudyPlan disableStudyPlan(Long id) {
+
+    	log.info("disabling study plan with id "+id);
         validator.validateStudyPlanId(id);
         StudyPlan studyPlan = findOne(id);
         if(studyPlan == null) {
             String msg = messageSource.getMessage("error.studyplan.notfound", null, LocaleContextHolder.getLocale());
+            log.warn(msg);
             throw new BusinessObjectNotFoundException(msg);
         }
         studyPlan.setEnabled(false);
@@ -168,8 +185,9 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Override
     @Transactional
     public void removeSubjectFromStudyPlan(StudyPlan sp, Subject s) {
-        validator.validateRemovingSubjectFromStudyPlan(sp, s);
-      
+    	validator.validateRemovingSubjectFromStudyPlan(sp, s);
+    	log.info("removing subject "+s.getName()+" from studyplan "+sp.getName());
+            	
         List<SubjectForStudyPlan> sfsp = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(sp.getId());
         for(SubjectForStudyPlan each : sfsp){
             if(each.getSubject().getId().equals(s.getId())){

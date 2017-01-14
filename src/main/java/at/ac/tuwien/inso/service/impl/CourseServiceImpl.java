@@ -6,11 +6,11 @@ import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.validator.CourseValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import at.ac.tuwien.inso.service.student_subject_prefs.*;
+import at.ac.tuwien.inso.service.validator.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
@@ -50,14 +50,16 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Course> findCourseForCurrentSemesterWithName(@NotNull String name) {
+    public Page<Course> findCourseForCurrentSemesterWithName(@NotNull String name, Pageable pageable) {
+    	log.info("try to find course for current semester with semestername: "+name+"and pageable "+pageable);
         Semester semester = semesterService.getCurrentSemester().toEntity();
-        return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%");
+        return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%", pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Course> findCoursesForCurrentSemesterForLecturer(Lecturer lecturer) {
+    	log.info("try finding courses for current semester for lecturer with id "+lecturer.getId());
         Semester semester = semesterService.getCurrentSemester().toEntity();
         Iterable<Subject> subjectsForLecturer = subjectRepository.findByLecturers_Id(lecturer.getId());
         List<Course> courses = new ArrayList<>();
@@ -67,7 +69,8 @@ public class CourseServiceImpl implements CourseService {
     
     @Override
     @Transactional(readOnly = true)
-    public List<Course> findCoursesForSubject(Subject subject) {    	
+    public List<Course> findCoursesForSubject(Subject subject) {
+    	log.info("try finding course for subject with id "+subject.getId());
     	return courseRepository.findAllBySubject(subject);    	
     	
     }
@@ -75,8 +78,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Course saveCourse(AddCourseForm form) {
+    	log.info("try saving course");
         Course course = form.getCourse();
         validator.validateNewCourse(course);
+        log.info("try saving course "+course.toString());
 
         ArrayList<Tag> currentTagsOfCourse = new ArrayList<>(form.getCourse().getTags());
 
@@ -109,8 +114,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public Course findOne(Long id) {
+    	log.info("try finding course with id "+id);
         Course course = courseRepository.findOne(id);
         if (course == null) {
+        	log.warn("Course with id " + id + " does not exist");
             throw new BusinessObjectNotFoundException("Course with id " + id + " does not exist");
         }
         return course;
@@ -123,6 +130,8 @@ public class CourseServiceImpl implements CourseService {
         validator.validateCourse(course);
         validator.validateCourseId(course.getId());
         Student student = studentRepository.findByUsername(userAccountService.getCurrentLoggedInUser().getUsername());
+
+		log.info("try registering currently logged in student with id "+student.getId()+" for course with id "+course.getId());
         if (course.getStudentLimits() <= course.getStudents().size()) {
             return false;
         } else if (course.getStudents().contains(student)) {
@@ -138,7 +147,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public List<Course> findAllForStudent(Student student) {
-        return courseRepository.findAllForStudent(student);
+        log.info("finding all courses for student with id "+student.getId());
+    	return courseRepository.findAllForStudent(student);
     }
 
     @Override
@@ -162,11 +172,13 @@ public class CourseServiceImpl implements CourseService {
     public CourseDetailsForStudent courseDetailsFor(Student student, Long courseId) {
         validator.validateCourseId(courseId);
         validator.validateStudent(student);
+        log.info("reading course details for student with id "+student.getId()+" from course with id "+ courseId);
         Course course = findOne(courseId);
         if (course == null) {
             log.warn("Course with id {} not found. Nothing to unregister", courseId);
             throw new BusinessObjectNotFoundException();
         }
+
 
         return new CourseDetailsForStudent(course)
                 .setCanEnroll(canEnrollToCourse(student, course))

@@ -1,19 +1,18 @@
 package at.ac.tuwien.inso.service.course_recommendation.impl;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.service.course_recommendation.RecommendationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.course_recommendation.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
+
+    private static final Long N_MAX_COURSE_RECOMMENDATIONS = 5L;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -38,6 +37,6 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .sorted(Map.Entry.<Course, Double>comparingByValue()
                         .reversed()).forEachOrdered(it -> recommendedCourses.add(it.getKey()));
 
-        return recommendedCourses;
+        return recommendedCourses.stream().limit(N_MAX_COURSE_RECOMMENDATIONS).collect(Collectors.toList());
     }
 }
