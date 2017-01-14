@@ -61,6 +61,46 @@ public class SemesterDto {
 	}
 
     /**
+     * SemesterDto that could be the current one
+     *
+     * Does not come from the DB, but only is calculated. Needed to find out, if the current
+     * semester is outdated.
+     */
+	public static SemesterDto calculateCurrentSemester(Calendar now) {
+        int currentYear = now.get(Calendar.YEAR);
+
+        List<SemesterDto> allSemesters = new LinkedList<>();
+
+        int[] possibleYears = {currentYear - 1, currentYear, currentYear + 1};
+
+        // Create a list of all possible semesters in those 3 years
+        for (int year : possibleYears) {
+            for (SemesterType type : SemesterType.values()) {
+                allSemesters.add(new SemesterDto(year, type));
+            }
+        }
+
+        SemesterDto possibleCurrent = allSemesters
+                .stream()
+                .filter(s -> s.isStartInPast(now)) // Current semesters that start in the future are not possible
+                .sorted(Comparator.comparing(SemesterDto::getStart).reversed())
+                .findFirst()
+                .get();
+
+        return possibleCurrent;
+    }
+
+    /**
+     * If the given Semester is also the current Semester
+     *
+     * @param now date to compare with (needed for testing)
+     */
+    public boolean isCurrent(Calendar now) {
+        SemesterDto calculated = calculateCurrentSemester(now);
+        return getYear() == calculated.getYear() && getType() == calculated.getType();
+    }
+
+    /**
      * If the semester started in the past
      * @param now date to compare with (needed for testing)
      */
