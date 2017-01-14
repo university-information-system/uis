@@ -8,17 +8,23 @@
     <div class="container">
         <h3 th:text="${subject.name}">Courses</h3>
 
-        <form class="row"
+        <input id="tags" class="typeahead form-control" type="text" />
+
+        <form name="courseForm" class="row"
               th:object="${addCourseForm}"
               th:action="@{editCourse(courseId=__${addCourseForm.course.id}__)}"
               method="post">
 
+            <input id="courseIdForTags" name="courseIdForTags" th:value="${course.id}" type="hidden"/>
+
             <div th:replace="lecturer/lecturerFragments:: addAndEdit"></div>
         </form>
+
     </div>
 
 </main>
 
 
 </body>
+
 </html>
