@@ -45,6 +45,7 @@ public class CourseDetailsTests {
     public void setUp() throws Exception {
 
         when(semesterService.getCurrentSemester()).thenReturn(currentSemester.toDto());
+        when(semesterService.getOrCreateCurrentSemester()).thenReturn(currentSemester.toDto());
 
         when(subjectForStudyPlanRepository.findBySubject(subject)).thenReturn(emptyList());
 
