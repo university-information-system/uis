@@ -37,6 +37,9 @@ public class AdminSubjectsController {
     @Autowired
     private Messages messages;
 
+    /**
+     * Maximum number of subjects that can be displayed on one page
+     */
     private static final Integer SUBJECTS_PER_PAGE = 10;
 
     @GetMapping
