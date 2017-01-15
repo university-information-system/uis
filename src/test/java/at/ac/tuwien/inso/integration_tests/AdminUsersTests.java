@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.integration_tests;
 
+import at.ac.tuwien.inso.controller.Constants;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import org.junit.*;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.*;
 import java.util.*;
 import java.util.stream.*;
 
+import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
 import static org.hamcrest.core.IsEqual.*;
 import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
@@ -80,25 +82,44 @@ public class AdminUsersTests {
     @Test
     public void itListsAllUsersOnExplicitPage() throws Exception {
         mockMvc.perform(
-                listUsers(2, 20)
+            listUsers(2)
         ).andExpect(
-                resultHasUsersPage(page(2, 20, users.size(), users.stream().skip(40).limit(20).collect(Collectors.toList())))
+            resultHasUsersPage(
+                page(
+                    2,
+                    MAX_PAGE_SIZE,
+                    users.size(),
+                    users
+                        .stream()
+                        .skip(2 * MAX_PAGE_SIZE)
+                        .limit(MAX_PAGE_SIZE)
+                        .collect(Collectors.toList())
+                )
+            )
         );
     }
 
-    private MockHttpServletRequestBuilder listUsers(int page, int size) {
-        return get("/admin/users")
-                .param("page", page + "")
-                .param("size", size + "")
+    private MockHttpServletRequestBuilder listUsers(int page) {
+        return get("/admin/users/page/" + (page + 1))
                 .with(user("admin").roles(Role.ADMIN.name()));
     }
 
     @Test
     public void onListAllItLimitsPageSize() throws Exception {
         mockMvc.perform(
-                listUsers(0, 100)
+            listUsers()
         ).andExpect(
-                resultHasUsersPage(page(0, 50, users.size(), users.stream().limit(50).collect(Collectors.toList())))
+            resultHasUsersPage(
+                page(
+                    0,
+                    MAX_PAGE_SIZE,
+                    users.size(),
+                    users
+                        .stream()
+                        .limit(MAX_PAGE_SIZE)
+                        .collect(Collectors.toList())
+                )
+            )
         );
     }
 

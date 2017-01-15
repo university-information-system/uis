@@ -64,7 +64,7 @@ public class SubjectsTest {
 
         // then the admin should see them all in the first page
         mockMvc.perform(
-                get("/admin/subjects/page/0").with(user("admin").roles("ADMIN")))
+                get("/admin/subjects").with(user("admin").roles("ADMIN")))
                 .andExpect(model().attribute("subjects", asList(calculus, sepm, ase))
         );
     }

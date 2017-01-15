@@ -102,7 +102,7 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         subject.addLecturers(lecturer);
-        Subject savedSubject = subjectRepository.save(subject);
+        subjectRepository.save(subject);
 
         return lecturer;
     }
