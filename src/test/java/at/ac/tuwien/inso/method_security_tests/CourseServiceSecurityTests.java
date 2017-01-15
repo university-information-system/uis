@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.method_security_tests;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.*;
 import org.junit.*;
@@ -137,10 +138,27 @@ public class CourseServiceSecurityTests {
         Course result = courseService.findOne(course.getId());
         assertTrue(course.getId().equals(result.getId()));
     }
+    
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void registerStudentForCourseNotAuthenticated() {
         courseService.registerStudentForCourse(course);
+    }
+    
+    @Test(expected = BusinessObjectNotFoundException.class)
+    @WithMockUser(roles = "LECTURER")
+    public void removeCourseAuthenticated(){
+    	AddCourseForm addCourseForm = new AddCourseForm(course);
+        Course result = courseService.saveCourse(addCourseForm);
+        assertTrue(addCourseForm.getCourse().equals(result));
+    	
+        courseService.remove(result.getId());
+        Course result2 = courseService.findOne(course.getId());
+    }
+    
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void removeCourseNotAuthenticated(){
+    	courseService.remove(course.getId());
     }
 
     @Test(expected = AccessDeniedException.class)
