@@ -61,58 +61,77 @@
 
         <!-- Pagination -->
         <ul th:if="${page.totalPages > 1}" class="pagination center">
+
+            <!-- Hide the chevron if the first page is active -->
             <li th:if="${page.isFirst()}" class="disabled">
                 <a href="#"><i class="material-icons disabled">chevron_left</i></a>
             </li>
 
             <li th:if="${not page.isFirst()}">
-                <a th:href="@{/admin/users(page=__${page.getNumber()-1}__)}"><i class="material-icons">chevron_left</i></a>
+                <a th:href="@{/admin/users/page/__${page.getNumber()}__?search=__${search}__}">
+                    <i class="material-icons">chevron_left</i>
+                </a>
             </li>
 
-            <li th:if="${page.getNumber()-4 >= 0}" class="waves-effect">
-                <a th:text="1" th:href="@{/admin/users(page=0)}"></a>
+
+            <!-- Only the 3 numbers before the active one are shown.
+                 If there are more numbers, we only show "1" followed by "…”
+            -->
+            <li th:if="${page.getNumber() >= 4}" class="waves-effect">
+                <a th:href="@{/admin/users?search=__${search}__}">1</a>
             </li>
 
-            <li th:if="${page.getNumber()-4 > 0}">
-                <a th:text="..."></a>
+            <li th:if="${page.getNumber() > 4}">
+                <a>…</a>
             </li>
 
-            <li th:if="${page.getNumber()-3 >= 0}" class="waves-effect">
-                <a th:text="${page.getNumber()-2}" th:href="@{/admin/users(page=__${page.getNumber()-3}__)}"></a>
+
+            <!-- Show the 3 numbers before the active page -->
+            <li th:if="${page.getNumber() >= 3}" class="waves-effect">
+                <a th:text="${page.getNumber()-2}" th:href="@{/admin/users/page/__${page.getNumber()-2}__?search=__${search}__}"></a>
             </li>
 
-            <li th:if="${page.getNumber()-2 >= 0}" class="waves-effect">
-                <a th:text="${page.getNumber()-1}" th:href="@{/admin/users(page=__${page.getNumber()-2}__)}"></a>
+            <li th:if="${page.getNumber() >= 2}" class="waves-effect">
+                <a th:text="${page.getNumber()-1}" th:href="@{/admin/users/page/__${page.getNumber()-1}__?search=__${search}__}"></a>
             </li>
 
-            <li th:if="${page.getNumber()-1 >= 0}" class="waves-effect">
-                <a th:text="${page.getNumber()}" th:href="@{/admin/users(page=__${page.getNumber()-1}__)}"></a>
+            <li th:if="${page.getNumber() >= 1}" class="waves-effect">
+                <a th:text="${page.getNumber()}" th:href="@{/admin/users/page/__${page.getNumber()}__?search=__${search}__}"></a>
             </li>
+
 
             <li class="active teal">
                 <a th:text="${page.getNumber()+1}"></a>
             </li>
 
+
+            <!-- the three numbers after the active element -->
             <li th:if="${page.getNumber()+1 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getNumber()+2}" th:href="@{/admin/users(page=__${page.getNumber()+1}__)}"></a>
+                <a th:text="${page.getNumber()+2}" th:href="@{/admin/users/page/__${page.getNumber()+2}__?search=__${search}__}"></a>
             </li>
 
             <li th:if="${page.getNumber()+2 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getNumber()+3}" th:href="@{/admin/users(page=__${page.getNumber()+2}__)}"></a>
+                <a th:text="${page.getNumber()+3}" th:href="@{/admin/users/page/__${page.getNumber()+3}__?search=__${search}__}"></a>
             </li>
 
             <li th:if="${page.getNumber()+3 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getNumber()+4}" th:href="@{/admin/users(page=__${page.getNumber()+3}__)}"></a>
+                <a th:text="${page.getNumber()+4}" th:href="@{/admin/users/page/__${page.getNumber()+4}__?search=__${search}__}"></a>
             </li>
 
+
+            <!-- Only the 3 numbers before/after the active element are shown.
+                 After that we show "…" and then the final number.
+             -->
             <li th:if="${page.getNumber()+4 &lt; page.getTotalPages()-1}">
-                <a th:text="..."></a>
+                <a>…</a>
             </li>
 
             <li th:if="${page.getNumber()+4 &lt;= page.getTotalPages()-1}" class="waves-effect">
-                <a th:text="${page.getTotalPages()}" th:href="@{/admin/users(page=__${page.getTotalPages()-1}__)}"></a>
+                <a th:text="${page.getTotalPages()}" th:href="@{/admin/users/page/__${page.getTotalPages()}__?search=__${search}__}"></a>
             </li>
 
+
+            <!-- Hide the chevron if the last element is active -->
             <li th:if="${page.isLast()}" class="disabled">
                 <a href="#">
                     <i class="material-icons">chevron_right</i>
@@ -120,7 +139,7 @@
             </li>
 
             <li th:if="${!page.isLast()}">
-                <a th:href="@{/admin/users(page=__${page.getNumber()+1}__)}">
+                <a th:href="@{/admin/users/page/__${page.getNumber()+2}__?search=__${search}__}">
                     <i class="material-icons">chevron_right</i>
                 </a>
             </li>
