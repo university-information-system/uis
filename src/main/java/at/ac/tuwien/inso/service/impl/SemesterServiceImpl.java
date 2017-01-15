@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.service.impl;
 
-import com.sun.istack.internal.Nullable;
+//import com.sun.istack.internal.Nullable; this does not exist!
 
 import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.*;
