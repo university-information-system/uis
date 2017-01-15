@@ -53,9 +53,12 @@ public class AdminSubjectsController {
             @RequestParam(value = "search", required = false) String search,
             Model model
     ) {
-        return listSubjectsForPage(search, 1, model);
-    }
+        if (search == "") {
+            return "redirect:/admin/subjects";
+        }
 
+        return listSubjectsForPageInternal(search, 1, model);
+    }
 
     @GetMapping("/page/{pageNumber}")
     private String listSubjectsForPage(
@@ -63,29 +66,41 @@ public class AdminSubjectsController {
             @PathVariable Integer pageNumber,
             Model model
     ) {
+        if (search == "") {
+            return "redirect:/admin/subjects/page/" + pageNumber;
+        }
 
-        final String searchString = getSearchString(search);
+        if (pageNumber == 1) {
+            return "redirect:/admin/subjects?search=" + search;
+        }
+
+        return listSubjectsForPageInternal(search, pageNumber, model);
+    }
+
+    /**
+     * Does all the work for listSubjects and listSubjectsForPage
+     */
+    private String listSubjectsForPageInternal(String search, int pageNumber, Model model) {
+        if (search == null) {
+            search = "";
+        }
 
         // Page numbers in the URL start with 1
         PageRequest page = new PageRequest(pageNumber - 1, SUBJECTS_PER_PAGE);
 
-        Page<Subject> subjectsPage = subjectService.findBySearch(searchString, page);
-
+        Page<Subject> subjectsPage = subjectService.findBySearch(search, page);
         List<Subject> subjects = subjectsPage.getContent();
+
+        if (subjects.size() == 0 && subjectsPage.getTotalElements() != 0) {
+            int lastPage = subjectsPage.getTotalPages() - 1;
+            return "redirect:admin/subjects/page/" + lastPage + "?search=" + search;
+        }
 
         model.addAttribute("subjects", subjects);
         model.addAttribute("page", subjectsPage);
+        model.addAttribute("search", search);
 
         return "admin/subjects";
-    }
-
-    @ModelAttribute("search")
-    private String getSearchString(@RequestParam(value = "search", required = false) String search) {
-        if (search != null && !search.isEmpty()) {
-            return search;
-        }
-
-        return "";
     }
 
 
