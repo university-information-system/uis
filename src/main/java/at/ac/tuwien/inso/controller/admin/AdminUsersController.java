@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.validation.*;
+
+import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -35,14 +38,52 @@ public class AdminUsersController {
 
     @GetMapping
     public String listUsers(
-            @RequestParam(value = "search", defaultValue = "") String searchFilter,
-            @PageableDefault Pageable pageable,
+            @RequestParam(value = "search", required = false) String search,
             Model model
     ) {
-        if (pageable.getPageSize() > Constants.MAX_PAGE_SIZE) {
-            pageable = new PageRequest(pageable.getPageNumber(), Constants.MAX_PAGE_SIZE);
+        if (search == "") {
+            return "redirect:/admin/users";
         }
-        model.addAttribute("page", uisUserService.findAllMatching(searchFilter, pageable));
+
+        return listUsersInternal(search, 1, model);
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public String listUsersForPage(
+            @RequestParam(value = "search", required = false) String search,
+            @PathVariable Integer pageNumber,
+            Model model
+    ) {
+        if (search == "") {
+            return "redirect:/admin/users/page/" + pageNumber;
+        }
+
+        if (pageNumber == 1) {
+            return "redirect:/admin/users?search=" + search;
+        }
+
+        return listUsersInternal(search, pageNumber, model);
+    }
+
+    private String listUsersInternal(String search, int pageNumber, Model model) {
+        if (search == null) {
+            search = "";
+        }
+
+        // Page numbers in the URL start with 1
+        PageRequest pageable = new PageRequest(pageNumber - 1, MAX_PAGE_SIZE);
+
+        Page<UisUser> usersPage = uisUserService.findAllMatching(search, pageable);
+        List<UisUser> users = usersPage.getContent();
+
+        // If the user tries to access a page that doesn't exist
+        if (users.size() == 0 && usersPage.getTotalElements() != 0) {
+            int lastPage = usersPage.getTotalPages();
+            return "redirect:/admin/users/page/" + lastPage + "?search=" + search;
+        }
+
+        model.addAttribute("page", usersPage);
+        model.addAttribute("search", search);
 
         return "admin/users";
     }
