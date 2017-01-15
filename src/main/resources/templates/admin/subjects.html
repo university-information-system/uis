@@ -90,7 +90,7 @@
                 </li>
 
                 <li th:if="${not page.isFirst()}">
-                    <a th:href="@{/admin/subjects/page/__${page.getNumber()-1}__?search=__${search}__}">
+                    <a th:href="@{/admin/subjects/page/__${page.getNumber()}__?search=__${search}__}">
                         <i class="material-icons">chevron_left</i>
                     </a>
                 </li>
@@ -113,17 +113,17 @@
                 <!-- Show the 3 numbers before the active page -->
                 <li th:if="${page.getNumber() >= 3}" class="waves-effect">
                     <a th:text="${page.getNumber()-2}"
-                       th:href="@{/admin/subjects/page/__${page.getNumber()-3}__?search=__${search}__}"></a>
+                       th:href="@{/admin/subjects/page/__${page.getNumber()-2}__?search=__${search}__}"></a>
                 </li>
 
                 <li th:if="${page.getNumber() >= 2}" class="waves-effect">
                     <a th:text="${page.getNumber()-1}"
-                       th:href="@{/admin/subjects/page/__${page.getNumber()-2}__?search=__${search}__}"></a>
+                       th:href="@{/admin/subjects/page/__${page.getNumber()-1}__?search=__${search}__}"></a>
                 </li>
 
                 <li th:if="${page.getNumber() >= 1}" class="waves-effect">
                     <a th:text="${page.getNumber()}"
-                       th:href="@{/admin/subjects/page/__${page.getNumber()-1}__?search=__${search}__}"></a>
+                       th:href="@{/admin/subjects/page/__${page.getNumber()}__?search=__${search}__}"></a>
                 </li>
 
 
@@ -136,19 +136,19 @@
                 <!-- The 3 numbers after the active page -->
                 <li th:if="${page.getNumber()+1 &lt;= page.getTotalPages()-1}" class="waves-effect">
                     <a th:text="${page.getNumber()+2}"
-                       th:href="@{/admin/subjects/page/__${page.getNumber()+1}__?search=__${search}__}">
+                       th:href="@{/admin/subjects/page/__${page.getNumber()+2}__?search=__${search}__}">
                     </a>
                 </li>
 
                 <li th:if="${page.getNumber()+2 &lt;= page.getTotalPages()-1}" class="waves-effect">
                     <a th:text="${page.getNumber()+3}"
-                       th:href="@{/admin/subjects/page/__${page.getNumber()+2}__?search=__${search}__}">
+                       th:href="@{/admin/subjects/page/__${page.getNumber()+3}__?search=__${search}__}">
                     </a>
                 </li>
 
                 <li th:if="${page.getNumber()+3 &lt;= page.getTotalPages()-1}" class="waves-effect">
                     <a th:text="${page.getNumber()+4}"
-                       th:href="@{/admin/subjects/page/__${page.getNumber()+3}__?search=__${search}__}">
+                       th:href="@{/admin/subjects/page/__${page.getNumber()+4}__?search=__${search}__}">
                     </a>
                 </li>
 
@@ -162,20 +162,20 @@
 
                 <li th:if="${page.getNumber()+4 &lt;= page.getTotalPages()-1}" class="waves-effect">
                     <a th:text="${page.getTotalPages()}"
-                       th:href="@{/admin/subjects/page/__${page.getTotalPages()-1}__?search=__${search}__}">
+                       th:href="@{/admin/subjects/page/__${page.getTotalPages()}__?search=__${search}__}">
                     </a>
                 </li>
 
 
                 <!-- Disable the chevron if the last page is active -->
                 <li th:if="${page.isLast()}" class="disabled">
-                    <a href="#">
+                    <a>
                         <i class="material-icons disabled">chevron_right</i>
                     </a>
                 </li>
 
                 <li th:if="${!page.isLast()}">
-                    <a th:href="@{/admin/subjects/page/__${page.getNumber()+1}__?search=__${search}__}">
+                    <a th:href="@{/admin/subjects/page/__${page.getNumber()+2}__?search=__${search}__}">
                         <i class="material-icons">chevron_right</i>
                     </a>
                 </li>

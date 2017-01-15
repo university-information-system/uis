@@ -1,12 +1,16 @@
 package at.ac.tuwien.inso.controller.admin;
 
+import at.ac.tuwien.inso.controller.Constants;
 import at.ac.tuwien.inso.controller.admin.forms.CreateSubjectForm;
+import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.service.impl.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
 import at.ac.tuwien.inso.entity.Subject;
@@ -47,8 +53,9 @@ public class AdminSubjectsController {
             @RequestParam(value = "search", required = false) String search,
             Model model
     ) {
-        return listSubjectsForPage(search, 0, model);
+        return listSubjectsForPage(search, 1, model);
     }
+
 
     @GetMapping("/page/{pageNumber}")
     private String listSubjectsForPage(
@@ -58,12 +65,16 @@ public class AdminSubjectsController {
     ) {
 
         final String searchString = getSearchString(search);
-        PageRequest page = new PageRequest(pageNumber, SUBJECTS_PER_PAGE);
 
-        Page<Subject> subjects = subjectService.findBySearch(searchString, page);
+        // Page numbers in the URL start with 1
+        PageRequest page = new PageRequest(pageNumber - 1, SUBJECTS_PER_PAGE);
 
-        model.addAttribute("subjects", subjects.getContent());
-        model.addAttribute("page", subjects);
+        Page<Subject> subjectsPage = subjectService.findBySearch(searchString, page);
+
+        List<Subject> subjects = subjectsPage.getContent();
+
+        model.addAttribute("subjects", subjects);
+        model.addAttribute("page", subjectsPage);
 
         return "admin/subjects";
     }
