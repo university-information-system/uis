@@ -39,6 +39,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserAccountService userAccountService;
+    
+    @Autowired
+    private GradeService gradeService;
 
     @Autowired
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
@@ -101,6 +104,35 @@ public class CourseServiceImpl implements CourseService {
             throw new BusinessObjectNotFoundException("Course with id " + id + " does not exist");
         }
         return course;
+    }
+    
+    @Override
+    @Transactional
+    public boolean remove(Long courseId) throws ValidationException{
+    	log.info("try removing  course with id "+courseId);
+        validator.validateCourseId(courseId); // throws ValidationException
+    	Course course = courseRepository.findOne(courseId);
+    	
+    	if(course==null){
+    		
+    	}
+        
+    	/*if(||!course.getStudents().isEmpty()){
+    		String msg = "There are students for course [id:"+courseId+"], therefore it can not be removed.";
+    		log.warn(msg);
+    		throw new javax.validation.ValidationException(msg);
+    	}
+    	log.info("course was empty");*/
+    	//log.info("size: "+gradeService.findAllByCourseId(courseId));
+    	
+    	List<Grade> grades = gradeService.findAllByCourseId(courseId);
+    	
+    	if(grades!=null&&!grades.isEmpty()){
+    		String msg = "There are grades for course [id:"+courseId+"], therefore it can not be removed.";
+    	}
+        
+    	
+    	return false;
     }
 
 

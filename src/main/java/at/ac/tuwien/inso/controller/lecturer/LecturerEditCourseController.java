@@ -49,5 +49,18 @@ public class LecturerEditCourseController {
         redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.edit.success", course.getSubject().getName()));
         return "redirect:/lecturer/courses";
     }
+    
+    @GetMapping("/remove")
+    private String removeCourse(@RequestParam("courseId") Long courseId){
+    	System.out.println("hallo" + courseId);
+    	
+    	try{
+    		courseService.remove(courseId);
+    	}catch(Exception e){
+    		
+    	}
+    	
+    	return "";
+    }
 
 }

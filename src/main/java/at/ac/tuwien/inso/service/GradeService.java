@@ -18,6 +18,9 @@ public interface GradeService {
 
     @PreAuthorize("hasRole('LECTURER')")
     List<Grade> getGradesForCourseOfLoggedInLecturer(Long courseId);
+    
+    @PreAuthorize("hasRole('LECTURER')")
+	List<Grade> findAllByCourseId(Long courseId);
 
     @PreAuthorize("hasRole('STUDENT')")
     List<Grade> getGradesForLoggedInStudent();
@@ -29,4 +32,5 @@ public interface GradeService {
 
     @PreAuthorize("isAuthenticated()")
     List<Mark> getMarkOptions();
+
 }
