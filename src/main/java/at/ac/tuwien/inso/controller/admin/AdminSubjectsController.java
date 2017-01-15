@@ -46,7 +46,7 @@ public class AdminSubjectsController {
             @RequestParam(value = "search", required = false) String search,
             Model model
     ) {
-        if (search == "") {
+        if ("".equals(search)) {
             return "redirect:/admin/subjects";
         }
 
@@ -59,7 +59,11 @@ public class AdminSubjectsController {
             @PathVariable Integer pageNumber,
             Model model
     ) {
-        if (search == "") {
+        if (search == null && pageNumber == 1) {
+            return "redirect:/admin/subjects";
+        }
+
+        if ("".equals(search)) {
             return "redirect:/admin/subjects/page/" + pageNumber;
         }
 
