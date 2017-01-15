@@ -26,6 +26,8 @@ import at.ac.tuwien.inso.service.SubjectService;
 
 import javax.validation.Valid;
 
+import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
+
 @Controller
 @RequestMapping("/admin/subjects")
 public class AdminSubjectsController {
@@ -38,10 +40,6 @@ public class AdminSubjectsController {
     @Autowired
     private Messages messages;
 
-    /**
-     * Maximum number of subjects that can be displayed on one page
-     */
-    private static final Integer SUBJECTS_PER_PAGE = 10;
 
     @GetMapping
     private String listSubjects(
@@ -81,7 +79,7 @@ public class AdminSubjectsController {
         }
 
         // Page numbers in the URL start with 1
-        PageRequest page = new PageRequest(pageNumber - 1, SUBJECTS_PER_PAGE);
+        PageRequest page = new PageRequest(pageNumber - 1, MAX_PAGE_SIZE);
 
         Page<Subject> subjectsPage = subjectService.findBySearch(search, page);
         List<Subject> subjects = subjectsPage.getContent();
