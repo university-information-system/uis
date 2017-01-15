@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.stream.*;
 
+import static at.ac.tuwien.inso.entity.SemesterType.WinterSemester;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static java.util.Comparator.*;
@@ -44,18 +45,19 @@ public class StudyProgressServiceTests {
 
     @Before
     public void setUp() throws Exception {
-    	dtoSemesters = new ArrayList<>();
+        dtoSemesters = new ArrayList<>();
+        IntStream.range(1, 5).forEach(it -> {
+            SemesterDto semester = new SemesterDto(it, WinterSemester);
+            semester.setId(Long.valueOf(it));
 
-        currentSemester = new SemesterDto(2016, SemesterType.WinterSemester);
-        pastSemester = new SemesterDto(2016, SemesterType.SummerSemester);
-
-        dtoSemesters.add(currentSemester);
-        dtoSemesters.add(pastSemester);
-        dtoSemesters.add(new SemesterDto(2015, SemesterType.WinterSemester));
-        dtoSemesters.add(new SemesterDto(2015, SemesterType.SummerSemester));
-        dtoSemesters.add(new SemesterDto(2014, SemesterType.WinterSemester));
+            dtoSemesters.add(semester);
+        });
+        pastSemester = dtoSemesters.get(dtoSemesters.size() - 2);
+        currentSemester = dtoSemesters.get(dtoSemesters.size() - 1);
 
         when(semesterService.getCurrentSemester()).thenReturn(currentSemester);
+        when(semesterService.getOrCreateCurrentSemester()).thenReturn(currentSemester);
+
     }
 
     @Test
