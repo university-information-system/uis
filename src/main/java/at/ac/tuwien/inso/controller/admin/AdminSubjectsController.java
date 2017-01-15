@@ -91,9 +91,10 @@ public class AdminSubjectsController {
         Page<Subject> subjectsPage = subjectService.findBySearch(search, page);
         List<Subject> subjects = subjectsPage.getContent();
 
+        // If the user tries to access a page that doesn't exist
         if (subjects.size() == 0 && subjectsPage.getTotalElements() != 0) {
-            int lastPage = subjectsPage.getTotalPages() - 1;
-            return "redirect:admin/subjects/page/" + lastPage + "?search=" + search;
+            int lastPage = subjectsPage.getTotalPages();
+            return "redirect:/admin/subjects/page/" + lastPage + "?search=" + search;
         }
 
         model.addAttribute("subjects", subjects);
