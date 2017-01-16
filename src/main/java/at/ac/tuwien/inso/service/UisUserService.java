@@ -9,6 +9,10 @@ import org.springframework.security.access.prepost.*;
 public interface UisUserService {
 
 	/**
+	 * returns all matching UisUsers that fit the searchFilter and are on the provided Pageable.
+	 * the query should be ordered desc. by the user IDs
+	 * can only be used by ADMINs.
+	 *
 	 * 
 	 * @param searchFilter
 	 * @param pageable
