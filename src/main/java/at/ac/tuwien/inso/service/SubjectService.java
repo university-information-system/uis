@@ -10,6 +10,14 @@ import java.util.*;
 
 public interface SubjectService {
 
+	/**
+	 * returns all Subjects that match the search text.
+	 * 
+	 * only works if user is authenticated.
+	 * @param search
+	 * @param pageable
+	 * @return
+	 */
     @PreAuthorize("isAuthenticated()")
     Page<Subject> findBySearch(String search, Pageable pageable);
 
@@ -31,6 +39,8 @@ public interface SubjectService {
     /**
      * Removes a lecturer from a subject
      *
+     *only works if the user is ADMIN
+     *
      * @param subjectId
      * @param lecturerUisUserId
      * @return the removed lecturer
@@ -41,6 +51,9 @@ public interface SubjectService {
     /**
      * removes a subject from the system. is only possible if there exist no courses for this subject.
      * if courses exist, a validation exception will be thrown.
+     * 
+     * only works if the user is ADMIN
+     * 
      * @param subject
      * @return
      */
