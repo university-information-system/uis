@@ -1,5 +1,12 @@
 package at.ac.tuwien.inso.method_security_tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +25,6 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
@@ -30,16 +34,13 @@ import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.LecturerRepository;
 import at.ac.tuwien.inso.repository.SemesterRepository;
 import at.ac.tuwien.inso.repository.StudentRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
 import at.ac.tuwien.inso.service.CourseService;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -157,10 +158,27 @@ public class CourseServiceSecurityTests {
         Course result = courseService.findOne(course.getId());
         assertTrue(course.getId().equals(result.getId()));
     }
+    
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void registerStudentForCourseNotAuthenticated() {
         courseService.registerStudentForCourse(course);
+    }
+    
+    @Test(expected = BusinessObjectNotFoundException.class)
+    @WithMockUser(roles = "LECTURER")
+    public void removeCourseAuthenticated(){
+    	AddCourseForm addCourseForm = new AddCourseForm(course);
+        Course result = courseService.saveCourse(addCourseForm);
+        assertTrue(addCourseForm.getCourse().equals(result));
+    	
+        courseService.remove(result.getId());
+        Course result2 = courseService.findOne(course.getId());
+    }
+    
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void removeCourseNotAuthenticated(){
+    	courseService.remove(course.getId());
     }
 
     @Test(expected = AccessDeniedException.class)

@@ -105,6 +105,12 @@ public class GradeServiceImpl implements GradeService {
     public List<Mark> getMarkOptions() {
         return Arrays.asList(Mark.EXCELLENT, Mark.GOOD, Mark.SATISFACTORY, Mark.SUFFICIENT, Mark.FAILED);
     }
+    
+    @Override
+    public List<Grade> findAllByCourseId(Long courseId){
+    	log.info("trying to find all courses by id "+courseId);
+    	return gradeRepository.findByCourseId(courseId);
+    }
 
     private Long parseValidationIdentifier(String identifier) {
         return Long.valueOf(identifier);

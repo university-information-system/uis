@@ -3,6 +3,8 @@ package at.ac.tuwien.inso.service;
 import at.ac.tuwien.inso.controller.lecturer.forms.*;
 import at.ac.tuwien.inso.dto.*;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.ValidationException;
+
 import org.springframework.data.domain.*;
 import org.springframework.security.access.prepost.*;
 
@@ -22,6 +24,9 @@ public interface CourseService {
 
     @PreAuthorize("isAuthenticated()")
     Course findOne(Long id);
+    
+    @PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
+    boolean remove(Long id) throws ValidationException;
 
     @PreAuthorize("hasRole('STUDENT')")
     boolean registerStudentForCourse(Course course);
