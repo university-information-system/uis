@@ -33,6 +33,11 @@ public interface UisUserService {
     @PreAuthorize("hasRole('ADMIN')")
     UisUser findOne(long id) throws BusinessObjectNotFoundException;
 
+    /**
+     * looks up if a UisUser with the provided id exists in the repository. returns a true boolean if the id exists.
+     * @param id
+     * @return boolean
+     */
     @PreAuthorize("isAuthenticated()")
     boolean existsUserWithIdentificationNumber(String id);
 }
