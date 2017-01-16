@@ -354,6 +354,31 @@ public class DataInitializer {
         put("Sprint", new Tag("Sprint"));
         put("SCRUM", new Tag("SCRUM"));
         put("PR", new Tag("PR"));
+        put("Verteilte Systeme", new Tag("Verteilte Systeme"));
+        put("Protokolle", new Tag("Protokolle"));
+        put("Kommunikationsmechanismen", new Tag("Kommunikationsmechanismen"));
+        put("Namenssystemen", new Tag("Namenssystemen"));
+        put("Fehlertoleranz", new Tag("Fehlertoleranz"));
+        put("Client-Server", new Tag("Client-Server"));
+        put("Cloud Computing", new Tag("Cloud Computing"));
+        put("Sichere Kanäle", new Tag("Sichere Kanäle"));
+        put("Wissenschaft", new Tag("Wissenschaft"));
+        put("Sozial", new Tag("Sozial"));
+        put("UI Design", new Tag("UI Design"));
+        put("Interaktionskonzepte", new Tag("Interaktionskonzepte"));
+        put("Interface & Interaction Design", new Tag("Interface & Interaction Design"));
+        put("Interaktive Systeme", new Tag("Interaktive Systeme"));
+        put("Benutzerschnittstellen", new Tag("Benutzerschnittstellen"));
+        put("Wissensbasierte Systeme", new Tag("Wissensbasierte Systeme"));
+        put("Logik", new Tag("Logik"));
+        put("Nichtmonotones Schließen", new Tag("Nichtmonotones Schließen"));
+        put("Answer-Set Programmierung", new Tag("Answer-Set Programmierung"));
+        put("Probabilistische Methoden", new Tag("Probabilistische Methoden"));
+        put("Forschung", new Tag("Forschung"));
+        put("Vorstellen", new Tag("Vorstellen"));
+        put("Literatur", new Tag("Literatur"));
+        put("Seminar", new Tag("Seminar"));
+        put("Präsentation", new Tag("Präsentation"));
     }};
 
     private Map<String, Student> studentMap = new HashMap<String, Student>() {
@@ -539,6 +564,7 @@ public class DataInitializer {
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester2();
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester3();
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester4();
+        addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester5();
     }
 
     private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester1() {
@@ -740,6 +766,53 @@ public class DataInitializer {
                 tags.get("Softwarequalitätssicherung"), tags.get("Risikomanagement"), tags.get("Qualitätsmanagement"),
                 tags.get("Projektmarketing"), tags.get("Diffizil"), tags.get("Praxis"),
                 tags.get("Sprint"), tags.get("SCRUM"), tags.get("CRUD"), tags.get("SQL"), tags.get("UML")
+        );
+    }
+
+    private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester5() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Verteilte Systeme").addTags(
+                tags.get("VO"), tags.get("Theorie"), tags.get("Software"), tags.get("Verteilte Systeme"),
+                tags.get("Grundlagen"), tags.get("Netzwerk"), tags.get("Protokolle"), tags.get("Algorithmen"),
+                tags.get("Kommunikationsmechanismen"), tags.get("Namenssystemen"), tags.get("Fehlertoleranz"),
+                tags.get("Diffizil"), tags.get("Client-Server"), tags.get("Thread"), tags.get("Security"),
+                tags.get("Encryption"), tags.get("Scheduling"), tags.get("Synchronisation"),
+                tags.get("Cloud Computing"), tags.get("Sichere Kanäle")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Verteilte Systeme").addTags(
+                tags.get("UE"), tags.get("Programmieren"), tags.get("Testing"), tags.get("Software"),
+                tags.get("Verteilte Systeme"), tags.get("Gruppenarbeit"), tags.get("Teamfaehigkeit"),
+                tags.get("Debug"), tags.get("Netzwerk"), tags.get("Objektorientiert"),
+                tags.get("Encryption"), tags.get("Scheduling"), tags.get("Algorithmen"),
+                tags.get("Synchronisation"), tags.get("Diffizil"), tags.get("Praxis"),
+                tags.get("Client-Server"), tags.get("Thread"), tags.get("Fehlertoleranz"),
+                tags.get("Protokolle"), tags.get("Kommunikationsmechanismen"),
+                tags.get("Cloud Computing"), tags.get("Sichere Kanäle")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Gesellschaftswissenschaftliche Grundlagen der Informatik").addTags(
+                tags.get("VU"), tags.get("Wissenschaft"), tags.get("Theorie"), tags.get("Technik"),
+                tags.get("Gesellschaft"), tags.get("Grundlagen"), tags.get("Einfach"),
+                tags.get("Sozial")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Interface and Interaction Design").addTags(
+                tags.get("VU"), tags.get("Programmieren"), tags.get("UI Design"), tags.get("Software"),
+                tags.get("Interaktionskonzepte"), tags.get("Interface & Interaction Design"),
+                tags.get("Interaktive Systeme"), tags.get("Debug"), tags.get("Einfach"),
+                tags.get("Benutzerschnittstellen")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Einführung in wissensbasierte Systeme").addTags(
+                tags.get("VU"), tags.get("Theorie"), tags.get("Programmieren"), tags.get("Wissensbasierte Systeme"),
+                tags.get("Grundlagen"), tags.get("Logik"), tags.get("Nichtmonotones Schließen"),
+                tags.get("Answer-Set Programmierung"), tags.get("Probabilistische Methoden"), tags.get("Diffizil")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Einführung in wissensbasierte Systeme").addTags(
+                tags.get("VU"), tags.get("Theorie"), tags.get("Wissenschaft"), tags.get("Forschung"),
+                tags.get("Vorstellen"), tags.get("Einfach"), tags.get("Literatur"),
+                tags.get("Seminar"), tags.get("Präsentation")
         );
     }
 
