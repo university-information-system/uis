@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.*;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
+	//this class does also extend org.springframework.security.core.userdetails.UserDetailsService
 
 
 	private static final Logger log = LoggerFactory.getLogger(UserAccountServiceImpl.class);
