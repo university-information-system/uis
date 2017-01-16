@@ -2,17 +2,20 @@ package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.student_subject_prefs.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.*;
-import java.util.stream.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 @Component
 public class DataInitializer {
@@ -263,6 +266,7 @@ public class DataInitializer {
         put("Analysis", new Tag("Analysis"));
         put("Langweilig", new Tag("Langweilig"));
         put("Theorie", new Tag("Theorie"));
+        put("Praxis", new Tag("Praxis"));
         put("Gesellschaft", new Tag("Gesellschaft"));
         put("Human Computer Interaction", new Tag("Human Computer Interaction"));
         put("Laplace", new Tag("Laplace"));
@@ -285,6 +289,60 @@ public class DataInitializer {
         put("Spaß", new Tag("Spaß"));
         put("Einfach", new Tag("Einfach"));
         put("Diffizil", new Tag("Diffizil"));
+        put("Programmiersprachen", new Tag("Programmiersprachen"));
+        put("Gruppenarbeit", new Tag("Gruppenarbeit"));
+        put("Abstraktion", new Tag("Abstraktion"));
+        put("Teamfaehigkeit", new Tag("Teamfaehigkeit"));
+        put("Generizität", new Tag("Generizität"));
+        put("Haskell", new Tag("Haskell"));
+        put("Funktional", new Tag("Funktional"));
+        put("Lambda-Kalkuel", new Tag("Lambda-Kalkuel"));
+        put("Thread", new Tag("Thread"));
+        put("Prozes", new Tag("Prozes"));
+        put("Synchronisation", new Tag("Synchronisation"));
+        put("Betriebssystem", new Tag("Betriebssystem"));
+        put("C", new Tag("C"));
+        put("Scheduling", new Tag("Scheduling"));
+        put("Multithreading", new Tag("Multithreading"));
+        put("Deadlock", new Tag("Deadlock"));
+        put("Semaphore", new Tag("Semaphore"));
+        put("Sequencer", new Tag("Sequencer"));
+        put("Eventcounts", new Tag("Eventcounts"));
+        put("Producer-Consumer", new Tag("Producer-Consumer"));
+        put("Speicherverwaltung", new Tag("Speicherverwaltung"));
+        put("Filesysteme", new Tag("Filesysteme"));
+        put("Netzwerke", new Tag("Netzwerke"));
+        put("Security", new Tag("Security"));
+        put("Eventcounts", new Tag("Eventcounts"));
+        put("Social engineering", new Tag("Social engineering"));
+        put("Physical Break-Ins", new Tag("Physical Break-Ins"));
+        put("Dumpster Diving", new Tag("Dumpster Diving"));
+        put("Password Cracking", new Tag("Password Cracking"));
+        put("Session Hijacking", new Tag("Session Hijacking"));
+        put("Spoofing", new Tag("Spoofing"));
+        put("Viruses", new Tag("Viruses"));
+        put("Worms", new Tag("Worms"));
+        put("Trojan Horses", new Tag("Trojan Horses"));
+        put("Phishing", new Tag("Phishing"));
+        put("Encryption", new Tag("Encryption"));
+        put("Spyware", new Tag("Spyware"));
+        put("Phishing", new Tag("Phishing"));
+        put("Encryption", new Tag("Encryption"));
+        put("Spyware", new Tag("Spyware"));
+        put("Adware", new Tag("Adware"));
+        put("Cryptography", new Tag("Cryptography"));
+        put("Risk Analysis", new Tag("Risk Analysis"));
+        put("Recht", new Tag("Recht"));
+        put("Wirtschaft", new Tag("Wirtschaft"));
+        put("Technik", new Tag("Technik"));
+        put("Statistik", new Tag("Statistik"));
+        put("Wahrscheinlichkeitstheorie", new Tag("Wahrscheinlichkeitstheorie"));
+        put("Verteilung", new Tag("Verteilung"));
+        put("Histogramm", new Tag("Histogramm"));
+        put("Grundlagen der Bayes'schen", new Tag("Grundlagen der Bayes'schen"));
+        put("Wahrscheinlichkeitsraeume", new Tag("Wahrscheinlichkeitsraeume"));
+        put("Stochastik", new Tag("Stochastik"));
+        put("Gesetz der großen Zahlen", new Tag("Gesetz der großen Zahlen"));
     }};
 
     private Map<String, Student> studentMap = new HashMap<String, Student>() {
@@ -468,13 +526,14 @@ public class DataInitializer {
     private void addTagsToBachelorSoftwareAndInformationEngineeringCourses() {
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester1();
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester2();
+        addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester3();
     }
 
     private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester1() {
         coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").addTags(
                 tags.get("VU"), tags.get("Programmieren"), tags.get("Java"), tags.get("Debug"),
                 tags.get("Rekursion"), tags.get("Software"), tags.get("Einfach"), tags.get("Grundlagen"),
-                tags.get("Objektorientiert")
+                tags.get("Objektorientiert"), tags.get("Generizität")
         );
 
         coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").addTags(
@@ -501,7 +560,8 @@ public class DataInitializer {
 
         coursesBachelorSoftwareAndInformationEngineering.get("VU Formale Modellierung").addTags(
                 tags.get("VU"), tags.get("Automaten"), tags.get("reguläre Ausdrücke"), tags.get("formale Grammatiken"),
-                tags.get("Aussagenlogik"), tags.get("Petri-Netze"), tags.get("Prädikatenlogik"), tags.get("Diffizil"), tags.get("Grundlagen")
+                tags.get("Aussagenlogik"), tags.get("Petri-Netze"), tags.get("Prädikatenlogik"), tags.get("Diffizil"), tags.get("Grundlagen"),
+                tags.get("Lambda-Kalkuel")
         );
 
         coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addTags(
@@ -512,12 +572,6 @@ public class DataInitializer {
     }
 
     private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester2() {
-        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenbanksysteme").addTags(
-                tags.get("VU"), tags.get("EER"), tags.get("Relationenmodel"), tags.get("Domänenkalkül"),
-                tags.get("Datenbanksprachen"), tags.get("Normalformen"), tags.get("SQL"),
-                tags.get("Datenintegrität"), tags.get("Diffizil"), tags.get("JDBC"), tags.get("DBMS")
-        );
-
         coursesBachelorSoftwareAndInformationEngineering.get("VU Algorithmen und Datenstrukturen 1").addTags(
                 tags.get("VU"), tags.get("Datenstrukturen"), tags.get("Algorithmen"), tags.get("Java"),
                 tags.get("Programmieren"), tags.get("Debug"), tags.get("Rekursion"),
@@ -564,6 +618,86 @@ public class DataInitializer {
         coursesBachelorSoftwareAndInformationEngineering.get("VU Objektorientierte Modellierung").addTags(
                 tags.get("VU"), tags.get("Objektorientiert"), tags.get("UML"), tags.get("Grundlagen"),
                 tags.get("Einfach")
+        );
+    }
+
+    private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester3() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Objektorientierte Programmiertechniken").addTags(
+                tags.get("VU"), tags.get("Objektorientiert"), tags.get("Programmiersprachen"),
+                tags.get("Programmieren"), tags.get("Java"),
+                tags.get("Debug"), tags.get("Software"), tags.get("Teamfaehigkeit"),
+                tags.get("Gruppenarbeit"), tags.get("Abstraktion"), tags.get("Diffizil"),
+                tags.get("Generizität"), tags.get("Theorie"), tags.get("Praxis")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Funktionale Programmierung").addTags(
+                tags.get("VU"), tags.get("Programmiersprachen"), tags.get("Programmieren"),
+                tags.get("Diffizil"), tags.get("Haskell"), tags.get("Debug"),
+                tags.get("Software"), tags.get("Teamfaehigkeit"),
+                tags.get("Gruppenarbeit"), tags.get("Haskell"), tags.get("Diffizil"),
+                tags.get("Funktional"), tags.get("Theorie"), tags.get("Praxis"),
+                tags.get("Grundlagen"), tags.get("Rekursion"), tags.get("Funktionen"),
+                tags.get("Lambda-Kalkuel")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Betriebssysteme").addTags(
+                tags.get("V0"), tags.get("Theorie"), tags.get("Thread"), tags.get("Prozess"),
+                tags.get("Synchronisation"), tags.get("Grundlagen"), tags.get("Betriebssystem"),
+                tags.get("Scheduling"), tags.get("Multithreading"), tags.get("Deadlock"),
+                tags.get("Datenstrukturen"), tags.get("Semaphore"),
+                tags.get("Sequencer"), tags.get("Eventcounts"), tags.get("Producer-Consumer"),
+                tags.get("Speicherverwaltung"), tags.get("Filesysteme"), tags.get("Netzwerk"),
+                tags.get("Security"), tags.get("Software"), tags.get("C")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Betriebssysteme").addTags(
+                tags.get("UE"), tags.get("Programmieren"), tags.get("Thread"), tags.get("Prozess"),
+                tags.get("Synchronisation"), tags.get("Grundlagen"), tags.get("Betriebssystem"),
+                tags.get("Scheduling"), tags.get("Multithreading"), tags.get("Deadlock"),
+                tags.get("Datenstrukturen"), tags.get("Semaphore"),
+                tags.get("Sequencer"), tags.get("Eventcounts"), tags.get("Producer-Consumer"),
+                tags.get("Speicherverwaltung"), tags.get("Filesysteme"), tags.get("Netzwerk"),
+                tags.get("Security"), tags.get("Software"), tags.get("Diffizil"), tags.get("C")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Introduction to Security").addTags(
+                tags.get("VU"), tags.get("Programmieren"), tags.get("Social engineering"), tags.get("Physical Break-Ins"),
+                tags.get("Dumpster Diving"), tags.get("Grundlagen"), tags.get("Password Cracking"),
+                tags.get("Session Hijacking"), tags.get("Network"), tags.get("Spoofing"),
+                tags.get("Viruses"), tags.get("Worms"), tags.get("Trojan Horses"),
+                tags.get("Phishing"), tags.get("Encryption"), tags.get("Netzwerk"),
+                tags.get("Security"), tags.get("Software"), tags.get("Diffizil"),
+                tags.get("Spyware"), tags.get("Adware"), tags.get("Cryptography"),
+                tags.get("Risk Analysis")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Daten- und Informatikrecht").addTags(
+                tags.get("VU"), tags.get("Theorie"), tags.get("Recht"), tags.get("Einfach"),
+                tags.get("Grundlagen"), tags.get("Wirtschaft"), tags.get("Technik")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenbanksysteme").addTags(
+                tags.get("VU"), tags.get("EER"), tags.get("Relationenmodel"), tags.get("Domänenkalkül"),
+                tags.get("Datenbanksprachen"), tags.get("Normalformen"), tags.get("SQL"),
+                tags.get("Datenintegrität"), tags.get("Diffizil"), tags.get("JDBC"), tags.get("DBMS")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Statistik und Wahrscheinlichkeitstheorie").addTags(
+                tags.get("VO"), tags.get("Mathe"), tags.get("Statistik"), tags.get("Wahrscheinlichkeitstheorie"),
+                tags.get("Verteilung"), tags.get("Histogramm"), tags.get("Wahrscheinlichkeitsräume"),
+                tags.get("Stochastik"), tags.get("Grundlagen"), tags.get("Gesetz der großen Zahlen"),
+                tags.get("Grundlagen der Bayes'schen"), tags.get("Diffizil"), tags.get("Zahlentheorie"),
+                tags.get("Mengenlehre"), tags.get("Kombinatorik")
+
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Statistik und Wahrscheinlichkeitstheorie").addTags(
+                tags.get("UE"), tags.get("Mathe"), tags.get("Statistik"), tags.get("Wahrscheinlichkeitstheorie"),
+                tags.get("Verteilung"), tags.get("Histogramm"), tags.get("Wahrscheinlichkeitsräume"),
+                tags.get("Stochastik"), tags.get("Grundlagen"), tags.get("Gesetz der großen Zahlen"),
+                tags.get("Grundlagen der Bayes'schen"), tags.get("Diffizil"), tags.get("Zahlentheorie"),
+                tags.get("Mengenlehre"), tags.get("Kombinatorik")
+
         );
     }
 
