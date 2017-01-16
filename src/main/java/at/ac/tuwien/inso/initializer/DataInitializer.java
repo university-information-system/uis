@@ -327,7 +327,6 @@ public class DataInitializer {
         put("Encryption", new Tag("Encryption"));
         put("Spyware", new Tag("Spyware"));
         put("Phishing", new Tag("Phishing"));
-        put("Encryption", new Tag("Encryption"));
         put("Spyware", new Tag("Spyware"));
         put("Adware", new Tag("Adware"));
         put("Cryptography", new Tag("Cryptography"));
@@ -343,6 +342,18 @@ public class DataInitializer {
         put("Wahrscheinlichkeitsraeume", new Tag("Wahrscheinlichkeitsraeume"));
         put("Stochastik", new Tag("Stochastik"));
         put("Gesetz der großen Zahlen", new Tag("Gesetz der großen Zahlen"));
+        put("Künstliche Intelligenz", new Tag("Künstliche Intelligenz"));
+        put("Projektmanagement", new Tag("Projektmanagement"));
+        put("Planning", new Tag("Planning"));
+        put("Testing", new Tag("Testing"));
+        put("Softwarequalitätssicherung", new Tag("Softwarequalitätssicherung"));
+        put("Risikomanagement", new Tag("Risikomanagement"));
+        put("Qualitätsmanagement", new Tag("Qualitätsmanagement"));
+        put("Projektmarketing", new Tag("Projektmarketing"));
+        put("Risikomanagement", new Tag("Risikomanagement"));
+        put("Sprint", new Tag("Sprint"));
+        put("SCRUM", new Tag("SCRUM"));
+        put("PR", new Tag("PR"));
     }};
 
     private Map<String, Student> studentMap = new HashMap<String, Student>() {
@@ -527,6 +538,7 @@ public class DataInitializer {
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester1();
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester2();
         addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester3();
+        addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester4();
     }
 
     private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester1() {
@@ -560,7 +572,7 @@ public class DataInitializer {
 
         coursesBachelorSoftwareAndInformationEngineering.get("VU Formale Modellierung").addTags(
                 tags.get("VU"), tags.get("Automaten"), tags.get("reguläre Ausdrücke"), tags.get("formale Grammatiken"),
-                tags.get("Aussagenlogik"), tags.get("Petri-Netze"), tags.get("Prädikatenlogik"), tags.get("Diffizil"), tags.get("Grundlagen"),
+                tags.get("Aussagenlogik"), tags.get("Petri-Netze"), tags.get("Prädikatenlogik"), tags.get("Einfach"), tags.get("Grundlagen"),
                 tags.get("Lambda-Kalkuel")
         );
 
@@ -644,10 +656,10 @@ public class DataInitializer {
                 tags.get("V0"), tags.get("Theorie"), tags.get("Thread"), tags.get("Prozess"),
                 tags.get("Synchronisation"), tags.get("Grundlagen"), tags.get("Betriebssystem"),
                 tags.get("Scheduling"), tags.get("Multithreading"), tags.get("Deadlock"),
-                tags.get("Datenstrukturen"), tags.get("Semaphore"),
+                tags.get("Datenstrukturen"), tags.get("Semaphore"), tags.get("Diffizil"),
                 tags.get("Sequencer"), tags.get("Eventcounts"), tags.get("Producer-Consumer"),
                 tags.get("Speicherverwaltung"), tags.get("Filesysteme"), tags.get("Netzwerk"),
-                tags.get("Security"), tags.get("Software"), tags.get("C")
+                tags.get("Security"), tags.get("Software"), tags.get("C"), tags.get("Client-Server")
         );
 
         coursesBachelorSoftwareAndInformationEngineering.get("UE Betriebssysteme").addTags(
@@ -657,7 +669,8 @@ public class DataInitializer {
                 tags.get("Datenstrukturen"), tags.get("Semaphore"),
                 tags.get("Sequencer"), tags.get("Eventcounts"), tags.get("Producer-Consumer"),
                 tags.get("Speicherverwaltung"), tags.get("Filesysteme"), tags.get("Netzwerk"),
-                tags.get("Security"), tags.get("Software"), tags.get("Diffizil"), tags.get("C")
+                tags.get("Security"), tags.get("Software"), tags.get("Diffizil"), tags.get("C"),
+                tags.get("Client-Server")
         );
 
         coursesBachelorSoftwareAndInformationEngineering.get("VU Introduction to Security").addTags(
@@ -698,6 +711,35 @@ public class DataInitializer {
                 tags.get("Grundlagen der Bayes'schen"), tags.get("Diffizil"), tags.get("Zahlentheorie"),
                 tags.get("Mengenlehre"), tags.get("Kombinatorik")
 
+        );
+    }
+
+    private void addTagsToBachelorSoftwareAndInformationEngineeringCoursesSemester4() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Einführung in die Künstliche Intelligenz").addTags(
+                tags.get("VU"), tags.get("Künstliche Intelligenz"), tags.get("Grundlagen"),
+                tags.get("Programmieren"), tags.get("Theorie"), tags.get("Diffizil")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Theoretische Informatik und Logik").addTags(
+                tags.get("VU"), tags.get("Automaten"), tags.get("reguläre Ausdrücke"), tags.get("formale Grammatiken"),
+                tags.get("Aussagenlogik"), tags.get("Petri-Netze"), tags.get("Prädikatenlogik"), tags.get("Diffizil"),
+                tags.get("Lambda-Kalkuel"), tags.get("Logik")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Software Engineering und Projektmanagement").addTags(
+                tags.get("VO"), tags.get("Theorie"), tags.get("Software"), tags.get("Projektmanagement"),
+                tags.get("Planning"), tags.get("UML"), tags.get("Objektorientiert"), tags.get("Softwarequalitätssicherung"),
+                tags.get("Risikomanagement"), tags.get("Qualitätsmanagement"), tags.get("Projektmarketing"),
+                tags.get("Einfach"), tags.get("Sprint"), tags.get("SCRUM"), tags.get("SQL")
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("PR Software Engineering und Projektmanagement").addTags(
+                tags.get("PR"), tags.get("Programmieren"), tags.get("Testing"), tags.get("Software"),
+                tags.get("Projektmanagement"), tags.get("Gruppenarbeit"), tags.get("Teamfaehigkeit"),
+                tags.get("Debug"), tags.get("Planning"), tags.get("UML"), tags.get("Objektorientiert"),
+                tags.get("Softwarequalitätssicherung"), tags.get("Risikomanagement"), tags.get("Qualitätsmanagement"),
+                tags.get("Projektmarketing"), tags.get("Diffizil"), tags.get("Praxis"),
+                tags.get("Sprint"), tags.get("SCRUM"), tags.get("CRUD"), tags.get("SQL"), tags.get("UML")
         );
     }
 
