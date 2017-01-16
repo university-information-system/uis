@@ -47,6 +47,8 @@ public class UserCreationServiceImpl implements UserCreationService {
     @Value("${uis.server.account.activation.url.prefix}")
     private String activationUrlPrefix;
 
+    
+    //for doc see interface
     @Transactional
     @Override
     public PendingAccountActivation create(UisUser user) {
@@ -63,7 +65,15 @@ public class UserCreationServiceImpl implements UserCreationService {
         return activation;
     }
 
-    private MimeMessage createActivationMail(PendingAccountActivation activation) {
+    /**
+     * creates a activation mail.
+     * 
+     * may throw a RuntimeException if no MimeMessage can be created
+     * 
+     * @param activation {@link PendingAccountActivation}  has to contain an id and an UisUser. UisUser should contain an mail address. 
+     * @return {@link MimeMessage}
+     */
+    private MimeMessage createActivationMail(PendingAccountActivation activation) throws RuntimeException{
     	log.info("creating activation mail for pending activation");
         MimeMessage mimeMsg = mailSender.createMimeMessage();
         MimeMessageHelper msg = new MimeMessageHelper(mimeMsg, "UTF-8");
@@ -80,6 +90,12 @@ public class UserCreationServiceImpl implements UserCreationService {
         return msg.getMimeMessage();
     }
 
+    /**
+     * Creates a String that represents the message content of the mail.
+     * 
+     * @param activation {@Link PendingAccountActivation} has to contain an id and an UisUser
+     * @return 
+     */
     private String messageContent(PendingAccountActivation activation) {
     	log.info("getting message context for PendingAccountActivation "+activation);
         Context context = new Context(Messages.LOCALE);
