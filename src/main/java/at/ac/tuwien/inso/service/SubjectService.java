@@ -21,9 +21,21 @@ public interface SubjectService {
     @PreAuthorize("isAuthenticated()")
     Page<Subject> findBySearch(String search, Pageable pageable);
 
+    /**
+     * returns a Subject by id.
+     * 
+     * @param Long id, should not be null and not <1
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     Subject findOne(Long id);
 
+    /**
+     * returns a list of subjects that fit the search word. The filter has to be findByNameContainingIgnoreCase
+     * 
+     * @param word
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<Subject> searchForSubjects(String word);
 
