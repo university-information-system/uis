@@ -66,6 +66,8 @@ public class CoursesTests {
     @Autowired
     private TagRepository tagRepository;
     @Autowired
+    private GradeRepository gradeRepository;
+    @Autowired
     private Messages messages;
 
     private List<Course> expectedCourses;
@@ -91,7 +93,9 @@ public class CoursesTests {
         subjectRepository.save(ase);
         ase.addRequiredSubjects(sepm);
         ase.addLecturers(lecturer1, lecturer2);
-
+        
+        calculusWS2016.addStudents(student);
+        
         sepmSS2016 = courseRepository.save(sepmSS2016);
         sepmWS2016 = courseRepository.save(sepmWS2016);
         aseWS2016 = courseRepository.save(aseWS2016);
@@ -246,5 +250,76 @@ public class CoursesTests {
         ).andExpect(
                 model().attribute("course", hasProperty("id", equalTo(sepmSS2016.getId())))
         );
+    }
+    
+    
+    @Test
+    public void testRemoveCourseWithoutStudentsOrGradesByIdSucessfullyRemovesCourse() throws Exception{
+    	Course c = aseWS2016;
+    	assertTrue(courseRepository.exists(c.getId()));
+    	mockMvc.perform(
+    			get("/lecturer/editCourse/remove?courseId="+c.getId())
+    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    	).andExpect(
+                redirectedUrl("/lecturer/courses")
+        );
+    	assertTrue(!courseRepository.exists(c.getId()));
+    }
+    
+    @Test
+    public void testRemoveCourseWithNoIdGetsError() throws Exception{
+    	
+    	mockMvc.perform(
+    			get("/lecturer/editCourse/remove?courseId=")
+    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    	).andExpect(
+                redirectedUrl(null)
+        );
+    }
+    
+    @Test
+    public void testRemoveCourseWithStudentsDoesNotWork() throws Exception{
+    	
+    	Course c = calculusWS2016;
+    	assertTrue(courseRepository.exists(c.getId()));
+    	mockMvc.perform(
+    			get("/lecturer/editCourse/remove?courseId="+c.getId())
+    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    	).andExpect(
+                redirectedUrl("/lecturer/courses")
+        );
+    	assertTrue(courseRepository.exists(c.getId()));
+    }
+    
+    @Test
+    public void testRemoveCourseWithGradesDoesNotWork() throws Exception{
+    	Course c = aseWS2016;
+    	Grade grade = new Grade(c, lecturer3, student, Mark.GOOD);
+    	gradeRepository.save(grade);
+    	assertTrue(courseRepository.exists(c.getId()));
+    	assertTrue(!gradeRepository.findByCourseId(c.getId()).isEmpty());
+    	mockMvc.perform(
+    			get("/lecturer/editCourse/remove?courseId="+c.getId())
+    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    	).andExpect(
+                redirectedUrl("/lecturer/courses")
+        );
+    	assertTrue(courseRepository.exists(c.getId()));
+    }
+    
+    @Test
+    public void testRemoveCourseWithGradesAndStudentsDoesNotWork() throws Exception{
+    	Course c = calculusWS2016;
+    	Grade grade = new Grade(c, lecturer3, student, Mark.GOOD);
+    	gradeRepository.save(grade);
+    	assertTrue(courseRepository.exists(c.getId()));
+    	assertTrue(!gradeRepository.findByCourseId(c.getId()).isEmpty());
+    	mockMvc.perform(
+    			get("/lecturer/editCourse/remove?courseId="+c.getId())
+    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    	).andExpect(
+                redirectedUrl("/lecturer/courses")
+        );
+    	assertTrue(courseRepository.exists(c.getId()));
     }
 }
