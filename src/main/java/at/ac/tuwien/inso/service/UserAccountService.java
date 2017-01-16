@@ -7,8 +7,17 @@ import org.springframework.security.core.userdetails.*;
 
 public interface UserAccountService extends UserDetailsService {
 
+	/**
+	 * can only be used by authenticated users. This method returns the currently logged in {@link UserAccount}
+	 * @return
+	 */
     @PreAuthorize("isAuthenticated()")
     UserAccount getCurrentLoggedInUser();
 
+    /**
+     * returns true of the username exists. false otherwise.
+     * @param username
+     * @return a boolean true of the username exists.
+     */
     boolean existsUsername(String username);
 }
