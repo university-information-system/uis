@@ -52,6 +52,13 @@ export default class AutoCompleteCourseTags {
                     $('#tagsData').val($('#tags').materialtags()[0].itemsArray);
                 });
 
+                $('.n-tag.tt-input').keyup(function(e){
+                    if(e.keyCode == 13) {
+                        $('.n-tag.tt-input').val('');
+                        $('.n-tag.tt-input').typeahead('val', '');
+                    }
+                });
+
             }
 
         });
