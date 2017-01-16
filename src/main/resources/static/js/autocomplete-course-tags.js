@@ -12,44 +12,47 @@ export default class AutoCompleteCourseTags {
                         type: 'GET',
                         success: function (data) {
                             for(var i=0; i< data.length; i++) {
-                                $('#tags').materialtags('add', data[i].name);
+                                $('#tags').materialtags('add', data[i]);
                             }
                             $('#tagsData').val($('#tags').materialtags()[0].itemsArray);
                         }
                     });
                 }
-            }
 
-            var allTags = new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                prefetch: {
-                    url: '/lecturer/courses/json/tags',
-                    filter: function(list) {
-                        return $.map(list, function(name) {
-                            return { name: name };
-                        });
+                var allTags = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    prefetch: {
+                        url: '/lecturer/courses/json/tags',
+                        cache: false,
+                        filter: function(list) {
+                            return $.map(list, function(name) {
+                                return { name: name };
+                            });
+                        }
                     }
-                }
-            });
-            allTags.initialize();
-            $('#tags').materialtags({
-                freeInput: true,
-                typeaheadjs: {
-                    name: 'allTags',
-                    displayKey: 'name',
-                    valueKey: 'name',
-                    source: allTags.ttAdapter()
-                }
-            });
+                });
+                allTags.initialize();
 
-            $('#tags').on('itemAdded', function(event) {
-                $('#tagsData').val($('#tags').materialtags()[0].itemsArray);
-            });
+                $('#tags').materialtags({
+                    freeInput: true,
+                    typeaheadjs: {
+                        name: 'allTags',
+                        displayKey: 'name',
+                        valueKey: 'name',
+                        source: allTags.ttAdapter()
+                    }
+                });
 
-            $('#tags').on('itemRemoved', function(event) {
-                $('#tagsData').val($('#tags').materialtags()[0].itemsArray);
-            });
+                $('#tags').on('itemAdded', function(event) {
+                    $('#tagsData').val($('#tags').materialtags()[0].itemsArray);
+                });
+
+                $('#tags').on('itemRemoved', function(event) {
+                    $('#tagsData').val($('#tags').materialtags()[0].itemsArray);
+                });
+
+            }
 
         });
 

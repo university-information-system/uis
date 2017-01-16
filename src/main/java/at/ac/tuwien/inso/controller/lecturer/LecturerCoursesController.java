@@ -7,6 +7,7 @@ import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
@@ -38,14 +39,14 @@ public class LecturerCoursesController {
 
     @GetMapping("json/tags")
     @ResponseBody
-    private List<Tag> getTagsJson() {
-        return tagService.findAll();
+    private List<String> getTagsJson() {
+        return tagService.findAll().stream().map(Tag::getName).collect(Collectors.toList());
     }
 
     @GetMapping(value = "json/tags", params = "courseId")
     @ResponseBody
-    private List<Tag> getTagsForCourseJson(@RequestParam("courseId") Long courseId) {
+    private List<String> getTagsForCourseJson(@RequestParam("courseId") Long courseId) {
         Course course = courseService.findOne(courseId);
-        return course.getTags();
+        return course.getTags().stream().map(Tag::getName).collect(Collectors.toList());
     }
 }
