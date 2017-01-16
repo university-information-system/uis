@@ -33,7 +33,7 @@ public class UisUserServiceImpl implements UisUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UisUser findOne(long id) {
+    public UisUser findOne(long id) throws BusinessObjectNotFoundException {
     	log.info("finding UisUser for id "+id);
         validator.validateUisUserId(id);
         UisUser user = uisUserRepository.findOne(id);
