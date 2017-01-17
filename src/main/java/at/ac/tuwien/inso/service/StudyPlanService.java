@@ -48,12 +48,20 @@ public interface StudyPlanService {
 
     /**
      * 
-     * @param id
+     * returns a list of grades for the subjects for the CURRENTLY LOGGED IN STUDENT.
+     * user needs to be authenticated
+     * @param id. should not be null and not <1
      * @return
      */
     @PreAuthorize("isAuthenticated()")
     List<SubjectWithGrade> getSubjectsWithGradesForStudyPlan(Long id);
 
+    /**
+     * adds a subject to a study plan. 
+     * user needs to be ADMIN
+     * 
+     * @param subjectForStudyPlan. should contain a subject that is not null and has a id that is not <1. also should contain a study plan that is not null and has an id that is not null and not <1
+     */
     @PreAuthorize("hasRole('ADMIN')")
     void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan);
 
