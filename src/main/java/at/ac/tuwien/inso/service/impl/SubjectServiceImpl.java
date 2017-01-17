@@ -77,10 +77,13 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional
     public Lecturer addLecturerToSubject(Long subjectId, Long lecturerUisUserId) {
-        log.info("addLecturerToSubject for subject {} and lecturer {}", subjectId,
-                lecturerUisUserId);
+        
 
         validator.validateSubjectId(subjectId);
+        
+        log.info("addLecturerToSubject for subject {} and lecturer {}", subjectId,
+                lecturerUisUserId);
+        
         Lecturer lecturer = lecturerRepository.findById(lecturerUisUserId);
 
         if (lecturer == null) {
