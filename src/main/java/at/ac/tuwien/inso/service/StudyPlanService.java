@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.service;
 
 import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
