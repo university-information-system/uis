@@ -7,6 +7,13 @@ import java.util.*;
 
 public interface StudyPlanService {
 
+	/**
+	 * creates a new study plan
+	 * may throw a ValidationException if studyplans name, or optional, mandatory or freechoice ects values are null or empty or <=0
+	 *
+	 * @param studyPlan
+	 * @return
+	 */
     @PreAuthorize("hasRole('ADMIN')")
     StudyPlan create(StudyPlan studyPlan);
 
