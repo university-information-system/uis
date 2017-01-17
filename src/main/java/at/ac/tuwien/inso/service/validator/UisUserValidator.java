@@ -7,19 +7,19 @@ public class UisUserValidator {
 
     public void validateNewUisUser(UisUser uisUser) {
 
-        if(uisUser == null) {
+        if (uisUser == null) {
             throw new ValidationException("User not found");
         }
 
-        if(uisUser.getName() == null || uisUser.getName().isEmpty()) {
+        if (uisUser.getName() == null || uisUser.getName().isEmpty()) {
             throw new ValidationException("Name of user cannot be empty");
         }
 
-        if(uisUser.getIdentificationNumber() == null || uisUser.getIdentificationNumber().isEmpty()) {
+        if (uisUser.getIdentificationNumber() == null || uisUser.getIdentificationNumber().isEmpty()) {
             throw new ValidationException("Identification number of user cannot be empty");
         }
 
-        if(uisUser.getEmail() == null || uisUser.getEmail().isEmpty()) {
+        if (uisUser.getEmail() == null || uisUser.getEmail().isEmpty()) {
             throw new ValidationException("Email of user cannot be empty");
         }
 
