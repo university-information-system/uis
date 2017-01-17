@@ -1,7 +1,10 @@
 package at.ac.tuwien.inso.service.validator;
 
+
 import at.ac.tuwien.inso.entity.UisUser;
 import at.ac.tuwien.inso.exception.ValidationException;
+import org.apache.commons.validator.routines.EmailValidator;
+
 
 public class UisUserValidator {
 
@@ -24,6 +27,16 @@ public class UisUserValidator {
         }
 
         //TODO please validate the email
+    }
+
+    public void validateEmail(String email) {
+        EmailValidator validator = EmailValidator.getInstance();
+
+        boolean isValid = validator.isValid(email);
+
+        if (!isValid) {
+            throw new ValidationException("This is not a valid email");
+        }
     }
 
     public void validateUisUserId(Long id) {
