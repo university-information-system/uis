@@ -26,7 +26,7 @@ public class UisUserValidator {
             throw new ValidationException("Email of user cannot be empty");
         }
 
-        //TODO please validate the email
+        validateEmail(uisUser.getEmail());
     }
 
     public void validateEmail(String email) {
