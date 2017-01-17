@@ -17,6 +17,10 @@ public interface StudyPlanService {
     @PreAuthorize("hasRole('ADMIN')")
     StudyPlan create(StudyPlan studyPlan);
 
+    /**
+     * returns a list of all StudyPlans.
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<StudyPlan> findAll();
 
