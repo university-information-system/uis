@@ -29,6 +29,10 @@ public class UisUserValidator {
         validateEmail(uisUser.getEmail());
     }
 
+    /**
+     * Validates the email address.
+     * Local domains are not allowed. Not all errors are caught.
+     */
     public void validateEmail(String email) {
         EmailValidator validator = EmailValidator.getInstance();
 
