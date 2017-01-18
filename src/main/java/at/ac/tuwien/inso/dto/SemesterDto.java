@@ -150,18 +150,21 @@ public class SemesterDto {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
 		SemesterDto that = (SemesterDto) o;
 
-		return getYear() == that.getYear() && Objects.equals(getId(), that.getId()) && getType() == that.getType();
+		if (year != that.year) return false;
+		return type == that.type;
+
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), getYear(), getType());
+		int result = year;
+		result = 31 * result + type.hashCode();
+		return result;
 	}
 
 	/**
