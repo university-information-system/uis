@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.FeedbackRepository;
 import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
+@Service
 public class UserBasedCourseScorer implements CourseScorer {
 
     private static final double LIKE = 2;
