@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
@@ -22,6 +26,9 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Autowired
+    private Clock clock;
 
     @Override
     @Transactional
@@ -46,7 +53,8 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public SemesterDto getOrCreateCurrentSemester() {
-        Calendar now = new GregorianCalendar();
+        LocalDateTime localDateTime = LocalDateTime.now(clock);
+        Calendar now = GregorianCalendar.from(ZonedDateTime.of(localDateTime, ZoneId.systemDefault()));
         return getOrCreateCurrentSemester(now);
     }
 
@@ -62,7 +70,7 @@ public class SemesterServiceImpl implements SemesterService {
 
         if (current == null || !current.isCurrent(now)) {
             // TODO logging!!!
-            create(SemesterDto.calculateCurrentSemester(now));
+            return create(SemesterDto.calculateCurrentSemester(now));
         }
 
         return current;
@@ -71,7 +79,7 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     @Transactional(readOnly = true)
     public List<SemesterDto> findAll() {
-    	log.info("finding all semsters");
+    	log.info("finding all semesters");
         return convertSemesterListToSemesterDtoList(semesterRepository.findAllByOrderByIdDesc());
     }
 
