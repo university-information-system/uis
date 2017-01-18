@@ -419,6 +419,8 @@ public class DataInitializer {
             put("Joan Watson", new Student("s0227157", "Joan Watson", "joan.watson@uit.at"));
             put("James Bond", new Student("s1527199", "James Bond", "jamesbond_007@yahoo.com"));
             put("Trevor Bond", new Student("s0445157", "Trevor Bond", "trevor@uis.at"));
+            put("Mathematician", new Student("s0000001", "Diego Costa", "diego.cost@yahoo.com", new UserAccount("diego", "pass", Role.STUDENT)));
+            put("SimilarToMathematician", new Student("s0000002", "Cesc Fabregas", "cesc.fabregas@yahoo.com", new UserAccount("cesc", "pass", Role.STUDENT)));
         }
     };
 
@@ -555,6 +557,8 @@ public class DataInitializer {
         studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(4), semesters.get(1)));
         studentMap.get("James Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(5), semesters.get(0)));
         studentMap.get("Trevor Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(1), semesters.get(1)));
+        studentMap.get("Mathematician").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
+        studentMap.get("SimilarToMathematician").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
     }
 
     private void addPreconditionsToSubjects() {
@@ -1001,6 +1005,22 @@ public class DataInitializer {
         register(john, coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"));
         register(john, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
         register(john, coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"));
+
+        // Mathematician - Diego Costa
+        Student mathematician = studentMap.get("Mathematician");
+        register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
+        register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
+        register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Statistik und Wahrscheinlichkeitstheorie"));
+        register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Statistik und Wahrscheinlichkeitstheorie"));
+        //register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VU Daten- und Informatikrecht"));
+
+        // SimilarToMathematician - Cesc Fabregas
+        Student similarToMathematician = studentMap.get("SimilarToMathematician");
+        register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
+        register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
+        register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Statistik und Wahrscheinlichkeitstheorie"));
+        register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Statistik und Wahrscheinlichkeitstheorie"));
+
     }
 
     private void register(Student student, Course course) {
@@ -1037,6 +1057,35 @@ public class DataInitializer {
                 Mark.EXCELLENT);
         gradeRepository.save(grade);
 
+        // Mathematician - Diego Costa
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"),
+                lecturer,
+                studentMap.get("Mathematician"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
+
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"),
+                lecturer,
+                studentMap.get("Mathematician"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
+
+        // SimilarToMathematician - Cesc Fabregas
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"),
+                lecturer,
+                studentMap.get("SimilarToMathematician"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
+
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"),
+                lecturer,
+                studentMap.get("SimilarToMathematician"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
     }
 
     private void giveFeedback() {
@@ -1048,6 +1097,8 @@ public class DataInitializer {
         Student joanWatson =  studentMap.get("Joan Watson");
         Student emmaDowd = studentMap.get("Emma Dowd");
         Student carolineBlack = studentMap.get("Caroline Black");
+        Student mathematician = studentMap.get("Mathematician");
+        Student similarToMathematician = studentMap.get("SimilarToMathematician");
         Feedback feedback1 = new Feedback(
                 joanWatson,
                 course,
@@ -1082,7 +1133,27 @@ public class DataInitializer {
                 "Suspendisse sed est feugiat, dapibus ante non, aliquet neque. Cras magna sapien, pharetra ut ante ut, malesuada hendrerit erat. " +
                 "Mauris fringilla mattis dapibus. Nullam iaculis nunc in tortor gravida, id tempor justo elementum.");
 
-        giveFeedback(feedback, feedback1, feedback2, feedback3);
+        Feedback feedback4 = new Feedback(
+                mathematician,
+                coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik")
+        );
+
+        Feedback feedback5 = new Feedback(
+                mathematician,
+                coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik")
+        );
+
+        Feedback feedback6 = new Feedback(
+                similarToMathematician,
+                coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik")
+        );
+
+        Feedback feedback7 = new Feedback(
+                similarToMathematician,
+                coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik")
+        );
+
+        giveFeedback(feedback, feedback1, feedback2, feedback3, feedback4, feedback5, feedback6, feedback7);
     }
 
     private void giveFeedback(Feedback... feedbacks) {
