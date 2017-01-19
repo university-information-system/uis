@@ -26,9 +26,6 @@ public class Subject {
 	@ManyToMany
 	private List<Lecturer> lecturers = new ArrayList<>();
 
-	@ManyToMany
-	private List<Subject> requiredSubjects = new ArrayList<>();
-
 	public Subject() {
 	}
 
@@ -66,11 +63,6 @@ public class Subject {
 		return unmodifiableList(lecturers);
 	}
 
-	@JsonIgnore
-	public List<Subject> getRequiredSubjects() {
-		return requiredSubjects;
-	}
-
 	public Subject addLecturers(Lecturer... lecturers) {
 		this.lecturers.addAll(asList(lecturers));
 		return this;
@@ -78,14 +70,6 @@ public class Subject {
 
 	public void removeLecturers(Lecturer... lecturers) {
 		this.lecturers.removeAll(asList(lecturers));
-	}
-
-	public void addRequiredSubjects(Subject... subjects) {
-		this.requiredSubjects.addAll(asList(subjects));
-	}
-
-	public void removeRequiredSubjects(Subject... subjects) {
-		this.requiredSubjects.removeAll(asList(subjects));
 	}
 
 	@Override
@@ -116,7 +100,6 @@ public class Subject {
 				", name='" + name + '\'' +
 				", ects=" + ects +
 				", lecturers=" + lecturers +
-				", requiredSubjects=" + requiredSubjects +
 				'}';
 	}
 

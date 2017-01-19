@@ -121,43 +121,36 @@ public class SubjectsTest {
 
         // when subjects are created and assigned to lecturers
         sepm.addLecturers(lecturer1);
-        ase.addRequiredSubjects(sepm);
         ase.addLecturers(lecturer1, lecturer2);
         Long id1 = subjectRepository.save(calculus).getId();
         Long id2 = subjectRepository.save(sepm).getId();
         Long id3 = subjectRepository.save(ase).getId();
 
-        // admin should see subject calculus without any lecturers or prerequisites
+        // admin should see subject calculus without any lecturers
         mockMvc.perform(
                 get("/admin/subjects/"+id1).with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", calculus)
         ).andExpect(
                 model().attribute("lecturers", asList())
-        ).andExpect(
-                model().attribute("requiredSubjects", asList())
         );
 
-        //admin should see subject sepm with lecturer1 and no required subject sepm
+        //admin should see subject sepm with lecturer1
         mockMvc.perform(
                 get("/admin/subjects/"+id2).with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", sepm)
         ).andExpect(
                 model().attribute("lecturers", asList(lecturer1))
-        ).andExpect(
-                model().attribute("requiredSubjects", asList())
         );
 
-        //admin should see subject ase with lecturer1 and lecturer2 and required subject sepm
+        //admin should see subject ase with lecturer1 and lecturer2
         mockMvc.perform(
                 get("/admin/subjects/"+id3).with(user("admin").roles("ADMIN"))
         ).andExpect(
                 model().attribute("subject", ase)
         ).andExpect(
                 model().attribute("lecturers", asList(lecturer1, lecturer2))
-        ).andExpect(
-                model().attribute("requiredSubjects", asList(sepm))
         );
     }
 
@@ -166,7 +159,6 @@ public class SubjectsTest {
 
         // when subjects are created and assigned to lecturers
         sepm.addLecturers(lecturer1);
-        ase.addRequiredSubjects(sepm);
         ase.addLecturers(lecturer1, lecturer2);
         subjectRepository.save(calculus);
         subjectRepository.save(sepm);

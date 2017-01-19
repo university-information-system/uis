@@ -122,7 +122,6 @@ public class AdminSubjectsController {
         }
 
         model.addAttribute("lecturers", subject.getLecturers());
-        model.addAttribute("requiredSubjects", subject.getRequiredSubjects());
         return "admin/subject-details";
     }
 

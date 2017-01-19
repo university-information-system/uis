@@ -452,8 +452,6 @@ public class DataInitializer {
 
         registerStudentsToStudyPlans();
 
-        addPreconditionsToSubjects();
-
         registerSubjectsToLecturers();
 
         addTagsToCourses();
@@ -559,10 +557,6 @@ public class DataInitializer {
         studentMap.get("Trevor Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(1), semesters.get(1)));
         studentMap.get("Mathematician").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
         studentMap.get("SimilarToMathematician").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
-    }
-
-    private void addPreconditionsToSubjects() {
-        subjects.get(2).addRequiredSubjects(subjects.get(1));
     }
 
     private void registerSubjectsToLecturers() {

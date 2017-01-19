@@ -73,20 +73,6 @@
                             </ul>
                         </div>
 
-                        <div th:if="${not #lists.isEmpty(course.preconditions)}">
-                            <div class="section-separator" th:text="#{student.course.details.preconditions}"></div>
-
-                            <ul class="collection borderless">
-                                <li class="collection-item"
-                                    th:each="subject : ${course.preconditions}">
-                                    <div class="title teal-text" th:text="${subject.name}"></div>
-                                    <p class="grey-text">
-                                        <span th:text="${subject.ects}"></span>
-                                        <span> ECTS</span>
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>

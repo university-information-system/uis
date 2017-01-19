@@ -91,7 +91,6 @@ public class CoursesTests {
         subjectRepository.save(sepm);
         sepm.addLecturers(lecturer1);
         subjectRepository.save(ase);
-        ase.addRequiredSubjects(sepm);
         ase.addLecturers(lecturer1, lecturer2);
         
         calculusWS2016.addStudents(student);

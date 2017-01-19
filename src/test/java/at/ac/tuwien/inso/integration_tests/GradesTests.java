@@ -75,7 +75,6 @@ public class GradesTests {
         subjectRepository.save(sepm);
         sepm.addLecturers(lecturer1);
         subjectRepository.save(ase);
-        ase.addRequiredSubjects(sepm);
         ase.addLecturers(lecturer1, lecturer2);
 
         sepmSS2016 = courseRepository.save(sepmSS2016);

@@ -17,7 +17,6 @@ public class CourseDetailsForStudent {
     private List<String> tags;
     private List<Lecturer> lecturers;
     private List<SubjectForStudyPlan> studyplans;
-    private List<Subject> preconditions;
 
     public CourseDetailsForStudent(Course course) {
         id = course.getId();
@@ -27,7 +26,6 @@ public class CourseDetailsForStudent {
         description = course.getDescription();
         tags = course.getTags().stream().map(Tag::getName).collect(Collectors.toList());
         lecturers = course.getSubject().getLecturers();
-        preconditions = course.getSubject().getRequiredSubjects();
     }
 
     public Long getId() {
@@ -102,15 +100,6 @@ public class CourseDetailsForStudent {
         return this;
     }
 
-    public List<Subject> getPreconditions() {
-        return preconditions;
-    }
-
-    public CourseDetailsForStudent setPreconditions(List<Subject> preconditions) {
-        this.preconditions = preconditions;
-        return this;
-    }
-
     public Boolean getCanEnroll() {
         return canEnroll;
     }
@@ -139,9 +128,7 @@ public class CourseDetailsForStudent {
         if (getTags() != null ? !getTags().equals(that.getTags()) : that.getTags() != null) return false;
         if (getLecturers() != null ? !getLecturers().equals(that.getLecturers()) : that.getLecturers() != null)
             return false;
-        if (getStudyplans() != null ? !getStudyplans().equals(that.getStudyplans()) : that.getStudyplans() != null)
-            return false;
-        return getPreconditions() != null ? getPreconditions().equals(that.getPreconditions()) : that.getPreconditions() == null;
+        return getStudyplans() != null ? !getStudyplans().equals(that.getStudyplans()) : that.getStudyplans() != null;
 
     }
 
@@ -156,7 +143,6 @@ public class CourseDetailsForStudent {
         result = 31 * result + (getTags() != null ? getTags().hashCode() : 0);
         result = 31 * result + (getLecturers() != null ? getLecturers().hashCode() : 0);
         result = 31 * result + (getStudyplans() != null ? getStudyplans().hashCode() : 0);
-        result = 31 * result + (getPreconditions() != null ? getPreconditions().hashCode() : 0);
         return result;
     }
 
@@ -172,7 +158,6 @@ public class CourseDetailsForStudent {
                 ", tags=" + tags +
                 ", lecturers=" + lecturers +
                 ", studyplans=" + studyplans +
-                ", preconditions=" + preconditions +
                 '}';
     }
 }

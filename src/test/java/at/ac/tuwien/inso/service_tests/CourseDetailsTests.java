@@ -123,12 +123,4 @@ public class CourseDetailsTests {
         assertEquals(studyplans, details.getStudyplans());
     }
 
-    @Test
-    public void testPreconditions() throws Exception {
-        subject.addRequiredSubjects(subject);
-
-        CourseDetailsForStudent details = courseService.courseDetailsFor(student, courseId);
-
-        assertEquals(subject.getRequiredSubjects(), details.getPreconditions());
-    }
 }
