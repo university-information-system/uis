@@ -17,9 +17,22 @@
             <li class="collection-item" th:each="course : ${allCourses}">
                 <a th:href="@{/lecturer/editCourse(courseId=__${course.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.courses.edit}">edit</i></a>
                 <a class="title teal-text" th:text="${course.subject.name}" th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"></a>
-                <a th:href="@{/lecturer/editCourse/remove(courseId=__${course.id}__)}" class="secondary-content"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.course.removeCourse}">delete</i></a>
+                <a th:href="'#delete-confirm-' + ${course.id}" class="secondary-content modal-trigger"><i class="material-icons tooltipped" th:attr="data-tooltip=#{lecturer.course.removeCourse}">delete</i></a>
                 <div th:text="${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
 
+                <!-- Delete confirmation modal -->
+                <div th:id="'delete-confirm-' + ${course.id}" class="modal small">
+                    <div class="modal-content">
+                        <h4 th:text="#{admin.course.remove.modal.header}"></h4>
+                        <p th:text="#{admin.course.remove.modal.content(${course.getSubject().getName()})}"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <form th:id="'deleteCourseForm-' + ${course.id}" th:action="@{/lecturer/editCourse/remove(courseId=__${course.id}__)}" method="post">
+                            <a class="modal-action modal-close btn" th:text="#{remove}" th:onclick="'$(\'#deleteCourseForm-' + ${course.id} + '\').submit()'"></a>
+                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                        </form>
+                    </div>
+                </div>
             </li>
         </ul>
 

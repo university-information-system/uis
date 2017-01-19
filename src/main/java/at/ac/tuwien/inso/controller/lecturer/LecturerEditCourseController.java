@@ -55,7 +55,7 @@ public class LecturerEditCourseController {
         return "redirect:/lecturer/courses";
     }
     
-    @GetMapping("/remove")
+    @PostMapping("/remove")
     private String removeCourse(@RequestParam("courseId") Long courseId, RedirectAttributes redirectAttributes){
     	
     	try{
