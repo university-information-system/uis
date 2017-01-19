@@ -122,7 +122,7 @@ public class AdminStudyPlansController {
         return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
 
-    @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
+    @PostMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
     public String removeSubjectFromStudyPlan(RedirectAttributes redirectAttributes,
                                              @RequestParam Long studyPlanId,
                                              @RequestParam Long subjectId){
