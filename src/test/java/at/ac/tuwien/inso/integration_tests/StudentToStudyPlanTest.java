@@ -55,10 +55,11 @@ public class StudentToStudyPlanTest {
        StudyPlan sp = studyplanRepository.save(new StudyPlan("TestStudyPlan", new EctsDistribution(BigDecimal.TEN, BigDecimal.TEN, BigDecimal.TEN)));
     	
         mockMvc.perform(
-                get("/admin/studyplans/registerStudent/")
-                .param("studentId", newStudent.getId()+"")
-                .param("studyPlanId", sp.getId()+"")
-                .with(user("admin").roles(Role.ADMIN.name()))
+                post("/admin/studyplans/registerStudent/")
+                        .param("studentId", newStudent.getId()+"")
+                        .param("studyPlanId", sp.getId()+"")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .with(csrf())
         ).andExpect(
                 redirectedUrl("/admin/users/"+newStudent.getId())
         ).andExpect(it -> {

@@ -78,8 +78,10 @@ public class SubjectsTest {
 
         // then the admin should see them all in the first page
         mockMvc.perform(
-                get("/admin/subjects/remove/"+cal.getId()).with(user("admin").roles("ADMIN")))
-        .andExpect(
+                post("/admin/subjects/remove/"+cal.getId())
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).andExpect(
             redirectedUrl("/admin/subjects/page/0")
         );
         
@@ -103,8 +105,10 @@ public class SubjectsTest {
 
         // then the admin should see them all in the first page
         mockMvc.perform(
-                get("/admin/subjects/remove/"+cal.getId()).with(user("admin").roles("ADMIN")))
-        .andExpect(
+                post("/admin/subjects/remove/"+cal.getId())
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).andExpect(
             redirectedUrl("/admin/subjects")
         );
         

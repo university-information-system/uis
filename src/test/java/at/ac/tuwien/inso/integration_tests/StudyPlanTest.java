@@ -223,9 +223,10 @@ public class StudyPlanTest {
     public void disableStudyPlanTest() throws Exception{
       StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
       mockMvc.perform(
-          get("/admin/studyplans/disable/")
-          .param("id", studyPlan.getId().toString())
-          .with(user("admin").roles(Role.ADMIN.name()))
+          post("/admin/studyplans/disable/")
+                  .param("id", studyPlan.getId().toString())
+                  .with(user("admin").roles(Role.ADMIN.name()))
+                  .with(csrf())
           ).andExpect(    
               (redirectedUrl("/admin/studyplans"))
               ).andExpect(it -> {
@@ -252,9 +253,10 @@ public class StudyPlanTest {
       System.out.println("studyPlan "+studyPlan.getId());
       
       mockMvc.perform(
-          get("/admin/studyplans/remove/").with(user("admin").roles("ADMIN"))
-          .param("studyPlanId", studyPlan.getId().toString())
-          .param("subjectId", s2.getSubject().getId().toString())
+          post("/admin/studyplans/remove/").with(user("admin").roles("ADMIN"))
+                  .param("studyPlanId", studyPlan.getId().toString())
+                  .param("subjectId", s2.getSubject().getId().toString())
+                  .with(csrf())
           ).andExpect(    
               (redirectedUrl("/admin/studyplans/?id="+studyPlan.getId().toString()))
               ).andExpect(it -> {

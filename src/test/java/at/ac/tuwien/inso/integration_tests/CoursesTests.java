@@ -254,12 +254,13 @@ public class CoursesTests {
     
     
     @Test
-    public void testRemoveCourseWithoutStudentsOrGradesByIdSucessfullyRemovesCourse() throws Exception{
+    public void testRemoveCourseWithoutStudentsOrGradesByIdSuccessfullyRemovesCourse() throws Exception{
     	Course c = aseWS2016;
     	assertTrue(courseRepository.exists(c.getId()));
     	mockMvc.perform(
-    			get("/lecturer/editCourse/remove?courseId="+c.getId())
-    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    			post("/lecturer/editCourse/remove?courseId="+c.getId())
+                        .with(user("lecturer3").roles(Role.LECTURER.name()))
+                        .with(csrf())
     	).andExpect(
                 redirectedUrl("/lecturer/courses")
         );
@@ -283,8 +284,9 @@ public class CoursesTests {
     	Course c = calculusWS2016;
     	assertTrue(courseRepository.exists(c.getId()));
     	mockMvc.perform(
-    			get("/lecturer/editCourse/remove?courseId="+c.getId())
-    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+                post("/lecturer/editCourse/remove?courseId="+c.getId())
+                        .with(user("lecturer3").roles(Role.LECTURER.name()))
+                        .with(csrf())
     	).andExpect(
                 redirectedUrl("/lecturer/courses")
         );
@@ -299,8 +301,9 @@ public class CoursesTests {
     	assertTrue(courseRepository.exists(c.getId()));
     	assertTrue(!gradeRepository.findByCourseId(c.getId()).isEmpty());
     	mockMvc.perform(
-    			get("/lecturer/editCourse/remove?courseId="+c.getId())
-    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    			post("/lecturer/editCourse/remove?courseId="+c.getId())
+                        .with(user("lecturer3").roles(Role.LECTURER.name()))
+                        .with(csrf())
     	).andExpect(
                 redirectedUrl("/lecturer/courses")
         );
@@ -315,8 +318,9 @@ public class CoursesTests {
     	assertTrue(courseRepository.exists(c.getId()));
     	assertTrue(!gradeRepository.findByCourseId(c.getId()).isEmpty());
     	mockMvc.perform(
-    			get("/lecturer/editCourse/remove?courseId="+c.getId())
-    			.with(user("lecturer3").roles(Role.LECTURER.name()))	
+    			post("/lecturer/editCourse/remove?courseId="+c.getId())
+                        .with(user("lecturer3").roles(Role.LECTURER.name()))
+                        .with(csrf())
     	).andExpect(
                 redirectedUrl("/lecturer/courses")
         );
