@@ -140,8 +140,8 @@ public class AdminSubjectsController {
         return "redirect:/admin/subjects/" + subject.getId();
     }
     
-    @GetMapping("/remove/{id}")
-    private String removeSubject(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+    @PostMapping("/remove/{id}")
+    private String removeSubject(@PathVariable Long id, RedirectAttributes redirectAttributes) {
       Subject subject = subjectService.findOne(id);  	
       if(subject == null){
     	  redirectAttributes.addFlashAttribute("flashMessage", "admin.subjects.remove.error.nosubjectfound");
