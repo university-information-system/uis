@@ -70,7 +70,7 @@ public class AdminStudyPlansController {
         return "admin/studyplan-details";
     }
 
-    @GetMapping(value = "/disable", params = {"id"})
+    @PostMapping(value = "/disable", params = {"id"})
     public String disableStudyPlan(@RequestParam(value = "id") Long id, RedirectAttributes redirectAttributes) {
         StudyPlan studyPlan = studyPlanService.disableStudyPlan(id);
         redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("admin.studyplans.disable.success", studyPlan.getName()));
