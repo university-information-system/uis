@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 
 import javax.validation.*;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.*;
 
@@ -57,10 +58,14 @@ public class AdminStudyPlansController {
                 .stream()
                 .filter(s -> !s.getMandatory())
                 .collect(Collectors.toList());
+        double addedMandatoryEcts = mandatory.stream().mapToDouble(s -> s.getSubject().getEcts().doubleValue()).sum();
+        double addedOptionalEcts = optional.stream().mapToDouble(s -> s.getSubject().getEcts().doubleValue()).sum();
 
         model.addAttribute("studyPlan", studyPlan);
         model.addAttribute("mandatory", mandatory);
+        model.addAttribute("addedMandatoryEcts", BigDecimal.valueOf(addedMandatoryEcts).setScale(2));
         model.addAttribute("optional", optional);
+        model.addAttribute("addedOptionalEcts", new BigDecimal(addedOptionalEcts).setScale(2));
 
         return "admin/studyplan-details";
     }

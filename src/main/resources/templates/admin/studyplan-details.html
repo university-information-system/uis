@@ -18,7 +18,7 @@
                     <ul class="collection with-header">
                         <li class="collection-header">
                             <h4 th:text="#{admin.studyplandetails.mandatory}"></h4>
-                            <h6 th:text="${studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"></h6>
+                            <h6 th:text="${addedMandatoryEcts} + ' / ' + ${studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"></h6>
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${mandatory}">
                             <div class="title">
@@ -92,7 +92,7 @@
                     <ul class="collection with-header">
                         <li class="collection-header">
                             <h4 th:text="#{admin.studyplandetails.optional}"></h4>
-                            <h6 th:text="${studyPlan.getEctsDistribution().getOptional() + ' ECTS'}"></h6>
+                            <h6 th:text="${addedOptionalEcts} + ' / ' + ${studyPlan.getEctsDistribution().getOptional() + ' ECTS'}"></h6>
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${optional}">
                             <div class="title">
@@ -166,7 +166,7 @@
                     <ul class="collection with-header">
                         <li class="collection-header">
                             <h4 th:text="#{admin.studyplandetails.free}"></h4>
-                            <h6 th:text="${studyPlan.getEctsDistribution().getFreeChoice() + ' ECTS'}"></h6>
+                            <h6 th:text="'0.0 / ' + ${studyPlan.getEctsDistribution().getFreeChoice() + ' ECTS'}"></h6>
                         </li>
 
                     </ul>
