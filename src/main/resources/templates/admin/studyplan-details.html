@@ -39,8 +39,8 @@
                                     <p th:text="#{admin.studyplan.details.subject.remove.modal.content(${subjectForStudyPlan.getSubject().getName()}, ${studyPlan.getName()})}"></p>
                                 </div>
                                 <div class="modal-footer">
-                                    <form name="removeSubject" th:action="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}" method="post">
-                                        <a class="modal-action modal-close btn" th:text="#{remove}" onclick="$('#removeSubject').submit()"></a>
+                                    <form th:id="'removeSubject-' + ${subjectForStudyPlan.getSubject().getId()}" th:action="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}" method="post">
+                                        <a class="modal-action modal-close btn" th:text="#{remove}" th:onclick="'$(\'#removeSubject-' + ${subjectForStudyPlan.getSubject().getId()} + '\').submit()'"></a>
                                         <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
                                     </form>
 

@@ -150,7 +150,7 @@ public class AdminStudyPlansController {
      * @param studyPlanId
      * @return
      */
-    @GetMapping(value = "/registerStudent", params = "studentId")
+    @PostMapping(value = "/registerStudent", params = "studentId")
     public String registerStudent(RedirectAttributes redirectAttributes,
                                   @RequestParam Long studentId,
                                   @RequestParam Long studyPlanId) {
