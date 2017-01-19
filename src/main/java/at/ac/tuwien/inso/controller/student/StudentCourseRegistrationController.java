@@ -23,7 +23,7 @@ public class StudentCourseRegistrationController {
     @Autowired
     private Messages messages;
 
-    @GetMapping("/register")
+    @PostMapping("/register")
     public String registerStudent(@RequestParam Long courseId,
                                    RedirectAttributes redirectAttributes) {
         Course course = courseService.findOne(courseId);
