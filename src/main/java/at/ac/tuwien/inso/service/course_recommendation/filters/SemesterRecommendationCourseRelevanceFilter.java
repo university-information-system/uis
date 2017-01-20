@@ -8,6 +8,9 @@ import org.springframework.stereotype.*;
 import java.util.*;
 import java.util.stream.*;
 
+import static java.util.function.Function.*;
+import static java.util.stream.Collectors.*;
+
 @Component
 public class SemesterRecommendationCourseRelevanceFilter implements CourseRelevanceFilter {
 
@@ -18,22 +21,35 @@ public class SemesterRecommendationCourseRelevanceFilter implements CourseReleva
     private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
     @Override
-    public Stream<Course> filter(Stream<Course> courses, Student student) {
+    public List<Course> filter(List<Course> courses, Student student) {
         Map<StudyPlan, Integer> studentSemesters = student.getStudyplans().stream()
-                .collect(Collectors.toMap(
+                .collect(toMap(
                         StudyPlanRegistration::getStudyplan,
                         it -> semesterRepository.findAllSince(it.getRegisteredSince()).size())
                 );
 
-        return courses.filter(course ->
+        List<Subject> subjects = courses.stream().map(Course::getSubject).collect(Collectors.toList());
+        Map<StudyPlan, Map<Subject, Integer>> courseSemesterRecommendations = student.getStudyplans().stream()
+                .map(StudyPlanRegistration::getStudyplan)
+                .collect(toMap(
+                        identity(),
+                        it -> {
+                            Map<Subject, Integer> subjectToSemesterRecommendation = new HashMap<>();
+                            subjectForStudyPlanRepository.findBySubjectInAndStudyPlan(subjects, it).forEach(subjectForStudyPlan -> {
+                                subjectToSemesterRecommendation.put(subjectForStudyPlan.getSubject(), subjectForStudyPlan.getSemesterRecommendation());
+                            });
+                            return subjectToSemesterRecommendation;
+                        }
+                ));
+
+        return courses.stream().filter(course ->
                 studentSemesters.keySet().stream().anyMatch(studyPlan -> {
                     Integer studentSemester = studentSemesters.get(studyPlan);
+                    Integer courseSemester = courseSemesterRecommendations.get(studyPlan).get(course.getSubject());
 
-                    SubjectForStudyPlan subjectForStudyPlan = subjectForStudyPlanRepository.findBySubjectAndStudyPlan(course.getSubject(), studyPlan);
-
-                    return subjectForStudyPlan == null ||
-                            subjectForStudyPlan.getSemesterRecommendation() == null ||
-                            studentSemester >= subjectForStudyPlan.getSemesterRecommendation();
-                }));
+                    return courseSemester == null ||
+                            studentSemester >= courseSemester;
+                })
+        ).collect(Collectors.toList());
     }
 }

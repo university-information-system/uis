@@ -2,7 +2,7 @@ package at.ac.tuwien.inso.service.course_recommendation.filters;
 
 import at.ac.tuwien.inso.entity.*;
 
-import java.util.stream.*;
+import java.util.*;
 
 /**
  * Implementors of this interface have the responsibility of filtering out
@@ -18,5 +18,5 @@ public interface CourseRelevanceFilter {
      * @return the courses which met the relevance criteria for the student. It is guaranteed that
      * the result is a subset of the list of courses given as input.
      */
-    Stream<Course> filter(Stream<Course> courses, Student student);
+    List<Course> filter(List<Course> courses, Student student);
 }

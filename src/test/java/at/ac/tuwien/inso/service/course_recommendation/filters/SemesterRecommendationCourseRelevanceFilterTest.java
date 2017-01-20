@@ -10,6 +10,7 @@ import org.mockito.runners.*;
 import java.util.*;
 import java.util.stream.*;
 
+import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -25,7 +26,7 @@ public class SemesterRecommendationCourseRelevanceFilterTest {
     private final Course courseWithoutSemester = new Course(subjectWithoutSemester, null);
     private final Subject subjectForSemester3 = mock(Subject.class);
     private final Course courseForSemester3 = new Course(subjectForSemester3, null);
-    private final List<Course> allCourses = Arrays.asList(courseWithoutSemester, courseForSemester3);
+    private final List<Course> allCourses = asList(courseWithoutSemester, courseForSemester3);
     @Mock
     private SemesterRepository semesterRepository;
     @Mock
@@ -37,17 +38,19 @@ public class SemesterRecommendationCourseRelevanceFilterTest {
     public void setUp() throws Exception {
         when(student.getStudyplans()).thenReturn(singletonList(new StudyPlanRegistration(studyPlan, registrationSemester)));
 
-        when(subjectForStudyPlanRepository.findBySubjectAndStudyPlan(subjectWithoutSemester, studyPlan))
-                .thenReturn(new SubjectForStudyPlan(subjectWithoutSemester, studyPlan, true, null));
-        when(subjectForStudyPlanRepository.findBySubjectAndStudyPlan(subjectForSemester3, studyPlan))
-                .thenReturn(new SubjectForStudyPlan(subjectForSemester3, studyPlan, true, 3));
+        when(subjectForStudyPlanRepository
+                .findBySubjectInAndStudyPlan(asList(subjectWithoutSemester, subjectForSemester3), studyPlan))
+                .thenReturn(asList(
+                        new SubjectForStudyPlan(subjectWithoutSemester, studyPlan, true, null),
+                        new SubjectForStudyPlan(subjectForSemester3, studyPlan, true, 3)
+                ));
     }
 
     @Test
     public void itKeepsCourseWithoutSemesterRecommendation() throws Exception {
         givenStudentIsInSemester(1);
 
-        List<Course> courses = filter.filter(allCourses.stream(), student).collect(Collectors.toList());
+        List<Course> courses = filter.filter(allCourses, student);
 
         assertThat(courses, equalTo(singletonList(courseWithoutSemester)));
     }
@@ -56,7 +59,7 @@ public class SemesterRecommendationCourseRelevanceFilterTest {
     public void itKeepsCourseWithMatchingSemesterRecommendation() throws Exception {
         givenStudentIsInSemester(3);
 
-        List<Course> courses = filter.filter(allCourses.stream(), student).collect(Collectors.toList());
+        List<Course> courses = filter.filter(allCourses, student);
 
         assertThat(courses, equalTo(allCourses));
     }
