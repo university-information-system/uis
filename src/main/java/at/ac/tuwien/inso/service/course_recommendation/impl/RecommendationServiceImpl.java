@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.service.course_recommendation.impl;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.course_recommendation.*;
+import at.ac.tuwien.inso.service.course_recommendation.filters.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
@@ -20,14 +21,17 @@ public class RecommendationServiceImpl implements RecommendationService {
     @Autowired
     private TagFrequencyScorer tagFrequencyScorer;
 
+    private List<CourseRelevanceFilter> courseRelevanceFilters;
+
+    @Autowired
+    public RecommendationServiceImpl setCourseRelevanceFilters(List<CourseRelevanceFilter> courseRelevanceFilters) {
+        this.courseRelevanceFilters = courseRelevanceFilters;
+        return this;
+    }
+
     @Override
     public List<Course> recommendCourses(Student student) {
-        List<Course> coursesByStudent = courseRepository.findAllForStudent(student);
-        List<Course> coursesBySemester = courseRepository.findAllByCurrentSemester();
-
-        List<Course> courses = coursesBySemester.stream()
-                .filter(course -> !coursesByStudent.contains(course))
-                .collect(Collectors.toList());
+        List<Course> courses = getRecommendableCoursesFor(student);
 
         Map<Course, Double> tagFrequencyCourses = tagFrequencyScorer.score(courses, student);
 
@@ -38,5 +42,15 @@ public class RecommendationServiceImpl implements RecommendationService {
                         .reversed()).forEachOrdered(it -> recommendedCourses.add(it.getKey()));
 
         return recommendedCourses.stream().limit(N_MAX_COURSE_RECOMMENDATIONS).collect(Collectors.toList());
+    }
+
+    private List<Course> getRecommendableCoursesFor(Student student) {
+        List<Course> courses = courseRepository.findAllRecommendableForStudent(student);
+
+        for (CourseRelevanceFilter filter : courseRelevanceFilters) {
+            courses = filter.filter(courses, student);
+        }
+
+        return courses;
     }
 }

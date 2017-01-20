@@ -12,4 +12,6 @@ public interface SubjectForStudyPlanRepository extends CrudRepository<SubjectFor
     List<SubjectForStudyPlan> findByStudyPlanIdOrderBySemesterRecommendation(Long id);
 
     List<SubjectForStudyPlan> findBySubject(Subject subject);
+
+    List<SubjectForStudyPlan> findBySubjectInAndStudyPlan(List<Subject> subjects, StudyPlan studyPlan);
 }

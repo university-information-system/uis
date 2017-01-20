@@ -17,7 +17,10 @@ import java.util.*;
 import static at.ac.tuwien.inso.utils.IterableUtils.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -101,10 +104,20 @@ public class CoursesRepositoryTests {
     }
 
     @Test
-    public void itReturnsCoursesForCurrentSemester() throws Exception {
-        List<Course> actual = courseRepository.findAllByCurrentSemester();
+    public void verifyRecommendableCoursesForStudent() throws Exception {
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(students.get(0));
 
         assertThat(actual, CoreMatchers.hasItems(courses.get("Course1"), courses.get("Course2"), courses.get("Course3")));
+    }
+
+    @Test
+    public void verifyRecommendableCoursesForStudentWithRegistrations() throws Exception {
+        Student student = students.get(0);
+        courses.get("Course1").addStudents(student);
+
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(student);
+
+        assertThat(actual, not(hasItem(courses.get("Course1"))));
     }
 
     @Test
