@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.service_tests.course_recommendation;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.course_recommendation.filters.*;
 import at.ac.tuwien.inso.service.course_recommendation.impl.*;
 import org.junit.*;
 import org.junit.runner.*;
@@ -9,8 +10,10 @@ import org.mockito.*;
 import org.mockito.runners.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 import static java.util.Arrays.*;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -34,6 +37,11 @@ public class RecommendationServiceTests {
 
     @Mock
     private TagFrequencyScorer tagFrequencyScorer;
+
+    private List<CourseRelevanceFilter> filters = asList(
+            mock(CourseRelevanceFilter.class),
+            mock(CourseRelevanceFilter.class)
+    );
 
     @InjectMocks
     private RecommendationServiceImpl recommendationService;
@@ -67,6 +75,9 @@ public class RecommendationServiceTests {
         when(courseRepository.findAllRecommendableForStudent(student)).thenReturn(courses);
         when(semesterRepository.findFirstByOrderByIdDesc()).thenReturn(semesters.get("WS16"));
         when(tagFrequencyScorer.score(courses, student)).thenReturn(scoredCoursesByTagFrequency);
+
+        filters.forEach(it -> when(it.filter(courses, student)).thenReturn(courses));
+        recommendationService.setCourseRelevanceFilters(filters);
     }
 
     @Test
@@ -78,5 +89,18 @@ public class RecommendationServiceTests {
         );
 
         assertEquals(expected, recommendedCourses);
+    }
+
+    @Test
+    public void itFiltersCoursesBeforeRecommendingThem() throws Exception {
+        List<Course> coursesAfterFilter1 = courses.stream().skip(1).collect(Collectors.toList());
+        when(filters.get(0).filter(courses, student)).thenReturn(coursesAfterFilter1);
+
+        List<Course> coursesAfterFilter2 = coursesAfterFilter1.stream().skip(1).collect(Collectors.toList());
+        when(filters.get(1).filter(coursesAfterFilter1, student)).thenReturn(coursesAfterFilter2);
+
+        List<Course> recommendedCourses = recommendationService.recommendCourses(student);
+
+        assertThat(recommendedCourses, not(hasItems(courses.get(0), courses.get(1))));
     }
 }
