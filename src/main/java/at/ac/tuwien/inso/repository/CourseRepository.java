@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.entity.*;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.*;
+import org.springframework.data.repository.query.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -26,9 +27,9 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
             "       select max(s1.id) " +
             "       from Semester s1 " +
             "       )" +
-            "   )" +
-            "")
-    List<Course> findAllByCurrentSemester();
+            "   ) " +
+            "and :student not member of c.students")
+    List<Course> findAllRecommendableForStudent(@Param("student") Student student);
 
     @Query("select c " +
             "from Course c " +

@@ -22,12 +22,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public List<Course> recommendCourses(Student student) {
-        List<Course> coursesByStudent = courseRepository.findAllForStudent(student);
-        List<Course> coursesBySemester = courseRepository.findAllByCurrentSemester();
-
-        List<Course> courses = coursesBySemester.stream()
-                .filter(course -> !coursesByStudent.contains(course))
-                .collect(Collectors.toList());
+        List<Course> courses = courseRepository.findAllRecommendableForStudent(student);
 
         Map<Course, Double> tagFrequencyCourses = tagFrequencyScorer.score(courses, student);
 
