@@ -165,4 +165,14 @@ public class AdminUsersTests {
                 resultHasUsersPage(page(0, 10, usersWithMail.size(), usersWithMail.stream().limit(10).collect(Collectors.toList())))
         );
     }
+
+    @Test
+    public void adminShouldSeeStudentDetails() {
+        //TODO
+    }
+
+    @Test
+    public void adminShouldSeeLecturerDetails() {
+        //TODO
+    }
 }
