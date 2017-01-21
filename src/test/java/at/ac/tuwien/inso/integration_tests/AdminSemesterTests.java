@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @FixedClock
 @TestExecutionListeners({FixedClockListener.class, DependencyInjectionTestExecutionListener.class})
-public class SemesterTests {
+public class AdminSemesterTests {
 
     @Autowired
     MockMvc mockMvc;
