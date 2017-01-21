@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class AbstractSubjectsTests {
+public abstract class AbstractSubjectsTests {
 
     @Autowired
     protected MockMvc mockMvc;

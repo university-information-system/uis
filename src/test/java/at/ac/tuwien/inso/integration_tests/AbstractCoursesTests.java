@@ -23,7 +23,7 @@ import static java.util.Arrays.asList;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class AbstractCoursesTests {
+public abstract class AbstractCoursesTests {
 
     @Autowired
     protected MockMvc mockMvc;
