@@ -2,6 +2,9 @@ package at.ac.tuwien.inso.integration_tests;
 
 import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.StudyPlanRepository;
 import at.ac.tuwien.inso.repository.UisUserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +41,16 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
 
     @Autowired
     private UisUserRepository uisUserRepository;
+
+    @Autowired
+    private SemesterRepository semesterRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private StudyPlanRepository studyplanRepository;
+
 
     @Test
     public void adminShouldSeeAllStudyPlansTest() throws Exception {
@@ -240,6 +253,27 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
     }
 
     @Test
+    public void isStudyPlanAddedToStudent() throws Exception {
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
+        Student newStudent = studentRepository.save(new Student("s1123456", "TestUser", "a@c.com"));
+
+        StudyPlan sp = studyplanRepository.save(new StudyPlan("TestStudyPlan", new EctsDistribution(BigDecimal.TEN, BigDecimal.TEN, BigDecimal.TEN)));
+
+        mockMvc.perform(
+                post("/admin/studyplans/registerStudent/")
+                        .param("studentId", newStudent.getId()+"")
+                        .param("studyPlanId", sp.getId()+"")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/users/"+newStudent.getId())
+        ).andExpect(it -> {
+            Student s = studentRepository.findOne(newStudent.getId());
+            assertEquals(sp, s.getStudyplans().get(0).getStudyplan());
+        });
+    }
+
+    @Test
     public void availableSubjectsForStudyPlanJsonTest() throws Exception {
 
         // given 3 subjects, where all of them contain the string "Engineering", but one is already part of studyPlan2
@@ -255,8 +289,9 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
         ).andReturn();
 
         // the other 2 subjects should be available for studyPlan2
-        String expected = "[{\"id\":3,\"name\":\"Advanced Software Engineering\",\"ects\":6},{\"id\":5,\"name\":\"Model Engineering\",\"ects\":6}]";
-        assertEquals(expected, result.getResponse().getContentAsString());
+        assertTrue(result.getResponse().getContentAsString().contains("Advanced Software Engineering"));
+        assertTrue(result.getResponse().getContentAsString().contains("Model Engineering"));
+        assertFalse(result.getResponse().getContentAsString().contains("Software Engineering and Project Management"));
     }
 
     private ResultActions createStudyPlan(CreateStudyPlanForm form) throws Exception {
