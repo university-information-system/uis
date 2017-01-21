@@ -1,20 +1,16 @@
 package at.ac.tuwien.inso.service.course_recommendation.user_based;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Feedback;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.FeedbackRepository;
-import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.course_recommendation.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
+import static java.util.function.Function.*;
+import static java.util.stream.Collectors.*;
 
 @Service
 public class UserBasedCourseScorer implements CourseScorer {
@@ -31,6 +27,14 @@ public class UserBasedCourseScorer implements CourseScorer {
 
     @Autowired
     private FeedbackRepository feedbackRepository;
+
+    @Value("${uis.course.recommender.user.scorer.weight:1}")
+    private Double weight;
+
+    @Override
+    public double weight() {
+        return weight;
+    }
 
     @Override
     public Map<Course, Double> score(List<Course> courses, Student student) {

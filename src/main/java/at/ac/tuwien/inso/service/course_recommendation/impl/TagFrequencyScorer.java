@@ -1,16 +1,12 @@
 package at.ac.tuwien.inso.service.course_recommendation.impl;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.course_recommendation.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TagFrequencyScorer implements CourseScorer {
@@ -20,6 +16,14 @@ public class TagFrequencyScorer implements CourseScorer {
 
     @Autowired
     private TagFrequencyCalculatorImpl tagFrequencyCalculator;
+
+    @Value("${uis.course.recommender.tag.scorer.weight:1}")
+    private Double weight;
+
+    @Override
+    public double weight() {
+        return weight;
+    }
 
     @Override
     public Map<Course, Double> score(List<Course> courses, Student student) {
