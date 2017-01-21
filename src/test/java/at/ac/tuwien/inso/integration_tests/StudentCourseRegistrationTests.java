@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class StudentTests {
+public class StudentCourseRegistrationTests extends AbstractCoursesTests {
 
     UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
     UserAccount studentUser = new UserAccount("student1", "pass", Role.STUDENT);
@@ -132,24 +132,6 @@ public class StudentTests {
                 redirectedUrl("/student/courses")
         ).andExpect(
                 flash().attribute("flashMessageNotLocalized", expect)
-        );
-    }
-
-    @Test
-    public void itShowsEmptyGrades() throws Exception {
-        mockMvc.perform(
-                get("/student/grades").with(user(studentUser))
-        ).andExpect(
-                model().attributeExists("grades")
-        );
-    }
-
-    @Test
-    public void itShowsGrades() throws Exception {
-        mockMvc.perform(
-                get("/student/grades").with(user(student2User))
-        ).andExpect(
-                model().attributeExists("grades")
         );
     }
 

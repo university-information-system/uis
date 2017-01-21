@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class GradesTests {
+public class LecturerCourseDetailsTests {
 
 
     UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
@@ -133,6 +133,38 @@ public class GradesTests {
                 model().attribute("grades", asList(gr3))
         );
 
+    }
+
+    @Test
+    public void lecturersShouldSeeRegisteredStudentsToCourse() throws Exception {
+        // given lecturer1 and lecturer2 of the sepm course
+
+        // when a student has registered to the sepm course
+        sepmSS2016.addStudents(student);
+
+        //lecturer1 should see the registered student
+        mockMvc.perform(
+                get("/lecturer/course-details/registrations")
+                        .param("courseId", sepmSS2016.getId().toString())
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", sepmSS2016)
+        ).andExpect(
+                model().attribute("students", asList(student))
+        );
+
+        //lecturer2 should see the registered student too
+        mockMvc.perform(
+                get("/lecturer/course-details/registrations")
+                        .param("courseId", sepmSS2016.getId().toString())
+                        .with(user("lecturer2").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", sepmSS2016)
+        ).andExpect(
+                model().attribute("students", asList(student))
+        );
 
     }
 
