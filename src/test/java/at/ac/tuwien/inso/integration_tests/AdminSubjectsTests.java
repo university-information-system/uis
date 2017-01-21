@@ -9,10 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.*;
-import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.*;
-
-import java.math.*;
 
 import static java.util.Arrays.*;
 import static org.junit.Assert.assertFalse;
@@ -26,33 +23,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class SubjectsTest {
-
-    @Autowired
-    MockMvc mockMvc;
-    private UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
-    private Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email", user1);
-    private Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email", new UserAccount("lecturer2", "pass", Role.LECTURER));
-    private Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email", new UserAccount("lecturer3", "pass", Role.LECTURER));
-    private Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
-    private Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
-    private Subject ase = new Subject("ASE", new BigDecimal(6.0));
+public class AdminSubjectsTests extends AbstractSubjectsTests {
 
     @Autowired
     private CourseRepository courseRepository;
-    @Autowired
-    private SubjectRepository subjectRepository;
-    @Autowired
-    private LecturerRepository lecturerRepository;
+
     @Autowired
     private SemesterRepository semesterRepository;
-
-    @Before
-    public void setUp() {
-        lecturerRepository.save(lecturer1);
-        lecturerRepository.save(lecturer2);
-        lecturerRepository.save(lecturer3);
-    }
 
     @Test
     public void adminShouldSeeSubjectsOfFirstPage() throws Exception {
@@ -154,37 +131,6 @@ public class SubjectsTest {
         );
     }
 
-    @Test
-    public void lecturersShouldSeeTheirOwnSubjects() throws Exception {
 
-        // when subjects are created and assigned to lecturers
-        sepm.addLecturers(lecturer1);
-        ase.addLecturers(lecturer1, lecturer2);
-        subjectRepository.save(calculus);
-        subjectRepository.save(sepm);
-        subjectRepository.save(ase);
-
-        // lecturer1 should see sepm and ase
-        mockMvc.perform(
-                get("/lecturer/subjects").with(user("lecturer1").roles("LECTURER"))
-        ).andExpect(
-                model().attribute("ownedSubjects", asList(sepm, ase))
-        );
-
-        // lecturer2 should see ase
-        mockMvc.perform(
-                get("/lecturer/subjects").with(user("lecturer2").roles("LECTURER"))
-        ).andExpect(
-                model().attribute("ownedSubjects", asList(ase))
-        );
-
-        // lecturer3 should see nothing
-        mockMvc.perform(
-                get("/lecturer/subjects").with(user("lecturer3").roles("LECTURER"))
-        ).andExpect(
-                model().attribute("ownedSubjects", asList())
-        );
-
-    }
 
 }
