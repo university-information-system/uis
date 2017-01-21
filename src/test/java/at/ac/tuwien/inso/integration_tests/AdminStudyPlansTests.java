@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,14 +21,13 @@ import java.util.stream.StreamSupport;
 
 import static java.util.Arrays.asList;
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -237,6 +237,26 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
             assertTrue(studyPlans.contains(studyPlan1));
         });
 
+    }
+
+    @Test
+    public void availableSubjectsForStudyPlanJsonTest() throws Exception {
+
+        // given 3 subjects, where all of them contain the string "Engineering", but one is already part of studyPlan2
+        studyPlan1.addSubjects(new SubjectForStudyPlan(subjects.get(1), studyPlan2, true));
+        studyPlanRepository.save(studyPlan2);
+
+        // when searching for "Engineering
+        MvcResult result =  mockMvc.perform(
+                get("/admin/studyplans/json/availableSubjects").with(user("admin").roles("ADMIN"))
+                        .param("id", studyPlan2.getId().toString())
+                        .param("query", "Engineering")
+        ).andExpect((status().isOk())
+        ).andReturn();
+
+        // the other 2 subjects should be available for studyPlan2
+        String expected = "[{\"id\":3,\"name\":\"Advanced Software Engineering\",\"ects\":6},{\"id\":5,\"name\":\"Model Engineering\",\"ects\":6}]";
+        assertEquals(expected, result.getResponse().getContentAsString());
     }
 
     private ResultActions createStudyPlan(CreateStudyPlanForm form) throws Exception {
