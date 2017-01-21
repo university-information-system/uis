@@ -28,7 +28,12 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
             "       from Semester s1 " +
             "       )" +
             "   ) " +
-            "and :student not member of c.students")
+            "and :student not member of c.students " +
+            "and c.subject not in (" +
+            "   select g.course.subject " +
+            "   from Grade g " +
+            "   where g.student = :student and g.mark.mark <> 5" +
+            ")")
     List<Course> findAllRecommendableForStudent(@Param("student") Student student);
 
     @Query("select c " +
