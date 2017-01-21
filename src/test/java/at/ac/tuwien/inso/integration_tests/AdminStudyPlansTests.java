@@ -2,8 +2,10 @@ package at.ac.tuwien.inso.integration_tests;
 
 import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.UisUserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -33,6 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Transactional
 public class AdminStudyPlansTests extends AbstractStudyPlansTests {
+
+    @Autowired
+    private UisUserRepository uisUserRepository;
 
     @Test
     public void adminShouldSeeAllStudyPlansTest() throws Exception {
@@ -211,6 +216,27 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
             List<SubjectForStudyPlan> list = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(studyPlan.getId());
             assertFalse(list.contains(s2));
         });
+    }
+
+    @Test
+    public void registerStudentToStudyPlanTest() throws Exception {
+
+        // given a student and a study plan
+        Student student = uisUserRepository.save(new Student("s12345", "student", "student@uis.at"));
+
+        // when registering this student to the study plan
+        mockMvc.perform(
+                post("/admin/studyplans/registerStudent").with(user("admin").roles("ADMIN"))
+                        .param("studyPlanId", studyPlan1.getId().toString())
+                        .param("studentId", student.getId().toString())
+                        .with(csrf())
+        ).andExpect(
+                (redirectedUrl("/admin/users/"+student.getId().toString()))
+        ).andExpect(it -> {
+            List<StudyPlan> studyPlans = student.getStudyplans().stream().map(StudyPlanRegistration::getStudyplan).collect(Collectors.toList());
+            assertTrue(studyPlans.contains(studyPlan1));
+        });
+
     }
 
     private ResultActions createStudyPlan(CreateStudyPlanForm form) throws Exception {
