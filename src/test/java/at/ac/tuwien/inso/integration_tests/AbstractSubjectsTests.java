@@ -26,6 +26,9 @@ import java.math.BigDecimal;
 public class AbstractSubjectsTests {
 
     @Autowired
+    protected MockMvc mockMvc;
+
+    @Autowired
     protected SubjectRepository subjectRepository;
 
     @Autowired
@@ -46,8 +49,7 @@ public class AbstractSubjectsTests {
         lecturerRepository.save(lecturer3);
     }
 
-    @Autowired
-    protected MockMvc mockMvc;
+
 
 
 }
