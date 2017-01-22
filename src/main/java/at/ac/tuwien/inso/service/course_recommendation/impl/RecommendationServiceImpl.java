@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.course_recommendation.*;
 import at.ac.tuwien.inso.service.course_recommendation.filters.*;
 import at.ac.tuwien.inso.service.course_recommendation.normalization.*;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
@@ -43,47 +44,32 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
+    public List<Course> recommendCoursesSublist(Student student) {
+        return recommendCourses(student).subList(0, N_MAX_COURSE_RECOMMENDATIONS.intValue());
+    }
+
+    @Override
     public List<Course> recommendCourses(Student student) {
         List<Course> courses = getRecommendableCoursesFor(student);
 
         // Compute initial scores
-        Map<CourseScorer, Map<Course, Double>> scores = courseScorers.stream()
-                .collect(Collectors.toMap(
-                        identity(),
-                        it -> it.score(courses, student)
-                ));
+        Map<CourseScorer, Map<Course, Double>> scores = courseScorers.stream().collect(Collectors.toMap(identity(), it -> it.score(courses, student)));
 
         // Normalize scores
         scores.values().forEach(it -> courseNormalizer.normalize(it));
 
         // Aggregate scores, by scorer weights
-        Map<Course, Double> recommendedCourseMap = courses.stream()
-                .collect(Collectors.toMap(
-                        identity(),
-                        course -> {
-                            double aggregatedScore = scores.keySet().stream()
-                                    .mapToDouble(scorer -> scores.get(scorer).get(course) * scorer.weight())
-                                    .sum();
-                            return aggregatedScore / courseScorersWeights;
-                        }
-                ));
+        Map<Course, Double> recommendedCourseMap = courses.stream().collect(Collectors.toMap(identity(), course -> {
+            double aggregatedScore = scores.keySet().stream().mapToDouble(scorer -> scores.get(scorer).get(course) * scorer.weight()).sum();
+            return aggregatedScore / courseScorersWeights;
+        }));
 
         // Sort courses by score
-        return recommendedCourseMap.entrySet().stream()
-                .sorted(Map.Entry.<Course, Double>comparingByValue().reversed())
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+        return recommendedCourseMap.entrySet().stream().sorted(Map.Entry.<Course, Double>comparingByValue().reversed()).map(Map.Entry::getKey).collect(Collectors.toList());
     }
 
     private Map<Course, Double> mergeMaps(Map<Course, Double> map1, Map<Course, Double> map2) {
-        return Stream
-                .concat(map1.entrySet().stream(), map2.entrySet().stream())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        Double::sum
-                        )
-                );
+        return Stream.concat(map1.entrySet().stream(), map2.entrySet().stream()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, Double::sum));
     }
 
     private List<Course> getRecommendableCoursesFor(Student student) {

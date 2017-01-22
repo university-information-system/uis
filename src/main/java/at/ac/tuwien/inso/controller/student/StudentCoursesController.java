@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.controller.*;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.service.*;
 import at.ac.tuwien.inso.service.course_recommendation.*;
+
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.*;
@@ -25,29 +26,15 @@ public class StudentCoursesController {
     private CourseService courseService;
 
     @Autowired
-    private UserAccountService userAccountService;
-
-    @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private RecommendationService recommendationService;
-
     @ModelAttribute("allCourses")
-    private Page<Course> getAllCourses(@RequestParam(value = "search", defaultValue = "") String search,
-                                       @PageableDefault Pageable pageable) {
+    private Page<Course> getAllCourses(@RequestParam(value = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
         if (pageable.getPageSize() > Constants.MAX_PAGE_SIZE) {
             pageable = new PageRequest(pageable.getPageNumber(), Constants.MAX_PAGE_SIZE);
         }
 
         return courseService.findCourseForCurrentSemesterWithName(search, pageable);
-    }
-
-    @ModelAttribute("recommendedCourses")
-    private List<Course> getRecommendedCourses(Principal principal) {
-        Student student = studentService.findByUsername(principal.getName());
-
-        return recommendationService.recommendCourses(student);
     }
 
     @ModelAttribute("searchString")
@@ -61,9 +48,7 @@ public class StudentCoursesController {
     }
 
     @GetMapping("/{id}")
-    public String course(@PathVariable Long id,
-                         Model model,
-                         Principal principal) {
+    public String course(@PathVariable Long id, Model model, Principal principal) {
         log.debug("Student " + principal.getName() + " requesting course " + id + " details");
 
         Student student = studentService.findByUsername(principal.getName());
