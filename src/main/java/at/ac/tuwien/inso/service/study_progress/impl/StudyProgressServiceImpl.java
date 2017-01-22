@@ -1,5 +1,14 @@
 package at.ac.tuwien.inso.service.study_progress.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Feedback;
@@ -7,17 +16,15 @@ import at.ac.tuwien.inso.entity.Grade;
 import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.StudyPlanRegistration;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.study_progress.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
-
-import java.util.*;
-import java.util.stream.*;
-
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.FeedbackService;
+import at.ac.tuwien.inso.service.GradeService;
+import at.ac.tuwien.inso.service.SemesterService;
+import at.ac.tuwien.inso.service.study_progress.CourseRegistration;
+import at.ac.tuwien.inso.service.study_progress.CourseRegistrationState;
+import at.ac.tuwien.inso.service.study_progress.SemesterProgress;
+import at.ac.tuwien.inso.service.study_progress.StudyProgress;
+import at.ac.tuwien.inso.service.study_progress.StudyProgressService;
 
 @Service
 public class StudyProgressServiceImpl implements StudyProgressService {

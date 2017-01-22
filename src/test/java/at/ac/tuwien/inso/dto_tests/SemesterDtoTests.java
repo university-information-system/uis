@@ -1,15 +1,16 @@
 package at.ac.tuwien.inso.dto_tests;
 
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.SemesterType;

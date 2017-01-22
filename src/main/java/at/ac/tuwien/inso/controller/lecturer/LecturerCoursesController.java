@@ -1,18 +1,22 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.service.TagService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Tag;
 import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.LecturerService;
+import at.ac.tuwien.inso.service.TagService;
 
 @Controller
 @RequestMapping("/lecturer/courses")

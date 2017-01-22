@@ -1,27 +1,47 @@
 package at.ac.tuwien.inso.dao_tests;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import org.hamcrest.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
-import org.springframework.transaction.annotation.*;
-
-import java.math.*;
-import java.util.*;
-
-import static at.ac.tuwien.inso.utils.IterableUtils.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import static at.ac.tuwien.inso.utils.IterableUtils.toList;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hamcrest.CoreMatchers;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.repository.TagRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

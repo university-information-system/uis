@@ -1,11 +1,11 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import org.junit.Test;
-
 import static java.util.Arrays.asList;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
+import org.junit.Test;
 
 public class LecturerStudyPlansTests extends AbstractStudyPlansTests {
 

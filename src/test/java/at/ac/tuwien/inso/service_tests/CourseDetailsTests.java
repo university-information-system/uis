@@ -1,23 +1,39 @@
 package at.ac.tuwien.inso.service_tests;
 
-import at.ac.tuwien.inso.dto.*;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.impl.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.runners.*;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import java.math.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.List;
 
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import at.ac.tuwien.inso.dto.CourseDetailsForStudent;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.SemesterService;
+import at.ac.tuwien.inso.service.impl.CourseServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CourseDetailsTests {

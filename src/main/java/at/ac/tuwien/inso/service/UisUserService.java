@@ -1,10 +1,11 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-import org.springframework.data.domain.*;
-import org.springframework.security.access.prepost.*;
+import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 
 public interface UisUserService {
 

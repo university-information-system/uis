@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.*;
+import static java.util.Arrays.asList;
 
-import static java.util.Arrays.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Student extends UisUser {

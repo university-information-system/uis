@@ -1,10 +1,10 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.UserAccount;
-import org.junit.Before;
+import static java.util.Arrays.asList;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,13 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-
-import static java.util.Arrays.asList;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

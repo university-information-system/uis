@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.entity.PendingAccountActivation;
+import at.ac.tuwien.inso.entity.UserAccount;
 
 public interface AccountActivationService {
 

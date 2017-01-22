@@ -1,13 +1,18 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.data.domain.*;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.*;
-import org.springframework.data.repository.query.*;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
 
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Long> {

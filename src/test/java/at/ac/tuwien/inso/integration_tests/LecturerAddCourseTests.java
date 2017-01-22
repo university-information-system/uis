@@ -1,15 +1,16 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Role;
-import org.junit.Test;
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
+import org.junit.Test;
+
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Role;
 
 public class LecturerAddCourseTests extends AbstractCoursesTests {
 

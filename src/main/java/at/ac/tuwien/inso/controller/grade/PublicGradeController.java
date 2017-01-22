@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.controller.grade;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-
-import javax.servlet.http.HttpServletResponse;
 
 import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.view.pdf.GradePDFView;

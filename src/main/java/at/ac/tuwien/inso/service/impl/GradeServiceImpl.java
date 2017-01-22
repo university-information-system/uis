@@ -1,19 +1,29 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.jboss.aerogear.security.otp.Totp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.ValidationException;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.GradeService;
+import at.ac.tuwien.inso.service.LecturerService;
+import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.UserAccountService;
 
 @Service
 public class GradeServiceImpl implements GradeService {

@@ -1,7 +1,13 @@
 package at.ac.tuwien.inso.service.course_recommendation.user_based;
 
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.repository.StudentRepository;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,13 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Collections;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.repository.StudentRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudentSimilarityServiceTest {

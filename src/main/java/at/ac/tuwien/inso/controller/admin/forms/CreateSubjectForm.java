@@ -1,11 +1,13 @@
 package at.ac.tuwien.inso.controller.admin.forms;
 
-import at.ac.tuwien.inso.entity.Subject;
-import org.hibernate.validator.constraints.NotEmpty;
+import java.math.BigDecimal;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import at.ac.tuwien.inso.entity.Subject;
 
 public class CreateSubjectForm {
 

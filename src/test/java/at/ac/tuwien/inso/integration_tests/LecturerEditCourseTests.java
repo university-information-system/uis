@@ -1,8 +1,13 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.GradeRepository;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +17,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertTrue;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.repository.GradeRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

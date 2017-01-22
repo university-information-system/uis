@@ -1,7 +1,10 @@
 package at.ac.tuwien.inso.controller.forms;
 
-import at.ac.tuwien.inso.entity.*;
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.ScriptAssert;
+
+import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.entity.UserAccount;
 
 @ScriptAssert(lang = "javascript", script = "_this.password === _this.repeatPassword", message = "{repeat.password.error}")
 public class AccountActivationForm {

@@ -1,14 +1,19 @@
 package at.ac.tuwien.inso.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
-import javax.persistence.*;
-import java.math.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.List;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Subject {

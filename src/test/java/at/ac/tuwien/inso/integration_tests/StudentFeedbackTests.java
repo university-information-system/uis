@@ -1,32 +1,55 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.controller.student.forms.*;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.student_subject_prefs.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.autoconfigure.web.servlet.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
-import org.springframework.test.web.servlet.*;
-import org.springframework.test.web.servlet.request.*;
-import org.springframework.transaction.annotation.*;
+import static at.ac.tuwien.inso.entity.Feedback.Type.DISLIKE;
+import static at.ac.tuwien.inso.entity.Feedback.Type.LIKE;
+import static at.ac.tuwien.inso.utils.IterableUtils.toList;
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.math.*;
-import java.util.*;
-import java.util.stream.*;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.IntStream;
 
-import static at.ac.tuwien.inso.entity.Feedback.Type.*;
-import static at.ac.tuwien.inso.utils.IterableUtils.*;
-import static java.util.Arrays.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.controller.student.forms.FeedbackForm;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.FeedbackRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.repository.UisUserRepository;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

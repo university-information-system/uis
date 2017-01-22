@@ -1,15 +1,21 @@
 package at.ac.tuwien.inso.service.course_recommendation.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.course_recommendation.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
-import static java.util.function.Function.*;
-import static java.util.stream.Collectors.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
 
 @Service
 public class MandatoryCourseScorer implements CourseScorer {

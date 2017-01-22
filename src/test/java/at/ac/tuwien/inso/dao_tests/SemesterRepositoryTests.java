@@ -1,22 +1,25 @@
 package at.ac.tuwien.inso.dao_tests;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
-import org.springframework.transaction.annotation.*;
+import static at.ac.tuwien.inso.utils.IterableUtils.toList;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
-import java.util.*;
+import java.util.List;
 
-import static at.ac.tuwien.inso.utils.IterableUtils.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.hamcrest.core.IsEqual.*;
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.repository.SemesterRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

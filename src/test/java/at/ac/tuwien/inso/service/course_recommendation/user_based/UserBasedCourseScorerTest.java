@@ -1,21 +1,5 @@
 package at.ac.tuwien.inso.service.course_recommendation.user_based;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Feedback;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.FeedbackRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.function.Function.identity;
@@ -24,6 +8,23 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.FeedbackRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserBasedCourseScorerTest {

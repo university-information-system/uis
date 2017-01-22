@@ -1,7 +1,7 @@
 package at.ac.tuwien.inso.service.student_subject_prefs;
 
-import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class StudentSubjectPreference {

@@ -1,25 +1,44 @@
 package at.ac.tuwien.inso.service_tests;
 
-import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.impl.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
 
 import org.jboss.aerogear.security.otp.Totp;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.runners.*;
-import org.springframework.security.test.context.support.*;
-import org.springframework.test.context.*;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.*;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.ValidationException;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.GradeService;
+import at.ac.tuwien.inso.service.LecturerService;
+import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.UserAccountService;
+import at.ac.tuwien.inso.service.impl.GradeServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 @ActiveProfiles("test")

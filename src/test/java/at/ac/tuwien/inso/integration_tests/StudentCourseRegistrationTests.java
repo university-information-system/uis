@@ -1,27 +1,47 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.autoconfigure.web.servlet.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
-import org.springframework.test.web.servlet.*;
-import org.springframework.transaction.annotation.*;
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.empty;
+import static org.junit.Assert.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
-import java.math.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.List;
 
-import static java.util.Arrays.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.repository.TagRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

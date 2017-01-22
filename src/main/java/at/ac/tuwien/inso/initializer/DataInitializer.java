@@ -1,11 +1,6 @@
 package at.ac.tuwien.inso.initializer;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.Arrays.asList;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,7 +10,41 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static java.util.Arrays.asList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.EctsDistribution;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.PendingAccountActivation;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.FeedbackRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.PendingAccountActivationRepository;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.StudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.repository.TagRepository;
+import at.ac.tuwien.inso.repository.UisUserRepository;
+import at.ac.tuwien.inso.repository.UserAccountRepository;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
 
 @Component
 public class DataInitializer {

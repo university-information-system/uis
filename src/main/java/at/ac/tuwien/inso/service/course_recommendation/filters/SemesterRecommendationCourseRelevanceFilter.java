@@ -1,15 +1,23 @@
 package at.ac.tuwien.inso.service.course_recommendation.filters;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import static java.util.function.Function.*;
-import static java.util.stream.Collectors.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
 
 @Component
 public class SemesterRecommendationCourseRelevanceFilter implements CourseRelevanceFilter {

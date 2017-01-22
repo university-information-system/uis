@@ -1,27 +1,32 @@
 package at.ac.tuwien.inso.service.course_recommendation.user_based;
 
-import at.ac.tuwien.inso.service.student_subject_prefs.*;
-import org.apache.mahout.cf.taste.common.*;
-import org.apache.mahout.cf.taste.impl.common.*;
+import static org.apache.mahout.cf.taste.impl.model.GenericDataModel.toDataMap;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
-import org.apache.mahout.cf.taste.impl.model.*;
-import org.apache.mahout.cf.taste.impl.neighborhood.*;
-import org.apache.mahout.cf.taste.impl.similarity.*;
-import org.apache.mahout.cf.taste.model.*;
-import org.apache.mahout.cf.taste.neighborhood.*;
-import org.apache.mahout.cf.taste.similarity.*;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.cache.annotation.*;
-import org.springframework.data.mongodb.core.*;
-import org.springframework.data.mongodb.core.query.*;
-import org.springframework.data.util.*;
-import org.springframework.scheduling.annotation.*;
-import org.springframework.stereotype.*;
+import org.apache.mahout.cf.taste.impl.model.GenericPreference;
+import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
+import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
+import org.apache.mahout.cf.taste.model.DataModel;
+import org.apache.mahout.cf.taste.model.Preference;
+import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
+import org.apache.mahout.cf.taste.similarity.UserSimilarity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.util.CloseableIterator;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-import static org.apache.mahout.cf.taste.impl.model.GenericDataModel.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreference;
 
 @Service
 public class StudentNeighborhoodStoreImpl implements StudentNeighborhoodStore {

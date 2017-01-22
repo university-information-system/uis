@@ -1,11 +1,23 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.StudyPlanRepository;
-import at.ac.tuwien.inso.repository.UisUserRepository;
+import static java.util.Arrays.asList;
+import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +29,20 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static java.util.Arrays.asList;
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
+import at.ac.tuwien.inso.entity.EctsDistribution;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.StudyPlanRepository;
+import at.ac.tuwien.inso.repository.UisUserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -1,22 +1,26 @@
 package at.ac.tuwien.inso.service.course_recommendation.user_based;
 
-import at.ac.tuwien.inso.service.student_subject_prefs.*;
-import org.apache.mahout.cf.taste.neighborhood.*;
-import org.hamcrest.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.runners.*;
-import org.springframework.data.mongodb.core.*;
-import org.springframework.data.mongodb.core.query.*;
-import org.springframework.data.util.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.apache.commons.lang.ArrayUtils.toObject;
+import static org.mockito.Mockito.verify;
 
-import java.util.*;
+import java.util.List;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.apache.commons.lang.ArrayUtils.*;
-import static org.mockito.Mockito.*;
+import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.util.CloseableIterator;
+
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreference;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudentNeighborhoodStoreImplTest {

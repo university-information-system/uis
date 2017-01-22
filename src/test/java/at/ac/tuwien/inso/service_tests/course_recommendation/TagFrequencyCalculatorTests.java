@@ -1,11 +1,13 @@
 package at.ac.tuwien.inso.service_tests.course_recommendation;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.FeedbackRepository;
-import at.ac.tuwien.inso.repository.GradeRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.service.course_recommendation.impl.TagFrequencyCalculatorImpl;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,14 +15,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static at.ac.tuwien.inso.entity.Feedback.Type;
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Feedback.Type;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.FeedbackRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.service.course_recommendation.impl.TagFrequencyCalculatorImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TagFrequencyCalculatorTests {

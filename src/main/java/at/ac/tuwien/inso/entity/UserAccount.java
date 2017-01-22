@@ -1,14 +1,20 @@
 package at.ac.tuwien.inso.entity;
 
-import org.springframework.security.core.*;
-import org.springframework.security.core.authority.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.security.crypto.password.*;
+import static java.util.Collections.singletonList;
 
-import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
 
-import static java.util.Collections.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @Entity
 public class UserAccount implements UserDetails {

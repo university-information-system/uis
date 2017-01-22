@@ -1,7 +1,12 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
+import static java.util.Arrays.asList;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +17,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static java.util.Arrays.asList;
+import at.ac.tuwien.inso.entity.EctsDistribution;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.repository.StudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

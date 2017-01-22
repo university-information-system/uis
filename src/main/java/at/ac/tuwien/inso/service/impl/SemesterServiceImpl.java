@@ -1,23 +1,26 @@
 package at.ac.tuwien.inso.service.impl;
 
-//import com.sun.istack.internal.Nullable; this does not exist!
-
-import at.ac.tuwien.inso.dto.SemesterDto;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
-
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+//import com.sun.istack.internal.Nullable; this does not exist!
+
+import at.ac.tuwien.inso.dto.SemesterDto;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.service.SemesterService;
 
 @Service
 public class SemesterServiceImpl implements SemesterService {

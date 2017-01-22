@@ -1,8 +1,10 @@
 package at.ac.tuwien.inso.initializer;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
-import org.springframework.context.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("demo")

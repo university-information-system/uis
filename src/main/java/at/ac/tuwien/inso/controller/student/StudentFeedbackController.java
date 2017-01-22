@@ -1,17 +1,25 @@
 package at.ac.tuwien.inso.controller.student;
 
-import at.ac.tuwien.inso.controller.student.forms.*;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.*;
+import static at.ac.tuwien.inso.entity.Feedback.Type.DISLIKE;
+import static at.ac.tuwien.inso.entity.Feedback.Type.LIKE;
 
-import javax.validation.*;
-import java.security.*;
+import java.security.Principal;
 
-import static at.ac.tuwien.inso.entity.Feedback.Type.*;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import at.ac.tuwien.inso.controller.student.forms.FeedbackForm;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.FeedbackService;
+import at.ac.tuwien.inso.service.StudentService;
 
 @Controller
 @RequestMapping("/student/feedback")

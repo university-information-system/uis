@@ -1,7 +1,11 @@
 package at.ac.tuwien.inso.controller.admin;
 
-import at.ac.tuwien.inso.controller.admin.forms.CreateSubjectForm;
-import at.ac.tuwien.inso.service.impl.Messages;
+import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
+import at.ac.tuwien.inso.controller.admin.forms.CreateSubjectForm;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.SubjectService;
-
-import javax.validation.Valid;
-
-import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
+import at.ac.tuwien.inso.service.impl.Messages;
 
 @Controller
 @RequestMapping("/admin/subjects")

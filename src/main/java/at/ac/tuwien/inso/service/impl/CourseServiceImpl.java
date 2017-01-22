@@ -1,21 +1,42 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.controller.lecturer.forms.*;
-import at.ac.tuwien.inso.dto.*;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.student_subject_prefs.*;
-import at.ac.tuwien.inso.service.validator.*;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.validation.constraints.*;
-import java.util.*;
+import javax.validation.constraints.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
+import at.ac.tuwien.inso.dto.CourseDetailsForStudent;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.ValidationException;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.GradeService;
+import at.ac.tuwien.inso.service.SemesterService;
+import at.ac.tuwien.inso.service.TagService;
+import at.ac.tuwien.inso.service.UserAccountService;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
+import at.ac.tuwien.inso.service.validator.CourseValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 
 @Service
 public class CourseServiceImpl implements CourseService {
