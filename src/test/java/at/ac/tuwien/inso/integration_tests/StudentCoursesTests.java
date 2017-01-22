@@ -35,8 +35,6 @@ public class StudentCoursesTests extends AbstractCoursesTests {
                 get("/student/courses").with(user("student").roles("STUDENT"))
         ).andExpect(
                 responseHasCourses(expectedCourses)
-        ).andExpect(
-                model().attributeExists("recommendedCourses")
         );
     }
 
