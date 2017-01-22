@@ -55,9 +55,9 @@ public class UserBasedCourseScorerTest {
     );
 
     private List<Course> courses = asList(
-            new Course(subjects.get(0), null),
-            new Course(subjects.get(1), null),
-            new Course(subjects.get(2), null)
+            new Course(subjects.get(0)),
+            new Course(subjects.get(1)),
+            new Course(subjects.get(2))
     );
 
     @Test

@@ -43,6 +43,10 @@ public class Course {
 
     protected Course() {
     }
+    
+    public Course(Subject subject){
+    	this(subject, null, "");
+    }
 
     public Course(Subject subject, Semester semester) {
         this(subject, semester, "");
