@@ -13,7 +13,7 @@ public interface UisUserRepository extends JpaRepository<UisUser, Long> {
 
     @Query("select u " +
             "from UisUser u " +
-            "where u.identificationNumber = ?1 " +
+            "where lower(u.identificationNumber) like concat('%', lower(?1), '%') " +
             "or lower(u.name) like concat('%', lower(?1), '%') " +
             "or lower(u.email) like concat('%', lower(?1), '%') " +
             "order by u.id desc"
