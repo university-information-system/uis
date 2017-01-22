@@ -174,9 +174,8 @@ public class LecturerCourseDetailsTests {
     public void lecturerShouldSeeFeedback() throws Exception {
 
         // given course ase held by lecturer1 and students student1 and student2 with grades in ase
-        Lecturer lecturer1 = lecturerRepository.save(new Lecturer("l0002", "Lecturer 1", "email", new UserAccount("lecturer1", "pass", Role.LECTURER)));
-        Student st1 = studentRepository.save(new Student("st1", "Student2", "st1@ude.nt", new UserAccount("st1", "pass", Role.STUDENT)));
-        Student st2 = studentRepository.save(new Student("st2", "Student3", "st2@ude.nt", new UserAccount("st2", "pass", Role.STUDENT)));
+        Student st1 = studentRepository.save(new Student("stud1", "Student2", "st1@ude.nt", new UserAccount("stud1", "pass", Role.STUDENT)));
+        Student st2 = studentRepository.save(new Student("stud2", "Student3", "st2@ude.nt", new UserAccount("stud2", "pass", Role.STUDENT)));
         Subject ase = subjectRepository.save(new Subject("ASE", new BigDecimal(6.0)));
         Semester ws2016 = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
         Course aseWS2016 = courseRepository.save(new Course(ase, ws2016).addStudents(st1,st2));
