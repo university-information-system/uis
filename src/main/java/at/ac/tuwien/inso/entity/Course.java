@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import at.ac.tuwien.inso.dto.SemesterDto;
+
 @Entity
 public class Course {
 
@@ -42,11 +44,12 @@ public class Course {
     protected Course() {
     }
 
-    /*
-     * TODO use DTO here
-     */
     public Course(Subject subject, Semester semester) {
         this(subject, semester, "");
+    }
+    
+    public Course(Subject subject, SemesterDto semester) {
+        this(subject, semester.toEntity(), "");
     }
 
     public Course(Subject subject, Semester semester, String description) {
