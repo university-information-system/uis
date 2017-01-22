@@ -9,7 +9,8 @@
 
     <div class="container">
         <h1 th:if="${studyPlan.enabled}" th:text="${studyPlan.getName()}"></h1>
-        <h1 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i class="material-icons">lock_outline</i></h1>
+        <h1 th:if="${!studyPlan.enabled}" th:inline="text">[[${studyPlan.getName()}]] <i
+                class="material-icons">lock_outline</i></h1>
 
         <div class="row">
             <div class="col s12 m7">
@@ -21,7 +22,9 @@
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${mandatory}">
                             <div class="title">
-                                <a class="teal-text" th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
+                                <a class="teal-text"
+                                   data-th-href="@{/student/courses/semester/subject(subjectId=__${subjectForStudyPlan.getSubject().getId()}__)}"
+                                   th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
                             </div>
                             <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
                                 <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
@@ -44,7 +47,9 @@
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${optional}">
                             <div class="title">
-                                <a class="teal-text" th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
+                                <a class="teal-text"
+                                   data-th-href="@{/student/courses/semester/subject(subjectId=__${subjectForStudyPlan.getSubject().getId()}__)}"
+                                   th:text="${subjectForStudyPlan.getSubject().getName()}"></a>
                             </div>
                             <div th:if="${subjectForStudyPlan.getSemesterRecommendation() != null}">
                                 <div th:text="${subjectForStudyPlan.getSemesterRecommendation()} + '. Semester'"></div>
