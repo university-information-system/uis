@@ -44,7 +44,15 @@ public class CoursesRepositoryTests {
     @Autowired
     private SubjectRepository subjectRepository;
 
+    @Autowired
+    private GradeRepository gradeRepository;
+
+    @Autowired
+    private LecturerRepository lecturerRepository;
+
     private List<Student> students;
+
+    private Lecturer lecturer;
 
     private Map<String, Tag> tags = new HashMap<String, Tag>() {
         {
@@ -94,6 +102,7 @@ public class CoursesRepositoryTests {
                 new Student("123", "student", "student@uis.at"),
                 new Student("456", "student", "student@uis.at")
         )));
+        lecturer = lecturerRepository.save(new Lecturer("l123", "lecturer", "lecturer@uis.at"));
 
         tagRepository.save(tags.values());
         subjectRepository.save(subjects.values());
@@ -116,6 +125,30 @@ public class CoursesRepositoryTests {
         courses.get("Course1").addStudents(student);
 
         List<Course> actual = courseRepository.findAllRecommendableForStudent(student);
+
+        assertThat(actual, not(hasItem(courses.get("Course1"))));
+    }
+
+    @Test
+    public void verifyRecommendableCoursesForStudentWithNegativeGrade() throws Exception {
+        addGradeForCourseInOlderSemester(Mark.FAILED);
+
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(students.get(0));
+
+        assertThat(actual, hasItem(courses.get("Course1")));
+    }
+
+    private void addGradeForCourseInOlderSemester(Mark mark) {
+        Course olderCourse = courseRepository.save(new Course(courses.get("Course1").getSubject(), semesters.get("WS2015")));
+
+        gradeRepository.save(new Grade(olderCourse, lecturer, students.get(0), mark));
+    }
+
+    @Test
+    public void verifyRecommendableCoursesForStudentWithPositiveGrade() throws Exception {
+        addGradeForCourseInOlderSemester(Mark.SATISFACTORY);
+
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(students.get(0));
 
         assertThat(actual, not(hasItem(courses.get("Course1"))));
     }

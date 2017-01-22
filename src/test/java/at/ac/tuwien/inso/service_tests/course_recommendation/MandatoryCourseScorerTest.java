@@ -1,10 +1,12 @@
 package at.ac.tuwien.inso.service_tests.course_recommendation;
 
 import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
 import at.ac.tuwien.inso.service.course_recommendation.impl.MandatoryCourseScorer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashMap;
@@ -23,6 +25,9 @@ public class MandatoryCourseScorerTest {
 
     @InjectMocks
     private MandatoryCourseScorer mandatoryCourseScorer;
+
+    @Mock
+    private SubjectForStudyPlanRepository subjectForStudyPlanRepository;
 
     private Student student = mock(Student.class);
 
@@ -62,7 +67,12 @@ public class MandatoryCourseScorerTest {
     public void verifyCourseScorerWithNoMandatorySubjectsAndOneStudyPlan() throws Exception {
         when(student.getStudyplans()).thenReturn(asList(studyPlanRegistrations.get(0)));
         when(studyPlanRegistrations.get(0).getStudyplan()).thenReturn(studyPlans.get(0));
-        when(studyPlans.get(0).getSubjects()).thenReturn(asList(subjectsForStudyPlan.get(0)));
+        when(subjectForStudyPlanRepository.findBySubjectInAndStudyPlan(
+                subjects,
+                studyPlans.get(0))
+        ).thenReturn(asList(
+                subjectsForStudyPlan.get(0))
+        );
 
         Map<Course, Double> scores = mandatoryCourseScorer.score(courses, student);
         Map<Course, Double> expectedScores = courses.stream().collect(toMap(identity(), it -> 0.0));
@@ -74,7 +84,10 @@ public class MandatoryCourseScorerTest {
     public void verifyCourseScorerWithMandatorySubjectsAndOneStudyPlan() throws Exception {
         when(student.getStudyplans()).thenReturn(asList(studyPlanRegistrations.get(1)));
         when(studyPlanRegistrations.get(1).getStudyplan()).thenReturn(studyPlans.get(1));
-        when(studyPlans.get(1).getSubjects()).thenReturn(asList(
+        when(subjectForStudyPlanRepository.findBySubjectInAndStudyPlan(
+                subjects,
+                studyPlans.get(1))
+        ).thenReturn(asList(
                 subjectsForStudyPlan.get(1),
                 subjectsForStudyPlan.get(2))
         );
@@ -99,11 +112,17 @@ public class MandatoryCourseScorerTest {
         );
         when(studyPlanRegistrations.get(1).getStudyplan()).thenReturn(studyPlans.get(1));
         when(studyPlanRegistrations.get(2).getStudyplan()).thenReturn(studyPlans.get(2));
-        when(studyPlans.get(1).getSubjects()).thenReturn(asList(
+        when(subjectForStudyPlanRepository.findBySubjectInAndStudyPlan(
+                subjects,
+                studyPlans.get(1))
+        ).thenReturn(asList(
                 subjectsForStudyPlan.get(1),
                 subjectsForStudyPlan.get(2))
         );
-        when(studyPlans.get(2).getSubjects()).thenReturn(asList(
+        when(subjectForStudyPlanRepository.findBySubjectInAndStudyPlan(
+                subjects,
+                studyPlans.get(2))
+        ).thenReturn(asList(
                 subjectsForStudyPlan.get(3),
                 subjectsForStudyPlan.get(4))
         );
