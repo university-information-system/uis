@@ -11,4 +11,7 @@ public interface RecommendationService {
 
     @PreAuthorize("isAuthenticated()")
     List<Course> recommendCourses(Student student);
+
+    @PreAuthorize("isAuthenticated()")
+    List<Course> recommendCoursesSublist(Student student);
 }

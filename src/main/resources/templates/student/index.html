@@ -5,6 +5,9 @@
 <body>
 
 <ul layout:fragment="nav-items">
+    <li th:class="${#httpServletRequest.requestURI} == '/student/recommended' ? 'active' : ''">
+        <a class="white-text" href="/student/recommended" th:text="#{student.nav.recommended}"></a>
+    </li>
     <li th:class="${#httpServletRequest.requestURI} == '/student/courses' ? 'active' : ''">
         <a class="white-text" href="/student/courses" th:text="#{student.nav.courses}"></a>
     </li>
@@ -15,13 +18,15 @@
         <a class="white-text" href="/student/grades" th:text="#{student.nav.my.grades}"></a>
     </li>
     <li th:class="${#httpServletRequest.requestURI} == '/student/my-studyplans' ? 'active' : ''">
-        <a class="white-text" href="/student/my-studyplans" th:text="#{student.nav.my.studyplans}"></a>
+        <a class="white-text" href="/student/my-studyplans"
+           th:text="#{student.nav.my.studyplans}"></a>
     </li>
     <li>
         <div class="divider"></div>
     </li>
     <li th:class="${#httpServletRequest.requestURI} == '/student/all-studyplans' ? 'active' : ''">
-        <a class="white-text" href="/student/all-studyplans" th:text="#{student.nav.all.studyplans}"></a>
+        <a class="white-text" href="/student/all-studyplans"
+           th:text="#{student.nav.all.studyplans}"></a>
     </li>
 </ul>
 
