@@ -17,4 +17,14 @@ public class LecturerCoursesTests extends AbstractCoursesTests {
                 model().attribute("allCourses", expectedCoursesForLecturer1)
         );
     }
+
+    @Test
+    public void allTagsJsonTest() {
+        //TODO
+    }
+
+    @Test
+    public void tagsForCourseJsonTest() {
+        //TODO
+    }
 }

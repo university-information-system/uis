@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LecturerAddCourseTests extends AbstractCoursesTests {
 
     @Test
-    public void itCreatesCourse() throws Exception {
+    public void itCreatesCourseTest() throws Exception {
         Course course = new Course(sepm, ws2016);
         AddCourseForm form = new AddCourseForm(course);
         form.setInitialTags(tagRepository.findAll());
@@ -29,5 +29,10 @@ public class LecturerAddCourseTests extends AbstractCoursesTests {
         ).andExpect(
                 flash().attributeExists("flashMessageNotLocalized")
         );
+    }
+
+    @Test
+    public void itDoesNotCreateCourseTest() {
+        //TODO
     }
 }
