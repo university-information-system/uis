@@ -41,20 +41,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
-				.loginPage("/login")
-				.defaultSuccessUrl("/")
-				.failureUrl("/login?error")
-				.permitAll()
-				.and()
-				.logout()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .permitAll()
+                .and()
+                .logout()
 				.logoutSuccessUrl("/login")
 				.permitAll();
 	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-				.userDetailsService(userAccountService)
-				.passwordEncoder(UserAccount.PASSWORD_ENCODER);
+        auth
+            .userDetailsService(userAccountService)
+            .passwordEncoder(UserAccount.PASSWORD_ENCODER);
 	}
 }
