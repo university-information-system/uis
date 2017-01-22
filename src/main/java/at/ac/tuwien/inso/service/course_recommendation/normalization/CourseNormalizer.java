@@ -1,10 +1,11 @@
 package at.ac.tuwien.inso.service.course_recommendation.normalization;
 
-import at.ac.tuwien.inso.entity.Course;
-import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
+import at.ac.tuwien.inso.entity.Course;
 
 @Component
 public class CourseNormalizer implements Normalizer {

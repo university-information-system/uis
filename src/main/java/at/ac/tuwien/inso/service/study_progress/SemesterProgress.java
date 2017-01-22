@@ -1,8 +1,8 @@
 package at.ac.tuwien.inso.service.study_progress;
 
-import at.ac.tuwien.inso.dto.SemesterDto;
+import java.util.List;
 
-import java.util.*;
+import at.ac.tuwien.inso.dto.SemesterDto;
 
 public class SemesterProgress {
 

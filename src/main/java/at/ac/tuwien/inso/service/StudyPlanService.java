@@ -1,9 +1,13 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.entity.*;
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.util.*;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.entity.SubjectWithGrade;
 
 public interface StudyPlanService {
 

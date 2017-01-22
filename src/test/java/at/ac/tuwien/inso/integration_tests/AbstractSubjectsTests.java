@@ -1,11 +1,7 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +12,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

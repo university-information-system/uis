@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso.dto;
 
-import at.ac.tuwien.inso.entity.*;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import java.math.*;
-import java.util.*;
-import java.util.stream.*;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.entity.Tag;
 
 public class CourseDetailsForStudent {
 

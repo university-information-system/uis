@@ -1,15 +1,16 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.PendingAccountActivation;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.repository.PendingAccountActivationRepository;
+import at.ac.tuwien.inso.service.AccountActivationService;
 
 @Service
 public class AccountActivationServiceImpl implements AccountActivationService {

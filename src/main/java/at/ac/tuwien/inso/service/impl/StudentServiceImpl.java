@@ -1,17 +1,22 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.dto.SemesterDto;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import at.ac.tuwien.inso.dto.SemesterDto;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.service.SemesterService;
+import at.ac.tuwien.inso.service.StudentService;
 
 @Service
 public class StudentServiceImpl implements StudentService {

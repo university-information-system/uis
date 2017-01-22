@@ -1,18 +1,23 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.exception.ActionNotAllowedException;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.FeedbackRepository;
+import at.ac.tuwien.inso.service.FeedbackService;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
 import at.ac.tuwien.inso.service.validator.FeedbackValidator;
 import at.ac.tuwien.inso.service.validator.ValidatorFactory;
-import at.ac.tuwien.inso.service.student_subject_prefs.*;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
-
-import java.util.*;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {

@@ -1,8 +1,8 @@
 package at.ac.tuwien.inso.service.course_recommendation.normalization;
 
-import at.ac.tuwien.inso.entity.Course;
-
 import java.util.Map;
+
+import at.ac.tuwien.inso.entity.Course;
 
 /**
  * Implementors of this interface have the responsibility of normalizing

@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso.controller.admin.forms;
 
-import at.ac.tuwien.inso.controller.admin.forms.validation.*;
-import at.ac.tuwien.inso.entity.*;
-import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.Pattern;
 
-import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import at.ac.tuwien.inso.controller.admin.forms.validation.UniqueIdentificationNumber;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.UisUser;
 
 public class CreateUserForm {
 

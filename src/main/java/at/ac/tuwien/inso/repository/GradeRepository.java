@@ -1,10 +1,12 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.*;
+import java.util.List;
 
-import java.util.*;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Student;
 
 public interface GradeRepository extends CrudRepository<Grade, Long> {
 

@@ -1,21 +1,32 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.validator.StudyPlanValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.*;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.entity.SubjectType;
+import at.ac.tuwien.inso.entity.SubjectWithGrade;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.repository.StudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.service.GradeService;
+import at.ac.tuwien.inso.service.StudyPlanService;
+import at.ac.tuwien.inso.service.SubjectService;
+import at.ac.tuwien.inso.service.validator.StudyPlanValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 
 @Service
 public class StudyPlanServiceImpl implements StudyPlanService {

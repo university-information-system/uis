@@ -1,14 +1,14 @@
 package at.ac.tuwien.inso.clock;
 
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.test.context.TestContext;
-import org.springframework.test.context.support.AbstractTestExecutionListener;
+import static org.mockito.Mockito.when;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.util.TimeZone;
 
-import static org.mockito.Mockito.when;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 /**
  * Thanks to http://blog.poznachowski.pl/2016/06/15/mockbean-spring-boot-missing-ingredient/

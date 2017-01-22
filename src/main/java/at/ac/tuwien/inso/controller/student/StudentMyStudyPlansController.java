@@ -1,14 +1,24 @@
 package at.ac.tuwien.inso.controller.student;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.ui.*;
-import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import java.util.*;
-import java.util.stream.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.SubjectType;
+import at.ac.tuwien.inso.entity.SubjectWithGrade;
+import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.StudyPlanService;
+import at.ac.tuwien.inso.service.UserAccountService;
 
 @Controller
 @RequestMapping("/student/my-studyplans")

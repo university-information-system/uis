@@ -1,17 +1,22 @@
 package at.ac.tuwien.inso.service.course_recommendation.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.course_recommendation.*;
-import at.ac.tuwien.inso.service.course_recommendation.filters.*;
-import at.ac.tuwien.inso.service.course_recommendation.normalization.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import static java.util.function.Function.identity;
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static java.util.function.Function.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
+import at.ac.tuwien.inso.service.course_recommendation.RecommendationService;
+import at.ac.tuwien.inso.service.course_recommendation.filters.CourseRelevanceFilter;
+import at.ac.tuwien.inso.service.course_recommendation.normalization.CourseNormalizer;
 
 @Service
 public class RecommendationServiceImpl implements RecommendationService {

@@ -1,8 +1,9 @@
 package at.ac.tuwien.inso.service.course_recommendation.filters;
 
-import at.ac.tuwien.inso.entity.*;
+import java.util.List;
 
-import java.util.*;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Student;
 
 /**
  * Implementors of this interface have the responsibility of filtering out

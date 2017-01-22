@@ -1,9 +1,12 @@
 package at.ac.tuwien.inso.entity;
 
-import org.jboss.aerogear.security.otp.api.Base32;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+
+import org.jboss.aerogear.security.otp.api.Base32;
 
 @Entity
 public class Lecturer extends UisUser {

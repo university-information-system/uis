@@ -1,7 +1,11 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.*;
-import java.util.*;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class PendingAccountActivation {

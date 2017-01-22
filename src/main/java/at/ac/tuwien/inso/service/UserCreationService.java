@@ -2,7 +2,8 @@ package at.ac.tuwien.inso.service;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.entity.PendingAccountActivation;
+import at.ac.tuwien.inso.entity.UisUser;
 
 public interface UserCreationService {
 

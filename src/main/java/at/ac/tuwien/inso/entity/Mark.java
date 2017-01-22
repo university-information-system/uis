@@ -1,8 +1,9 @@
 package at.ac.tuwien.inso.entity;
 
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Embeddable
 public class Mark implements Comparable<Mark> {

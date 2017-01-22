@@ -1,9 +1,7 @@
 package at.ac.tuwien.inso.controller.lecturer.forms;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Tag;

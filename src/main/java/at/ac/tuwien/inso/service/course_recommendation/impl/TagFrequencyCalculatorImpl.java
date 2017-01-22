@@ -1,13 +1,25 @@
 package at.ac.tuwien.inso.service.course_recommendation.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.course_recommendation.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import java.util.*;
-import java.util.stream.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.FeedbackRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.TagRepository;
+import at.ac.tuwien.inso.service.course_recommendation.TagFrequencyCalculator;
 
 @Service
 public class TagFrequencyCalculatorImpl implements TagFrequencyCalculator {

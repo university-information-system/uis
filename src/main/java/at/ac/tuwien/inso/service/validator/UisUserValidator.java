@@ -1,9 +1,10 @@
 package at.ac.tuwien.inso.service.validator;
 
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 import at.ac.tuwien.inso.entity.UisUser;
 import at.ac.tuwien.inso.exception.ValidationException;
-import org.apache.commons.validator.routines.EmailValidator;
 
 
 public class UisUserValidator {

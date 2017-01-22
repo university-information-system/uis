@@ -1,9 +1,10 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.dto.SemesterDto;
-import org.springframework.security.access.prepost.*;
+import java.util.List;
 
-import java.util.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import at.ac.tuwien.inso.dto.SemesterDto;
 
 public interface SemesterService {
 
