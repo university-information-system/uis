@@ -58,8 +58,39 @@ public class AdminSubjectLecturersTests {
     }
 
     @Test
-    public void addLecturerToSubjectTest() {
-        //TODO
+    public void addLecturerToSubjectTest() throws Exception {
+        // given 3 lecturers, where lecturer1 is a already a lecturer of the subject ase
+
+        // when adding lecturer2 to subject ase
+        mockMvc.perform(
+                post("/admin/subjects/" + ase.getId() + "/lecturers")
+                        .param("lecturerId", lecturer2.getId().toString())
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects/" + ase.getId().toString())
+        );
+
+        // lecturer2 should now be part of the subject ase too
+        assertEquals(asList(lecturer1, lecturer2), ase.getLecturers());
+    }
+
+    @Test
+    public void addAlreadyExistingLecturerToSubjectTest() throws Exception {
+        // given 3 lecturers, where lecturer1 is a already a lecturer of the subject ase
+
+        // when trying to add lecturer1 to the subject ase
+        mockMvc.perform(
+                post("/admin/subjects/" + ase.getId() + "/lecturers")
+                        .param("lecturerId", lecturer1.getId().toString())
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects/" + ase.getId().toString())
+        );
+
+        // nothing should change
+        assertEquals(asList(lecturer1), ase.getLecturers());
     }
 
     @Test
@@ -95,10 +126,9 @@ public class AdminSubjectLecturersTests {
                         .param("lecturerId", lecturer2.getId().toString())
                         .with(user("admin").roles("ADMIN"))
                         .with(csrf())
-        ).
-                andExpect(
-                        redirectedUrl("/admin/subjects/" + ase.getId().toString())
-                );
+        ).andExpect(
+                redirectedUrl("/admin/subjects/" + ase.getId().toString())
+        );
 
         // nothing should change
         assertEquals(asList(lecturer1), ase.getLecturers());
