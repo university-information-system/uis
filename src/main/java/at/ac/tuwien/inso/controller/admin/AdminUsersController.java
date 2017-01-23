@@ -65,6 +65,10 @@ public class AdminUsersController {
             @PathVariable Integer pageNumber,
             Model model
     ) {
+        if (search == null && pageNumber == 1) {
+            return "redirect:/admin/users";
+        }
+
         if ("".equals(search)) {
             return "redirect:/admin/users/page/" + pageNumber;
         }
