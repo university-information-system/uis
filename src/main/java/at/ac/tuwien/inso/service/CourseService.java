@@ -44,6 +44,10 @@ public interface CourseService {
 	List<Course> findCoursesForSubject(Subject subject);
 
     @PreAuthorize("isAuthenticated()")
+    List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject);
+
+
+    @PreAuthorize("isAuthenticated()")
     Course unregisterStudentFromCourse(Student student, Long courseId);
 
     @PreAuthorize("isAuthenticated()")
