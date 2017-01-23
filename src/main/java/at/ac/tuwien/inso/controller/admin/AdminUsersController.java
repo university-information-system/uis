@@ -52,7 +52,7 @@ public class AdminUsersController {
             @RequestParam(value = "search", required = false) String search,
             Model model
     ) {
-        if (search == "") {
+        if ("".equals(search)) {
             return "redirect:/admin/users";
         }
 
@@ -65,7 +65,7 @@ public class AdminUsersController {
             @PathVariable Integer pageNumber,
             Model model
     ) {
-        if (search == "") {
+        if ("".equals(search)) {
             return "redirect:/admin/users/page/" + pageNumber;
         }
 
