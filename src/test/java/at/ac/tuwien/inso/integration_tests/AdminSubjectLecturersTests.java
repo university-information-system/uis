@@ -26,7 +26,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -80,7 +79,29 @@ public class AdminSubjectLecturersTests {
                 redirectedUrl("/admin/subjects/" + ase.getId().toString())
         );
 
+        // lecturer1 shouldn't be part of ase anymore
         assertEquals(asList(), ase.getLecturers());
+    }
+
+    @Test
+    public void removeLecturerFromASubjectForWhichHeAlreadyDoesNotExistTest() throws Exception {
+
+        // given 3 lecturers, where lecturer1 is a already a lecturer of the subject ase
+
+        // when removing lecturer2 from subject ase
+        mockMvc.perform(
+                post("/admin/subjects/" + ase.getId() + "/lecturers/"+ lecturer2.getId() +"/delete")
+                        .param("subjectId", ase.getId().toString())
+                        .param("lecturerId", lecturer2.getId().toString())
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).
+                andExpect(
+                        redirectedUrl("/admin/subjects/" + ase.getId().toString())
+                );
+
+        // nothing should change
+        assertEquals(asList(lecturer1), ase.getLecturers());
     }
 
     @Test
