@@ -21,7 +21,7 @@ import at.ac.tuwien.inso.service.course_recommendation.normalization.CourseNorma
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private static final Long N_MAX_COURSE_RECOMMENDATIONS = 5L;
+    private static final Long N_MAX_COURSE_RECOMMENDATIONS = 10L;
 
     @Autowired
     private CourseRepository courseRepository;
