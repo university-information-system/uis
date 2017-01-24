@@ -52,7 +52,7 @@ public abstract class AbstractCoursesTests {
     private SemesterRepository semesterRepository;
 
     @Autowired
-    private SubjectRepository subjectRepository;
+    protected SubjectRepository subjectRepository;
 
     @Autowired
     private LecturerRepository lecturerRepository;
