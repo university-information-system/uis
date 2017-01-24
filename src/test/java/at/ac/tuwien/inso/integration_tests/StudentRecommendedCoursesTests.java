@@ -19,4 +19,9 @@ public class StudentRecommendedCoursesTests {
     public void studentRecommendedCoursesTest() {
         //TODO
     }
+
+    @Test
+    public void dismissCourseTest() {
+        //TODO
+    }
 }
