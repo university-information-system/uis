@@ -74,6 +74,11 @@ public abstract class AbstractCoursesTests {
     protected Course sepmWS2016 = new Course(sepm, ws2016);
     protected Course aseWS2016 = new Course(ase, ws2016);
     protected Course calculusWS2016 = new Course(calculus, ws2016);
+    protected Tag tag1 = new Tag("Computer Science");
+    protected Tag tag2 = new Tag("Math");
+    protected Tag tag3 = new Tag("Fun");
+    protected Tag tag4 = new Tag("Easy");
+    protected Tag tag5 = new Tag("Difficult");
 
     protected List<Course> expectedCourses;
     protected List<Course> expectedCoursesForLecturer1;
@@ -110,13 +115,7 @@ public abstract class AbstractCoursesTests {
         expectedCoursesForLecturer3 = Arrays.asList(aseWS2016);
         expectedCoursesForLecturer2 = Arrays.asList(calculusWS2016);
 
-        tagRepository.save(asList(
-                new Tag("Computer Science"),
-                new Tag("Math"),
-                new Tag("Fun"),
-                new Tag("Easy"),
-                new Tag("Difficult")
-        ));
+        tagRepository.save(asList(tag1, tag2, tag3, tag4, tag5));
     }
 
 
