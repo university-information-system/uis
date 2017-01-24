@@ -100,8 +100,7 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public Grade getForValidation(String identifier) {
     	log.info("getting validation for identifier "+identifier);
-        Long gradeId = parseValidationIdentifier(identifier);
-        return gradeRepository.findOne(gradeId);
+        return gradeRepository.findByUrlIdentifier(identifier);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.entity;
 
+import java.util.UUID;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,8 @@ public class Grade {
 
     @Embedded
     private Mark mark;
+
+    private String urlIdentifier = UUID.randomUUID().toString().replace("-", "");
 
     public Grade() {
 
@@ -76,23 +80,39 @@ public class Grade {
         this.mark = mark;
     }
 
+    public String getUrlIdentifier() {
+        return urlIdentifier;
+    }
+
+    public void setUrlIdentifier(String urlIdentifier) {
+        this.urlIdentifier = urlIdentifier;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Grade grade = (Grade) o;
 
         if (id != null) {
-            if (!id.equals(grade.id)) return false;
+            if (!id.equals(grade.id))
+                return false;
         } else {
             if (grade.id != null) {
                 return false;
             }
         }
-        if (!course.equals(grade.course)) return false;
-        if (!lecturer.equals(grade.lecturer)) return false;
-        if (!student.equals(grade.student)) return false;
+        if (!course.equals(grade.course))
+            return false;
+        if (!lecturer.equals(grade.lecturer))
+            return false;
+        if (!student.equals(grade.student))
+            return false;
+        if (!urlIdentifier.equals(grade.urlIdentifier))
+            return false;
         return mark.equals(grade.mark);
 
     }
@@ -104,6 +124,7 @@ public class Grade {
         result = lecturer != null ? 31 * result + lecturer.hashCode() : 0;
         result = student != null ? 31 * result + student.hashCode() : 0;
         result = mark != null ? 31 * result + mark.hashCode() : 0;
+        result = urlIdentifier != null ? 31 * result + urlIdentifier.hashCode() : 0;
         return result;
     }
 
@@ -115,6 +136,7 @@ public class Grade {
                 ", lecturer=" + lecturer +
                 ", student=" + student +
                 ", mark=" + mark +
+                ", urlIdentifier=" + urlIdentifier +
                 '}';
     }
 }
