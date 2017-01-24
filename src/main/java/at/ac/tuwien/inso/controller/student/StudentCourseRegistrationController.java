@@ -29,18 +29,22 @@ public class StudentCourseRegistrationController {
     private Messages messages;
 
     @PostMapping("/register")
-    public String registerStudent(@RequestParam Long courseId,
-                                   RedirectAttributes redirectAttributes) {
+    public String registerStudent(
+            @RequestParam Long courseId,
+            RedirectAttributes redirectAttributes
+    ) {
         Course course = courseService.findOne(courseId);
+
         if (courseService.registerStudentForCourse(course)) {
-            String successMsg = messages.msg("student.my.courses.register.success", course.getSubject().getName());
+            String courseName = course.getSubject().getName();
+            String successMsg = messages.msg("student.my.courses.register.success", courseName);
             redirectAttributes.addFlashAttribute("flashMessageNotLocalized", successMsg);
             return "redirect:/student/courses";
-        } else {
-            String failMsg = messages.msg("student.my.courses.register.fail", course.getSubject().getName());
-            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", failMsg);
-            return "redirect:/student/courses";
         }
+
+        String failMsg = messages.msg("student.my.courses.register.fail", course.getSubject().getName());
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", failMsg);
+        return "redirect:/student/courses";
     }
 
     @PostMapping("/unregister")
