@@ -545,11 +545,13 @@ public class DataInitializer {
 
     private void createCoursesBachelorSoftwareAndInformationEngineering() {
         coursesBachelorSoftwareAndInformationEngineering = new HashMap<>();
+
         for (String subjectName : subjectsBachelorSoftwareAndInformationEngineering.keySet()) {
-            coursesBachelorSoftwareAndInformationEngineering.put(
-                    subjectName,
-                    new Course(subjectsBachelorSoftwareAndInformationEngineering.get(subjectName), semesters.get(1)).setStudentLimits(20)
-            );
+            Subject subject = subjectsBachelorSoftwareAndInformationEngineering.get(subjectName);
+
+            Course course = new Course(subject, semesters.get(1));
+            course.setStudentLimits(20);
+            coursesBachelorSoftwareAndInformationEngineering.put(subjectName, course);
         }
     }
 
