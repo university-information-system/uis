@@ -1,6 +1,11 @@
 package at.ac.tuwien.inso.initializer;
 
-import static java.util.Arrays.asList;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,41 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.EctsDistribution;
-import at.ac.tuwien.inso.entity.Feedback;
-import at.ac.tuwien.inso.entity.Grade;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Mark;
-import at.ac.tuwien.inso.entity.PendingAccountActivation;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.SemesterType;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.StudyPlan;
-import at.ac.tuwien.inso.entity.StudyPlanRegistration;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.entity.UisUser;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.FeedbackRepository;
-import at.ac.tuwien.inso.repository.GradeRepository;
-import at.ac.tuwien.inso.repository.PendingAccountActivationRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.StudyPlanRepository;
-import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
-import at.ac.tuwien.inso.repository.TagRepository;
-import at.ac.tuwien.inso.repository.UisUserRepository;
-import at.ac.tuwien.inso.repository.UserAccountRepository;
-import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
+import static java.util.Arrays.asList;
 
 @Component
 public class DataInitializer {
@@ -204,6 +175,7 @@ public class DataInitializer {
             put("SE Scientific Presentation and Communication", new Subject("SE Scientific Presentation and Communication", new BigDecimal(3.0)));
             put("PV Privatissimum aus Fachdidaktik Informatik", new Subject("PV Privatissimum aus Fachdidaktik Informatik", new BigDecimal(4.0)));
             put("VU Präsentation und Moderation", new Subject("VU Präsentation und Moderation", new BigDecimal(3.0)));
+            put("VO Deduktive Datenbanken", new Subject("VO Deduktive Datenbanken", new BigDecimal(2.0)));
         }
     };
 
@@ -438,6 +410,7 @@ public class DataInitializer {
         put("Multivariate Methoden", new Tag("Multivariate Methoden"));
         put("Varianz", new Tag("Varianz"));
         put("Simulation", new Tag("Simulation"));
+        put("Query Languages", new Tag("Query Languages"));
     }};
 
     private Map<String, Student> studentMap = new HashMap<String, Student>() {
@@ -450,6 +423,7 @@ public class DataInitializer {
             put("Trevor Bond", new Student("s0445157", "Trevor Bond", "trevor@uis.at"));
             put("Mathematician", new Student("s0000001", "Diego Costa", "diego.cost@yahoo.com", new UserAccount("diego", "pass", Role.STUDENT)));
             put("SimilarToMathematician", new Student("s0000002", "Cesc Fabregas", "cesc.fabregas@yahoo.com", new UserAccount("cesc", "pass", Role.STUDENT)));
+            put("NewStudent", new Student("s0000003", "Eden Hazard", "eden.hazard@yahoo.com", new UserAccount("eden", "pass", Role.STUDENT)));
         }
     };
 
@@ -586,6 +560,7 @@ public class DataInitializer {
         studentMap.get("Trevor Bond").addStudyplans(new StudyPlanRegistration(studyplans.get(1), semesters.get(1)));
         studentMap.get("Mathematician").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
         studentMap.get("SimilarToMathematician").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
+        studentMap.get("NewStudent").addStudyplans(new StudyPlanRegistration(studyplans.get(0), semesters.get(1)));
     }
 
     private void registerSubjectsToLecturers() {
@@ -876,6 +851,13 @@ public class DataInitializer {
     }
 
     private void addTagsToBachelorSoftwareAndInformationEngineeringOptionalCourses() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Deduktive Datenbanken").addTags(
+                tags.get("VO"),
+                tags.get("Datenbanksprachen"), tags.get("SQL"),
+                tags.get("Datenintegrität"), tags.get("Diffizil"), tags.get("JDBC"), tags.get("DBMS"),
+                tags.get("Query Languages")
+        );
+
         coursesBachelorSoftwareAndInformationEngineering.get("UE Programmierung von Betriebssystemen").addTags(
                 tags.get("UE"), tags.get("Theorie"), tags.get("Thread"), tags.get("Prozess"),
                 tags.get("Synchronisation"), tags.get("Rekursion"), tags.get("Hardware"),
@@ -959,7 +941,6 @@ public class DataInitializer {
                 tags.get("Mathe"), tags.get("Regressionsanalyse"), tags.get("Multivariate Methoden"),
                 tags.get("Varianz"), tags.get("Simulation"), tags.get("Diffizil")
         );
-
     }
 
     private void addSubjectsToStudyPlans() {
@@ -1031,19 +1012,26 @@ public class DataInitializer {
 
         // Mathematician - Diego Costa
         Student mathematician = studentMap.get("Mathematician");
+        register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch"));
         register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
         register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
         register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Statistik und Wahrscheinlichkeitstheorie"));
         register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Statistik und Wahrscheinlichkeitstheorie"));
-        //register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VU Daten- und Informatikrecht"));
+        register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VU Techniksoziologie und Technikpsychologie"));
 
         // SimilarToMathematician - Cesc Fabregas
         Student similarToMathematician = studentMap.get("SimilarToMathematician");
+        register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch"));
         register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
         register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
         register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Statistik und Wahrscheinlichkeitstheorie"));
         register(similarToMathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Statistik und Wahrscheinlichkeitstheorie"));
 
+        Student newStudent = studentMap.get("NewStudent");
+        register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch"));
+        register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"));
+        register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
+        register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"));
     }
 
     private void register(Student student, Course course) {
@@ -1109,6 +1097,20 @@ public class DataInitializer {
                 studentMap.get("SimilarToMathematician"),
                 Mark.EXCELLENT);
         gradeRepository.save(grade);
+
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"),
+                lecturer,
+                studentMap.get("NewStudent"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
+
+        grade = new Grade(
+                coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"),
+                lecturer,
+                studentMap.get("NewStudent"),
+                Mark.EXCELLENT);
+        gradeRepository.save(grade);
     }
 
     private void giveFeedback() {
@@ -1122,6 +1124,8 @@ public class DataInitializer {
         Student carolineBlack = studentMap.get("Caroline Black");
         Student mathematician = studentMap.get("Mathematician");
         Student similarToMathematician = studentMap.get("SimilarToMathematician");
+        Student newStudent = studentMap.get("NewStudent");
+
         Feedback feedback1 = new Feedback(
                 joanWatson,
                 course,
@@ -1176,7 +1180,13 @@ public class DataInitializer {
                 coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik")
         );
 
-        giveFeedback(feedback, feedback1, feedback2, feedback3, feedback4, feedback5, feedback6, feedback7);
+        Feedback feedback8 = new Feedback(
+                newStudent,
+                coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung")
+        );
+
+
+        giveFeedback(feedback, feedback1, feedback2, feedback3, feedback4, feedback5, feedback6, feedback7, feedback8);
     }
 
     private void giveFeedback(Feedback... feedbacks) {

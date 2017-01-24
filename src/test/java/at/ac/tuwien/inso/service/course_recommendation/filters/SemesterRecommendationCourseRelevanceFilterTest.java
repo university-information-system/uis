@@ -35,9 +35,9 @@ public class SemesterRecommendationCourseRelevanceFilterTest {
     private final StudyPlan studyPlan = mock(StudyPlan.class);
     private final Semester registrationSemester = mock(Semester.class);
     private final Subject subjectWithoutSemester = mock(Subject.class);
-    private final Course courseWithoutSemester = new Course(subjectWithoutSemester, null);
+    private final Course courseWithoutSemester = new Course(subjectWithoutSemester);
     private final Subject subjectForSemester3 = mock(Subject.class);
-    private final Course courseForSemester3 = new Course(subjectForSemester3, null);
+    private final Course courseForSemester3 = new Course(subjectForSemester3);
     private final List<Course> allCourses = asList(courseWithoutSemester, courseForSemester3);
     @Mock
     private SemesterRepository semesterRepository;

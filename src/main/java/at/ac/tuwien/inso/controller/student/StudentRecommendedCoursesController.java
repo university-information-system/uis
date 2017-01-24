@@ -7,11 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,7 +40,11 @@ public class StudentRecommendedCoursesController {
     private StudentService studentService;
 
     @Autowired
+    private CourseService courseService;
+
+    @Autowired
     private RecommendationService recommendationService;
+
 
 
     @ModelAttribute("recommendedCourses")
@@ -45,8 +52,7 @@ public class StudentRecommendedCoursesController {
 
         log.info("Getting recommendation for student: [{}]", principal.getName());
 
-        Student student = studentService.findByUsername(principal.getName());
-
+        Student student = getLoggedInStudent(principal);
         return recommendationService.recommendCoursesSublist(student);
     }
 
@@ -56,5 +62,18 @@ public class StudentRecommendedCoursesController {
         return "/student/recommended";
     }
 
+    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String dismissCourse(Principal principal, Long dismissedId) {
+        log.info("Post with [{}] as request body", dismissedId);
+        Student student = getLoggedInStudent(principal);
+        courseService.dismissCourse(student, dismissedId);
+        return "redirect:/student/recommended";
+    }
+
+
+    private Student getLoggedInStudent(Principal principal) {
+        Student student = studentService.findByUsername(principal.getName());
+        return student;
+    }
 
 }

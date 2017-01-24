@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.service;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -30,7 +31,7 @@ public interface CourseService {
 
     @PreAuthorize("isAuthenticated()")
     Course findOne(Long id);
-    
+
     @PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
     boolean remove(Long id) throws ValidationException;
 
@@ -41,11 +42,13 @@ public interface CourseService {
     List<Course> findAllForStudent(Student student);
 
     @PreAuthorize("isAuthenticated()")
-	List<Course> findCoursesForSubject(Subject subject);
+    List<Course> findCoursesForSubject(Subject subject);
 
     @PreAuthorize("isAuthenticated()")
     List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject);
 
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    void dismissCourse(Student student, Long courseId);
 
     @PreAuthorize("isAuthenticated()")
     Course unregisterStudentFromCourse(Student student, Long courseId);

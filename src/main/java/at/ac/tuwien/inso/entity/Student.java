@@ -15,6 +15,9 @@ public class Student extends UisUser {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyPlanRegistration> studyplans = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Course> dismissedCourses = new ArrayList<>();
+
     protected Student() {
     }
 
@@ -37,6 +40,19 @@ public class Student extends UisUser {
 
     public Student addStudyplans(StudyPlanRegistration... studyplans) {
         this.studyplans.addAll(asList(studyplans));
+        return this;
+    }
+
+    public List<Course> getDismissedCourses() {
+        return dismissedCourses;
+    }
+
+    public void setDismissedCourses(List<Course> dismissedCourses) {
+        this.dismissedCourses = dismissedCourses;
+    }
+
+    public Student addDismissedCourse(Course... dismissedCourse) {
+        this.dismissedCourses.addAll(asList(dismissedCourse));
         return this;
     }
 }

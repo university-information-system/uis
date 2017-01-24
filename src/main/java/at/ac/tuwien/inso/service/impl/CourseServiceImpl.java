@@ -105,6 +105,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void dismissCourse(Student student, Long courseId) {
+        studentRepository.save(student.addDismissedCourse(findOne(courseId)));
+    }
+
+    @Override
     @Transactional
     public Course saveCourse(AddCourseForm form) {
         log.info("try saving course");

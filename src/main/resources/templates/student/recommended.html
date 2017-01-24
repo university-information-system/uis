@@ -12,10 +12,21 @@
         <div class="section-separator" th:text="#{student.my.courses.recommended.label}"></div>
 
         <ul class="collection z-depth-1">
-            <li class="collection-item" th:each="course : ${recommendedCourses}">
-                <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i
-                        class="material-icons tooltipped"
-                        th:attr="data-tooltip=#{enroll}">add</i></a>
+            <li class="collection-item" th:each="course, status : ${recommendedCourses}">
+                <div class="secondary-content">
+                    <div class="" style="display: inline;">
+                        <a th:href="'#modal'+__${course.id}__" class="modal-trigger"><i
+                                class="material-icons tooltipped"
+                                th:attr="data-tooltip=#{enroll}">add</i></a>
+                    </div>
+                    <div class="" style="display: inline;">
+                        <form method="post" style="display: inline;"
+                              th:action="@{/student/recommended}">
+                            <input type="hidden" th:value="${course.id}" th:name="'dismissedId'"/>
+                            <input type="submit" class="btn-flat waves-effect" th:value="Dismiss"/>
+                        </form>
+                    </div>
+                </div>
                 <a th:href="@{/student/courses/__${course.id}__}"
                    class="title teal-text"
                    th:text="${course.subject.name}"></a>

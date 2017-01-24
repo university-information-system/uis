@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.dto;
 import at.ac.tuwien.inso.entity.Grade;
 
 public class GradeAuthorizationDTO {
-    //TODO: MOVE TO DTOs
 
     private Grade grade;
     private String authCode;

@@ -44,7 +44,6 @@ public class LecturerAddCourseController {
     private AddCourseForm getAddCourseForm(@RequestParam("subjectId") Long subjectId) {
         Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
 
-        // TODO use DTO
         Course course = new Course(getSubject(subjectId), semester);
 
         AddCourseForm form = new AddCourseForm(course);
