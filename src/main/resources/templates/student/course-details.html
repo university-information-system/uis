@@ -85,11 +85,20 @@
             <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close btn"
-               th:href="@{/student/register(courseId=__${course.id}__)}"
-               th:text="#{enroll}">Apply</a>
-            <a href="#" class="modal-action modal-close waves-effect btn-flat"
-               th:text="#{cancel}">Cancel</a>
+            <form th:action="@{/student/register(courseId=__${course.id}__)}" method="POST">
+
+                <button
+                    type="submit"
+                    class="modal-action modal-close waves-effect btn"
+                    th:text="#{enroll}"
+                ></button>
+            </form>
+
+            <a
+                href="#"
+                class="modal-action modal-close waves-effect btn-flat"
+                th:text="#{cancel}"
+            ></a>
         </div>
     </div>
 
