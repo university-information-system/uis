@@ -50,10 +50,13 @@
                             th:action="@{/student/register/__${course.id}__}"
                             method="POST"
                         >
-                            <a class="modal-action modal-close btn" th:text="#{enroll}"
-                               th:onclick="'$(\'#registerForm-' + ${course.id} + '\').submit()'"></a>
-                            <a class="modal-action modal-close waves-effect btn-flat"
-                               th:text="#{cancel}"></a>
+                            <button
+                                type="submit"
+                                class="modal-action modal-close btn"
+                                th:text="#{enroll}"
+                            ></button>
+
+                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
                         </form>
                     </div>
                 </div>
