@@ -9,32 +9,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.service.CourseService;
 import org.junit.Test;
 
-import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Role;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Transactional
 public class LecturerAddCourseTests extends AbstractCoursesTests {
-
-    @Autowired
-    private CourseService courseService;
 
     @Test
     public void itCreatesCourseTest() throws Exception {
-        Course course = new Course(sepm, ws2016);
-        AddCourseForm form = new AddCourseForm(course);
-        form.setInitialTags(tagRepository.findAll());
-        form.getActiveAndInactiveTags().get(0).setActive(true);
+
+        // given lecturer having subject "maths"
+        Subject maths = subjectRepository.save(new Subject("maths", new BigDecimal(6.0)));
+        maths.addLecturers(lecturer1);
+        Course course = new Course(maths, ws2016);
+        course.setStudentLimits(20);
+
+        // when creating a new course
         mockMvc.perform(
                 post("/lecturer/addCourse").with(user(user1))
-                        .content(form.toString())
-                        .param("subjectId", form.getCourse().getSubject().getId().toString())
+                        .param("course.studentLimits", String.valueOf(course.getStudentLimits()))
+                        .param("subjectId", maths.getId().toString())
                         .with(csrf())
         ).andExpect(
                 redirectedUrl("/lecturer/courses")
@@ -42,12 +51,32 @@ public class LecturerAddCourseTests extends AbstractCoursesTests {
                 flash().attributeExists("flashMessageNotLocalized")
         );
 
-        assertTrue(findCourses(lecturer1).contains(aseWS2016));
+        Course created = courseRepository.findAllBySubject(maths).get(0);
+        assertTrue(findCourses(lecturer1).contains(created));
     }
 
     @Test
-    public void itDoesNotCreateCourseTest() {
-        //TODO
+    public void itDoesNotCreateCourseWithNegativeStudentLimitsTest() throws Exception {
+
+        // given lecturer having subject "maths"
+        Subject maths = subjectRepository.save(new Subject("maths", new BigDecimal(6.0)));
+        maths.addLecturers(lecturer1);
+        Course course = new Course(maths, ws2016);
+        course.setStudentLimits(-1);
+
+        // when creating a new course with negative student limits
+        mockMvc.perform(
+                post("/lecturer/addCourse").with(user(user1))
+                        .param("course.studentLimits", String.valueOf(course.getStudentLimits()))
+                        .param("subjectId", maths.getId().toString())
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/lecturer/courses")
+        ).andExpect(
+                flash().attributeExists("flashMessageNotLocalized")
+        );
+
+        assertTrue(courseRepository.findAllBySubject(maths).isEmpty());
     }
 
     public List<Course> findCourses(Lecturer lecturer) {

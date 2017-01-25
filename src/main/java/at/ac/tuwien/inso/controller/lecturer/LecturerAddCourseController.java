@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
+import at.ac.tuwien.inso.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,9 +61,15 @@ public class LecturerAddCourseController {
     @PostMapping
     private String createCourse(@ModelAttribute AddCourseForm form,
                                 RedirectAttributes redirectAttributes) {
-        Course course = courseService.saveCourse(form);
+        try {
+            Course course = courseService.saveCourse(form);
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.add.success", course.getSubject().getName()));
+        }
+        catch(ValidationException e) {
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", e.getMessage());
+        }
 
-        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.add.success", course.getSubject().getName()));
+
         return "redirect:/lecturer/courses";
     }
 
