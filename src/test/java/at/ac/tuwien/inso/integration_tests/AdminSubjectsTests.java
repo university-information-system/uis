@@ -139,6 +139,26 @@ public class AdminSubjectsTests extends AbstractSubjectsTests {
         );
     }
 
+    @Test
+    public void adminCreateSubjectTest() {
+        //TODO
+    }
+
+    @Test
+    public void adminListSubjectsForPageSearchNullAndPageNumberOneTest() {
+        //TODO
+    }
+
+    @Test
+    public void adminListSubjectsForPageSearchEmptyTest() {
+        //TODO
+    }
+
+    @Test
+    public void adminListSubjectsForPagePageNumberOneTest() {
+        //TODO
+    }
+
 
 
 }
