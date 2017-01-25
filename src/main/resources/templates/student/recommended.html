@@ -9,8 +9,6 @@
 
         <h1 th:text="#{student.recommended.label}">Courses</h1>
 
-        <div class="section-separator" th:text="#{student.my.courses.recommended.label}"></div>
-
         <ul class="collection z-depth-1">
             <li class="collection-item" th:each="course, status : ${recommendedCourses}">
                 <div class="secondary-content">
