@@ -6,8 +6,10 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
+import at.ac.tuwien.inso.entity.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Grade;
-import at.ac.tuwien.inso.entity.Mark;
-import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.repository.GradeRepository;
+
+import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -128,6 +128,48 @@ public class LecturerEditCourseTests extends AbstractCoursesTests {
                 flash().attributeExists("flashMessageNotLocalized")
         ).andExpect(
                 flash().attribute("flashMessageNotLocalized", expected)
+        );
+    }
+
+    @Test
+    public void itEditsCourseFail() throws Exception {
+        AddCourseForm form = new AddCourseForm(sepmWS2016);
+        form.setInitialTags(tagRepository.findAll());
+        form.setInitialActiveTags(sepmWS2016.getTags());
+        String testDescription = "TEST DESCRIPTION";
+        form.getCourse().setDescription(testDescription);
+        form.getCourse().setStudentLimits(-20);
+        String expected = "The student limit of the course needs to be at least 0";
+        mockMvc.perform(
+                post("/lecturer/editCourse").with(user("lecturer").roles(Role.LECTURER.name()))
+                        .content(form.toString())
+                        .param("courseId", form.getCourse().getId().toString())
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/lecturer/courses")
+        ).andExpect(
+                flash().attributeExists("flashMessageNotLocalized")
+        ).andExpect(
+                flash().attribute("flashMessageNotLocalized", expected)
+        );
+    }
+
+    @Test
+    public void getEditCoursePageTest() throws Exception {
+
+        // given lecturer having subject "maths" and a course for it
+        Subject maths = subjectRepository.save(new Subject("maths", new BigDecimal(6.0)));
+        maths.addLecturers(lecturer1);
+        Course course = new Course(maths, ws2016);
+        course.setStudentLimits(20);
+        Course mathsCourse = courseRepository.save(course);
+
+        // when navigation to the edit course page
+        mockMvc.perform(
+                get("/lecturer/editCourse").with(user(user1))
+                        .param("courseId", mathsCourse.getId().toString())
+        ).andExpect(
+                model().attribute("course", mathsCourse)
         );
     }
 }
