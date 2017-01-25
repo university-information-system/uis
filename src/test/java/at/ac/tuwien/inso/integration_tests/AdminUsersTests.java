@@ -4,8 +4,10 @@ import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,6 +176,50 @@ public class AdminUsersTests {
         ).andExpect(
                 resultHasUsersPage(page(0, 10, usersWithMail.size(), usersWithMail.stream().limit(10).collect(Collectors.toList())))
         );
+    }
+
+    @Test
+    public void adminListUsersForPageSearchNullAndPageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/users/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/users")
+        );
+
+    }
+
+    @Test
+    public void adminListUsersForPageSearchEmptyTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/users/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/users/page/1")
+        );
+
+    }
+
+    @Test
+    public void adminListUsersForPagePageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/users/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "something")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/users?search=something")
+        );
+
     }
 
     @Test
