@@ -10,7 +10,7 @@
 
     <div class="container">
 
-        <h1 th:text="#{student.courses.label}">Courses</h1>
+        <h1 th:text="#{student.courses.label}"></h1>
 
         <nav>
             <div class="nav-wrapper white black-text">
@@ -32,9 +32,6 @@
                 </form>
             </div>
         </nav>
-
-        <div class="section-separator" th:if="${#strings.isEmpty(searchString)}"
-             th:text="#{student.my.courses.all.label}"></div>
 
         <div
             class="section-separator"

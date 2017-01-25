@@ -6,6 +6,11 @@ header, main, footer {
   padding-left: 300px;
 }
 
+.logo {
+  padding-top: 30px;
+  cursor: default;
+}
+
 .container {
   width: 100%;
   padding: 0 20px;
@@ -45,6 +50,35 @@ h4, h5 {
 .modal.small {
   width: 30%;
   min-width: 500px;
+}
+
+.modal .modal-footer {
+  padding: 24px;
+  padding-top: 0;
+  height: auto;
+}
+
+.modal .modal-footer:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.modal .modal-footer .btn,
+.modal .modal-footer .btn-large,
+.modal .modal-footer .btn-flat {
+  margin: 0;
+  margin-left: 1rem;
+}
+
+.modal .modal-footer .btn,
+.modal .modal-footer .btn-flat {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.collection.with-header .collection-item {
+  padding-left: 20px;
 }
 
 .text-content {
