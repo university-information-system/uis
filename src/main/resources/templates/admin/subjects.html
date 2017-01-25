@@ -49,13 +49,13 @@
 
         <div>
 
-            <ul class="collection z-depth-1">
             <div
                 class="section-separator"
                 th:if="${#lists.isEmpty(subjects)}"
                 th:text="#{admin.subjects.noSubjectFound}"
             ></div>
 
+            <ul class="collection z-depth-1" th:unless="${#lists.isEmpty(subjects)}">
 
                 <li class="collection-item" th:each="subject : ${subjects}">
                     <div>

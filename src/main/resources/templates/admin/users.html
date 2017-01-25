@@ -46,7 +46,6 @@
             </div>
         </nav>
 
-        <ul class="collection z-depth-1">
 
         <div
             class="section-separator"
@@ -54,6 +53,8 @@
             th:text="#{admin.users.emptyusers}"
         ></div>
 
+
+        <ul class="collection z-depth-1" th:unless="${#lists.isEmpty(page.content)}">
 
             <li class="collection-item" th:each="user : ${page.content}">
                 <div class="title">
