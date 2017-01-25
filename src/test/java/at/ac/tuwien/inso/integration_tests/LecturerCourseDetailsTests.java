@@ -7,7 +7,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,27 +22,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Feedback;
-import at.ac.tuwien.inso.entity.Grade;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Mark;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.SemesterType;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.FeedbackRepository;
-import at.ac.tuwien.inso.repository.GradeRepository;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
-import at.ac.tuwien.inso.repository.TagRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -80,6 +63,8 @@ public class LecturerCourseDetailsTests {
     private GradeRepository gradeRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
+    @Autowired
+    private StudyPlanRepository studyPlanRepository;
 
     @Before
     public void setUp() {
@@ -244,8 +229,35 @@ public class LecturerCourseDetailsTests {
     }
 
     @Test
-    public void lecturerShouldSeeCourseDetailsTest() {
-        //TODO
+    public void lecturerShouldSeeCourseDetailsTest() throws Exception {
+
+        // given course "maths" in study plan "SE" with some tags with "lecturer1"
+        Tag tag1 = new Tag("math");
+        Tag tag2 = new Tag("calculus");
+        tagRepository.save(asList(tag1, tag2));
+        Subject maths = subjectRepository.save(new Subject("maths", new BigDecimal(6.0)));
+        maths.addLecturers(lecturer1);
+        Course mathsCourse =  new Course(maths, ws2016, "some description");
+        mathsCourse.setStudentLimits(1);
+        mathsCourse.addTags(tag1, tag2);
+        courseRepository.save(mathsCourse);
+        StudyPlan studyPlan = studyPlanRepository.save(new StudyPlan("SE", new EctsDistribution(new BigDecimal(60.0), new BigDecimal(30.0), new BigDecimal(30.0))));
+        SubjectForStudyPlan subjectForStudyPlan = new SubjectForStudyPlan(maths, studyPlan, true);
+        studyPlan.addSubjects(subjectForStudyPlan);
+        List<SubjectForStudyPlan> expectedSubjectForStudyPlanList = new ArrayList<>();
+        expectedSubjectForStudyPlanList.add(subjectForStudyPlan);
+
+        // the lecturer should see the course details
+        mockMvc.perform(
+                get("/lecturer/course-details")
+                        .param("courseId", mathsCourse.getId().toString())
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", mathsCourse)
+        ).andExpect(
+                model().attribute("studyPlans", expectedSubjectForStudyPlanList)
+        );
     }
 
     @Test
