@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -502,18 +504,54 @@ public class DataInitializer {
 
     private void createCourses() {
         createCoursesBachelorSoftwareAndInformationEngineering();
-        Iterable<Course> courses = courseRepository.save(coursesBachelorSoftwareAndInformationEngineering.values());
 
-        this.courses = StreamSupport.stream(courses.spliterator(), false).collect(Collectors.toList());
+        Collection<Course> courses = coursesBachelorSoftwareAndInformationEngineering.values();
+
+        // Add more courses for some subjects
+        List<Course> duplicateCourses = new ArrayList<>();
+
+        for (Course course : courses) {
+            Subject subject = course.getSubject();
+            long subjectId = subject.getId();
+
+            // add a second course for every third subject
+            if (subjectId % 3 == 0) {
+                Course duplicateCourse = new Course(subject, course.getSemester(), course.getDescription());
+                duplicateCourse.setStudentLimits(100);
+                duplicateCourses.add(duplicateCourse);
+                System.out.println("duplicate course: " + subjectId + ", " + subject.getName());
+            }
+
+            // add two more courses for every 10th subject
+            if (subjectId % 10 == 0) {
+                Course duplicateCourse = new Course(subject, course.getSemester(), course.getDescription());
+                duplicateCourse.setStudentLimits(200);
+                duplicateCourses.add(duplicateCourse);
+
+                Course duplicateCourse2 = new Course(subject, course.getSemester(), course.getDescription());
+                duplicateCourse2.setStudentLimits(200);
+                duplicateCourses.add(duplicateCourse2);
+            }
+        }
+
+        List<Course> allCourses = new ArrayList<>();
+        allCourses.addAll(courses);
+        allCourses.addAll(duplicateCourses);
+
+        Iterable<Course> savedCourses = courseRepository.save(allCourses);
+
+        this.courses = StreamSupport.stream(savedCourses.spliterator(), false).collect(Collectors.toList());
     }
 
     private void createCoursesBachelorSoftwareAndInformationEngineering() {
         coursesBachelorSoftwareAndInformationEngineering = new HashMap<>();
+
         for (String subjectName : subjectsBachelorSoftwareAndInformationEngineering.keySet()) {
-            coursesBachelorSoftwareAndInformationEngineering.put(
-                    subjectName,
-                    new Course(subjectsBachelorSoftwareAndInformationEngineering.get(subjectName), semesters.get(1)).setStudentLimits(20)
-            );
+            Subject subject = subjectsBachelorSoftwareAndInformationEngineering.get(subjectName);
+
+            Course course = new Course(subject, semesters.get(1));
+            course.setStudentLimits(20);
+            coursesBachelorSoftwareAndInformationEngineering.put(subjectName, course);
         }
     }
 

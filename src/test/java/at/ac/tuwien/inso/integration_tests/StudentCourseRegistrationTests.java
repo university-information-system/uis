@@ -131,8 +131,7 @@ public class StudentCourseRegistrationTests extends AbstractCoursesTests {
     public void itDoesNotRegisterStudent() throws Exception {
         String expect = "Cannot register to course \"" + sepmWS2016.getSubject().getName() + "\"";
         mockMvc.perform(
-                post("/student/register").with(user(studentUser))
-                        .param("courseId", sepmWS2016.getId().toString())
+                post("/student/register/" + sepmWS2016.getId()).with(user(studentUser))
                         .with(csrf())
         ).andExpect(
                 redirectedUrl("/student/courses")
@@ -144,9 +143,10 @@ public class StudentCourseRegistrationTests extends AbstractCoursesTests {
     @Test
     public void itRegistersStudent() throws Exception {
         String expect = "Registered to course \"" + aseWS2016.getSubject().getName() + "\"";
+
+
         mockMvc.perform(
-                post("/student/register").with(user(studentUser))
-                        .param("courseId", aseWS2016.getId().toString())
+                post("/student/register/" + aseWS2016.getId()).with(user(studentUser))
                         .with(csrf())
         ).andExpect(
                 redirectedUrl("/student/courses")

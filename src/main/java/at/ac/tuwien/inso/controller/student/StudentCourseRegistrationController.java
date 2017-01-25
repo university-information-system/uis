@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,19 +29,23 @@ public class StudentCourseRegistrationController {
     @Autowired
     private Messages messages;
 
-    @PostMapping("/register")
-    public String registerStudent(@RequestParam Long courseId,
-                                   RedirectAttributes redirectAttributes) {
+    @PostMapping("/register/{courseId}")
+    public String registerStudent(
+            @PathVariable Long courseId,
+            RedirectAttributes redirectAttributes
+    ) {
         Course course = courseService.findOne(courseId);
+
         if (courseService.registerStudentForCourse(course)) {
-            String successMsg = messages.msg("student.my.courses.register.success", course.getSubject().getName());
+            String courseName = course.getSubject().getName();
+            String successMsg = messages.msg("student.my.courses.register.success", courseName);
             redirectAttributes.addFlashAttribute("flashMessageNotLocalized", successMsg);
             return "redirect:/student/courses";
-        } else {
-            String failMsg = messages.msg("student.my.courses.register.fail", course.getSubject().getName());
-            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", failMsg);
-            return "redirect:/student/courses";
         }
+
+        String failMsg = messages.msg("student.my.courses.register.fail", course.getSubject().getName());
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", failMsg);
+        return "redirect:/student/courses";
     }
 
     @PostMapping("/unregister")
