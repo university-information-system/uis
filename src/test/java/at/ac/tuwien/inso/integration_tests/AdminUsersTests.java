@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.SemesterRepository;
 import at.ac.tuwien.inso.repository.StudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +57,9 @@ public class AdminUsersTests {
 
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Autowired
+    private SubjectRepository subjectRepository;
 
     private List<UisUser> users = new ArrayList<>();
 
@@ -231,7 +235,7 @@ public class AdminUsersTests {
     }
 
     @Test
-    public void adminShouldSeeStudentDetails() throws Exception {
+    public void adminShouldSeeStudentDetailsTest() throws Exception {
 
         // given 3 study plans
         StudyPlan studyPlan1 = studyPlanRepository.save(new StudyPlan("SE", new EctsDistribution(new BigDecimal(60), new BigDecimal(30), new BigDecimal(30))));
@@ -253,10 +257,29 @@ public class AdminUsersTests {
         ).andExpect(
                 model().attribute("studyplans", asList(studyPlanRegistration1, studyPlanRegistration2))
         );
+
     }
 
     @Test
-    public void adminShouldSeeLecturerDetails() {
-        //TODO
+    public void adminShouldSeeLecturerDetailsTest() throws Exception {
+
+        // given a lecturer and subjects
+        Lecturer lecturer = uisUserRepository.save(new Lecturer("l12345", "lecturer", "l12345@uis.at"));
+        Subject maths = new Subject("maths", new BigDecimal(6.0));
+        Subject df = new Subject("digital forensics", new BigDecimal(6.0));
+        maths.addLecturers(lecturer);
+        df.addLecturers(lecturer);
+        subjectRepository.save(maths);
+        subjectRepository.save(df);
+
+        mockMvc.perform(
+                get("/admin/users/" + lecturer.getId())
+                        .with(user("admin").roles(Role.ADMIN.name()))
+        ).andExpect(
+                model().attribute("user", lecturer)
+        ).andExpect(
+                model().attribute("subjects", asList(maths, df))
+        );
+
     }
 }
