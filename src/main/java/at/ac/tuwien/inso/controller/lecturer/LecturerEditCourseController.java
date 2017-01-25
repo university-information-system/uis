@@ -56,9 +56,17 @@ public class LecturerEditCourseController {
     @PostMapping
     private String updateCourse(@ModelAttribute AddCourseForm form,
                                 RedirectAttributes redirectAttributes) {
-        Course course = courseService.saveCourse(form);
 
-        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.edit.success", course.getSubject().getName()));
+        try {
+            Course course = courseService.saveCourse(form);
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("lecturer.course.edit.success", course.getSubject().getName()));
+        }
+        catch (ValidationException e) {
+            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", e.getMessage());
+        }
+
+
+
         return "redirect:/lecturer/courses";
     }
     

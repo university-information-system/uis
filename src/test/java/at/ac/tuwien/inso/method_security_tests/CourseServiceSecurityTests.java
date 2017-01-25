@@ -91,6 +91,7 @@ public class CourseServiceSecurityTests {
         subjectRepository.save(subject);
         Semester semester = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
         course = courseRepository.save(new Course(subject, semester));
+        course.setStudentLimits(0);
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)

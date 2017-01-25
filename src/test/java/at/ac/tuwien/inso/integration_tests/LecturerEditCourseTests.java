@@ -115,6 +115,7 @@ public class LecturerEditCourseTests extends AbstractCoursesTests {
         form.setInitialActiveTags(sepmWS2016.getTags());
         String testDescription = "TEST DESCRIPTION";
         form.getCourse().setDescription(testDescription);
+        form.getCourse().setStudentLimits(20);
         String expected = "Changes for course \"" + form.getCourse().getSubject().getName() + "\" updated";
         mockMvc.perform(
                 post("/lecturer/editCourse").with(user("lecturer").roles(Role.LECTURER.name()))

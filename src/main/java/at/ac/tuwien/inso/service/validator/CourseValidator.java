@@ -10,8 +10,8 @@ public class CourseValidator {
 
         validateCourse(course);
 
-        if(course.getStudentLimits() < 1) {
-            throw new ValidationException("The student limit of the course needs to be at least 1");
+        if(course.getStudentLimits() < 0) {
+            throw new ValidationException("The student limit of the course needs to be at least 0");
         }
 
     }
