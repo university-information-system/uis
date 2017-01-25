@@ -156,21 +156,51 @@ public class AdminSubjectsTests extends AbstractSubjectsTests {
         Subject subject = subjectRepository.findByNameContainingIgnoreCase(name).get(0);
         assertEquals(name, subject.getName());
         assertEquals(ects, subject.getEcts());
+
     }
 
     @Test
-    public void adminListSubjectsForPageSearchNullAndPageNumberOneTest() {
-        //TODO
+    public void adminListSubjectsForPageSearchNullAndPageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/subjects/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects")
+        );
+
     }
 
     @Test
-    public void adminListSubjectsForPageSearchEmptyTest() {
-        //TODO
+    public void adminListSubjectsForPageSearchEmptyTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/subjects/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects/page/1")
+        );
+
     }
 
     @Test
-    public void adminListSubjectsForPagePageNumberOneTest() {
-        //TODO
+    public void adminListSubjectsForPagePageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/subjects/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "something")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects?search=something")
+        );
+
     }
 
 
