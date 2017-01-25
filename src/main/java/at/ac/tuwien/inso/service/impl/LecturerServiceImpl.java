@@ -56,7 +56,7 @@ public class LecturerServiceImpl implements LecturerService {
     @Transactional(readOnly = true)
     public List<Subject> findSubjectsFor(Lecturer lecturer) {
     	log.info("returning subjects for lecturer "+lecturer.toString());
-        return lecturer.getSubjects();
+        return subjectRepository.findByLecturers_Id(lecturer.getId());
     }
 
     @Override
