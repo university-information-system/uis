@@ -519,7 +519,6 @@ public class DataInitializer {
                 Course duplicateCourse = new Course(subject, course.getSemester(), course.getDescription());
                 duplicateCourse.setStudentLimits(100);
                 duplicateCourses.add(duplicateCourse);
-                System.out.println("duplicate course: " + subjectId + ", " + subject.getName());
             }
 
             // add two more courses for every 10th subject
