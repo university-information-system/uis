@@ -47,8 +47,13 @@
         </nav>
 
         <ul class="collection z-depth-1">
-            <li class="collection-item" th:if="${#lists.isEmpty(page.content)}"
-                th:text="#{admin.users.emptyusers}"></li>
+
+        <div
+            class="section-separator"
+            th:if="${#lists.isEmpty(page.content)}"
+            th:text="#{admin.users.emptyusers}"
+        ></div>
+
 
             <li class="collection-item" th:each="user : ${page.content}">
                 <div class="title">
