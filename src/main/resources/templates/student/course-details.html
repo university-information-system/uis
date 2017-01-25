@@ -85,7 +85,7 @@
             <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
         </div>
         <div class="modal-footer">
-            <form th:action="@{/student/register(courseId=__${course.id}__)}" method="POST">
+            <form th:action="@{/student/register/__${course.id}__}" method="POST">
 
                 <button
                     type="submit"

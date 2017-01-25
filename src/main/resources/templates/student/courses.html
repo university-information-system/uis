@@ -45,9 +45,11 @@
                         <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
                     </div>
                     <div class="modal-footer">
-                        <form th:id="'registerForm-' + ${course.id}"
-                              th:action="@{/student/register(courseId=__${course.id}__)}"
-                              method="post">
+                        <form
+                            th:id="'registerForm-' + ${course.id}"
+                            th:action="@{/student/register/__${course.id}__}"
+                            method="POST"
+                        >
                             <a class="modal-action modal-close btn" th:text="#{enroll}"
                                th:onclick="'$(\'#registerForm-' + ${course.id} + '\').submit()'"></a>
                             <a class="modal-action modal-close waves-effect btn-flat"
