@@ -134,3 +134,12 @@ header, main, footer {
 .tt-suggestion p {
   margin: 0;
 }
+
+.search-exit {
+  position: absolute;
+  right: 1rem;
+  top: 15px;
+  z-index: 1000;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
