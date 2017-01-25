@@ -90,7 +90,7 @@ public class GradePDFView extends AbstractPdfView {
         ects.add(new Paragraph(grade.getCourse().getSubject().getEcts().toPlainString()));
 
         Cell note = new Cell();
-        note.add(new Paragraph("Note: ", SMALL_FONT));
+        note.add(new Paragraph("Grade: ", SMALL_FONT));
         note.add(new Paragraph(grade.getMark().getMark() + ""));
 
         Cell lecturer = new Cell();
