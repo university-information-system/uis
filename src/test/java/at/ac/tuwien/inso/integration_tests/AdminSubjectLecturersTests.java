@@ -94,6 +94,24 @@ public class AdminSubjectLecturersTests {
     }
 
     @Test
+    public void addNonExistingLecturerToSubjectTest() throws Exception {
+        // given 3 lecturers, where lecturer1 is a already a lecturer of the subject ase
+
+        // when trying to add a non existing lecturer to the subject ase
+        mockMvc.perform(
+                post("/admin/subjects/" + ase.getId() + "/lecturers")
+                        .param("lecturerId", "1337")
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects/" + ase.getId().toString())
+        );
+
+        // nothing should change
+        assertEquals(asList(lecturer1), ase.getLecturers());
+    }
+
+    @Test
     public void removeLecturerFromSubjectTest() throws Exception {
 
         // given 3 lecturers, where lecturer1 is a already a lecturer of the subject ase
@@ -123,6 +141,46 @@ public class AdminSubjectLecturersTests {
         mockMvc.perform(
                 post("/admin/subjects/" + ase.getId() + "/lecturers/"+ lecturer2.getId() +"/delete")
                         .param("subjectId", ase.getId().toString())
+                        .param("lecturerId", lecturer2.getId().toString())
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects/" + ase.getId().toString())
+        );
+
+        // nothing should change
+        assertEquals(asList(lecturer1), ase.getLecturers());
+    }
+
+    @Test
+    public void removeNonExistingLecturerFromSubjectTest() throws Exception {
+
+        // given 3 lecturers, where lecturer1 is a already a lecturer of the subject ase
+
+        // when removing a non existing from subject ase
+        mockMvc.perform(
+                post("/admin/subjects/" + ase.getId() + "/lecturers/"+ lecturer2.getId() +"/delete")
+                        .param("subjectId", ase.getId().toString())
+                        .param("lecturerId", "1337")
+                        .with(user("admin").roles("ADMIN"))
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects/" + ase.getId().toString())
+        );
+
+        // nothing should change
+        assertEquals(asList(lecturer1), ase.getLecturers());
+    }
+
+    @Test
+    public void removeLecturerFromNonExistingSubjectIdTest() throws Exception {
+
+        // given 3 lecturers, where lecturer1 is a already a lecturer of the subject ase
+
+        // when removing lecturer2 from subject ase with wrong id
+        mockMvc.perform(
+                post("/admin/subjects/" + ase.getId() + "/lecturers/"+ lecturer2.getId() +"/delete")
+                        .param("subjectId", "1337")
                         .param("lecturerId", lecturer2.getId().toString())
                         .with(user("admin").roles("ADMIN"))
                         .with(csrf())
