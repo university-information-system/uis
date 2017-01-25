@@ -17,7 +17,7 @@
             <li class="collection-item" th:each="grade : ${grades}">
                 <h5 th:text="${grade.getMark().getMark()}" class="secondary-content"></h5>
                 <a class="title teal-text tooltipped" target="_blank"
-                   th:href="@{/public/grade(identifier=__${grade.id}__)}"
+                   th:href="@{/public/grade(identifier=__${grade.urlIdentifier}__)}"
                    th:text="${grade.course.subject.name}"
                    th:attr="data-tooltip=#{student.grades.certificate}"></a>
                 <div th:text="${grade.course.semester.label}"></div>

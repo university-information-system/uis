@@ -39,7 +39,7 @@
                     </div>
                     <div class="modal-footer">
                         <form th:id="'registerForm-' + ${course.id}"
-                              th:action="@{/student/register(courseId=__${course.id}__)}"
+                              th:action="@{/student/register/__${course.id}__}"
                               method="post">
                             <a class="modal-action modal-close btn" th:text="#{enroll}"
                                th:onclick="'$(\'#registerForm-' + ${course.id} + '\').submit()'"></a>

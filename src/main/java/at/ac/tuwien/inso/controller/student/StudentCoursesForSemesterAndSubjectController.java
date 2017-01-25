@@ -15,6 +15,7 @@ import java.util.List;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.StudentService;
 import at.ac.tuwien.inso.service.SubjectService;
@@ -37,7 +38,8 @@ public class StudentCoursesForSemesterAndSubjectController {
 
         log.info("getting courses for subject " + subjectId);
 
-        List<Course> courses = courseService.findCoursesForSubjectAndCurrentSemester(subjectService.findOne(subjectId));
+        Subject subject = subjectService.findOne(subjectId);
+        List<Course> courses = courseService.findCoursesForSubjectAndCurrentSemester(subject);
 
         if (courses.size() == 1) {
             log.info("Subject only has one course this semester. Redirecting to course");
