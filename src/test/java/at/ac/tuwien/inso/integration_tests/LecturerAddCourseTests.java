@@ -3,8 +3,10 @@ package at.ac.tuwien.inso.integration_tests;
 import static junit.framework.TestCase.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 import at.ac.tuwien.inso.entity.Lecturer;
@@ -77,6 +79,22 @@ public class LecturerAddCourseTests extends AbstractCoursesTests {
         );
 
         assertTrue(courseRepository.findAllBySubject(maths).isEmpty());
+    }
+
+    @Test
+    public void getAddCoursePageTest() throws Exception {
+
+        // given lecturer having subject "maths"
+        Subject maths = subjectRepository.save(new Subject("maths", new BigDecimal(6.0)));
+        maths.addLecturers(lecturer1);
+
+        // when navigation to the new course page
+        mockMvc.perform(
+                get("/lecturer/addCourse").with(user(user1))
+                        .param("subjectId", maths.getId().toString())
+        ).andExpect(
+                model().attribute("subject", maths)
+        );
     }
 
     public List<Course> findCourses(Lecturer lecturer) {

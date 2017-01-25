@@ -138,6 +138,21 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
     }
 
     @Test
+    public void studyPlanFailureCreationStudyPlanAlreadyExistsTest() throws Exception {
+
+        // given study plans
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+
+        // when trying to create the same study plan again
+        CreateStudyPlanForm form = new CreateStudyPlanForm(studyPlan1.getName(), new BigDecimal(120.0), new BigDecimal(30.0), new BigDecimal(30.0));
+        StudyPlan wrongStudyPlan = form.toStudyPlan();
+
+        // nothing should be persisted
+        List<StudyPlan> allStudyPlans = StreamSupport.stream(studyPlanRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        assertFalse(allStudyPlans.contains(wrongStudyPlan));
+    }
+
+    @Test
     public void disableStudyPlanTest() throws Exception{
         StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
         mockMvc.perform(
@@ -304,6 +319,27 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
         assertTrue(result.getResponse().getContentAsString().contains("Advanced Software Engineering"));
         assertTrue(result.getResponse().getContentAsString().contains("Model Engineering"));
         assertFalse(result.getResponse().getContentAsString().contains("Software Engineering and Project Management"));
+    }
+
+    @Test
+    public void getRegisterStudentViewTest() throws Exception {
+
+        // given study plans and a student registered to study plan 1
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.SummerSemester));
+        Student student = uisUserRepository.save(new Student("s12345", "student", "s12345@uis.at"));
+        student.addStudyplans(new StudyPlanRegistration(studyPlan1, semester));
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+
+        // when navigating to the register students page
+        mockMvc.perform(
+                get("/admin/studyplans/registerStudent").with(user("admin").roles("ADMIN"))
+                .param("studentToAddId", student.getId().toString())
+        ).andExpect(
+                model().attribute("user", student)
+        ).andExpect(
+                model().attribute("studyPlans", asList(studyPlan2, studyPlan3))
+        );
+
     }
 
     private ResultActions createStudyPlan(CreateStudyPlanForm form) throws Exception {

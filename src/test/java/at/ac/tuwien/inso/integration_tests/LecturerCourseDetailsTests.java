@@ -1,13 +1,21 @@
 package at.ac.tuwien.inso.integration_tests;
 
 import static java.util.Arrays.asList;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.*;
+import org.jboss.aerogear.security.otp.Totp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,27 +26,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Feedback;
-import at.ac.tuwien.inso.entity.Grade;
-import at.ac.tuwien.inso.entity.Lecturer;
-import at.ac.tuwien.inso.entity.Mark;
-import at.ac.tuwien.inso.entity.Role;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.SemesterType;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.Tag;
-import at.ac.tuwien.inso.entity.UserAccount;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.FeedbackRepository;
-import at.ac.tuwien.inso.repository.GradeRepository;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.repository.StudentRepository;
-import at.ac.tuwien.inso.repository.SubjectRepository;
-import at.ac.tuwien.inso.repository.TagRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -80,6 +67,8 @@ public class LecturerCourseDetailsTests {
     private GradeRepository gradeRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
+    @Autowired
+    private StudyPlanRepository studyPlanRepository;
 
     @Before
     public void setUp() {
@@ -244,19 +233,88 @@ public class LecturerCourseDetailsTests {
     }
 
     @Test
-    public void lecturerShouldSeeCourseDetailsTest() {
-        //TODO
+    public void lecturerShouldSeeCourseDetailsTest() throws Exception {
+
+        // given course "maths" in study plan "SE" with some tags with "lecturer1"
+        Tag tag1 = new Tag("math");
+        Tag tag2 = new Tag("calculus");
+        tagRepository.save(asList(tag1, tag2));
+        Subject maths = subjectRepository.save(new Subject("maths", new BigDecimal(6.0)));
+        maths.addLecturers(lecturer1);
+        Course mathsCourse =  new Course(maths, ws2016, "some description");
+        mathsCourse.setStudentLimits(1);
+        mathsCourse.addTags(tag1, tag2);
+        courseRepository.save(mathsCourse);
+        StudyPlan studyPlan = studyPlanRepository.save(new StudyPlan("SE", new EctsDistribution(new BigDecimal(60.0), new BigDecimal(30.0), new BigDecimal(30.0))));
+        SubjectForStudyPlan subjectForStudyPlan = new SubjectForStudyPlan(maths, studyPlan, true);
+        studyPlan.addSubjects(subjectForStudyPlan);
+        List<SubjectForStudyPlan> expectedSubjectForStudyPlanList = new ArrayList<>();
+        expectedSubjectForStudyPlanList.add(subjectForStudyPlan);
+
+        // the lecturer should see the course details
+        mockMvc.perform(
+                get("/lecturer/course-details")
+                        .param("courseId", mathsCourse.getId().toString())
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .with(csrf())
+        ).andExpect(
+                model().attribute("course", mathsCourse)
+        ).andExpect(
+                model().attribute("studyPlans", expectedSubjectForStudyPlanList)
+        );
     }
 
     @Test
-    public void issueGradeSuccessTest() {
-        //TODO
+    public void issueGradeSuccessTest() throws Exception {
+
+        // given "student" and "lecturer1" with the course "ase"
+        Totp totp = new Totp(lecturer1.getTwoFactorSecret());
+
+        // when "lecturer1" issues a grade for "student"
+        mockMvc.perform(
+                post("/lecturer/course-details/addGrade")
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .param("courseId", aseWS2016.getId().toString())
+                        .param("studentId", student.getId().toString())
+                        .param("authCode", totp.now())
+                        .param("mark", "4")
+                        .with(csrf())
+        );
+
+        // the grade should exist for the student
+        Grade actualGradeStudent = gradeRepository.findAllOfStudent(student).get(0);
+        assertEquals(lecturer1, actualGradeStudent.getLecturer());
+        assertEquals(student, actualGradeStudent.getStudent());
+        assertEquals(aseWS2016, actualGradeStudent.getCourse());
+        assertEquals(4, actualGradeStudent.getMark().getMark());
+
+        // and for the lecturer as well
+        Grade actualGradeLecturer = gradeRepository.findByLecturerIdAndCourseId(lecturer1.getId(), aseWS2016.getId()).get(0);
+        assertEquals(lecturer1, actualGradeLecturer.getLecturer());
+        assertEquals(student, actualGradeLecturer.getStudent());
+        assertEquals(aseWS2016, actualGradeLecturer.getCourse());
+        assertEquals(4, actualGradeLecturer.getMark().getMark());
     }
 
     @Test
-    public void issueGradeFailureTest() {
-        //TODO
-    }
+    public void issueGradeFailureWrongAuthCodeTest() throws Exception {
 
+        // given "student" and "lecturer1" with the course "ase"
+
+        // when "lecturer1" issues a grade for "student" with a wrong authentication code
+        mockMvc.perform(
+                post("/lecturer/course-details/addGrade")
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .param("courseId", aseWS2016.getId().toString())
+                        .param("studentId", student.getId().toString())
+                        .param("authCode", "-12345")
+                        .param("mark", "4")
+                        .with(csrf())
+        );
+
+        // the grade should not exist
+        assertTrue(gradeRepository.findAllOfStudent(student).isEmpty());
+        assertTrue(gradeRepository.findByLecturerIdAndCourseId(lecturer1.getId(), aseWS2016.getId()).isEmpty());
+    }
 
 }

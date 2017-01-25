@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.integration_tests;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -10,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
+import at.ac.tuwien.inso.entity.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.SemesterType;
-import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.SemesterRepository;
+
+import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -137,6 +137,70 @@ public class AdminSubjectsTests extends AbstractSubjectsTests {
         ).andExpect(
                 model().attribute("lecturers", asList(lecturer1, lecturer2))
         );
+    }
+
+    @Test
+    public void adminCreateSubjectTest() throws Exception {
+
+        String name = "maths";
+        BigDecimal ects = new BigDecimal(6.0);
+
+        mockMvc.perform(
+                post("/admin/subjects/create")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("name", name)
+                        .param("ects", ects.toString())
+                        .with(csrf())
+        );
+
+        Subject subject = subjectRepository.findByNameContainingIgnoreCase(name).get(0);
+        assertEquals(name, subject.getName());
+        assertEquals(ects, subject.getEcts());
+
+    }
+
+    @Test
+    public void adminListSubjectsForPageSearchNullAndPageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/subjects/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects")
+        );
+
+    }
+
+    @Test
+    public void adminListSubjectsForPageSearchEmptyTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/subjects/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects/page/1")
+        );
+
+    }
+
+    @Test
+    public void adminListSubjectsForPagePageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/subjects/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "something")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/subjects?search=something")
+        );
+
     }
 
 
