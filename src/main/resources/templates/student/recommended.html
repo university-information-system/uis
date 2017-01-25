@@ -15,7 +15,7 @@
             <li class="collection-item" th:each="course, status : ${recommendedCourses}">
                 <div class="secondary-content">
                     <div class="" style="display: inline;">
-                        <a th:href="'#modal'+__${course.id}__" class="modal-trigger"><i
+                        <a th:href="'#modal'+__${course.id}__" class="modal-trigger teal-text"><i
                                 class="material-icons tooltipped"
                                 th:attr="data-tooltip=#{enroll}">add</i></a>
                     </div>
