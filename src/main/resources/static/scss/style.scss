@@ -16,6 +16,22 @@ header, main, footer {
   overflow: visible;
 }
 
+h1 {
+  font-size: 2.827rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.414rem;
+}
+
+h4, h5 {
+  font-size: 1.2rem;
+}
+
 .pagination li.active a {
   background: teal;
   color: #fff;
@@ -142,4 +158,25 @@ header, main, footer {
   z-index: 1000;
   padding-right: 1rem;
   padding-left: 1rem;
+}
+
+// Errors
+.error-content {
+  text-align: center;
+  padding-left: 0;
+}
+
+.error-wrapper {
+  display: inline-block;
+  text-align: left;
+}
+
+.error-huge {
+  font-size: 12.4rem;
+  padding-top: 2rem;
+  margin-bottom: -2rem;
+}
+
+.error-small {
+  font-size: 1.92rem;
 }
