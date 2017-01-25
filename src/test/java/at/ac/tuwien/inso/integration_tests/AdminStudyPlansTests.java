@@ -321,6 +321,27 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
         assertFalse(result.getResponse().getContentAsString().contains("Software Engineering and Project Management"));
     }
 
+    @Test
+    public void getRegisterStudentViewTest() throws Exception {
+
+        // given study plans and a student registered to study plan 1
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.SummerSemester));
+        Student student = uisUserRepository.save(new Student("s12345", "student", "s12345@uis.at"));
+        student.addStudyplans(new StudyPlanRegistration(studyPlan1, semester));
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+
+        // when navigating to the register students page
+        mockMvc.perform(
+                get("/admin/studyplans/registerStudent").with(user("admin").roles("ADMIN"))
+                .param("studentToAddId", student.getId().toString())
+        ).andExpect(
+                model().attribute("user", student)
+        ).andExpect(
+                model().attribute("studyPlans", asList(studyPlan2, studyPlan3))
+        );
+
+    }
+
     private ResultActions createStudyPlan(CreateStudyPlanForm form) throws Exception {
         return mockMvc.perform(
                 post("/admin/studyplans/create").with(user("admin").roles(Role.ADMIN.name()))
