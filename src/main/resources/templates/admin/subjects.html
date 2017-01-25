@@ -25,6 +25,12 @@
         <nav>
             <div class="nav-wrapper white black-text">
                 <form action="/admin/subjects">
+                    <a
+                        th:unless="${#strings.isEmpty(search)}"
+                        th:text="#{search.clear}"
+                        th:href="@{/admin/users}"
+                        class="btn btn-flat search-exit"
+                    ></a>
 
                     <div class="input-field">
                          <input
@@ -43,9 +49,13 @@
 
         <div>
 
-            <ul class="collection z-depth-1">
+            <div
+                class="section-separator"
+                th:if="${#lists.isEmpty(subjects)}"
+                th:text="#{admin.subjects.noSubjectFound}"
+            ></div>
 
-                <li class="collection-item" th:if="${#lists.isEmpty(subjects)}" th:text="#{admin.subjects.noSubjectFound}"></li>
+            <ul class="collection z-depth-1" th:unless="${#lists.isEmpty(subjects)}">
 
                 <li class="collection-item" th:each="subject : ${subjects}">
                     <div>
@@ -80,7 +90,7 @@
         </div>
 
         <!-- Pagination -->
-        <div>
+        <div th:if="${page.totalPages > 1}">
             <ul class="pagination center">
 
                 <!-- Disable the chevron when the first page is active -->
