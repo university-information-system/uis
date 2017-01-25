@@ -1,9 +1,12 @@
 package at.ac.tuwien.inso.integration_tests;
 
 import static java.util.Arrays.asList;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import java.math.BigDecimal;
@@ -12,6 +15,7 @@ import java.util.List;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
+import org.jboss.aerogear.security.otp.Totp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -261,14 +265,56 @@ public class LecturerCourseDetailsTests {
     }
 
     @Test
-    public void issueGradeSuccessTest() {
-        //TODO
+    public void issueGradeSuccessTest() throws Exception {
+
+        // given "student" and "lecturer1" with the course "ase"
+        Totp totp = new Totp(lecturer1.getTwoFactorSecret());
+
+        // when "lecturer1" issues a grade for "student"
+        mockMvc.perform(
+                post("/lecturer/course-details/addGrade")
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .param("courseId", aseWS2016.getId().toString())
+                        .param("studentId", student.getId().toString())
+                        .param("authCode", totp.now())
+                        .param("mark", "4")
+                        .with(csrf())
+        );
+
+        // the grade should exist for the student
+        Grade actualGradeStudent = gradeRepository.findAllOfStudent(student).get(0);
+        assertEquals(lecturer1, actualGradeStudent.getLecturer());
+        assertEquals(student, actualGradeStudent.getStudent());
+        assertEquals(aseWS2016, actualGradeStudent.getCourse());
+        assertEquals(4, actualGradeStudent.getMark().getMark());
+
+        // and for the lecturer as well
+        Grade actualGradeLecturer = gradeRepository.findByLecturerIdAndCourseId(lecturer1.getId(), aseWS2016.getId()).get(0);
+        assertEquals(lecturer1, actualGradeLecturer.getLecturer());
+        assertEquals(student, actualGradeLecturer.getStudent());
+        assertEquals(aseWS2016, actualGradeLecturer.getCourse());
+        assertEquals(4, actualGradeLecturer.getMark().getMark());
     }
 
     @Test
-    public void issueGradeFailureTest() {
-        //TODO
-    }
+    public void issueGradeFailureWrongAuthCodeTest() throws Exception {
 
+        // given "student" and "lecturer1" with the course "ase"
+
+        // when "lecturer1" issues a grade for "student" with a wrong authentication code
+        mockMvc.perform(
+                post("/lecturer/course-details/addGrade")
+                        .with(user("lecturer1").roles(Role.LECTURER.name()))
+                        .param("courseId", aseWS2016.getId().toString())
+                        .param("studentId", student.getId().toString())
+                        .param("authCode", "-12345")
+                        .param("mark", "4")
+                        .with(csrf())
+        );
+
+        // the grade should not exist
+        assertTrue(gradeRepository.findAllOfStudent(student).isEmpty());
+        assertTrue(gradeRepository.findByLecturerIdAndCourseId(lecturer1.getId(), aseWS2016.getId()).isEmpty());
+    }
 
 }
