@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class PublicGradeController {
+public class PublicGradeTests {
 
     @Test
     public void generateGradePDFTest() {
