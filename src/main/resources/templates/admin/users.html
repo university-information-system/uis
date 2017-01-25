@@ -24,6 +24,13 @@
 
         <nav>
             <div class="nav-wrapper white black-text">
+                <a
+                    th:unless="${#strings.isEmpty(search)}"
+                    th:text="#{search.clear}"
+                    th:href="@{/admin/users}"
+                    class="btn btn-flat search-exit"
+                ></a>
+
                 <form action="/admin/users">
                     <div class="input-field">
                         <input

@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns="http://www.w3.org/1999/xhtml"
-      layout:decorator="student/index">
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns="http://www.w3.org/1999/xhtml"
+    layout:decorator="student/index"
+>
 <body>
 <main layout:fragment="main">
 
@@ -11,6 +14,14 @@
 
         <nav>
             <div class="nav-wrapper white black-text">
+
+                <a
+                    th:unless="${#strings.isEmpty(searchString)}"
+                    th:text="#{search.clear}"
+                    th:href="@{/student/courses}"
+                    class="btn btn-flat search-exit"
+                ></a>
+
                 <form>
                     <div class="input-field">
                         <input id="search" name="search" th:placeholder="#{student.courses.search}"
@@ -25,10 +36,16 @@
         <div class="section-separator" th:if="${#strings.isEmpty(searchString)}"
              th:text="#{student.my.courses.all.label}"></div>
 
-        <ul class="collection z-depth-1">
+        <div
+            class="section-separator"
+            th:if="${#lists.isEmpty(allCourses.getContent())}"
+            th:text="#{student.courses.notfound}"
+        ></div>
 
-            <li class="collection-item" th:if="${#lists.isEmpty(allCourses.getContent())}"
-                th:text="#{student.courses.notfound}"></li>
+        <ul
+            th:unless="${#lists.isEmpty(allCourses.getContent())}"
+            class="collection z-depth-1"
+        >
 
             <li class="collection-item" th:each="course : ${allCourses.getContent()}">
                 <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i
