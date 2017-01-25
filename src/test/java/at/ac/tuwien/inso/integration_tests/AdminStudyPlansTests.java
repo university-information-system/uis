@@ -138,6 +138,21 @@ public class AdminStudyPlansTests extends AbstractStudyPlansTests {
     }
 
     @Test
+    public void studyPlanFailureCreationStudyPlanAlreadyExistsTest() throws Exception {
+
+        // given study plans
+        studyPlanRepository.save(asList(studyPlan1, studyPlan2, studyPlan3));
+
+        // when trying to create the same study plan again
+        CreateStudyPlanForm form = new CreateStudyPlanForm(studyPlan1.getName(), new BigDecimal(120.0), new BigDecimal(30.0), new BigDecimal(30.0));
+        StudyPlan wrongStudyPlan = form.toStudyPlan();
+
+        // nothing should be persisted
+        List<StudyPlan> allStudyPlans = StreamSupport.stream(studyPlanRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        assertFalse(allStudyPlans.contains(wrongStudyPlan));
+    }
+
+    @Test
     public void disableStudyPlanTest() throws Exception{
         StudyPlan studyPlan = studyPlanRepository.save(studyPlan1);
         mockMvc.perform(
