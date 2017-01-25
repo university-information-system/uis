@@ -90,7 +90,7 @@
         </div>
 
         <!-- Pagination -->
-        <div>
+        <div th:if="${page.totalPages > 1}">
             <ul class="pagination center">
 
                 <!-- Disable the chevron when the first page is active -->
