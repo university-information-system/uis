@@ -51,43 +51,43 @@
                 <a href="#"><i class="material-icons disabled">chevron_left</i></a>
             </li>
             <li th:if="${not allCoursesForAllLecturersPagable.isFirst()}">
-                <a th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()-1}__, search=__${searchString}__)}"><i
+                <a th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-1}__, search=__${searchString}__)}"><i
                         class="material-icons">chevron_left</i></a>
             </li>
 
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()-4 >= 0}" class="waves-effect">
                 <a th:text="1"
-                   th:href="@{/student/courses(page=0, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=0, search=__${searchString}__)}"></a>
             </li>
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()-4 > 0}"><a th:text="..."></a></li>
 
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()-3 >= 0}" class="waves-effect">
                 <a th:text="${allCoursesForAllLecturersPagable.getNumber()-2}"
-                   th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()-3}__, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-3}__, search=__${searchString}__)}"></a>
             </li>
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()-2 >= 0}" class="waves-effect">
                 <a th:text="${allCoursesForAllLecturersPagable.getNumber()-1}"
-                   th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()-2}__, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-2}__, search=__${searchString}__)}"></a>
             </li>
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()-1 >= 0}" class="waves-effect">
                 <a th:text="${allCoursesForAllLecturersPagable.getNumber()}"
-                   th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()-1}__, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-1}__, search=__${searchString}__)}"></a>
             </li>
             <li class="active teal"><a th:text="${allCoursesForAllLecturersPagable.getNumber()+1}"></a></li>
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()+1 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
                 class="waves-effect">
                 <a th:text="${allCoursesForAllLecturersPagable.getNumber()+2}"
-                   th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()+1}__, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+1}__, search=__${searchString}__)}"></a>
             </li>
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()+2 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
                 class="waves-effect">
                 <a th:text="${allCoursesForAllLecturersPagable.getNumber()+3}"
-                   th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()+2}__, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+2}__, search=__${searchString}__)}"></a>
             </li>
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()+3 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
                 class="waves-effect">
                 <a th:text="${allCoursesForAllLecturersPagable.getNumber()+4}"
-                   th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()+3}__, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+3}__, search=__${searchString}__)}"></a>
             </li>
 
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()+4 &lt; allCoursesForAllLecturersPagable.getTotalPages()-1}"><a
@@ -95,13 +95,13 @@
             <li th:if="${allCoursesForAllLecturersPagable.getNumber()+4 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
                 class="waves-effect">
                 <a th:text="${allCoursesForAllLecturersPagable.getTotalPages()}"
-                   th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getTotalPages()-1}__, search=__${searchString}__)}"></a>
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getTotalPages()-1}__, search=__${searchString}__)}"></a>
             </li>
             <li th:if="${allCoursesForAllLecturersPagable.isLast()}" class="disabled">
                 <a href="#"><i class="material-icons">chevron_right</i></a>
             </li>
             <li th:if="${!allCoursesForAllLecturersPagable.isLast()}">
-                <a th:href="@{/student/courses(page=__${allCoursesForAllLecturersPagable.getNumber()+1}__, search=__${searchString}__)}"><i
+                <a th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+1}__, search=__${searchString}__)}"><i
                         class="material-icons">chevron_right</i></a>
             </li>
         </ul>
