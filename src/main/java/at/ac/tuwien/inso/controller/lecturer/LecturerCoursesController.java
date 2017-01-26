@@ -35,6 +35,11 @@ public class LecturerCoursesController {
         Lecturer lecturer = lecturerService.getLoggedInLecturer();
         return courseService.findCoursesForCurrentSemesterForLecturer(lecturer);
     }
+    
+    @ModelAttribute("allCoursesForAllLecturers")
+    private List<Course> getAllCoursesForAllLecturers() {
+        return courseService.findCourseForCurrentSemesterWithName("", null);
+    }
 
     @GetMapping
     public String courses() {
@@ -56,8 +61,6 @@ public class LecturerCoursesController {
     
     @GetMapping("all")
     public String allCourses(){
-    	//Lecturer lecturer = lecturerService.getLoggedInLecturer();
-        courseService.findCoursesForCurrentSemester();
     	return "lecturer/allcourses";
     }
 }
