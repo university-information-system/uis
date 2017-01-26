@@ -45,12 +45,6 @@ public class SemesterDtoTests {
 		assertFalse(getWS2016().equals(getSS2015()));
 	}
 
-	@Ignore // ignore atm because difficult to write integration tests when using the id to check equality
-	@Test
-	public void testEqualsNoId() {
-		assertFalse(getWS2016().equals(getWS2016WithoutId()));
-	}
-
 	@Test
 	public void testIsStartInPast() {
         Calendar before = new GregorianCalendar(2000, 1, 1);
