@@ -56,6 +56,8 @@ public class LecturerCoursesController {
     
     @GetMapping("all")
     public String allCourses(){
+    	//Lecturer lecturer = lecturerService.getLoggedInLecturer();
+        courseService.findCoursesForCurrentSemester();
     	return "lecturer/allcourses";
     }
 }
