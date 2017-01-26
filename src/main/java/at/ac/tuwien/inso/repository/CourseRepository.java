@@ -51,4 +51,6 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
             "where c = ?2 and ?1 member of c.students"
     )
     boolean existsCourseRegistration(Student student, Course course);
+
+	List<Course> findAllBySemester(Semester entity);
 }
