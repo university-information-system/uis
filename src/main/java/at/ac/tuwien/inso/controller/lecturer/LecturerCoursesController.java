@@ -38,7 +38,7 @@ public class LecturerCoursesController {
     
     @ModelAttribute("allCoursesForAllLecturers")
     private List<Course> getAllCoursesForAllLecturers() {
-        return courseService.findCourseForCurrentSemesterWithName("", null);
+        return courseService.findAllCoursesForCurrentSemester();
     }
 
     @GetMapping
