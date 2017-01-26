@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import at.ac.tuwien.inso.controller.Constants;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Tag;
@@ -35,6 +40,20 @@ public class LecturerCoursesController {
         Lecturer lecturer = lecturerService.getLoggedInLecturer();
         return courseService.findCoursesForCurrentSemesterForLecturer(lecturer);
     }
+    
+    @ModelAttribute("allCoursesForAllLecturers")
+    private List<Course> getAllCoursesForAllLecturers() {
+        return courseService.findAllCoursesForCurrentSemester();
+    }
+    
+    @ModelAttribute("allCoursesForAllLecturersPagable")
+    private Page<Course> getAllCoursesPageable(@RequestParam(value = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
+        if (pageable.getPageSize() > Constants.MAX_PAGE_SIZE) {
+            pageable = new PageRequest(pageable.getPageNumber(), Constants.MAX_PAGE_SIZE);
+        }
+
+        return courseService.findCourseForCurrentSemesterWithName(search, pageable);
+    }
 
     @GetMapping
     public String courses() {
@@ -52,5 +71,10 @@ public class LecturerCoursesController {
     private List<String> getTagsForCourseJson(@RequestParam("courseId") Long courseId) {
         Course course = courseService.findOne(courseId);
         return course.getTags().stream().map(Tag::getName).collect(Collectors.toList());
+    }
+    
+    @GetMapping("all")
+    public String allCourses(){
+    	return "lecturer/allcourses";
     }
 }

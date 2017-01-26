@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.dto.CourseDetailsForStudent;
+import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Grade;
 import at.ac.tuwien.inso.entity.Lecturer;
@@ -261,4 +262,10 @@ public class CourseServiceImpl implements CourseService {
         validator.validateStudent(student);
         return course.getSemester().toDto().equals(semesterService.getOrCreateCurrentSemester()) && !courseRepository.existsCourseRegistration(student, course);
     }
+
+	@Override
+	public List<Course> findAllCoursesForCurrentSemester() {
+		SemesterDto semester = semesterService.getOrCreateCurrentSemester();
+		return courseRepository.findAllBySemester(semester.toEntity());	
+	}
 }

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="lecturer/index">
+<body>
+
+<main layout:fragment="main">
+
+    <div class="container">
+
+        <h1 th:text="#{lecturer.courses.label.all}">Courses</h1>
+        
+         <nav>
+            <div class="nav-wrapper white black-text">
+
+                <a
+                    th:unless="${#strings.isEmpty(searchString)}"
+                    th:text="#{search.clear}"
+                    th:href="@{/lecturer/courses/all}"
+                    class="btn btn-flat search-exit"
+                ></a>
+
+                <form>
+                    <div class="input-field">
+                        <input id="search" name="search" th:placeholder="#{student.courses.search}"
+                               th:value="${searchString}"
+                               type="search"/>
+                        <label for="search"><i class="material-icons black-text">search</i></label>
+                    </div>
+                </form>
+            </div>
+        </nav>
+
+        <ul
+            th:unless="${#lists.isEmpty(allCoursesForAllLecturersPagable.getContent())}"
+            class="collection z-depth-1"
+        >
+
+            <li class="collection-item" th:if="${#lists.isEmpty(allCoursesForAllLecturersPagable)}" th:text="#{lecturer.courses.none}"></li>
+
+            <li class="collection-item" th:each="course : ${allCoursesForAllLecturersPagable.getContent()}">
+                <a class="title teal-text" th:text="${course.subject.name}" th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"></a>
+                <div th:text="${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
+            </li>
+        </ul>
+         
+        
+        <!-- Pagination -->
+        <ul th:if="${allCoursesForAllLecturersPagable.totalPages > 1}" class="pagination center">
+            <li th:if="${allCoursesForAllLecturersPagable.isFirst()}" class="disabled">
+                <a href="#"><i class="material-icons disabled">chevron_left</i></a>
+            </li>
+            <li th:if="${not allCoursesForAllLecturersPagable.isFirst()}">
+                <a th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-1}__, search=__${searchString}__)}"><i
+                        class="material-icons">chevron_left</i></a>
+            </li>
+
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()-4 >= 0}" class="waves-effect">
+                <a th:text="1"
+                   th:href="@{/lecturer/courses/all(page=0, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()-4 > 0}"><a th:text="..."></a></li>
+
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()-3 >= 0}" class="waves-effect">
+                <a th:text="${allCoursesForAllLecturersPagable.getNumber()-2}"
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-3}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()-2 >= 0}" class="waves-effect">
+                <a th:text="${allCoursesForAllLecturersPagable.getNumber()-1}"
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-2}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()-1 >= 0}" class="waves-effect">
+                <a th:text="${allCoursesForAllLecturersPagable.getNumber()}"
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()-1}__, search=__${searchString}__)}"></a>
+            </li>
+            <li class="active teal"><a th:text="${allCoursesForAllLecturersPagable.getNumber()+1}"></a></li>
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()+1 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
+                class="waves-effect">
+                <a th:text="${allCoursesForAllLecturersPagable.getNumber()+2}"
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+1}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()+2 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
+                class="waves-effect">
+                <a th:text="${allCoursesForAllLecturersPagable.getNumber()+3}"
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+2}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()+3 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
+                class="waves-effect">
+                <a th:text="${allCoursesForAllLecturersPagable.getNumber()+4}"
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+3}__, search=__${searchString}__)}"></a>
+            </li>
+
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()+4 &lt; allCoursesForAllLecturersPagable.getTotalPages()-1}"><a
+                    th:text="..."></a></li>
+            <li th:if="${allCoursesForAllLecturersPagable.getNumber()+4 &lt;= allCoursesForAllLecturersPagable.getTotalPages()-1}"
+                class="waves-effect">
+                <a th:text="${allCoursesForAllLecturersPagable.getTotalPages()}"
+                   th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getTotalPages()-1}__, search=__${searchString}__)}"></a>
+            </li>
+            <li th:if="${allCoursesForAllLecturersPagable.isLast()}" class="disabled">
+                <a href="#"><i class="material-icons">chevron_right</i></a>
+            </li>
+            <li th:if="${!allCoursesForAllLecturersPagable.isLast()}">
+                <a th:href="@{/lecturer/courses/all(page=__${allCoursesForAllLecturersPagable.getNumber()+1}__, search=__${searchString}__)}"><i
+                        class="material-icons">chevron_right</i></a>
+            </li>
+        </ul>
+
+    </div>
+</main>
+
+</body>
+</html>
