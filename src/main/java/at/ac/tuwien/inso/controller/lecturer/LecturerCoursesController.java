@@ -53,4 +53,9 @@ public class LecturerCoursesController {
         Course course = courseService.findOne(courseId);
         return course.getTags().stream().map(Tag::getName).collect(Collectors.toList());
     }
+    
+    @GetMapping("all")
+    public String allCourses(){
+    	return "lecturer/allcourses";
+    }
 }
