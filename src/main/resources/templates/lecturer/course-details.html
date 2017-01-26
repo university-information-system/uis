@@ -66,7 +66,7 @@
                         </div>
 
                         <div>
-                            <div class="section-separator" th:text="#{lecturer.course.details.students}"></div>
+                            <div class="section-separator" th:text="#{lecturer.course.details.students} + ' (max. '+${course.studentLimits}+')'"></div>
 
                             <ul class="collection borderless">
 
