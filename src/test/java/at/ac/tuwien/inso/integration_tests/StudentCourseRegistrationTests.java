@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.integration_tests;
 
 import static java.util.Arrays.asList;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,49 +129,35 @@ public class StudentCourseRegistrationTests extends AbstractCoursesTests {
         ));
     }
 
-    /**
-     * TODO testing against specific messages (in one language) is NEVER a good idea
-     */
-    @Ignore
     @Test
     public void itDoesNotRegisterStudent() throws Exception {
-        String expect = "Cannot register to course \"" + sepmWS2016.getSubject().getName() + "\"";
+
         mockMvc.perform(
                 post("/student/register/" + sepmWS2016.getId()).with(user(studentUser))
                         .with(csrf())
         ).andExpect(
                 redirectedUrl("/student/courses")
-        ).andExpect(
-                flash().attribute("flashMessageNotLocalized", expect)
         );
+
+        assertFalse(aseWS2016.getStudents().contains(student1));
     }
 
-    /**
-     * TODO testing against specific messages (in one language) is NEVER a good idea
-     */
-    @Ignore
     @Test
     public void itRegistersStudent() throws Exception {
-        String expect = "Registered to course \"" + aseWS2016.getSubject().getName() + "\"";
-
 
         mockMvc.perform(
                 post("/student/register/" + aseWS2016.getId()).with(user(studentUser))
                         .with(csrf())
         ).andExpect(
                 redirectedUrl("/student/courses")
-        ).andExpect(
-                flash().attribute("flashMessageNotLocalized", expect)
         );
+
+        assertTrue(aseWS2016.getStudents().contains(student1));
     }
 
-    /**
-     * TODO testing against specific messages (in one language) is NEVER a good idea
-     */
-    @Ignore
     @Test
     public void itUnregistersStudentFromCourseAndRedirectsToMyCoursesPage() throws Exception {
-        String expected = "Unregistered from course \"" + aseWS2016.getSubject().getName() + "\"";
+
         mockMvc.perform(
                 post("/student/unregister")
                         .with(csrf())
@@ -180,8 +167,8 @@ public class StudentCourseRegistrationTests extends AbstractCoursesTests {
                 assertThat(courseRepository.findOne(aseWS2016.getId()).getStudents(), empty())
         ).andExpect(
                 redirectedUrl("/student/myCourses")
-        ).andExpect(
-                flash().attribute("flashMessageNotLocalized", expected)
         );
+
+        assertFalse(aseWS2016.getStudents().contains(student2));
     }
 }
