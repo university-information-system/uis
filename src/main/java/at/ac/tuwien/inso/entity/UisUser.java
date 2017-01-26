@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,6 +62,7 @@ public abstract class UisUser {
         return email;
     }
 
+    @JsonIgnore
     public UserAccount getAccount() {
         return account;
     }
