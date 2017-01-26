@@ -8,8 +8,8 @@
     <li th:class="${#httpServletRequest.requestURI} == '/lecturer/courses' ? 'active' : ''">
         <a class="white-text" href="/lecturer/courses" th:text="#{lecturer.nav.courses}"></a>
     </li>
-    <li th:class="${#httpServletRequest.requestURI} == '/lecturer/allcourses' ? 'active' : ''">
-        <a class="white-text" href="/lecturer/allcources" th:text="#{lecturer.nav.allcourses}"></a>
+    <li th:class="${#httpServletRequest.requestURI} == '/lecturer/courses/all' ? 'active' : ''">
+        <a class="white-text" href="/lecturer/courses/all" th:text="#{lecturer.nav.allcourses}"></a>
     </li>
     <li th:class="${#httpServletRequest.requestURI} == '/lecturer/subjects' ? 'active' : ''">
         <a class="white-text" href="/lecturer/subjects" th:text="#{lecturer.nav.subjects}"></a>
