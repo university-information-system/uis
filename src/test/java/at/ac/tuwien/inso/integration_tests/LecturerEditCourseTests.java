@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.integration_tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -110,10 +111,6 @@ public class LecturerEditCourseTests extends AbstractCoursesTests {
         assertTrue(courseRepository.exists(c.getId()));
     }
 
-    /**
-     * TODO testing against specific messages (especially in one language) is NEVER a good idea
-     */
-    @Ignore
     @Test
     public void itEditsCourse() throws Exception {
         AddCourseForm form = new AddCourseForm(sepmWS2016);
@@ -122,7 +119,6 @@ public class LecturerEditCourseTests extends AbstractCoursesTests {
         String testDescription = "TEST DESCRIPTION";
         form.getCourse().setDescription(testDescription);
         form.getCourse().setStudentLimits(20);
-        String expected = "Changes for course \"" + form.getCourse().getSubject().getName() + "\" updated";
         mockMvc.perform(
                 post("/lecturer/editCourse").with(user("lecturer").roles(Role.LECTURER.name()))
                         .content(form.toString())
@@ -132,9 +128,11 @@ public class LecturerEditCourseTests extends AbstractCoursesTests {
                 redirectedUrl("/lecturer/courses")
         ).andExpect(
                 flash().attributeExists("flashMessageNotLocalized")
-        ).andExpect(
-                flash().attribute("flashMessageNotLocalized", expected)
         );
+
+        // check the changes were updated
+        Course actualCourse = courseRepository.findOne(sepmWS2016.getId());
+        assertEquals(sepmWS2016, actualCourse);
     }
 
     @Test
