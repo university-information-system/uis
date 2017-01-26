@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="lecturer/index">
+<body>
+
+<main layout:fragment="main">
+
+    <div class="container">
+
+        <h1 th:text="#{lecturer.courses.label}">Courses</h1>
+
+        <ul class="collection z-depth-1">
+
+            <li class="collection-item" th:if="${#lists.isEmpty(allCoursesForAllLecturers)}" th:text="#{lecturer.courses.none}"></li>
+
+            <li class="collection-item" th:each="course : ${allCoursesForAllLecturers}">
+                <a class="title teal-text" th:text="${course.subject.name}" th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"></a>
+                <div th:text="${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
+            </li>
+        </ul>
+
+    </div>
+</main>
+
+</body>
+</html>
