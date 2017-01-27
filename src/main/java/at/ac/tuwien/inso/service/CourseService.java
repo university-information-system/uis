@@ -116,7 +116,7 @@ public interface CourseService {
 	List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject);
 
 	/**
-	 * dismisses a course for a student.
+	 * dismisses a course for a student (used as feedback for machine learning)
 	 * the user should be of role student
 	 * 
 	 * @param student should not be null
@@ -127,15 +127,26 @@ public interface CourseService {
 
 	/**
 	 * unregisters a student from a course.
+	 * user needs to be authenticated
 	 * 
 	 * may throw a BusinessObjectNotFoundException if the course does not exist 
 	 * @param student should not be null
 	 * @param courseId should not be null and not <1
-	 * @return
+	 * @return the course without the unregistered student
 	 */
 	@PreAuthorize("isAuthenticated()")
 	Course unregisterStudentFromCourse(Student student, Long courseId);
 
+	/**
+	 * returns course details for a student for a course id
+	 * may throw a BusinessObjectNotFoundException if the course does not exist
+	 * may throw a Validation Exception if the student is null
+	 * user needs to be authenticated
+	 * 
+	 * @param student should not be null
+	 * @param courseId should not be null and not <1
+	 * @return 
+	 */
 	@PreAuthorize("isAuthenticated()")
 	CourseDetailsForStudent courseDetailsFor(Student student, Long courseId);
 
