@@ -22,9 +22,9 @@ import at.ac.tuwien.inso.repository.LecturerRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
 import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.SubjectService;
-import at.ac.tuwien.inso.service.validator.SubjectValidator;
-import at.ac.tuwien.inso.service.validator.UisUserValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import at.ac.tuwien.inso.validator.SubjectValidator;
+import at.ac.tuwien.inso.validator.UisUserValidator;
+import at.ac.tuwien.inso.validator.ValidatorFactory;
 
 
 @Service

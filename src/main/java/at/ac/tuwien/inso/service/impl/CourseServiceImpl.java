@@ -36,8 +36,8 @@ import at.ac.tuwien.inso.service.SemesterService;
 import at.ac.tuwien.inso.service.TagService;
 import at.ac.tuwien.inso.service.UserAccountService;
 import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
-import at.ac.tuwien.inso.service.validator.CourseValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import at.ac.tuwien.inso.validator.CourseValidator;
+import at.ac.tuwien.inso.validator.ValidatorFactory;
 
 @Service
 public class CourseServiceImpl implements CourseService {

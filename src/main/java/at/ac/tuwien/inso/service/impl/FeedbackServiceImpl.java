@@ -16,8 +16,8 @@ import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.FeedbackRepository;
 import at.ac.tuwien.inso.service.FeedbackService;
 import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
-import at.ac.tuwien.inso.service.validator.FeedbackValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import at.ac.tuwien.inso.validator.FeedbackValidator;
+import at.ac.tuwien.inso.validator.ValidatorFactory;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {

@@ -12,8 +12,8 @@ import at.ac.tuwien.inso.entity.UisUser;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.repository.UisUserRepository;
 import at.ac.tuwien.inso.service.UisUserService;
-import at.ac.tuwien.inso.service.validator.UisUserValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import at.ac.tuwien.inso.validator.UisUserValidator;
+import at.ac.tuwien.inso.validator.ValidatorFactory;
 
 @Service
 public class UisUserServiceImpl implements UisUserService {

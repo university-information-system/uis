@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.service.validator;
+package at.ac.tuwien.inso.validator;
 
 public class ValidatorFactory {
 

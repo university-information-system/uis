@@ -4,7 +4,7 @@ package at.ac.tuwien.inso.validator_tests;
 import org.junit.Test;
 
 import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.service.validator.UisUserValidator;
+import at.ac.tuwien.inso.validator.UisUserValidator;
 
 
 public class UisUserValidatorTests {

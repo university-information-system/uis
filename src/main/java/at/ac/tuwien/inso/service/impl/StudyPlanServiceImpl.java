@@ -25,8 +25,8 @@ import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
 import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.service.StudyPlanService;
 import at.ac.tuwien.inso.service.SubjectService;
-import at.ac.tuwien.inso.service.validator.StudyPlanValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import at.ac.tuwien.inso.validator.StudyPlanValidator;
+import at.ac.tuwien.inso.validator.ValidatorFactory;
 
 @Service
 public class StudyPlanServiceImpl implements StudyPlanService {

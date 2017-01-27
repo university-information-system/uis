@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.service.validator;
+package at.ac.tuwien.inso.validator;
 
 import at.ac.tuwien.inso.entity.StudyPlan;
 import at.ac.tuwien.inso.entity.Subject;

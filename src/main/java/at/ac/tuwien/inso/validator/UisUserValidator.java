@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.service.validator;
+package at.ac.tuwien.inso.validator;
 
 
 import org.apache.commons.validator.routines.EmailValidator;
