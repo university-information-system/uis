@@ -15,6 +15,7 @@ import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
 
 public interface CourseService {
@@ -53,9 +54,22 @@ public interface CourseService {
 	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
 	Course saveCourse(AddCourseForm form);
 
+	/**
+	 * this method returns a course by the given id. 
+	 * may throw a BusinessObjectNotFoundException if there is no course with the given id
+	 * @param id the id should not be null and not <1
+	 * @return
+	 */
 	@PreAuthorize("isAuthenticated()")
 	Course findOne(Long id);
 
+	/**
+	 * this method removes a course by its id if there are not registerd students or grades for it 
+	 * @param id should not be null and not <1
+	 * @return
+	 * @throws ValidationException if there are grades or already registered students for that course
+	 * @throws BusinessObjectNotFoundException if there is not course with the given id
+	 */
 	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
 	boolean remove(Long id) throws ValidationException;
 
