@@ -12,9 +12,19 @@ import at.ac.tuwien.inso.entity.UserAccount;
 
 public interface StudentService {
 
+	/**
+	 * returns one student by id if he exists 
+	 * @param id
+	 * @return
+	 */
     @PreAuthorize("isAuthenticated()")
     Student findOne(Long id);
 
+    /**
+     * returns one student by account
+     * @param account
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     Student findOne(UserAccount account);
 
