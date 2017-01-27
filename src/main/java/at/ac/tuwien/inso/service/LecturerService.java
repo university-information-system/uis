@@ -10,6 +10,13 @@ import at.ac.tuwien.inso.entity.Subject;
 
 public interface LecturerService {
 
+	/**
+	 * returns the currently logged in lecturer
+	 * 
+	 * user needs to be lecturer
+	 * 
+	 * @return the logged in lecturer
+	 */
     @PreAuthorize("hasRole('LECTURER')")
     Lecturer getLoggedInLecturer();
 
