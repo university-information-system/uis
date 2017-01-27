@@ -1,26 +1,49 @@
 package at.ac.tuwien.inso.service_tests;
 
-import at.ac.tuwien.inso.dto.SemesterDto;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.study_progress.*;
-import at.ac.tuwien.inso.service.study_progress.impl.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.runners.*;
-import org.springframework.data.util.*;
+import static at.ac.tuwien.inso.entity.SemesterType.WinterSemester;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.Comparator.comparing;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.*;
-import java.util.stream.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-import static at.ac.tuwien.inso.entity.SemesterType.WinterSemester;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.util.Pair;
+
+import at.ac.tuwien.inso.dto.SemesterDto;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.FeedbackService;
+import at.ac.tuwien.inso.service.GradeService;
+import at.ac.tuwien.inso.service.SemesterService;
+import at.ac.tuwien.inso.service.study_progress.CourseRegistration;
+import at.ac.tuwien.inso.service.study_progress.CourseRegistrationState;
+import at.ac.tuwien.inso.service.study_progress.SemesterProgress;
+import at.ac.tuwien.inso.service.study_progress.StudyProgress;
+import at.ac.tuwien.inso.service.study_progress.StudyProgressService;
+import at.ac.tuwien.inso.service.study_progress.impl.StudyProgressServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudyProgressServiceTests {

@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.controller.student.forms;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Size;
 
 public class FeedbackForm {
 

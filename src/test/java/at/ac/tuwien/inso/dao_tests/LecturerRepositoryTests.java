@@ -1,8 +1,8 @@
 package at.ac.tuwien.inso.dao_tests;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.LecturerRepository;
-import at.ac.tuwien.inso.repository.UisUserRepository;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Role;
+import at.ac.tuwien.inso.entity.UserAccount;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.UisUserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

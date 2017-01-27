@@ -1,24 +1,35 @@
 package at.ac.tuwien.inso.controller.admin;
 
-import at.ac.tuwien.inso.controller.*;
-import at.ac.tuwien.inso.controller.admin.forms.*;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.data.web.*;
-import org.springframework.stereotype.*;
-import org.springframework.ui.*;
-import org.springframework.validation.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.*;
+import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import javax.validation.*;
+import javax.validation.Valid;
 
-import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import at.ac.tuwien.inso.controller.admin.forms.CreateUserForm;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.service.LecturerService;
+import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.UisUserService;
+import at.ac.tuwien.inso.service.UserCreationService;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -41,7 +52,7 @@ public class AdminUsersController {
             @RequestParam(value = "search", required = false) String search,
             Model model
     ) {
-        if (search == "") {
+        if ("".equals(search)) {
             return "redirect:/admin/users";
         }
 
@@ -54,7 +65,11 @@ public class AdminUsersController {
             @PathVariable Integer pageNumber,
             Model model
     ) {
-        if (search == "") {
+        if (search == null && pageNumber == 1) {
+            return "redirect:/admin/users";
+        }
+
+        if ("".equals(search)) {
             return "redirect:/admin/users/page/" + pageNumber;
         }
 

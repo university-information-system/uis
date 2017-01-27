@@ -1,11 +1,18 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class StudyPlan {

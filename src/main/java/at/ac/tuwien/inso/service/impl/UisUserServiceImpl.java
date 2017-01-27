@@ -1,17 +1,19 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.validator.UisUserValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.repository.UisUserRepository;
+import at.ac.tuwien.inso.service.UisUserService;
+import at.ac.tuwien.inso.service.validator.UisUserValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 
 @Service
 public class UisUserServiceImpl implements UisUserService {

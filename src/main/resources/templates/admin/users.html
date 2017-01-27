@@ -14,14 +14,24 @@
             </div>
 
             <div class="col s12">
-                <a class="right amber btn hide-on-small-only modal-trigger" href="#create-user-modal"
-                   th:text="#{admin.users.create}"></a>
+                <a
+                    class="right amber btn hide-on-small-only modal-trigger"
+                    href="#create-user-modal"
+                    th:text="#{admin.users.create}"
+                ></a>
             </div>
         </div>
 
         <nav>
             <div class="nav-wrapper white black-text">
-                <form>
+                <a
+                    th:unless="${#strings.isEmpty(search)}"
+                    th:text="#{search.clear}"
+                    th:href="@{/admin/users}"
+                    class="btn btn-flat search-exit"
+                ></a>
+
+                <form action="/admin/users">
                     <div class="input-field">
                         <input
                             id="search"
@@ -36,9 +46,15 @@
             </div>
         </nav>
 
-        <ul class="collection z-depth-1">
-            <li class="collection-item" th:if="${#lists.isEmpty(page.content)}"
-                th:text="#{admin.users.emptyusers}"></li>
+
+        <div
+            class="section-separator"
+            th:if="${#lists.isEmpty(page.content)}"
+            th:text="#{admin.users.emptyusers}"
+        ></div>
+
+
+        <ul class="collection z-depth-1" th:unless="${#lists.isEmpty(page.content)}">
 
             <li class="collection-item" th:each="user : ${page.content}">
                 <div class="title">

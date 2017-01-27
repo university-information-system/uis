@@ -1,28 +1,43 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import at.ac.tuwien.inso.controller.Constants;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.autoconfigure.web.servlet.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.data.domain.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
-import org.springframework.test.web.servlet.*;
-import org.springframework.test.web.servlet.request.*;
-import org.springframework.transaction.annotation.*;
-
-import java.util.*;
-import java.util.stream.*;
-
 import static at.ac.tuwien.inso.controller.Constants.MAX_PAGE_SIZE;
-import static org.hamcrest.core.IsEqual.*;
-import static org.junit.Assert.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static java.util.Arrays.asList;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.repository.UisUserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,6 +51,15 @@ public class AdminUsersTests {
 
     @Autowired
     private UisUserRepository uisUserRepository;
+
+    @Autowired
+    private StudyPlanRepository studyPlanRepository;
+
+    @Autowired
+    private SemesterRepository semesterRepository;
+
+    @Autowired
+    private SubjectRepository subjectRepository;
 
     private List<UisUser> users = new ArrayList<>();
 
@@ -164,5 +188,98 @@ public class AdminUsersTests {
         ).andExpect(
                 resultHasUsersPage(page(0, 10, usersWithMail.size(), usersWithMail.stream().limit(10).collect(Collectors.toList())))
         );
+    }
+
+    @Test
+    public void adminListUsersForPageSearchNullAndPageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/users/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/users")
+        );
+
+    }
+
+    @Test
+    public void adminListUsersForPageSearchEmptyTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/users/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/users/page/1")
+        );
+
+    }
+
+    @Test
+    public void adminListUsersForPagePageNumberOneTest() throws Exception {
+
+        mockMvc.perform(
+                get("/admin/users/page/1")
+                        .with(user("admin").roles(Role.ADMIN.name()))
+                        .param("search", "something")
+                        .param("pageNumber", "1")
+                        .with(csrf())
+        ).andExpect(
+                redirectedUrl("/admin/users?search=something")
+        );
+
+    }
+
+    @Test
+    public void adminShouldSeeStudentDetailsTest() throws Exception {
+
+        // given 3 study plans
+        StudyPlan studyPlan1 = studyPlanRepository.save(new StudyPlan("SE", new EctsDistribution(new BigDecimal(60), new BigDecimal(30), new BigDecimal(30))));
+        StudyPlan studyPlan2 = studyPlanRepository.save(new StudyPlan("VC", new EctsDistribution(new BigDecimal(60), new BigDecimal(30), new BigDecimal(30))));
+        studyPlanRepository.save(new StudyPlan("CI", new EctsDistribution(new BigDecimal(60), new BigDecimal(30), new BigDecimal(30))));
+
+        // given a student, registered to studyplan1 and studyplan2
+        Semester semester = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
+        Student student = uisUserRepository.save(new Student("s12345", "student", "s12345@uis.at"));
+        StudyPlanRegistration studyPlanRegistration1 = new StudyPlanRegistration(studyPlan1, semester);
+        StudyPlanRegistration studyPlanRegistration2 = new StudyPlanRegistration(studyPlan2, semester);
+        student.addStudyplans(studyPlanRegistration1, studyPlanRegistration2);
+
+        mockMvc.perform(
+                get("/admin/users/" + student.getId())
+                        .with(user("admin").roles(Role.ADMIN.name()))
+        ).andExpect(
+                model().attribute("user", student)
+        ).andExpect(
+                model().attribute("studyplans", asList(studyPlanRegistration1, studyPlanRegistration2))
+        );
+
+    }
+
+    @Test
+    public void adminShouldSeeLecturerDetailsTest() throws Exception {
+
+        // given a lecturer and subjects
+        Lecturer lecturer = uisUserRepository.save(new Lecturer("l12345", "lecturer", "l12345@uis.at"));
+        Subject maths = new Subject("maths", new BigDecimal(6.0));
+        Subject df = new Subject("digital forensics", new BigDecimal(6.0));
+        maths.addLecturers(lecturer);
+        df.addLecturers(lecturer);
+        subjectRepository.save(maths);
+        subjectRepository.save(df);
+
+        mockMvc.perform(
+                get("/admin/users/" + lecturer.getId())
+                        .with(user("admin").roles(Role.ADMIN.name()))
+        ).andExpect(
+                model().attribute("user", lecturer)
+        ).andExpect(
+                model().attribute("subjects", asList(maths, df))
+        );
+
     }
 }

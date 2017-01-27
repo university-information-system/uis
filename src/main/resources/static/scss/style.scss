@@ -6,6 +6,11 @@ header, main, footer {
   padding-left: 300px;
 }
 
+.logo {
+  padding-top: 30px;
+  cursor: default;
+}
+
 .container {
   width: 100%;
   padding: 0 20px;
@@ -14,6 +19,22 @@ header, main, footer {
 
 .collection {
   overflow: visible;
+}
+
+h1 {
+  font-size: 2.827rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.414rem;
+}
+
+h4, h5 {
+  font-size: 1.2rem;
 }
 
 .pagination li.active a {
@@ -29,6 +50,35 @@ header, main, footer {
 .modal.small {
   width: 30%;
   min-width: 500px;
+}
+
+.modal .modal-footer {
+  padding: 24px;
+  padding-top: 0;
+  height: auto;
+}
+
+.modal .modal-footer:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.modal .modal-footer .btn,
+.modal .modal-footer .btn-large,
+.modal .modal-footer .btn-flat {
+  margin: 0;
+  margin-left: 1rem;
+}
+
+.modal .modal-footer .btn,
+.modal .modal-footer .btn-flat {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.collection.with-header .collection-item {
+  padding-left: 20px;
 }
 
 .text-content {
@@ -133,4 +183,34 @@ header, main, footer {
 
 .tt-suggestion p {
   margin: 0;
+}
+
+.search-exit {
+  position: absolute;
+  right: 1rem;
+  top: 15px;
+  z-index: 1000;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+// Errors
+.error-content {
+  text-align: center;
+  padding-left: 0;
+}
+
+.error-wrapper {
+  display: inline-block;
+  text-align: left;
+}
+
+.error-huge {
+  font-size: 12.4rem;
+  padding-top: 2rem;
+  margin-bottom: -2rem;
+}
+
+.error-small {
+  font-size: 1.92rem;
 }

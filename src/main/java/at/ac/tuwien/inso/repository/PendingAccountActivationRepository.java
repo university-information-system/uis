@@ -1,7 +1,8 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.data.repository.*;
+import org.springframework.data.repository.CrudRepository;
+
+import at.ac.tuwien.inso.entity.PendingAccountActivation;
 
 public interface PendingAccountActivationRepository extends CrudRepository<PendingAccountActivation, String> {
 }

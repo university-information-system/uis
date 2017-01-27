@@ -1,5 +1,9 @@
 package at.ac.tuwien.inso.controller.admin;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-
-import javax.validation.Valid;
 
 import at.ac.tuwien.inso.controller.admin.forms.AddLecturersToSubjectForm;
 import at.ac.tuwien.inso.entity.Lecturer;
@@ -65,7 +65,7 @@ public class AdminSubjectLecturersController {
         return "redirect:/admin/subjects/" + subjectId;
     }
 
-    @GetMapping("/lecturers/{lecturerId}/delete")
+    @PostMapping("/lecturers/{lecturerId}/delete")
     public String removeLecturer(
             @PathVariable Long subjectId,
             @PathVariable Long lecturerId,

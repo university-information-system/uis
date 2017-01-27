@@ -1,10 +1,10 @@
 package at.ac.tuwien.inso.service;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import at.ac.tuwien.inso.entity.*;
-
-import java.util.*;
+import at.ac.tuwien.inso.entity.Tag;
 
 public interface TagService {
 

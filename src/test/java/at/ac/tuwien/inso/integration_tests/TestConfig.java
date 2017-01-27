@@ -1,8 +1,9 @@
 package at.ac.tuwien.inso.integration_tests;
 
-import org.mockito.*;
-import org.springframework.context.annotation.*;
-import org.springframework.mail.javamail.*;
+import org.mockito.Mockito;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 
 @Configuration
 public class TestConfig {

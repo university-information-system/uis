@@ -1,21 +1,43 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.controller.lecturer.forms.*;
-import at.ac.tuwien.inso.dto.*;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.exception.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.student_subject_prefs.*;
-import at.ac.tuwien.inso.service.validator.*;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.validation.constraints.*;
-import java.util.*;
+import javax.validation.constraints.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
+import at.ac.tuwien.inso.dto.CourseDetailsForStudent;
+import at.ac.tuwien.inso.dto.SemesterDto;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.ValidationException;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.GradeService;
+import at.ac.tuwien.inso.service.SemesterService;
+import at.ac.tuwien.inso.service.TagService;
+import at.ac.tuwien.inso.service.UserAccountService;
+import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
+import at.ac.tuwien.inso.service.validator.CourseValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -38,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserAccountService userAccountService;
-    
+
     @Autowired
     private GradeService gradeService;
 
@@ -54,7 +76,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public Page<Course> findCourseForCurrentSemesterWithName(@NotNull String name, Pageable pageable) {
-    	log.info("try to find course for current semester with semestername: "+name+"and pageable "+pageable);
+        log.info("try to find course for current semester with semestername: " + name + "and pageable " + pageable);
         Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
         return courseRepository.findAllBySemesterAndSubjectNameLikeIgnoreCase(semester, "%" + name + "%", pageable);
     }
@@ -62,41 +84,51 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public List<Course> findCoursesForCurrentSemesterForLecturer(Lecturer lecturer) {
-    	log.info("try finding courses for current semester for lecturer with id "+lecturer.getId());
+        log.info("try finding courses for current semester for lecturer with id " + lecturer.getId());
         Semester semester = semesterService.getOrCreateCurrentSemester().toEntity();
         Iterable<Subject> subjectsForLecturer = subjectRepository.findByLecturers_Id(lecturer.getId());
         List<Course> courses = new ArrayList<>();
         subjectsForLecturer.forEach(subject -> courses.addAll(courseRepository.findAllBySemesterAndSubject(semester, subject)));
         return courses;
     }
-    
+
     @Override
     @Transactional(readOnly = true)
     public List<Course> findCoursesForSubject(Subject subject) {
-    	log.info("try finding course for subject with id "+subject.getId());
-    	return courseRepository.findAllBySubject(subject);    	
-    	
+        log.info("try finding course for subject with id " + subject.getId());
+        return courseRepository.findAllBySubject(subject);
+    }
+
+    @Override
+    public List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject) {
+        List<Course> result = courseRepository.findAllBySemesterAndSubject(semesterService.getCurrentSemester().toEntity(), subject);
+        return result;
+    }
+
+    @Override
+    public void dismissCourse(Student student, Long courseId) {
+        studentRepository.save(student.addDismissedCourse(findOne(courseId)));
     }
 
     @Override
     @Transactional
     public Course saveCourse(AddCourseForm form) {
-    	log.info("try saving course");
+        log.info("try saving course");
         Course course = form.getCourse();
         validator.validateNewCourse(course);
-        log.info("try saving course "+course.toString());
+        log.info("try saving course " + course.toString());
 
         ArrayList<Tag> currentTagsOfCourse = new ArrayList<>(form.getCourse().getTags());
 
-        for(String tag : form.getTags()) {
+        for (String tag : form.getTags()) {
             Tag newTag = tagService.findByName(tag);
 
             // tag doesn't exist, so create a new one.
-            if(newTag == null) {
+            if (newTag == null) {
                 course.addTags(new Tag(tag));
             }
             // tag exists, but not in this course
-            else if(!course.getTags().contains(newTag)) {
+            else if (!course.getTags().contains(newTag)) {
                 course.addTags(newTag);
             }
             // tag already exists for this course
@@ -117,46 +149,46 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public Course findOne(Long id) {
-    	log.info("try finding course with id "+id);
+        log.info("try finding course with id " + id);
         Course course = courseRepository.findOne(id);
         if (course == null) {
-        	log.warn("Course with id " + id + " does not exist");
+            log.warn("Course with id " + id + " does not exist");
             throw new BusinessObjectNotFoundException("Course with id " + id + " does not exist");
         }
         return course;
     }
-    
+
     @Override
     @Transactional
-    public boolean remove(Long courseId) throws ValidationException{
-    	log.info("try removing  course with id "+courseId);
+    public boolean remove(Long courseId) throws ValidationException {
+        log.info("try removing  course with id " + courseId);
         validator.validateCourseId(courseId); // throws ValidationException
-    	Course course = courseRepository.findOne(courseId);
-    	
-    	if(course==null){
-    		String msg = "Course can not be deleted because there is no couse found with id "+courseId;
-    		log.warn(msg);
-    		throw new BusinessObjectNotFoundException(msg);
-    	}
-    	
+        Course course = courseRepository.findOne(courseId);
 
-    	List<Grade> grades = gradeService.findAllByCourseId(courseId);
-    	
-    	if(grades!=null&&!grades.isEmpty()){
-    		String msg = "There are grades for course [id:"+courseId+"], therefore it can not be removed.";
-    		log.warn(msg);
-    		throw new ValidationException(msg);
-    	}
-        
-    	if(!course.getStudents().isEmpty()){
-    		String msg = "There are students for course [id:"+courseId+"], therefore it can not be removed.";
-    		log.warn(msg);
-    		throw new ValidationException(msg);
-    	}    	
-        
-    	log.info("successfully validated course removal. removing now!");
-    	courseRepository.delete(course);
-    	return true;
+        if (course == null) {
+            String msg = "Course can not be deleted because there is no couse found with id " + courseId;
+            log.warn(msg);
+            throw new BusinessObjectNotFoundException(msg);
+        }
+
+
+        List<Grade> grades = gradeService.findAllByCourseId(courseId);
+
+        if (grades != null && !grades.isEmpty()) {
+            String msg = "There are grades for course [id:" + courseId + "], therefore it can not be removed.";
+            log.warn(msg);
+            throw new ValidationException(msg);
+        }
+
+        if (!course.getStudents().isEmpty()) {
+            String msg = "There are students for course [id:" + courseId + "], therefore it can not be removed.";
+            log.warn(msg);
+            throw new ValidationException(msg);
+        }
+
+        log.info("successfully validated course removal. removing now!");
+        courseRepository.delete(course);
+        return true;
     }
 
 
@@ -167,7 +199,7 @@ public class CourseServiceImpl implements CourseService {
         validator.validateCourseId(course.getId());
         Student student = studentRepository.findByUsername(userAccountService.getCurrentLoggedInUser().getUsername());
 
-		log.info("try registering currently logged in student with id "+student.getId()+" for course with id "+course.getId());
+        log.info("try registering currently logged in student with id " + student.getId() + " for course with id " + course.getId());
         if (course.getStudentLimits() <= course.getStudents().size()) {
             return false;
         } else if (course.getStudents().contains(student)) {
@@ -183,8 +215,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public List<Course> findAllForStudent(Student student) {
-        log.info("finding all courses for student with id "+student.getId());
-    	return courseRepository.findAllForStudent(student);
+        log.info("finding all courses for student with id " + student.getId());
+        return courseRepository.findAllForStudent(student);
     }
 
     @Override
@@ -208,7 +240,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDetailsForStudent courseDetailsFor(Student student, Long courseId) {
         validator.validateCourseId(courseId);
         validator.validateStudent(student);
-        log.info("reading course details for student with id "+student.getId()+" from course with id "+ courseId);
+        log.info("reading course details for student with id " + student.getId() + " from course with id " + courseId);
         Course course = findOne(courseId);
         if (course == null) {
             log.warn("Course with id {} not found. Nothing to unregister", courseId);
@@ -216,9 +248,7 @@ public class CourseServiceImpl implements CourseService {
         }
 
 
-        return new CourseDetailsForStudent(course)
-                .setCanEnroll(canEnrollToCourse(student, course))
-                .setStudyplans(subjectForStudyPlanRepository.findBySubject(course.getSubject()));
+        return new CourseDetailsForStudent(course).setCanEnroll(canEnrollToCourse(student, course)).setStudyplans(subjectForStudyPlanRepository.findBySubject(course.getSubject()));
     }
 
     @Override
@@ -230,7 +260,12 @@ public class CourseServiceImpl implements CourseService {
     private boolean canEnrollToCourse(Student student, Course course) {
         validator.validateCourse(course);
         validator.validateStudent(student);
-        return course.getSemester().toDto().equals(semesterService.getOrCreateCurrentSemester()) &&
-                !courseRepository.existsCourseRegistration(student, course);
+        return course.getSemester().toDto().equals(semesterService.getOrCreateCurrentSemester()) && !courseRepository.existsCourseRegistration(student, course);
     }
+
+	@Override
+	public List<Course> findAllCoursesForCurrentSemester() {
+		SemesterDto semester = semesterService.getOrCreateCurrentSemester();
+		return courseRepository.findAllBySemester(semester.toEntity());	
+	}
 }

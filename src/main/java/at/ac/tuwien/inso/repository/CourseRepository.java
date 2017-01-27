@@ -1,12 +1,18 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.data.domain.*;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.*;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
 
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Long> {
@@ -26,9 +32,14 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
             "       select max(s1.id) " +
             "       from Semester s1 " +
             "       )" +
-            "   )" +
-            "")
-    List<Course> findAllByCurrentSemester();
+            "   ) " +
+            "and :student not member of c.students " +
+            "and c.subject not in (" +
+            "   select g.course.subject " +
+            "   from Grade g " +
+            "   where g.student = :student and g.mark.mark <> 5" +
+            ")")
+    List<Course> findAllRecommendableForStudent(@Param("student") Student student);
 
     @Query("select c " +
             "from Course c " +
@@ -40,4 +51,6 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
             "where c = ?2 and ?1 member of c.students"
     )
     boolean existsCourseRegistration(Student student, Course course);
+
+	List<Course> findAllBySemester(Semester entity);
 }

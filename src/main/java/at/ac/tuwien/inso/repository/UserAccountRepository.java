@@ -1,9 +1,10 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.*;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import at.ac.tuwien.inso.entity.UserAccount;
 
 @Repository
 public interface UserAccountRepository extends CrudRepository<UserAccount, Long> {

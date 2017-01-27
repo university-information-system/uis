@@ -1,11 +1,14 @@
 package at.ac.tuwien.inso.service;
 
-import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.security.access.prepost.*;
-import org.springframework.stereotype.*;
+import java.util.List;
 
-import java.util.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Student;
 
 @Service
 public interface GradeService {

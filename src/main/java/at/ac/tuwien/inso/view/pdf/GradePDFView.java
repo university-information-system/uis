@@ -1,5 +1,12 @@
 package at.ac.tuwien.inso.view.pdf;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.view.document.AbstractPdfView;
+
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Chunk;
@@ -10,13 +17,6 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfWriter;
-
-import org.springframework.web.servlet.view.document.AbstractPdfView;
-
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import at.ac.tuwien.inso.entity.Grade;
 
@@ -90,7 +90,7 @@ public class GradePDFView extends AbstractPdfView {
         ects.add(new Paragraph(grade.getCourse().getSubject().getEcts().toPlainString()));
 
         Cell note = new Cell();
-        note.add(new Paragraph("Note: ", SMALL_FONT));
+        note.add(new Paragraph("Grade: ", SMALL_FONT));
         note.add(new Paragraph(grade.getMark().getMark() + ""));
 
         Cell lecturer = new Cell();

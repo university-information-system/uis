@@ -1,5 +1,23 @@
 package at.ac.tuwien.inso.service_tests;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.MessageSource;
+import org.springframework.test.context.ActiveProfiles;
+
 import at.ac.tuwien.inso.entity.EctsDistribution;
 import at.ac.tuwien.inso.entity.StudyPlan;
 import at.ac.tuwien.inso.entity.Subject;
@@ -11,23 +29,6 @@ import at.ac.tuwien.inso.repository.SubjectForStudyPlanRepository;
 import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.service.SubjectService;
 import at.ac.tuwien.inso.service.impl.StudyPlanServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.MessageSource;
-import org.springframework.test.context.ActiveProfiles;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @ActiveProfiles("test")

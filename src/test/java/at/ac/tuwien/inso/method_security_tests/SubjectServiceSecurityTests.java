@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.method_security_tests;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.service.SubjectService;

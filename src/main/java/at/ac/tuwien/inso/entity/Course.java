@@ -1,11 +1,20 @@
 package at.ac.tuwien.inso.entity;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+import at.ac.tuwien.inso.dto.SemesterDto;
 
 @Entity
 public class Course {
@@ -34,12 +43,17 @@ public class Course {
 
     protected Course() {
     }
+    
+    public Course(Subject subject){
+    	this(subject, null, "");
+    }
 
-    /*
-     * TODO use DTO here
-     */
     public Course(Subject subject, Semester semester) {
         this(subject, semester, "");
+    }
+    
+    public Course(Subject subject, SemesterDto semester) {
+        this(subject, semester.toEntity(), "");
     }
 
     public Course(Subject subject, Semester semester, String description) {

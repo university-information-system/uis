@@ -1,9 +1,11 @@
 package at.ac.tuwien.inso.controller.admin.forms.validation;
 
-import at.ac.tuwien.inso.service.*;
-import org.springframework.beans.factory.annotation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-import javax.validation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import at.ac.tuwien.inso.service.UisUserService;
 
 public class UniqueIdentificationNumberConstraintValidator implements ConstraintValidator<UniqueIdentificationNumber, String> {
 

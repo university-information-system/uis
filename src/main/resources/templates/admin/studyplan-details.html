@@ -18,7 +18,7 @@
                     <ul class="collection with-header">
                         <li class="collection-header">
                             <h4 th:text="#{admin.studyplandetails.mandatory}"></h4>
-                            <h6 th:text="${studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"></h6>
+                            <h6 th:text="${addedMandatoryEcts} + ' / ' + ${studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"></h6>
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${mandatory}">
                             <div class="title">
@@ -39,8 +39,11 @@
                                     <p th:text="#{admin.studyplan.details.subject.remove.modal.content(${subjectForStudyPlan.getSubject().getName()}, ${studyPlan.getName()})}"></p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="modal-action modal-close btn" th:text="#{remove}" th:href="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}"></a>
-                                    <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                                    <form th:id="'removeSubject-' + ${subjectForStudyPlan.getSubject().getId()}" th:action="@{/admin/studyplans/remove/(subjectId=${subjectForStudyPlan.getSubject().getId()},studyPlanId=${studyPlan.id})}" method="post">
+                                        <a class="modal-action modal-close btn" th:text="#{remove}" th:onclick="'$(\'#removeSubject-' + ${subjectForStudyPlan.getSubject().getId()} + '\').submit()'"></a>
+                                        <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                                    </form>
+
                                 </div>
                             </div>
 
@@ -92,7 +95,7 @@
                     <ul class="collection with-header">
                         <li class="collection-header">
                             <h4 th:text="#{admin.studyplandetails.optional}"></h4>
-                            <h6 th:text="${studyPlan.getEctsDistribution().getOptional() + ' ECTS'}"></h6>
+                            <h6 th:text="${addedOptionalEcts} + ' / ' + ${studyPlan.getEctsDistribution().getOptional() + ' ECTS'}"></h6>
                         </li>
                         <li class="collection-item" th:each="subjectForStudyPlan : ${optional}">
                             <div class="title">
@@ -166,7 +169,7 @@
                     <ul class="collection with-header">
                         <li class="collection-header">
                             <h4 th:text="#{admin.studyplandetails.free}"></h4>
-                            <h6 th:text="${studyPlan.getEctsDistribution().getFreeChoice() + ' ECTS'}"></h6>
+                            <h6 th:text="'0.0 / ' + ${studyPlan.getEctsDistribution().getFreeChoice() + ' ECTS'}"></h6>
                         </li>
 
                     </ul>

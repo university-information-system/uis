@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.service_tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -12,8 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ActiveProfiles;
-
-import com.lowagie.text.List;
 
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Semester;

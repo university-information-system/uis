@@ -1,14 +1,19 @@
 package at.ac.tuwien.inso.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
-import javax.persistence.*;
-import java.math.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.List;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Subject {
@@ -25,9 +30,6 @@ public class Subject {
 
 	@ManyToMany
 	private List<Lecturer> lecturers = new ArrayList<>();
-
-	@ManyToMany
-	private List<Subject> requiredSubjects = new ArrayList<>();
 
 	public Subject() {
 	}
@@ -66,11 +68,6 @@ public class Subject {
 		return unmodifiableList(lecturers);
 	}
 
-	@JsonIgnore
-	public List<Subject> getRequiredSubjects() {
-		return requiredSubjects;
-	}
-
 	public Subject addLecturers(Lecturer... lecturers) {
 		this.lecturers.addAll(asList(lecturers));
 		return this;
@@ -78,14 +75,6 @@ public class Subject {
 
 	public void removeLecturers(Lecturer... lecturers) {
 		this.lecturers.removeAll(asList(lecturers));
-	}
-
-	public void addRequiredSubjects(Subject... subjects) {
-		this.requiredSubjects.addAll(asList(subjects));
-	}
-
-	public void removeRequiredSubjects(Subject... subjects) {
-		this.requiredSubjects.removeAll(asList(subjects));
 	}
 
 	@Override
@@ -116,7 +105,6 @@ public class Subject {
 				", name='" + name + '\'' +
 				", ects=" + ects +
 				", lecturers=" + lecturers +
-				", requiredSubjects=" + requiredSubjects +
 				'}';
 	}
 

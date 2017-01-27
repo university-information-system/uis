@@ -1,7 +1,8 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.service.validator.SubjectValidator;
-import at.ac.tuwien.inso.service.validator.ValidatorFactory;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.LecturerNotFoundException;
 import at.ac.tuwien.inso.exception.RelationNotfoundException;
 import at.ac.tuwien.inso.exception.SubjectNotFoundException;
@@ -25,6 +22,8 @@ import at.ac.tuwien.inso.repository.LecturerRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
 import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.SubjectService;
+import at.ac.tuwien.inso.service.validator.SubjectValidator;
+import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 
 
 @Service

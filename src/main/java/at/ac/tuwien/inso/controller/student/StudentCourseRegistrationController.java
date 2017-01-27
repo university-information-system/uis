@@ -1,14 +1,20 @@
 package at.ac.tuwien.inso.controller.student;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.impl.Messages;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.*;
+import java.security.Principal;
 
-import java.security.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.impl.Messages;
 
 @Controller
 @RequestMapping("/student")
@@ -23,19 +29,23 @@ public class StudentCourseRegistrationController {
     @Autowired
     private Messages messages;
 
-    @GetMapping("/register")
-    public String registerStudent(@RequestParam Long courseId,
-                                   RedirectAttributes redirectAttributes) {
+    @PostMapping("/register/{courseId}")
+    public String registerStudent(
+            @PathVariable Long courseId,
+            RedirectAttributes redirectAttributes
+    ) {
         Course course = courseService.findOne(courseId);
+
         if (courseService.registerStudentForCourse(course)) {
-            String successMsg = messages.msg("student.my.courses.register.success", course.getSubject().getName());
+            String courseName = course.getSubject().getName();
+            String successMsg = messages.msg("student.my.courses.register.success", courseName);
             redirectAttributes.addFlashAttribute("flashMessageNotLocalized", successMsg);
             return "redirect:/student/courses";
-        } else {
-            String failMsg = messages.msg("student.my.courses.register.fail", course.getSubject().getName());
-            redirectAttributes.addFlashAttribute("flashMessageNotLocalized", failMsg);
-            return "redirect:/student/courses";
         }
+
+        String failMsg = messages.msg("student.my.courses.register.fail", course.getSubject().getName());
+        redirectAttributes.addFlashAttribute("flashMessageNotLocalized", failMsg);
+        return "redirect:/student/courses";
     }
 
     @PostMapping("/unregister")

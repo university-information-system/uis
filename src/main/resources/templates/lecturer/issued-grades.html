@@ -7,7 +7,7 @@
 <main layout:fragment="main">
 
     <div class="container">
-        <h1 th:text="${course.getSubject().getName()} + ' - ' + #{lecturer.courses.issuedgrades}"></h1>
+        <h1 th:text="${course.getSubject().getName()} + ' – ' + #{lecturer.courses.issuedgrades}"></h1>
         <h4 th:text="${course.getSemester().getLabel()} + ', ' + ${course.getSubject().getEcts()} + ' ECTS'"></h4>
 
         <ul class="collection z-depth-1">

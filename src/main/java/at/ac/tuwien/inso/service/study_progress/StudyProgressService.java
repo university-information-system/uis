@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.service.study_progress;
 
-import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.entity.Student;
 
 public interface StudyProgressService {
 

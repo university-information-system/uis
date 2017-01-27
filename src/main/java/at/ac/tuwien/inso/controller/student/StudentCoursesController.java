@@ -1,19 +1,30 @@
 package at.ac.tuwien.inso.controller.student;
 
-import at.ac.tuwien.inso.controller.*;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.service.*;
-import at.ac.tuwien.inso.service.course_recommendation.*;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.data.web.*;
-import org.springframework.stereotype.*;
-import org.springframework.ui.*;
-import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
+import java.util.List;
 
-import java.security.*;
-import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import at.ac.tuwien.inso.controller.Constants;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.service.CourseService;
+import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.UserAccountService;
+import at.ac.tuwien.inso.service.course_recommendation.RecommendationService;
 
 @Controller
 @RequestMapping("/student/courses")
@@ -25,29 +36,15 @@ public class StudentCoursesController {
     private CourseService courseService;
 
     @Autowired
-    private UserAccountService userAccountService;
-
-    @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private RecommendationService recommendationService;
-
     @ModelAttribute("allCourses")
-    private Page<Course> getAllCourses(@RequestParam(value = "search", defaultValue = "") String search,
-                                       @PageableDefault Pageable pageable) {
+    private Page<Course> getAllCourses(@RequestParam(value = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
         if (pageable.getPageSize() > Constants.MAX_PAGE_SIZE) {
             pageable = new PageRequest(pageable.getPageNumber(), Constants.MAX_PAGE_SIZE);
         }
 
         return courseService.findCourseForCurrentSemesterWithName(search, pageable);
-    }
-
-    @ModelAttribute("recommendedCourses")
-    private List<Course> getRecommendedCourses(Principal principal) {
-        Student student = studentService.findByUsername(principal.getName());
-
-        return recommendationService.recommendCourses(student);
     }
 
     @ModelAttribute("searchString")
@@ -61,9 +58,7 @@ public class StudentCoursesController {
     }
 
     @GetMapping("/{id}")
-    public String course(@PathVariable Long id,
-                         Model model,
-                         Principal principal) {
+    public String course(@PathVariable Long id, Model model, Principal principal) {
         log.debug("Student " + principal.getName() + " requesting course " + id + " details");
 
         Student student = studentService.findByUsername(principal.getName());

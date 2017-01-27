@@ -1,9 +1,8 @@
 package at.ac.tuwien.inso.service.study_progress;
 
-import at.ac.tuwien.inso.dto.SemesterDto;
-import at.ac.tuwien.inso.entity.*;
+import java.util.List;
 
-import java.util.*;
+import at.ac.tuwien.inso.dto.SemesterDto;
 
 /**
  * Study progress for a student

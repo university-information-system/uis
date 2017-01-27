@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.service.student_subject_prefs;
 
-import org.springframework.data.mongodb.repository.*;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface StudentSubjectPreferenceRepository extends MongoRepository<StudentSubjectPreference, String> {
 

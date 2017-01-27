@@ -34,8 +34,11 @@
                             <p th:text="#{admin.user.registerToStudyPlan.modal.content(${user.getName()}, ${studyPlan.name})}"></p>
                         </div>
                         <div class="modal-footer">
-                            <a class="modal-action modal-close btn" th:text="#{register}" th:href="@{/admin/studyplans/registerStudent/(studentId=${user.id},studyPlanId=${studyPlan.id})}"></a>
-                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                            <form th:id="'addStudent-' +  ${studyPlan.id}" th:action="@{/admin/studyplans/registerStudent/(studentId=${user.id},studyPlanId=${studyPlan.id})}" method="post">
+                                <a class="modal-action modal-close btn" th:text="#{register}" th:onclick="'$(\'#addStudent-' + ${studyPlan.id} + '\').submit()'"></a>
+                                <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                            </form>
+
                         </div>
                     </div>
 

@@ -1,10 +1,18 @@
 package at.ac.tuwien.inso.service_tests.course_recommendation;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.SemesterRepository;
-import at.ac.tuwien.inso.service.course_recommendation.impl.RecommendationServiceImpl;
-import at.ac.tuwien.inso.service.course_recommendation.impl.TagFrequencyScorer;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +20,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
+import at.ac.tuwien.inso.service.course_recommendation.filters.CourseRelevanceFilter;
+import at.ac.tuwien.inso.service.course_recommendation.impl.RecommendationServiceImpl;
+import at.ac.tuwien.inso.service.course_recommendation.normalization.CourseNormalizer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecommendationServiceTests {
@@ -39,7 +52,17 @@ public class RecommendationServiceTests {
     private SemesterRepository semesterRepository;
 
     @Mock
-    private TagFrequencyScorer tagFrequencyScorer;
+    private CourseNormalizer courseNormalizer;
+
+    private List<CourseRelevanceFilter> filters = asList(
+            mock(CourseRelevanceFilter.class),
+            mock(CourseRelevanceFilter.class)
+    );
+
+    private List<CourseScorer> scorers = asList(
+            mock(CourseScorer.class),
+            mock(CourseScorer.class)
+    );
 
     @InjectMocks
     private RecommendationServiceImpl recommendationService;
@@ -70,13 +93,21 @@ public class RecommendationServiceTests {
 
     @Before
     public void setUp() throws Exception {
-        when(courseRepository.findAllByCurrentSemester()).thenReturn(courses);
+        when(courseRepository.findAllRecommendableForStudent(student)).thenReturn(courses);
         when(semesterRepository.findFirstByOrderByIdDesc()).thenReturn(semesters.get("WS16"));
-        when(tagFrequencyScorer.score(courses, student)).thenReturn(scoredCoursesByTagFrequency);
+
+        scorers.forEach(it -> {
+            when(it.score(courses, student)).thenReturn(scoredCoursesByTagFrequency);
+            when(it.weight()).thenReturn(1.0);
+        });
+        recommendationService.setCourseScorers(scorers);
+
+        filters.forEach(it -> when(it.filter(courses, student)).thenReturn(courses));
+        recommendationService.setCourseRelevanceFilters(filters);
     }
 
     @Test
-    public void itRecommendsCoursesByTagScoring() throws Exception {
+    public void itRecommendsCoursesByScoring() throws Exception {
         List<Course> recommendedCourses = recommendationService.recommendCourses(student);
 
         List<Course> expected = asList(
@@ -84,5 +115,20 @@ public class RecommendationServiceTests {
         );
 
         assertEquals(expected, recommendedCourses);
+    }
+
+    @Test
+    public void itFiltersCoursesBeforeRecommendingThem() throws Exception {
+        List<Course> coursesAfterFilter1 = courses.stream().skip(1).collect(Collectors.toList());
+        when(filters.get(0).filter(courses, student)).thenReturn(coursesAfterFilter1);
+
+        List<Course> coursesAfterFilter2 = coursesAfterFilter1.stream().skip(1).collect(Collectors.toList());
+        when(filters.get(1).filter(coursesAfterFilter1, student)).thenReturn(coursesAfterFilter2);
+
+        scorers.forEach(it -> when(it.score(coursesAfterFilter2, student)).thenReturn(scoredCoursesByTagFrequency));
+
+        List<Course> recommendedCourses = recommendationService.recommendCourses(student);
+
+        assertThat(recommendedCourses, not(hasItems(courses.get(0), courses.get(1))));
     }
 }

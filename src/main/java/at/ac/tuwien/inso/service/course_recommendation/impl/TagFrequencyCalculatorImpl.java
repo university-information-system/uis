@@ -1,19 +1,25 @@
 package at.ac.tuwien.inso.service.course_recommendation.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.CourseRepository;
-import at.ac.tuwien.inso.repository.FeedbackRepository;
-import at.ac.tuwien.inso.repository.GradeRepository;
-import at.ac.tuwien.inso.repository.TagRepository;
-import at.ac.tuwien.inso.service.course_recommendation.TagFrequencyCalculator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.FeedbackRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.TagRepository;
+import at.ac.tuwien.inso.service.course_recommendation.TagFrequencyCalculator;
 
 @Service
 public class TagFrequencyCalculatorImpl implements TagFrequencyCalculator {
@@ -71,18 +77,15 @@ public class TagFrequencyCalculatorImpl implements TagFrequencyCalculator {
 
     private Map<Tag, Double> calculateTagFrequencyWithGrades(List<Course> courses, List<Grade> grades) {
         Map<Tag, Double> tagsWithGrades = new HashMap<>();
-        courses.forEach(course ->
-                course.getTags().forEach(tag -> {
-                            double score = grades.stream()
-                                    .filter(grade -> grade.getCourse().equals(course))
-                                    .map(grade -> gradeWeights.getOrDefault(grade.getMark(), 0.0))
-                                    .findAny()
-                                    .orElse(0.0);
+        courses.forEach(course -> {
+            double score = grades.stream()
+                    .filter(grade -> grade.getCourse().equals(course))
+                    .map(grade -> gradeWeights.getOrDefault(grade.getMark(), 0.0))
+                    .findAny()
+                    .orElse(0.0);
 
-                            tagsWithGrades.put(tag, tagsWithGrades.getOrDefault(tag, 0.0) + score);
-                        }
-                )
-        );
+            course.getTags().forEach(tag -> tagsWithGrades.put(tag, tagsWithGrades.getOrDefault(tag, 0.0) + score));
+        });
 
         return tagsWithGrades;
     }
@@ -90,18 +93,15 @@ public class TagFrequencyCalculatorImpl implements TagFrequencyCalculator {
     private Map<Tag, Double> calculateTagFrequencyWithFeedback(List<Course> courses, List<Feedback> feedbacks) {
         Map<Tag, Double> tagsWithFeedback = new HashMap<>();
 
-        courses.forEach(course ->
-                course.getTags().forEach(tag -> {
-                            double score = feedbacks.stream()
-                                    .filter(feedback -> feedback.getCourse().equals(course))
-                                    .map(feedback -> feedbackWeights.getOrDefault(feedback.getType(), 0.0))
-                                    .findAny()
-                                    .orElse(0.0);
+        courses.forEach(course -> {
+            double score = feedbacks.stream()
+                    .filter(feedback -> feedback.getCourse().equals(course))
+                    .map(feedback -> feedbackWeights.getOrDefault(feedback.getType(), 0.0))
+                    .findAny()
+                    .orElse(0.0);
 
-                            tagsWithFeedback.put(tag, tagsWithFeedback.getOrDefault(tag, 0.0) + score);
-                        }
-                )
-        );
+            course.getTags().forEach(tag -> tagsWithFeedback.put(tag, tagsWithFeedback.getOrDefault(tag, 0.0) + score));
+        });
 
         return tagsWithFeedback;
     }
@@ -110,8 +110,8 @@ public class TagFrequencyCalculatorImpl implements TagFrequencyCalculator {
         return Stream
                 .concat(map1.entrySet().stream(), map2.entrySet().stream())
                 .collect(Collectors.toMap(
-                        entry -> entry.getKey(),
-                        entry -> entry.getValue(),
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
                         Double::sum
                         )
                 );

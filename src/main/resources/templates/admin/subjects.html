@@ -25,6 +25,12 @@
         <nav>
             <div class="nav-wrapper white black-text">
                 <form action="/admin/subjects">
+                    <a
+                        th:unless="${#strings.isEmpty(search)}"
+                        th:text="#{search.clear}"
+                        th:href="@{/admin/users}"
+                        class="btn btn-flat search-exit"
+                    ></a>
 
                     <div class="input-field">
                          <input
@@ -43,9 +49,13 @@
 
         <div>
 
-            <ul class="collection z-depth-1">
+            <div
+                class="section-separator"
+                th:if="${#lists.isEmpty(subjects)}"
+                th:text="#{admin.subjects.noSubjectFound}"
+            ></div>
 
-                <li class="collection-item" th:if="${#lists.isEmpty(subjects)}" th:text="#{admin.subjects.noSubjectFound}"></li>
+            <ul class="collection z-depth-1" th:unless="${#lists.isEmpty(subjects)}">
 
                 <li class="collection-item" th:each="subject : ${subjects}">
                     <div>
@@ -64,15 +74,14 @@
                     <!-- Delete confirmation modal -->
                     <div th:id="'delete-confirm-' + ${subject.id}" class="modal small">
                         <div class="modal-content">
-                            <h4 th:text="#{admin.subject.disable.modal.header}"></h4>
+                            <h3 th:text="#{admin.subject.disable.modal.header}"></h3>
                             <p th:text="#{admin.subject.disable.modal.content(${subject.name})}"></p>
                         </div>
                         <div class="modal-footer">
-                            <a class="modal-action modal-close btn" 
-                            th:text="#{remove}"
-                             href="#"
-                             data-th-href="@{'/admin/subjects/remove/{id}'(id=${subject.id})}"></a>
-                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                            <form th:id="'deleteSubjectForm-' + ${subject.id}" th:action="@{'/admin/subjects/remove/{id}'(id=${subject.id})}" method="post">
+                                <a class="modal-action modal-close btn" th:text="#{remove}" th:onclick="'$(\'#deleteSubjectForm-' + ${subject.id} + '\').submit()'"></a>
+                                <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                            </form>
                         </div>
                     </div>
 
@@ -81,7 +90,7 @@
         </div>
 
         <!-- Pagination -->
-        <div>
+        <div th:if="${page.totalPages > 1}">
             <ul class="pagination center">
 
                 <!-- Disable the chevron when the first page is active -->

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns="http://www.w3.org/1999/xhtml"
+    layout:decorator="layout/default"
+>
+<body>
+
+<main layout:fragment="content" class="error-content">
+
+    <div class="error-wrapper">
+        <h1 class="error-huge">404</h1>
+        <h2 class="error-small" th:text="#{error.message404}"></h2>
+
+        <p>
+            <a href="/" th:text="#{error.back}"></a>
+        </p>
+    </div>
+</main>
+
+</body>
+</html>

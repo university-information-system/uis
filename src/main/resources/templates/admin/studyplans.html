@@ -45,8 +45,10 @@
                             <p th:text="#{admin.studyplan.disable.modal.content(${studyPlan.name})}"></p>
                         </div>
                         <div class="modal-footer">
-                            <a class="modal-action modal-close btn" th:text="#{disable}" th:href="@{/admin/studyplans/disable/(id=${studyPlan.id})}"></a>
-                            <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                            <form th:id="'disableSp-' + ${studyPlan.id}" th:action="@{/admin/studyplans/disable/(id=${studyPlan.id})}" method="post">
+                                <a class="modal-action modal-close btn" th:text="#{disable}" th:onclick="'$(\'#disableSp-' + ${studyPlan.id} + '\').submit()'"></a>
+                                <a class="modal-action modal-close waves-effect btn-flat" th:text="#{cancel}"></a>
+                            </form>
                         </div>
                     </div>
 

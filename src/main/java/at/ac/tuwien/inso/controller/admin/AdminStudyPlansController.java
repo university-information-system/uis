@@ -1,22 +1,37 @@
 package at.ac.tuwien.inso.controller.admin;
 
-import at.ac.tuwien.inso.controller.admin.forms.*;
-import at.ac.tuwien.inso.entity.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.StudyPlan;
+import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.StudentService;
+import at.ac.tuwien.inso.service.StudyPlanService;
+import at.ac.tuwien.inso.service.SubjectService;
 import at.ac.tuwien.inso.service.impl.Messages;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.*;
-import org.springframework.ui.*;
-import org.springframework.validation.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.*;
-
-import javax.validation.*;
-import java.util.*;
-import java.util.stream.*;
 
 @Controller
 @RequestMapping("/admin/studyplans")
@@ -57,15 +72,19 @@ public class AdminStudyPlansController {
                 .stream()
                 .filter(s -> !s.getMandatory())
                 .collect(Collectors.toList());
+        double addedMandatoryEcts = mandatory.stream().mapToDouble(s -> s.getSubject().getEcts().doubleValue()).sum();
+        double addedOptionalEcts = optional.stream().mapToDouble(s -> s.getSubject().getEcts().doubleValue()).sum();
 
         model.addAttribute("studyPlan", studyPlan);
         model.addAttribute("mandatory", mandatory);
+        model.addAttribute("addedMandatoryEcts", BigDecimal.valueOf(addedMandatoryEcts).setScale(2));
         model.addAttribute("optional", optional);
+        model.addAttribute("addedOptionalEcts", new BigDecimal(addedOptionalEcts).setScale(2));
 
         return "admin/studyplan-details";
     }
 
-    @GetMapping(value = "/disable", params = {"id"})
+    @PostMapping(value = "/disable", params = {"id"})
     public String disableStudyPlan(@RequestParam(value = "id") Long id, RedirectAttributes redirectAttributes) {
         StudyPlan studyPlan = studyPlanService.disableStudyPlan(id);
         redirectAttributes.addFlashAttribute("flashMessageNotLocalized", messages.msg("admin.studyplans.disable.success", studyPlan.getName()));
@@ -117,7 +136,7 @@ public class AdminStudyPlansController {
         return "redirect:/admin/studyplans/?id=" + studyPlanId;
     }
 
-    @GetMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
+    @PostMapping(value = "/remove", params = {"studyPlanId", "subjectId"})
     public String removeSubjectFromStudyPlan(RedirectAttributes redirectAttributes,
                                              @RequestParam Long studyPlanId,
                                              @RequestParam Long subjectId){
@@ -145,7 +164,7 @@ public class AdminStudyPlansController {
      * @param studyPlanId
      * @return
      */
-    @GetMapping(value = "/registerStudent", params = "studentId")
+    @PostMapping(value = "/registerStudent", params = "studentId")
     public String registerStudent(RedirectAttributes redirectAttributes,
                                   @RequestParam Long studentId,
                                   @RequestParam Long studyPlanId) {

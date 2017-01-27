@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.service.LecturerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/lecturer/subjects")

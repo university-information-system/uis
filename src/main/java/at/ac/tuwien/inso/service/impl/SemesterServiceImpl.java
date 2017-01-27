@@ -1,19 +1,26 @@
 package at.ac.tuwien.inso.service.impl;
 
-//import com.sun.istack.internal.Nullable; this does not exist!
-
-import at.ac.tuwien.inso.dto.SemesterDto;
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+//import com.sun.istack.internal.Nullable; this does not exist!
+
+import at.ac.tuwien.inso.dto.SemesterDto;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.service.SemesterService;
 
 @Service
 public class SemesterServiceImpl implements SemesterService {
@@ -22,6 +29,9 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Autowired
+    private Clock clock;
 
     @Override
     @Transactional
@@ -46,7 +56,8 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public SemesterDto getOrCreateCurrentSemester() {
-        Calendar now = new GregorianCalendar();
+        LocalDateTime localDateTime = LocalDateTime.now(clock);
+        Calendar now = GregorianCalendar.from(ZonedDateTime.of(localDateTime, ZoneId.systemDefault()));
         return getOrCreateCurrentSemester(now);
     }
 
@@ -62,7 +73,7 @@ public class SemesterServiceImpl implements SemesterService {
 
         if (current == null || !current.isCurrent(now)) {
             // TODO logging!!!
-            create(SemesterDto.calculateCurrentSemester(now));
+            return create(SemesterDto.calculateCurrentSemester(now));
         }
 
         return current;
@@ -71,7 +82,7 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     @Transactional(readOnly = true)
     public List<SemesterDto> findAll() {
-    	log.info("finding all semsters");
+    	log.info("finding all semesters");
         return convertSemesterListToSemesterDtoList(semesterRepository.findAllByOrderByIdDesc());
     }
 

@@ -2,17 +2,12 @@ package at.ac.tuwien.inso.dto;
 
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.entity.SemesterType;
-
-import static java.util.Calendar.SECOND;
 
 //finished transformation on 8.1.
 public class SemesterDto {
@@ -150,18 +145,21 @@ public class SemesterDto {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
 		SemesterDto that = (SemesterDto) o;
 
-		return getYear() == that.getYear() && Objects.equals(getId(), that.getId()) && getType() == that.getType();
+		if (year != that.year) return false;
+		return type == that.type;
+
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), getYear(), getType());
+		int result = year;
+		result = 31 * result + type.hashCode();
+		return result;
 	}
 
 	/**

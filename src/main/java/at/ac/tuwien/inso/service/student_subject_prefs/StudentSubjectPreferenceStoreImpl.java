@@ -1,9 +1,13 @@
 package at.ac.tuwien.inso.service.student_subject_prefs;
 
-import at.ac.tuwien.inso.entity.*;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Feedback;
+import at.ac.tuwien.inso.entity.Student;
 
 @Service
 public class StudentSubjectPreferenceStoreImpl implements StudentSubjectPreferenceStore {

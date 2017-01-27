@@ -1,18 +1,21 @@
 package at.ac.tuwien.inso.service.impl;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.service.LecturerService;
+import at.ac.tuwien.inso.service.UserAccountService;
 
 @Service
 public class LecturerServiceImpl implements LecturerService {
@@ -53,7 +56,7 @@ public class LecturerServiceImpl implements LecturerService {
     @Transactional(readOnly = true)
     public List<Subject> findSubjectsFor(Lecturer lecturer) {
     	log.info("returning subjects for lecturer "+lecturer.toString());
-        return lecturer.getSubjects();
+        return subjectRepository.findByLecturers_Id(lecturer.getId());
     }
 
     @Override

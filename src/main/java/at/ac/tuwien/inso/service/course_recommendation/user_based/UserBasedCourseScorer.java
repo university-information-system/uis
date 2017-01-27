@@ -1,20 +1,24 @@
 package at.ac.tuwien.inso.service.course_recommendation.user_based;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Feedback;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.FeedbackRepository;
 import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
-
+@Service
 public class UserBasedCourseScorer implements CourseScorer {
 
     private static final double LIKE = 2;
@@ -29,6 +33,14 @@ public class UserBasedCourseScorer implements CourseScorer {
 
     @Autowired
     private FeedbackRepository feedbackRepository;
+
+    @Value("${uis.course.recommender.user.scorer.weight:1}")
+    private Double weight;
+
+    @Override
+    public double weight() {
+        return weight;
+    }
 
     @Override
     public Map<Course, Double> score(List<Course> courses, Student student) {

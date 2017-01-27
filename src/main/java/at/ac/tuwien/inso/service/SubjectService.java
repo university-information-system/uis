@@ -1,12 +1,13 @@
 package at.ac.tuwien.inso.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import at.ac.tuwien.inso.entity.*;
-
-import java.util.*;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Subject;
 
 public interface SubjectService {
 

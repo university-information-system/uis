@@ -1,16 +1,19 @@
 package at.ac.tuwien.inso.repository;
 
-import at.ac.tuwien.inso.entity.*;
-import org.springframework.data.domain.*;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.stereotype.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import at.ac.tuwien.inso.entity.UisUser;
 
 @Repository
 public interface UisUserRepository extends JpaRepository<UisUser, Long> {
 
     @Query("select u " +
             "from UisUser u " +
-            "where u.identificationNumber = ?1 " +
+            "where lower(u.identificationNumber) like concat('%', lower(?1), '%') " +
             "or lower(u.name) like concat('%', lower(?1), '%') " +
             "or lower(u.email) like concat('%', lower(?1), '%') " +
             "order by u.id desc"

@@ -1,24 +1,47 @@
 package at.ac.tuwien.inso.dao_tests;
 
-import at.ac.tuwien.inso.entity.*;
-import at.ac.tuwien.inso.repository.*;
-import org.hamcrest.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
-import org.springframework.transaction.annotation.*;
+import static at.ac.tuwien.inso.utils.IterableUtils.toList;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
-import java.math.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static at.ac.tuwien.inso.utils.IterableUtils.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import org.hamcrest.CoreMatchers;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
+import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Mark;
+import at.ac.tuwien.inso.entity.Semester;
+import at.ac.tuwien.inso.entity.SemesterType;
+import at.ac.tuwien.inso.entity.Student;
+import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.repository.CourseRepository;
+import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.LecturerRepository;
+import at.ac.tuwien.inso.repository.SemesterRepository;
+import at.ac.tuwien.inso.repository.StudentRepository;
+import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.repository.TagRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,7 +64,15 @@ public class CoursesRepositoryTests {
     @Autowired
     private SubjectRepository subjectRepository;
 
+    @Autowired
+    private GradeRepository gradeRepository;
+
+    @Autowired
+    private LecturerRepository lecturerRepository;
+
     private List<Student> students;
+
+    private Lecturer lecturer;
 
     private Map<String, Tag> tags = new HashMap<String, Tag>() {
         {
@@ -91,6 +122,7 @@ public class CoursesRepositoryTests {
                 new Student("123", "student", "student@uis.at"),
                 new Student("456", "student", "student@uis.at")
         )));
+        lecturer = lecturerRepository.save(new Lecturer("l123", "lecturer", "lecturer@uis.at"));
 
         tagRepository.save(tags.values());
         subjectRepository.save(subjects.values());
@@ -101,10 +133,44 @@ public class CoursesRepositoryTests {
     }
 
     @Test
-    public void itReturnsCoursesForCurrentSemester() throws Exception {
-        List<Course> actual = courseRepository.findAllByCurrentSemester();
+    public void verifyRecommendableCoursesForStudent() throws Exception {
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(students.get(0));
 
         assertThat(actual, CoreMatchers.hasItems(courses.get("Course1"), courses.get("Course2"), courses.get("Course3")));
+    }
+
+    @Test
+    public void verifyRecommendableCoursesForStudentWithRegistrations() throws Exception {
+        Student student = students.get(0);
+        courses.get("Course1").addStudents(student);
+
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(student);
+
+        assertThat(actual, not(hasItem(courses.get("Course1"))));
+    }
+
+    @Test
+    public void verifyRecommendableCoursesForStudentWithNegativeGrade() throws Exception {
+        addGradeForCourseInOlderSemester(Mark.FAILED);
+
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(students.get(0));
+
+        assertThat(actual, hasItem(courses.get("Course1")));
+    }
+
+    private void addGradeForCourseInOlderSemester(Mark mark) {
+        Course olderCourse = courseRepository.save(new Course(courses.get("Course1").getSubject(), semesters.get("WS2015")));
+
+        gradeRepository.save(new Grade(olderCourse, lecturer, students.get(0), mark));
+    }
+
+    @Test
+    public void verifyRecommendableCoursesForStudentWithPositiveGrade() throws Exception {
+        addGradeForCourseInOlderSemester(Mark.SATISFACTORY);
+
+        List<Course> actual = courseRepository.findAllRecommendableForStudent(students.get(0));
+
+        assertThat(actual, not(hasItem(courses.get("Course1"))));
     }
 
     @Test

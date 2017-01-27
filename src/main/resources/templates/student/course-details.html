@@ -73,20 +73,6 @@
                             </ul>
                         </div>
 
-                        <div th:if="${not #lists.isEmpty(course.preconditions)}">
-                            <div class="section-separator" th:text="#{student.course.details.preconditions}"></div>
-
-                            <ul class="collection borderless">
-                                <li class="collection-item"
-                                    th:each="subject : ${course.preconditions}">
-                                    <div class="title teal-text" th:text="${subject.name}"></div>
-                                    <p class="grey-text">
-                                        <span th:text="${subject.ects}"></span>
-                                        <span> ECTS</span>
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -99,11 +85,20 @@
             <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close btn"
-               th:href="@{/student/register(courseId=__${course.id}__)}"
-               th:text="#{enroll}">Apply</a>
-            <a href="#" class="modal-action modal-close waves-effect btn-flat"
-               th:text="#{cancel}">Cancel</a>
+            <form th:action="@{/student/register/__${course.id}__}" method="POST">
+
+                <button
+                    type="submit"
+                    class="modal-action modal-close waves-effect btn"
+                    th:text="#{enroll}"
+                ></button>
+            </form>
+
+            <a
+                href="#"
+                class="modal-action modal-close waves-effect btn-flat"
+                th:text="#{cancel}"
+            ></a>
         </div>
     </div>
 
