@@ -31,6 +31,12 @@ public interface GradeService {
     @PreAuthorize("hasRole('LECTURER')")
 	List<Grade> findAllByCourseId(Long courseId);
 
+    /**
+     * returns all grades of the currently logged in student
+     * 
+     * user needs to be student
+     * @return
+     */
     @PreAuthorize("hasRole('STUDENT')")
     List<Grade> getGradesForLoggedInStudent();
 
