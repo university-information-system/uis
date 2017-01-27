@@ -1,22 +1,15 @@
 package at.ac.tuwien.inso.controller.lecturer;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import at.ac.tuwien.inso.dto.GradeAuthorizationDTO;
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.service.CourseService;
-import at.ac.tuwien.inso.service.FeedbackService;
-import at.ac.tuwien.inso.service.GradeService;
-import at.ac.tuwien.inso.service.impl.Messages;
+import at.ac.tuwien.inso.dto.*;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.*;
+import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.impl.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.ui.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.*;
 
 @Controller
 @RequestMapping("/lecturer/course-details")
@@ -71,10 +64,10 @@ public class LecturerCourseDetailsController {
                             @RequestParam("courseId") Long courseId,
                             @RequestParam("studentId") Long studentId,
                             @RequestParam("authCode") String authCode,
-                            @RequestParam("mark") Long mark) {
+                            @RequestParam("mark") Integer mark) {
 
         GradeAuthorizationDTO dto = gradeService.getDefaultGradeAuthorizationDTOForStudentAndCourse(studentId, courseId);
-        dto.getGrade().getMark().setMark(Math.toIntExact(mark));
+        dto.getGrade().setMark(Mark.of(mark));
         dto.setAuthCode(authCode);
         Student student = dto.getGrade().getStudent();
         try {

@@ -1,9 +1,8 @@
 package at.ac.tuwien.inso.entity;
 
 
-import javax.persistence.Embeddable;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Embeddable
 public class Mark implements Comparable<Mark> {
@@ -13,21 +12,19 @@ public class Mark implements Comparable<Mark> {
     public static final Mark SATISFACTORY = new Mark(3);
     public static final Mark SUFFICIENT = new Mark(4);
     public static final Mark FAILED = new Mark(5);
-
     @Min(1)
     @Max(5)
     private int mark;
 
-    public void setMark(int mark) {
-        this.mark = mark;
-    }
-
-    public Mark() {
-
+    protected Mark() {
     }
 
     private Mark(int mark) {
         this.mark = mark;
+    }
+
+    public static Mark of(Integer mark) {
+        return new Mark(mark);
     }
 
     public boolean isPositive() {
@@ -66,5 +63,4 @@ public class Mark implements Comparable<Mark> {
                 "mark=" + mark +
                 '}';
     }
-
 }
