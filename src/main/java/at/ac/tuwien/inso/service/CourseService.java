@@ -73,6 +73,15 @@ public interface CourseService {
 	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
 	boolean remove(Long id) throws ValidationException;
 
+	/**
+	 * registers the currently logged in student to the course.
+	 * returns false if the course not has enough free capacity, true otherwise
+	 * 
+	 * the user needs to be of role student
+	 * 
+	 * @param course, should have an id that is not null and not <1
+	 * @return
+	 */
 	@PreAuthorize("hasRole('STUDENT')")
 	boolean registerStudentForCourse(Course course);
 
