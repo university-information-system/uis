@@ -85,6 +85,13 @@ public interface CourseService {
 	@PreAuthorize("hasRole('STUDENT')")
 	boolean registerStudentForCourse(Course course);
 
+	/**
+	 * returns a list with all courses for a student
+	 * 
+	 * the user needs to be authenticated
+	 * @param student
+	 * @return
+	 */
 	@PreAuthorize("isAuthenticated()")
 	List<Course> findAllForStudent(Student student);
 
