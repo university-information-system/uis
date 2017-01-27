@@ -20,6 +20,13 @@ public interface LecturerService {
     @PreAuthorize("hasRole('LECTURER')")
     Lecturer getLoggedInLecturer();
 
+    /**
+     * returns all subjects that are owned by the currently logged in lecturer
+     * 
+     * user needs to be lecturer
+     * 
+     * @return
+     */
     @PreAuthorize("hasRole('LECTURER')")
     Iterable<Subject> getOwnSubjects();
 
