@@ -11,12 +11,28 @@ import at.ac.tuwien.inso.entity.Student;
 @Service
 public interface FeedbackService {
 
+	/**
+	 * returns all feedback of a student, student should not be null
+	 * 
+	 * @param student
+	 * @return
+	 */
     @PreAuthorize("isAuthenticated()")
     List<Feedback> findAllOfStudent(Student student);
 
+    /**
+     * saves a new feedback
+     * @param feedback should not be null, feedback.suggestions and feedback.type should not be null. if there is no correct validation a ValidationException will be thrown
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     Feedback save(Feedback feedback);
 
+    /**
+     * returns all feedback for a course with the given id
+     * @param id should not be null or <1, if it is, a ValidationException will be thrown
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<Feedback> findFeedbackForCourse(Long id);
 }

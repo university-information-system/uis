@@ -197,7 +197,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     @Transactional
     public void removeSubjectFromStudyPlan(StudyPlan sp, Subject s) {
     	validator.validateRemovingSubjectFromStudyPlan(sp, s);
-    	log.info("removing subject "+s.getName()+" from studyplan "+sp.getName());
+    	log.info("removing subject "+s.toString()+" from studyplan "+sp.getName());
             	
         List<SubjectForStudyPlan> sfsp = subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(sp.getId());
         for(SubjectForStudyPlan each : sfsp){
