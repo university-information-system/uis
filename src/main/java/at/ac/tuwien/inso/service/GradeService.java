@@ -45,13 +45,18 @@ public interface GradeService {
     Grade getForValidation(String identifier);
 
     /**
-     * returns 
-     * @param student
+     * returns all grades for a given student
+     * 
+     * @param student should not be null
      * @return
      */
     @PreAuthorize("isAuthenticated()")
     List<Grade> findAllOfStudent(Student student);
 
+    /**
+     * returns an list of Mark options (Mark is an enumeration)
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<Mark> getMarkOptions();
 
