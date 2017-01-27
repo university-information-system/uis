@@ -19,45 +19,70 @@ import at.ac.tuwien.inso.exception.ValidationException;
 
 public interface CourseService {
 
-    @PreAuthorize("isAuthenticated()")
-    Page<Course> findCourseForCurrentSemesterWithName(@NotNull String name, Pageable pageable);
+	/**
+	 * this method returns all courses for the current semester with the specified name of a subject 
+	 * may start a new semester!
+	 * the user needs to be authenticated
+	 * 
+	 * @param name the name of a subject to search for, search strategy is NameLikeIgnoreCase
+	 * @param pageable a spring pageable element
+	 * @return
+	 */
+	@PreAuthorize("isAuthenticated()")
+	Page<Course> findCourseForCurrentSemesterWithName(@NotNull String name, Pageable pageable);
 
-    @PreAuthorize("isAuthenticated()")
-    List<Course> findCoursesForCurrentSemesterForLecturer(Lecturer lecturer);
+	/**
+	 * returns all courses of the given lecturer for the current semester 
+	 * may start a new semester!
+	 * the user needs to be authenticated
+	 * 
+	 * @param lecturer
+	 * @return
+	 */
+	@PreAuthorize("isAuthenticated()")
+	List<Course> findCoursesForCurrentSemesterForLecturer(Lecturer lecturer);
 
-    @PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
-    Course saveCourse(AddCourseForm form);
+	/**
+	 * this method saves a new course by the given AddCourseForm
+	 * this method should also take care of tags that are contained by the form. if they are new and have not been in the system before, they should be created
+	 * the user needs to be lecturer or admin
+	 * 
+	 * @param form
+	 * @return
+	 */
+	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
+	Course saveCourse(AddCourseForm form);
 
-    @PreAuthorize("isAuthenticated()")
-    Course findOne(Long id);
+	@PreAuthorize("isAuthenticated()")
+	Course findOne(Long id);
 
-    @PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
-    boolean remove(Long id) throws ValidationException;
+	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
+	boolean remove(Long id) throws ValidationException;
 
-    @PreAuthorize("hasRole('STUDENT')")
-    boolean registerStudentForCourse(Course course);
+	@PreAuthorize("hasRole('STUDENT')")
+	boolean registerStudentForCourse(Course course);
 
-    @PreAuthorize("isAuthenticated()")
-    List<Course> findAllForStudent(Student student);
+	@PreAuthorize("isAuthenticated()")
+	List<Course> findAllForStudent(Student student);
 
-    @PreAuthorize("isAuthenticated()")
-    List<Course> findCoursesForSubject(Subject subject);
+	@PreAuthorize("isAuthenticated()")
+	List<Course> findCoursesForSubject(Subject subject);
 
-    @PreAuthorize("isAuthenticated()")
-    List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject);
+	@PreAuthorize("isAuthenticated()")
+	List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject);
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
-    void dismissCourse(Student student, Long courseId);
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
+	void dismissCourse(Student student, Long courseId);
 
-    @PreAuthorize("isAuthenticated()")
-    Course unregisterStudentFromCourse(Student student, Long courseId);
+	@PreAuthorize("isAuthenticated()")
+	Course unregisterStudentFromCourse(Student student, Long courseId);
 
-    @PreAuthorize("isAuthenticated()")
-    CourseDetailsForStudent courseDetailsFor(Student student, Long courseId);
+	@PreAuthorize("isAuthenticated()")
+	CourseDetailsForStudent courseDetailsFor(Student student, Long courseId);
 
-    @PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
-    List<SubjectForStudyPlan> getSubjectForStudyPlanList(Course course);
+	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
+	List<SubjectForStudyPlan> getSubjectForStudyPlanList(Course course);
 
-    @PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")
 	List<Course> findAllCoursesForCurrentSemester();
 }
