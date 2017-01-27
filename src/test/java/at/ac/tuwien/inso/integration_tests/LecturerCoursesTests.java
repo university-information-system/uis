@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.integration_tests;
 
+import static java.util.Arrays.asList;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -11,6 +12,17 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.MvcResult;
 
 public class LecturerCoursesTests extends AbstractCoursesTests {
+
+    @Test
+    public void itListsAllCoursesTest() throws Exception {
+
+        // the lecturer should see all the courses
+        mockMvc.perform(
+                get("/lecturer/courses/all").with(user(user1))
+        ).andExpect(
+                model().attribute("allCoursesForAllLecturers", asList(sepmWS2016, aseWS2016, calculusWS2016))
+        );
+    }
 
     @Test
     public void itListsAllCoursesForCurrentSemesterAndLecturer() throws Exception {
@@ -62,4 +74,5 @@ public class LecturerCoursesTests extends AbstractCoursesTests {
         assertFalse(result.getResponse().getContentAsString().contains(tag4.getName()));
         assertTrue(result.getResponse().getContentAsString().contains(tag5.getName()));
     }
+
 }
