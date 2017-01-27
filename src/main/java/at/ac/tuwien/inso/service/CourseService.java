@@ -115,7 +115,13 @@ public interface CourseService {
 	@PreAuthorize("isAuthenticated()")
 	List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject);
 
-	
+	/**
+	 * dismisses a course for a student.
+	 * the user should be of role student
+	 * 
+	 * @param student should not be null
+	 * @param courseId should not be null and not <1
+	 */
 	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	void dismissCourse(Student student, Long courseId);
 
