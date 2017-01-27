@@ -125,6 +125,14 @@ public interface CourseService {
 	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	void dismissCourse(Student student, Long courseId);
 
+	/**
+	 * unregisters a student from a course.
+	 * 
+	 * may throw a BusinessObjectNotFoundException if the course does not exist 
+	 * @param student should not be null
+	 * @param courseId should not be null and not <1
+	 * @return
+	 */
 	@PreAuthorize("isAuthenticated()")
 	Course unregisterStudentFromCourse(Student student, Long courseId);
 
