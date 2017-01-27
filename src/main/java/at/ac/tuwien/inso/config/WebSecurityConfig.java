@@ -39,17 +39,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/lecturer/**").hasRole(Role.LECTURER.name())
 				.antMatchers("/student/**").hasRole(Role.STUDENT.name())
 				.anyRequest().authenticated()
-				.and()
-				.formLogin()
+                .and()
+                .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?error")
                 .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
                 .logout()
-				.logoutSuccessUrl("/login?loggedOut")
-				.permitAll();
-	}
+                .logoutSuccessUrl("/login?loggedOut")
+                .permitAll();
+    }
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
