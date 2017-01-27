@@ -30,9 +30,23 @@ public interface LecturerService {
     @PreAuthorize("hasRole('LECTURER')")
     Iterable<Subject> getOwnSubjects();
 
+    /**
+     * finds subjects for the given lecturer. lecturer should not be null
+     * 
+     * user needs to be authenticated
+     * 
+     * @param lecturer
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<Subject> findSubjectsFor(Lecturer lecturer);
 
+    /**
+     * 
+     * @param lecturer
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     @PreAuthorize("hasRole('ADMIN')")
     String generateQRUrl(Lecturer lecturer) throws UnsupportedEncodingException;
 }
