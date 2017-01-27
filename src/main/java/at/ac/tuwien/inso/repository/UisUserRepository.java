@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,4 +27,6 @@ public interface UisUserRepository extends JpaRepository<UisUser, Long> {
             "where user.identificationNumber = ?1"
     )
     boolean existsByIdentificationNumber(String identificationNumber);
+
+	List<UisUser> findAllByEmail(String email);
 }

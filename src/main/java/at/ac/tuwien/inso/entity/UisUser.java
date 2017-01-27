@@ -28,7 +28,7 @@ public abstract class UisUser {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

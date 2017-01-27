@@ -41,4 +41,14 @@ public interface UisUserService {
      */
     @PreAuthorize("isAuthenticated()")
     boolean existsUserWithIdentificationNumber(String id);
+
+    /**
+     * returns true if there already is a user with this emailadress
+     * user has to be admin
+     * 
+     * @param email
+     * @return
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+	boolean existsUserWithMailAddress(String email);
 }

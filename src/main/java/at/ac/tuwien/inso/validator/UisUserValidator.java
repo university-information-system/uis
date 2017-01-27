@@ -7,8 +7,9 @@ import at.ac.tuwien.inso.entity.UisUser;
 import at.ac.tuwien.inso.exception.ValidationException;
 
 
-public class UisUserValidator {
 
+public class UisUserValidator {
+	
     public void validateNewUisUser(UisUser uisUser) {
 
         if (uisUser == null) {
@@ -42,6 +43,7 @@ public class UisUserValidator {
         if (!isValid) {
             throw new ValidationException("This is not a valid email");
         }
+        
     }
 
     public void validateUisUserId(Long id) {
