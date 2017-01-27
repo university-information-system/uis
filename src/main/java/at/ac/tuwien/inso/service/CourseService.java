@@ -64,7 +64,7 @@ public interface CourseService {
 	Course findOne(Long id);
 
 	/**
-	 * this method removes a course by its id if there are not registerd students or grades for it 
+	 * this method removes a course by its id if there are not registered students or grades for it 
 	 * @param id should not be null and not <1
 	 * @return
 	 * @throws ValidationException if there are grades or already registered students for that course
