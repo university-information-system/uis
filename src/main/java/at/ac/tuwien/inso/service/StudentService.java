@@ -39,9 +39,24 @@ public interface StudentService {
     @PreAuthorize("isAuthenticated()")
     Student findByUsername(String username);
 
+    /**
+     * returns all studyplanregistrations for the student. student should not be null!
+     * user needs to be admin
+     * @param student
+     * @return
+     */
     @PreAuthorize("hasRole('ADMIN')")
     List<StudyPlanRegistration> findStudyPlanRegistrationsFor(Student student);
 
+    /**
+     * registers a student to a studyplan for the current semester. student and studyplan should not be null
+     * may start a new semester
+     * 
+     * user needs to be admin
+     * 
+     * @param student
+     * @param studyPlan
+     */
     @PreAuthorize("hasRole('ADMIN')")
     void registerStudentToStudyPlan(Student student, StudyPlan studyPlan);
 
