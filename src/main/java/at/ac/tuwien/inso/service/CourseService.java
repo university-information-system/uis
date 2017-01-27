@@ -95,12 +95,27 @@ public interface CourseService {
 	@PreAuthorize("isAuthenticated()")
 	List<Course> findAllForStudent(Student student);
 
+	/**
+	 * returns a list of courses for a given subject
+	 * user needs to be authenticated
+	 * 
+	 * @param subject
+	 * @return
+	 */
 	@PreAuthorize("isAuthenticated()")
 	List<Course> findCoursesForSubject(Subject subject);
 
+	/**
+	 * returns a list of courses for a given subject and the current semester
+	 * user needs to be authenticated
+	 * 
+	 * @param subject
+	 * @return
+	 */
 	@PreAuthorize("isAuthenticated()")
 	List<Course> findCoursesForSubjectAndCurrentSemester(Subject subject);
 
+	
 	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	void dismissCourse(Student student, Long courseId);
 
