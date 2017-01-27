@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns="http://www.w3.org/1999/xhtml"
-        layout:decorator="layout/default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorator="layout/default"
 >
 <head>
     <title>UIS Login</title>
@@ -12,6 +12,15 @@
 <body class="teal">
 
 <div layout:fragment="content">
+
+
+
+
+
+    <!--<div th:if="${SPRING_SECURITY_LAST_EXCEPTION}">-->
+        <!--Your login attempt was not successful due to <br/><br/>-->
+        <!--<th:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.-->
+    <!--</div>-->
 
     <div class="row">
         <div class="col s12 m8 offset-m2 l4 offset-l4">
@@ -30,12 +39,17 @@
                         <label for="password" th:text="#{password}"></label>
                     </div>
 
+                    <div
+                        th:if="${loginError != null}"
+                        th:text="${loginError}"
+                        class="red-text center col s12"
+                    >
+                    </div>
+
                     <div class="input-field col s12">
                         <input type="submit" th:value="#{log.in}" class="btn-large col s12"/>
                     </div>
 
-                    <p th:if="${param.error}" class="red-text center col s12" th:text="#{invalid.credentials}">
-                    </p>
                 </div>
             </form>
         </div>
