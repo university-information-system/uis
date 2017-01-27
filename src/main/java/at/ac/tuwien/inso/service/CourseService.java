@@ -150,6 +150,13 @@ public interface CourseService {
 	@PreAuthorize("isAuthenticated()")
 	CourseDetailsForStudent courseDetailsFor(Student student, Long courseId);
 
+	/**
+	 * returns subjectsforstudyplans for the given course
+	 * 
+	 * the user needs to be lecturer or admin
+	 * @param course should not be null and not <1 (if, this method will throw a ValidationException)
+	 * @return
+	 */
 	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
 	List<SubjectForStudyPlan> getSubjectForStudyPlanList(Course course);
 
