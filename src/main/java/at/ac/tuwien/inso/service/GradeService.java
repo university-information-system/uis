@@ -14,7 +14,7 @@ import at.ac.tuwien.inso.entity.Student;
 public interface GradeService {
 
 	/**
-	 * 
+	 * returns 
 	 * @param studentId
 	 * @param courseId
 	 * @return
@@ -22,12 +22,37 @@ public interface GradeService {
     @PreAuthorize("hasRole('LECTURER')")
     GradeAuthorizationDTO getDefaultGradeAuthorizationDTOForStudentAndCourse(Long studentId, Long courseId);
 
+    
+    /**
+     * saves a new grade for student for a course.
+     * 
+     * the lecturer of the gradeauthrizationDTO needs to be equal to the currently logged in lecturer. otherwise a ValidationException is thrown
+     * further, lecturer needs to have a two factor authentication value set. otherwise a ValidationException will be thrown
+     * the authentication code value needs to be a number. otherwise a ValidationException is thrown
+     * 
+     * @param grade
+     * @return
+     */
     @PreAuthorize("hasRole('LECTURER')")
     Grade saveNewGradeForStudentAndCourse(GradeAuthorizationDTO grade);
 
+    /**
+     * returns a list of grades for the given course  of the currently logged in lecturer
+     * 
+     * user needs to be lecturer
+     * 
+     * @param courseId
+     * @return
+     */
     @PreAuthorize("hasRole('LECTURER')")
     List<Grade> getGradesForCourseOfLoggedInLecturer(Long courseId);
     
+    /**
+     * returns a list of grades for the given courseID
+     * user needs to be lecturer
+     * @param courseId should not be null and not <1
+     * @return
+     */
     @PreAuthorize("hasRole('LECTURER')")
 	List<Grade> findAllByCourseId(Long courseId);
 
