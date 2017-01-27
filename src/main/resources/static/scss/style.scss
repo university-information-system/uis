@@ -6,6 +6,16 @@ header, main, footer {
   padding-left: 300px;
 }
 
+.login-logo-wrapper {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+
+  color: white;
+
+  pointer-events: none;
+}
+
 .side-nav .link {
   background: none;
   display: block;
