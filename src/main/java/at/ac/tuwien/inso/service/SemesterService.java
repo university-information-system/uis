@@ -29,7 +29,7 @@ public interface SemesterService {
     SemesterDto getOrCreateCurrentSemester();
 
     /**
-     * trys to return all semesters as SemesterDto
+     * should return all semesters as SemesterDto. they are desc ordered by id
      * 
      * user needs to be authenticated
      * @return
@@ -37,6 +37,13 @@ public interface SemesterService {
     @PreAuthorize("isAuthenticated()")
     List<SemesterDto> findAll();
 
+    /**
+     * returns all semesters since the given semester
+     * 
+     * user needs to be authenticated
+     * @param semester
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<SemesterDto> findAllSince(SemesterDto semester);
 }
