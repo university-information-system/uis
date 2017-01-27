@@ -13,6 +13,12 @@ import at.ac.tuwien.inso.entity.Student;
 @Service
 public interface GradeService {
 
+	/**
+	 * 
+	 * @param studentId
+	 * @param courseId
+	 * @return
+	 */
     @PreAuthorize("hasRole('LECTURER')")
     GradeAuthorizationDTO getDefaultGradeAuthorizationDTOForStudentAndCourse(Long studentId, Long courseId);
 
@@ -28,8 +34,21 @@ public interface GradeService {
     @PreAuthorize("hasRole('STUDENT')")
     List<Grade> getGradesForLoggedInStudent();
 
+    /**
+     * returns the grade for a string identifier for validation purposes
+     * 
+     * user needs not authentication
+     * 
+     * @param identifier
+     * @return
+     */
     Grade getForValidation(String identifier);
 
+    /**
+     * returns 
+     * @param student
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<Grade> findAllOfStudent(Student student);
 
