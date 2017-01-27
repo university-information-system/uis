@@ -5,6 +5,7 @@ import AutoCompleteSubjects from "./autocomplete-subjects";
 import AutoCompleteLecturerForSubjects from "./autocomplete-lecturer-for-subject";
 import Select from "./select";
 import Modals from "./modals";
+import LanguageSwitcher from "./language-switcher";
 
 // Flash Messages
 const showMessage = (message) => {
@@ -40,6 +41,9 @@ const init = () => {
 
     const modals = new Modals();
     modals.initialize();
+
+    const languageSwitcher = new LanguageSwitcher();
+    languageSwitcher.init("[data-action~='switch-language']");
 };
 
 init();
