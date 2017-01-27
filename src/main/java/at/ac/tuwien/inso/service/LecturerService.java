@@ -42,9 +42,10 @@ public interface LecturerService {
     List<Subject> findSubjectsFor(Lecturer lecturer);
 
     /**
+     * generates the Qr code url
      * 
-     * @param lecturer
-     * @return
+     * @param lecturer, id, email and two factor secret should not be null
+     * @return the url as string
      * @throws UnsupportedEncodingException
      */
     @PreAuthorize("hasRole('ADMIN')")
