@@ -14,6 +14,7 @@ public interface StudentService {
 
 	/**
 	 * returns one student by id if he exists 
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -22,12 +23,19 @@ public interface StudentService {
 
     /**
      * returns one student by account
+     * user needs to be authenticated
      * @param account
      * @return
      */
     @PreAuthorize("isAuthenticated()")
     Student findOne(UserAccount account);
 
+    /**
+     * returns a student by its username
+     * user needs to be authenticated
+     * @param username
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     Student findByUsername(String username);
 
