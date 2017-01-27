@@ -6,6 +6,20 @@ header, main, footer {
   padding-left: 300px;
 }
 
+.side-nav .link {
+  background: none;
+  display: block;
+  padding: 0 16px;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.side-nav .link:hover {
+  background: rgba(0,0,0,0.05);
+}
+
 .side-nav .divider {
   margin-top: 0;
 }

@@ -45,7 +45,7 @@
 
         <li>
             <form id="logout" th:action="@{/logout}" method="post">
-                <a class="white-text" href="#" onclick="$('#logout').submit()" th:text="#{log.out}"></a>
+                <button class="white-text link" th:text="#{log.out}" type="submit"></button>
             </form>
         </li>
     </ul>
