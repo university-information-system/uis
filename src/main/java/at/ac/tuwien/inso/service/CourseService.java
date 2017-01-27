@@ -160,6 +160,12 @@ public interface CourseService {
 	@PreAuthorize("hasAnyRole('ROLE_LECTURER', 'ROLE_ADMIN')")
 	List<SubjectForStudyPlan> getSubjectForStudyPlanList(Course course);
 
+	/**
+	 * returns all courses for the current semester. 
+	 * may start a new semester.
+	 * 
+	 * @return
+	 */
 	@PreAuthorize("isAuthenticated()")
 	List<Course> findAllCoursesForCurrentSemester();
 }
