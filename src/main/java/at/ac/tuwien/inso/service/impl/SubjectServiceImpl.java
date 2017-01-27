@@ -23,6 +23,7 @@ import at.ac.tuwien.inso.repository.SubjectRepository;
 import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.SubjectService;
 import at.ac.tuwien.inso.service.validator.SubjectValidator;
+import at.ac.tuwien.inso.service.validator.UisUserValidator;
 import at.ac.tuwien.inso.service.validator.ValidatorFactory;
 
 
@@ -31,6 +32,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     private ValidatorFactory validatorFactory = new ValidatorFactory();
     private SubjectValidator validator = validatorFactory.getSubjectValidator();
+    private UisUserValidator userValidator = validatorFactory.getUisUserValidator();
+    
     private static final Logger log = LoggerFactory.getLogger(SubjectServiceImpl.class);
 
     @Autowired
@@ -77,7 +80,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Transactional
     public Lecturer addLecturerToSubject(Long subjectId, Long lecturerUisUserId) {
         
-
+    	userValidator.validateUisUserId(lecturerUisUserId);
         validator.validateSubjectId(subjectId);
         
         log.info("addLecturerToSubject for subject {} and lecturer {}", subjectId,
@@ -144,6 +147,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Lecturer removeLecturerFromSubject(Long subjectId, Long lecturerUisUserId) {
+    	userValidator.validateUisUserId(lecturerUisUserId);
         validator.validateSubjectId(subjectId);
         log.info("removeLecturerFromSubject for subject {} and lecturer {}", subjectId, lecturerUisUserId);
 
