@@ -14,7 +14,10 @@ import at.ac.tuwien.inso.entity.Student;
 public interface GradeService {
 
 	/**
-	 * returns 
+	 * returns a default GradeAuthroizationDto. Default means that the grade is failed = Mark.FAILED.
+	 * if no logged in lecturer, no student with the id, no course can be found, a BusinessObjectNotFoundException will be thrown
+	 * if student is not registered for the course, a ValidationException will be thrown
+	 * 
 	 * @param studentId
 	 * @param courseId
 	 * @return
