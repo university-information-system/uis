@@ -16,6 +16,10 @@ header, main, footer {
   pointer-events: none;
 }
 
+#login .row:last-of-type {
+  margin-bottom: 0.75rem;
+}
+
 .side-nav .link {
   background: none;
   display: block;
