@@ -28,6 +28,12 @@ public interface SemesterService {
     @PreAuthorize("isAuthenticated()")
     SemesterDto getOrCreateCurrentSemester();
 
+    /**
+     * trys to return all semesters as SemesterDto
+     * 
+     * user needs to be authenticated
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     List<SemesterDto> findAll();
 
