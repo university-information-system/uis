@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.service;
 
-import java.security.Principal;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
