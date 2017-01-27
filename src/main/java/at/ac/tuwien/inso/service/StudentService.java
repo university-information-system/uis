@@ -14,6 +14,7 @@ public interface StudentService {
 
 	/**
 	 * returns one student by id if he exists 
+	 * id should not be null and not <1
 	 * 
 	 * @param id
 	 * @return
@@ -60,6 +61,16 @@ public interface StudentService {
     @PreAuthorize("hasRole('ADMIN')")
     void registerStudentToStudyPlan(Student student, StudyPlan studyPlan);
 
+    /**
+     * registers a student to a studyplan for the given semester
+     * student and studyplan should not be null
+     * 
+     * user needs to be admin!
+     * 
+     * @param student
+     * @param studyPlan
+     * @param currentSemester
+     */
     @PreAuthorize("hasRole('ADMIN')")
     void registerStudentToStudyPlan(Student student, StudyPlan studyPlan, SemesterDto currentSemester);
 }
