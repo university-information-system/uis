@@ -29,8 +29,6 @@ public class LoginController {
 			return "redirect:/login";
 		}
 
-		// TODO: check for previous page
-
 		// Show a message after an error
 		if (error != null) {
             Exception lastException = (Exception) session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
