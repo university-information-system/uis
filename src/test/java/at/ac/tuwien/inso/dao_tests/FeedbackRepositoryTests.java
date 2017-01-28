@@ -62,8 +62,8 @@ public class FeedbackRepositoryTests {
 
     private void prepareStudents() {
         students = toList(studentRepository.save(asList(
-                new Student("123", "student", "student@uis.at"),
-                new Student("456", "student", "student@uis.at")
+                new Student("123", "student", "student123@uis.at"),
+                new Student("456", "student", "student456@uis.at")
         )));
     }
 
