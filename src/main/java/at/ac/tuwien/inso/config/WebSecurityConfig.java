@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
             .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/rest/**").permitAll()   //do not require passwords for rest
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/min/**").permitAll()
@@ -49,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .formLogin()
                 .loginPage("/login")
+                .loginPage("/login?notLoggedIn")
                 .failureUrl("/login?error")
                 .defaultSuccessUrl("/")
                 .permitAll();
