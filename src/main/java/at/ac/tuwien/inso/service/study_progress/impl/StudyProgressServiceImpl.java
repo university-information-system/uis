@@ -56,11 +56,11 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     public StudyProgress studyProgressFor(Student student) {
     	SemesterDto currentSemester = semesterService.getOrCreateCurrentSemester();
         
-    	//only the logged in student should be able to see his study progress. no other should be able to do this. (guard)
+    	/*//only the logged in student should be able to see his study progress. no other should be able to do this. (guard)
     	if(!userAccountService.getCurrentLoggedInUser().getId().equals(student.getId())){
     		String msg = messageSource.getMessage("lecturer.course.edit.error.notallowed", null, LocaleContextHolder.getLocale());
     		throw new ValidationException(msg);
-    	}
+    	}*/
     	
         List<SemesterDto> semesters = studentSemesters(student);
         List<Course> courses = courseService.findAllForStudent(student);
