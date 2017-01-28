@@ -58,13 +58,14 @@ public abstract class AbstractCoursesTests {
     private LecturerRepository lecturerRepository;
 
     @Autowired
-    private StudentRepository studentRepository;
+    protected StudentRepository studentRepository;
 
     protected UserAccount user1 = new UserAccount("lecturer1", "pass", Role.LECTURER);
     protected Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email1@uis.at", user1);
     protected Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email2@uis.at", new UserAccount("lecturer2", "pass", Role.LECTURER));
     protected Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email3@uis.at", new UserAccount("lecturer3", "pass", Role.LECTURER));
-    protected Student student = new Student("s1234", "Student", "student@uis.at", new UserAccount("student", "pass", Role.STUDENT));
+    protected UserAccount studentUserAccount = new UserAccount("student", "pass", Role.STUDENT);
+    protected Student student = new Student("s1234", "Student", "student@uis.at", studentUserAccount);
     protected Semester ss2016 = new Semester(2016, SemesterType.SummerSemester);
     protected Semester ws2016 = new Semester(2016, SemesterType.WinterSemester);
     protected Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
