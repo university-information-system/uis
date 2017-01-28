@@ -19,11 +19,14 @@ import at.ac.tuwien.inso.dto.SemesterDto;
 import at.ac.tuwien.inso.entity.Course;
 import at.ac.tuwien.inso.entity.Grade;
 import at.ac.tuwien.inso.entity.Lecturer;
+import at.ac.tuwien.inso.entity.Role;
 import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
 import at.ac.tuwien.inso.entity.Tag;
+import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.entity.UserAccount;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.CourseRepository;
@@ -116,6 +119,11 @@ public class CourseServiceImpl implements CourseService {
         log.info("try saving course");
         Course course = form.getCourse();
         validator.validateNewCourse(course);
+        
+        UserAccount u = userAccountService.getCurrentLoggedInUser();
+        
+        isLecturerAllowedToChangeCourse(course, u);
+        
         log.info("try saving course " + course.toString());
 
         ArrayList<Tag> currentTagsOfCourse = new ArrayList<>(form.getCourse().getTags());
@@ -144,6 +152,26 @@ public class CourseServiceImpl implements CourseService {
             course.setStudentLimits(1);
         }
         return courseRepository.save(course);
+    }
+    
+    private void isLecturerAllowedToChangeCourse(Course c, UserAccount u){
+    	if(c==null||u==null){
+    		throw new ValidationException("user is not allowed to change this course");
+    	}
+    	
+    	if(u.hasRole(Role.ADMIN)){
+    		log.info("user is admin, therefore course modification is allowed");
+    		return;
+    	}
+    	
+    	for(Lecturer l : c.getSubject().getLecturers()){
+    		if(l.getAccount().equals(u)){
+    			log.info("found equal lecturers, course modification is allowed");
+    			return;
+    		}
+    	}
+    	log.warn("suspisious try to modify course. user is not admin or does not own the subject for this course");
+    	throw new ValidationException("user is not allowed to change this course");
     }
 
     @Override
