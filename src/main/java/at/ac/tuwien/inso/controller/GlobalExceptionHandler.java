@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(value=HttpStatus.CONFLICT)
     public ModelAndView handleDataAccessExceptions(HttpServletRequest request, DataAccessException ex) {
-        logger.info("DataAccessException: " + ex.getMessage() + "\n url="+request.getRequestURL());
+        logger.warn("DataAccessException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", messageSource.getMessage("error.dataaccess", null, LocaleContextHolder.getLocale()));
         mav.setViewName("error");
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessObjectNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ModelAndView handleBusinessObjectNotFoundExceptions(HttpServletRequest request, BusinessObjectNotFoundException ex) {
-        logger.info("BusinessObjectNotFoundException: " + ex.getMessage() + "\n url="+request.getRequestURL());
+        logger.warn("BusinessObjectNotFoundException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ModelAndView handleValidationExceptions(HttpServletRequest request, ValidationException ex) {
-        logger.info("ValidationException: " + ex.getMessage() + "\n url="+request.getRequestURL());
+        logger.warn("ValidationException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ActionNotAllowedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ModelAndView handleActionNotAllowedExceptions(HttpServletRequest request, ActionNotAllowedException ex) {
-        logger.info("ActionNotAllowedException: " + ex.getMessage() + "\n url=" + request.getRequestURL());
+        logger.warn("ActionNotAllowedException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
@@ -80,7 +80,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TypeMismatchException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ModelAndView handleTypeMismatchExceptions(HttpServletRequest request, TypeMismatchException ex) {
-        logger.info("TypeMismatchRequest: " + ex.getMessage() + "\n url="+request.getRequestURL());
+        logger.warn("TypeMismatchRequest: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", messageSource.getMessage("error.badrequest", null, LocaleContextHolder.getLocale()));
         mav.setViewName("error");
