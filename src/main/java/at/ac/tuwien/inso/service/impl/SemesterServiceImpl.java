@@ -72,7 +72,7 @@ public class SemesterServiceImpl implements SemesterService {
         SemesterDto current = getCurrentSemester();
 
         if (current == null || !current.isCurrent(now)) {
-            // TODO logging!!!
+            log.info("Current semester is not started yet, creating a new one");
             return create(SemesterDto.calculateCurrentSemester(now));
         }
 
