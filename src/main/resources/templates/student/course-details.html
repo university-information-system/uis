@@ -32,7 +32,8 @@
                         <div th:if="${!course.description.isEmpty()}">
                             <div class="section-separator" th:text="#{student.course.details.description}"></div>
 
-                            <p class="text-content" th:text="${course.description}"></p>
+                            <p th:utext="${#strings.replace( #strings.escapeXml( course.description ),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></p>
+
                         </div>
 
                         <div>
