@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.service.course_recommendation.user_based;
+package at.ac.tuwien.inso.service_tests.course_recommendation.user_based;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;

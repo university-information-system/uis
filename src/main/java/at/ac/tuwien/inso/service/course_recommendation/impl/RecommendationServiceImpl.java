@@ -15,7 +15,7 @@ import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
 import at.ac.tuwien.inso.service.course_recommendation.RecommendationService;
-import at.ac.tuwien.inso.service.course_recommendation.filters.CourseRelevanceFilter;
+import at.ac.tuwien.inso.service_tests.course_recommendation.filters.CourseRelevanceFilter;
 import at.ac.tuwien.inso.service.course_recommendation.normalization.CourseNormalizer;
 
 @Service

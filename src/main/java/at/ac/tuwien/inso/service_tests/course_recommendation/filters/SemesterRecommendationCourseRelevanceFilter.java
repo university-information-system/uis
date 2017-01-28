@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.service.course_recommendation.filters;
+package at.ac.tuwien.inso.service_tests.course_recommendation.filters;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
