@@ -57,9 +57,9 @@ public class StudentCourseRegistrationTests extends AbstractCoursesTests {
     Lecturer lecturer1 = new Lecturer("l0001", "Lecturer 1", "email1@uis.at", user1);
     Lecturer lecturer2 = new Lecturer("l0002", "Lecturer 2", "email2@uis.at", new UserAccount("lecturer2", "pass", Role.LECTURER));
     Lecturer lecturer3 = new Lecturer("l0003", "Lecturer 3", "email3@uis.at", new UserAccount("lecturer3", "pass", Role.LECTURER));
-    Student student1 = new Student("s000001", "Student1", "email11@uis.at", studentUser);
-    Student student2 = new Student("s000002", "Student2", "email12@uis.at", student2User);
-    Student student3 = new Student("s000003", "Student3", "email13@uis.at", new UserAccount("student3", "pass", Role.STUDENT));
+    Student student1 = new Student("s000001", "student1", "email11@uis.at", studentUser);
+    Student student2 = new Student("s000002", "student2", "email12@uis.at", student2User);
+    Student student3 = new Student("s000003", "student3", "email13@uis.at", new UserAccount("student3", "pass", Role.STUDENT));
     Semester ss2016 = new Semester(2016, SemesterType.SummerSemester);
     Semester ws2016 = new Semester(2016, SemesterType.WinterSemester);
     Subject calculus = new Subject("Calculus", new BigDecimal(3.0));

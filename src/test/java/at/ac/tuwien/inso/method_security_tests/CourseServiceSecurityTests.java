@@ -108,6 +108,7 @@ public class CourseServiceSecurityTests {
     @After
     public void destroy(){
     	course.removeStudents(student);
+    	courseRepository.save(course);
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
