@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.ac.tuwien.inso.entity.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +20,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 
-import at.ac.tuwien.inso.entity.EctsDistribution;
-import at.ac.tuwien.inso.entity.StudyPlan;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.StudyPlanRepository;
@@ -53,10 +51,13 @@ public class StudyPlanServiceTests {
 
     private static final Long VALID_STUDY_PLAN_ID = 1L;
     private static final Long INVALID_STUDY_PLAN_ID = 1337L;
+    private Student student = new Student("s1234", "student", "s1234@uis.at");
+    private Lecturer lecturer = new Lecturer("l1234", "student", "l1234@uis.at");
     private StudyPlan studyPlan = new StudyPlan("sp", new EctsDistribution(new BigDecimal(60), new BigDecimal(60), new BigDecimal(60)));
     private SubjectForStudyPlan subjectForStudyPlan = new SubjectForStudyPlan(new Subject("subject", null),studyPlan, false);
     private List<Subject> subjects = new ArrayList<>();
     private List<SubjectForStudyPlan> subjectsForStudyPlan = new ArrayList<>();
+    private List<Grade> grades = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -76,6 +77,11 @@ public class StudyPlanServiceTests {
                 new SubjectForStudyPlan(subjects.get(5), studyPlan, true),
                 new SubjectForStudyPlan(subjects.get(6), studyPlan, true)
         ));
+        grades.addAll(asList(
+                new Grade(new Course(subjects.get(0)), lecturer, student, Mark.EXCELLENT),
+                new Grade(new Course(subjects.get(2)), lecturer, student, Mark.GOOD),
+                new Grade(new Course(subjects.get(4)), lecturer, student, Mark.FAILED)
+        ));
 
         MockitoAnnotations.initMocks(this);
         when(studyPlanRepository.findOne(VALID_STUDY_PLAN_ID)).thenReturn(studyPlan);
@@ -83,11 +89,19 @@ public class StudyPlanServiceTests {
         when(subjectForStudyPlanRepository.save(subjectForStudyPlan)).thenReturn(subjectForStudyPlan);
         when(subjectService.searchForSubjects(any())).thenReturn(subjects);
         when(subjectForStudyPlanRepository.findByStudyPlanIdOrderBySemesterRecommendation(VALID_STUDY_PLAN_ID)).thenReturn(subjectsForStudyPlan);
+        when(gradeService.getGradesForLoggedInStudent()).thenReturn(new ArrayList(grades));
         studyPlanService = new StudyPlanServiceImpl(studyPlanRepository, subjectForStudyPlanRepository, subjectService, gradeService, messageSource);
     }
 
+    @After
+    public void tearDown() {
+        subjects.clear();
+        subjectsForStudyPlan.clear();
+        grades.clear();
+    }
+
     @Test
-    public void getAvailableSubjectsForStudyPlanShouldReturnAvailableSubjects() {
+    public void getAvailableSubjectsForStudyPlanShouldReturnAvailableSubjectsTest() {
         List<Subject> availableSubjects = studyPlanService.getAvailableSubjectsForStudyPlan(VALID_STUDY_PLAN_ID, "some query");
         assertEquals(asList(subjects.get(1), subjects.get(3)),availableSubjects);
     }
@@ -146,5 +160,21 @@ public class StudyPlanServiceTests {
       subject.setId(null);
       
       studyPlanService.removeSubjectFromStudyPlan(subjectForStudyPlan.getStudyPlan(), subject);
+    }
+
+    @Test
+    public void getSubjectsWithGradesForStudyPlanTest() {
+        List<SubjectWithGrade> expectedSubjectsWithTheirGrades = studyPlanService.getSubjectsWithGradesForStudyPlan(VALID_STUDY_PLAN_ID);
+
+        assertEquals(
+                expectedSubjectsWithTheirGrades,
+                asList(
+                        new SubjectWithGrade(subjectsForStudyPlan.get(0), grades.get(0), SubjectType.MANDATORY),
+                        new SubjectWithGrade(subjectsForStudyPlan.get(1), grades.get(1), SubjectType.MANDATORY),
+                        new SubjectWithGrade(subjectsForStudyPlan.get(2), grades.get(2), SubjectType.MANDATORY),
+                        new SubjectWithGrade(subjectsForStudyPlan.get(3), SubjectType.MANDATORY),
+                        new SubjectWithGrade(subjectsForStudyPlan.get(4), SubjectType.MANDATORY)
+                )
+        );
     }
 }
