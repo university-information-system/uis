@@ -45,11 +45,11 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     @Autowired
     private FeedbackService feedbackService;
     
-    @Autowired
+    /*@Autowired
     private UserAccountService userAccountService;
     
     @Autowired
-    private MessageSource messageSource;
+    private MessageSource messageSource;*/
 
     @Override
     @Transactional(readOnly = true)
