@@ -99,7 +99,7 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     private List<CourseRegistration> courseRegistrations(SemesterDto semester, SemesterDto currentSemester, List<Course> courses, List<Grade> grades, List<Feedback> feedbacks) {
         return courses.stream()
                 .filter(it -> it.getSemester().toDto().equals(semester))
-                .map(it -> new CourseRegistration(it, courseRegistrationState(it, currentSemester, grades, feedbacks)))
+                .map(it -> new CourseRegistration(it, courseRegistrationState(it, currentSemester, grades, feedbacks), grades))
                 .collect(Collectors.toList());
     }
 

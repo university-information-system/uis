@@ -1,12 +1,17 @@
 package at.ac.tuwien.inso.service.study_progress;
 
+import java.util.List;
+
 import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Grade;
 
 public class CourseRegistration {
 
     private Course course;
 
     private CourseRegistrationState state;
+
+	private Grade grade;
 
     public CourseRegistration(Course course) {
         this(course, CourseRegistrationState.in_progress);
@@ -16,6 +21,14 @@ public class CourseRegistration {
         this.course = course;
         this.state = state;
     }
+    
+    public CourseRegistration(Course course, CourseRegistrationState state, List<Grade> grade) {
+        this.course = course;
+        this.state = state;
+        if(grade!=null&&!grade.isEmpty()){
+        	this.grade = grade.get(0);
+        }
+    }
 
     public Course getCourse() {
         return course;
@@ -23,6 +36,10 @@ public class CourseRegistration {
 
     public CourseRegistrationState getState() {
         return state;
+    }
+    
+    public Grade getGrade(){
+    	return grade;
     }
 
     @Override

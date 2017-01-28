@@ -54,6 +54,11 @@
                         <span th:text="${courseRegistration.course.subject.ects}"></span>
                         <span> ECTS</span>
                     </div>
+                    
+                    <div>
+                        <span th:text="${courseRegistration.grade}"></span>
+                        <span> GRADE</span>
+                    </div>
 
                     <!-- Unregister confirmation modal -->
                     <div th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).in_progress}"
