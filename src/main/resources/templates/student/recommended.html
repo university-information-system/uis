@@ -8,21 +8,26 @@
 
         <h1 th:text="#{student.recommended.label}">Courses</h1>
 
-        <ul class="collection z-depth-1">
+        <ul class="collection z-depth-1 courses-list">
             <li class="collection-item" th:each="course, status : ${recommendedCourses}">
                 <div class="secondary-content">
-                    <div class="" style="display: inline;">
-                        <a th:href="'#modal'+__${course.id}__" class="modal-trigger teal-text"><i
-                                class="material-icons tooltipped"
-                                th:attr="data-tooltip=#{enroll}">add</i></a>
-                    </div>
-                    <div class="" style="display: inline;">
-                        <form method="post" style="display: inline;"
-                              th:action="@{/student/recommended}">
-                            <input type="hidden" th:value="${course.id}" th:name="'dismissedId'"/>
-                            <input type="submit" class="btn-flat waves-effect" th:value="Dismiss"/>
-                        </form>
-                    </div>
+                    <form method="post" style="display: inline;"
+                          th:action="@{/student/recommended}">
+                        <input type="hidden" th:value="${course.id}" th:name="'dismissedId'"/>
+                        <button
+                            type="submit"
+                            class="btn-flat waves-effect course-button"
+                            th:text="#{dismiss}"
+                        ></button>
+                    </form>
+
+                    <a
+                        th:href="'#modal'+__${course.id}__"
+                        class="modal-trigger btn course-button"
+                        th:text="#{enroll}"
+                    >
+                    </a>
+
                 </div>
                 <a th:href="@{/student/courses/__${course.id}__}"
                    class="title teal-text"
@@ -31,8 +36,8 @@
 
                 <div th:id="'modal'+__${course.id}__" class="modal small">
                     <div class="modal-content">
-                        <h5 class="center-align" th:text="${course.subject.name}"></h5>
-                        <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
+                        <h5 th:text="${course.subject.name}"></h5>
+                        <h6 th:text="#{student.courses.enroll}"></h6>
                     </div>
                     <div class="modal-footer">
                         <form th:id="'registerForm-' + ${course.id}"
