@@ -5,10 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import at.ac.tuwien.inso.entity.UserAccount;
@@ -23,7 +25,10 @@ public class LoginController {
             @RequestParam(value = "loggedOut", required = false) String loggedOut,
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "invalidSession", required = false) String invalidSession,
+            @RequestParam(value = "notLoggedIn", required = false) String notLoggedIn,
 			HttpSession session,
+            HttpServletRequest request,
+            Model model,
 			RedirectAttributes redirectAttributes
 	) {
 
@@ -49,6 +54,13 @@ public class LoginController {
         if (invalidSession != null) {
             redirectAttributes.addFlashAttribute("flashMessage", "login.invalidSession");
             log.info("Removing ?invalidSession parameter from /login");
+            return "redirect:/login";
+        }
+
+        // Show a message, that the user has to login first
+        if (notLoggedIn != null) {
+            redirectAttributes.addFlashAttribute("flashMessage", "login.notLoggedIn");
+            log.info("Removing ?notLoggedIn parameter from /login");
             return "redirect:/login";
         }
 
