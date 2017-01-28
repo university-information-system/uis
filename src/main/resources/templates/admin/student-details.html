@@ -14,8 +14,14 @@
                 </div>
             </li>
         </ul>
-        <a href="#" data-th-href="@{/admin/studyplans/registerStudent/(studentToAddId=${user.id})}"
-           class="waves-effect waves-light btn" th:inline="text">[[#{admin.users.student.addtostudyplan}]]</a>
+
+        <a
+            href="#" data-th-href="@{/admin/studyplans/registerStudent/(studentToAddId=${user.id})}"
+            class="waves-effect waves-light btn"
+            th:inline="text"
+        >[[#{admin.users.student.addtostudyplan}]]</a>
+
+        <div>&nbsp;</div>
     </div>
 </div>
 </body>
