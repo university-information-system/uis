@@ -1054,7 +1054,7 @@ public class DataInitializer {
         register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
         register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VO Statistik und Wahrscheinlichkeitstheorie"));
         register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("UE Statistik und Wahrscheinlichkeitstheorie"));
-        register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VU Techniksoziologie und Technikpsychologie"));
+        //register(mathematician, coursesBachelorSoftwareAndInformationEngineering.get("VU Techniksoziologie und Technikpsychologie"));
 
         // SimilarToMathematician - Cesc Fabregas
         Student similarToMathematician = studentMap.get("SimilarToMathematician");
