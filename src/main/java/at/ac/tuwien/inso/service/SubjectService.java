@@ -25,7 +25,7 @@ public interface SubjectService {
     /**
      * returns a Subject by id.
      * 
-     * @param Long id, should not be null and not <1
+     * @param id, should not be null and not <1
      * @return
      */
     @PreAuthorize("isAuthenticated()")
@@ -42,7 +42,7 @@ public interface SubjectService {
 
     /**
      * creates a new subject in the database. returns the object with a filled id
-     * @param subject. should not be null, should have a name that is not empty, and a ects value that is not emtpy and bigger than 0.
+     * @param subject should not be null, should have a name that is not empty, and a ects value that is not emtpy and bigger than 0.
      * @return
      */
     @PreAuthorize("hasRole('ADMIN')")
@@ -52,7 +52,7 @@ public interface SubjectService {
      * adds a lecturer to be responsible for a subject. if the lecturer already was responsible, the lectuerer object that was responsible in the past will be returned. otherwise the lecturer that was now added will be returned.
      * may throw a LecturerNotFoundException or a SubjectNotFoundException
      * 
-     * @param subjectId. should not be null and not <1.
+     * @param subjectId should not be null and not <1.
      * @param lecturerUisUserId
      * @return
      */
@@ -65,7 +65,7 @@ public interface SubjectService {
      * may throw SubjectNotFoundException if no subject was found
      * 
      * @param subjectId should not be null and not <1.
-     * @param search. will be changed to "" if is null.
+     * @param search will be changed to "" if is null.
      * @return a maximum of 10 lecturers
      */
     @PreAuthorize("hasRole('ADMIN')")
