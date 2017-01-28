@@ -19,6 +19,7 @@ import at.ac.tuwien.inso.exception.ActionNotAllowedException;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
 
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -26,6 +27,15 @@ public class GlobalExceptionHandler {
 
     @Autowired
     private MessageSource messageSource;
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value=HttpStatus.NOT_FOUND)
+    public ModelAndView handlerExceptions(HttpServletRequest request, Exception exception) {
+        logger.warn("Arbitrary exception happened", exception);
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("error");
+        return mav;
+    }
 
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(value=HttpStatus.CONFLICT)
