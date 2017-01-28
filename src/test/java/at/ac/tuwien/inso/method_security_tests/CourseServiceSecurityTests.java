@@ -105,11 +105,11 @@ public class CourseServiceSecurityTests {
         course.addStudents(student);
     }
     
-    @After
+    /*@After
     public void destroy(){
     	course.removeStudents(student);
     	courseRepository.save(course);
-    }
+    }*/
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void findCourseForCurrentSemesterWithNameNotAuthenticated() {

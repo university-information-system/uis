@@ -34,20 +34,20 @@ public class StudentGradesTests {
     @Autowired
     private StudentRepository studentRepository;
 
-    private UserAccount studentUser = new UserAccount("student1", "pass", Role.STUDENT);
-    private UserAccount student2User = new UserAccount("student2", "pass", Role.STUDENT);
-    private Student student1 = new Student("s000001", "Student1", "email@1.com", studentUser);
-    private Student student2 = new Student("s000002", "Student2", "email@2.com", student2User);
+    private UserAccount studentUser1 = new UserAccount("student12", "pass", Role.STUDENT);
+    private UserAccount student22User = new UserAccount("student22", "pass", Role.STUDENT);
+    private Student student12 = new Student("s000001", "Student12", "email@1.com", studentUser1);
+    private Student student22 = new Student("s000002", "Student22", "email@2.com", student22User);
 
     @Before
     public void setUp() {
-        studentRepository.save(asList(student1, student2));
+        studentRepository.save(asList(student12, student22));
     }
 
     @Test
     public void itShowsEmptyGrades() throws Exception {
         mockMvc.perform(
-                get("/student/grades").with(user(studentUser))
+                get("/student/grades").with(user(studentUser1))
         ).andExpect(
                 model().attributeExists("grades")
         );
@@ -56,7 +56,7 @@ public class StudentGradesTests {
     @Test
     public void itShowsGrades() throws Exception {
         mockMvc.perform(
-                get("/student/grades").with(user(student2User))
+                get("/student/grades").with(user(student22User))
         ).andExpect(
                 model().attributeExists("grades")
         );

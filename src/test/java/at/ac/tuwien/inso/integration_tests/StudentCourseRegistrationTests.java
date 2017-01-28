@@ -161,7 +161,8 @@ public class StudentCourseRegistrationTests extends AbstractCoursesTests {
                 post("/student/unregister")
                         .with(csrf())
                         .param("course", aseWS2016.getId().toString())
-                        .with(user(student2User))
+                        //.with(user(student2User))
+                        .with(user("student2").roles(Role.STUDENT.name()))
         ).andExpect(result ->
                 assertThat(courseRepository.findOne(aseWS2016.getId()).getStudents(), empty())
         ).andExpect(

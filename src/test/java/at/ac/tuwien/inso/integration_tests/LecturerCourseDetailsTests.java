@@ -110,9 +110,9 @@ public class LecturerCourseDetailsTests {
     public void lecturersShouldSeeTheirIssuedGradesInCourseTest() throws Exception {
 
         // given course ase held by lecturer1 and lecturer2 and 3 registered students
-        Student st2 = new Student("st2", "Student2", "st2@ude.nt", new UserAccount("st2", "pass", Role.STUDENT));
-        Student st3 = new Student("st3", "Student3", "st3@ude.nt", new UserAccount("st3", "pass", Role.STUDENT));
-        Student st4 = new Student("st4", "Student4", "st4@ude.nt", new UserAccount("st4", "pass", Role.STUDENT));
+        Student st2 = new Student("st2", "gradeStudent2", "st2@ude.nt", new UserAccount("gradest2", "pass", Role.STUDENT));
+        Student st3 = new Student("st3", "gradeStudent3", "st3@ude.nt", new UserAccount("gradest3", "pass", Role.STUDENT));
+        Student st4 = new Student("st4", "gradeStudent3", "st4@ude.nt", new UserAccount("gradest4", "pass", Role.STUDENT));
         studentRepository.save(asList(st2, st3, st4));
         aseWS2016.addStudents(st2, st3, st4);
 
@@ -184,8 +184,8 @@ public class LecturerCourseDetailsTests {
     public void lecturerShouldSeeFeedback() throws Exception {
 
         // given course ase held by lecturer1 and students student1 and student2 with grades in ase
-        Student st1 = studentRepository.save(new Student("stud1", "Student2", "st1@ude.nt", new UserAccount("stud1", "pass", Role.STUDENT)));
-        Student st2 = studentRepository.save(new Student("stud2", "Student3", "st2@ude.nt", new UserAccount("stud2", "pass", Role.STUDENT)));
+        Student st1 = studentRepository.save(new Student("stud1", "gradeStudent2", "st1@ude.nt", new UserAccount("gradestud1", "pass", Role.STUDENT)));
+        Student st2 = studentRepository.save(new Student("stud2", "gradeStudent3", "st2@ude.nt", new UserAccount("gradestud2", "pass", Role.STUDENT)));
         Subject ase = subjectRepository.save(new Subject("ASE", new BigDecimal(6.0)));
         Semester ws2016 = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
         Course aseWS2016 = courseRepository.save(new Course(ase, ws2016).addStudents(st1,st2));

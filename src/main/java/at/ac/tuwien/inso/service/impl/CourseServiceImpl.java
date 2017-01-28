@@ -276,7 +276,7 @@ public class CourseServiceImpl implements CourseService {
         
         //students should only be able to unregister themselves
         if(userAccountService.getCurrentLoggedInUser().hasRole(Role.STUDENT)){
-        	if(!student.getId().equals(userAccountService.getCurrentLoggedInUser().getId())){
+        	if(!student.getAccount().equals(userAccountService.getCurrentLoggedInUser())){
         		log.warn("student with id {} and username {} tried to unregister another one with id {} and username {}", userAccountService.getCurrentLoggedInUser().getId(), userAccountService.getCurrentLoggedInUser().getUsername(), student.getId(), student.getAccount().getUsername());
         		String msg = messageSource.getMessage("lecturer.course.edit.error.notallowed", null, LocaleContextHolder.getLocale());
         		throw new ValidationException(msg);
