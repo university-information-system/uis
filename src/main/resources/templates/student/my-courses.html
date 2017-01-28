@@ -55,8 +55,9 @@
                         <span> ECTS</span>
                     </div>
                     
-                    <div>
-                    	<span>Grade: </span>
+                    <div th:if="${courseRegistration.grade != null}">
+                    	<span th:text="#{student.studyplandetails.grade}">GradeNote:</span>
+                    	<span>: </span>
                         <span th:text="${courseRegistration.grade.mark.getMark()}"></span>
                     </div>
 
