@@ -93,7 +93,7 @@ public class AuthenticationTests {
         ).andExpect(
                 unauthenticated()
         ).andExpect(
-                redirectedUrl("/login")
+                redirectedUrl("/login?loggedOut")
         );
     }
 
