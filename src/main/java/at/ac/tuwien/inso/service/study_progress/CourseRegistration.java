@@ -22,12 +22,10 @@ public class CourseRegistration {
         this.state = state;
     }
     
-    public CourseRegistration(Course course, CourseRegistrationState state, List<Grade> grade) {
+    public CourseRegistration(Course course, CourseRegistrationState state, Grade grade) {
         this.course = course;
         this.state = state;
-        if(grade!=null&&!grade.isEmpty()){
-        	this.grade = grade.get(0);
-        }
+	    this.grade = grade;
     }
 
     public Course getCourse() {

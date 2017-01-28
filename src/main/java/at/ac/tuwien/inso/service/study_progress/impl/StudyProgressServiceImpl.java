@@ -97,9 +97,9 @@ public class StudyProgressServiceImpl implements StudyProgressService {
     }
 
     private List<CourseRegistration> courseRegistrations(SemesterDto semester, SemesterDto currentSemester, List<Course> courses, List<Grade> grades, List<Feedback> feedbacks) {
-        return courses.stream()
+    	return courses.stream()
                 .filter(it -> it.getSemester().toDto().equals(semester))
-                .map(it -> new CourseRegistration(it, courseRegistrationState(it, currentSemester, grades, feedbacks), grades))
+                .map(it -> new CourseRegistration(it, courseRegistrationState(it, currentSemester, grades, feedbacks), courseGrade(grades, it)))
                 .collect(Collectors.toList());
     }
 
@@ -116,5 +116,14 @@ public class StudyProgressServiceImpl implements StudyProgressService {
         } else {
             return course.getSemester().toDto().equals(currentSemester) ? CourseRegistrationState.in_progress : CourseRegistrationState.needs_feedback;
         }
+    }
+    
+    private Grade courseGrade(List<Grade> grades, Course course){
+    	Optional<Grade> grade = grades.stream().filter(it -> it.getCourse().equals(course)).findFirst();
+    	if(grade.isPresent()){
+    		return grade.get();
+    	}else{
+    		return null;
+    	}
     }
 }

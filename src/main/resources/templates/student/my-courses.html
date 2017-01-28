@@ -56,8 +56,8 @@
                     </div>
                     
                     <div>
-                        <span th:text="${courseRegistration.grade}"></span>
-                        <span> GRADE</span>
+                    	<span>Grade: </span>
+                        <span th:text="${courseRegistration.grade.mark.getMark()}"></span>
                     </div>
 
                     <!-- Unregister confirmation modal -->
