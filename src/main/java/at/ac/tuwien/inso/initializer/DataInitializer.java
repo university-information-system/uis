@@ -8,12 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -460,6 +455,8 @@ public class DataInitializer {
         registerSubjectsToLecturers();
 
         addTagsToCourses();
+
+        addDescriptionToCourses();
 
         addSubjectsToStudyPlans();
 
@@ -980,6 +977,233 @@ public class DataInitializer {
         );
     }
 
+    private void addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester1() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Fachliche und methodische Kenntnisse\n" +
+                        "Verstehen systematischer, konstruktiver Vorgehensweisen beim Erstellen, Testen, Debuggen, Nachvollziehen und Modifizieren von Programmen\n" +
+                        "Verstehen der wichtigsten Konzepte einer aktuellen alltagstauglichen Programmiersprache\n" +
+                        "Verstehen einfacher Algorithmen und fundamentaler Datenstrukturen\n" +
+                        "Kennen der häufigsten Fehlerquellen in der Programmierung\n" +
+                        "Kognitive und praktische Fertigkeiten\n" +
+                        "Anwenden fundamentaler Konzepte, Vorgehensweisen und Werkzeuge zum Erstellen, Testen, Debuggen, Nachvollziehen und Modifizieren von Programmen\n" +
+                        "Anwenden abstrakter und systematischer Denkweisen in der Programmierung\n" +
+                        "Dokumentation und Kommunikation von Programmeigenschaften\n" +
+                        "Soziale Kompetenzen, Innovationskompetenz und Kreativität\n" +
+                        "Freude am Lösen von Programmieraufgaben\n" +
+                        "Neugierde an Themen im Zusammenhang mit der Programmierung\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Fundamentale prozedurale Programmierkonzepte (einschließlich Rekursion und Ein- und Ausgabe)\n" +
+                        "Fundamentale Entwurfskonzepte, Problemlösungsstrategien, Algorithmen und Datenstrukturen (einschließlich abstrakter Datentypen)\n" +
+                        "Fundamentale Entwicklungsmethoden (hinsichtlich Programmverstehen, Korrektheit, Debuggen, Dokumentation und Programmierstil) und Programmierwerkzeuge (einschließlich geeigneter Programmierumgebungen)\n" +
+                        " \n" +
+                        "Weitere Informationen\n" +
+                        "Vorbesprechung: 3. Oktober, 13:00 - 15:00, Audi.Max.\n" +
+                        "\n" +
+                        "Das gesamte Modul Programmkonstruktion wird durch die gleichnamige, hier beschriebene Lehrveranstaltung (abgekürzt PK) abgedeckt. PK bildet die erste Stufe der Programmierausbildung für alle Bachelorstudien der Informatik und Wirtschaftsinformatik an der TU Wien. Es wird dringend dazu geraten, PK im ersten Semester eines solchen Studiums zu absolvieren.\n" +
+                        "\n" +
+                        "In ehemaligen Studienplänen waren statt PK die Lehrveranstaltungen Grundlagen der Programmkonstruktion (GPK) sowie Programmierpraxis (PP) vorgesehen. Studierende, die schon eine dieser beiden Lehrveranstaltungen positiv absolviert haben (oder aufgrund eines sehr alten Studienplans nicht benötigen) können nach wie vor die jeweils andere Lehrveranstaltung besuchen. Studierende, auf die diese Voraussetzungen nicht zutreffen, können statt GPK und PP nur mehr PK besuchen.\n" +
+                        "\n" +
+                        "Ablauf\n" +
+                        "\n" +
+                        "Die wöchentlich vier Vorlesungseinheiten im Audi.Max. haben jeweils einen Schwerpunkt in der Theorie oder in Anwendungsbeispielen:\n" +
+                        "\n" +
+                        "Montag, 13:00-14:00 Uhr, Theorie \n" +
+                        "Montag, 14:00-15:00 Uhr, Anwendung \n" +
+                        "Donnerstag, 14:00-15:00 Uhr, Theorie \n" +
+                        "Donnerstag, 15:00-16:00 Uhr, Anwendung  \n" +
+                        " \n" +
+                        "\n" +
+                        "Die Vorlesungen sind nicht alternativ, sondern bauen aufeinander auf und sollten daher alle besucht werden. Die erste Vorlesung am 3. Oktober 2016 bietet viel organisatorische Information (= Vorbesprechung). Beachten Sie die Vorlesungsunterlagen auf TUWEL.\n" +
+                        "\n" +
+                        "Studierende nehmen wiederholt an zweistündigen geleiteten Übungen in Gruppen zu ca. 25 Personen teil. Die Anmeldung zu einer dieser Gruppen ist erst nach der Anmeldung zur LV möglich (Die Anmeldefrist für die Gruppenanmeldung wird separat angekündigt). Diese Übungen mit Anwesenheitspflicht bilden einen wesentlichen Bestandteil der Beurteilung. Ausgewählte Teilnehmer(innen) präsentieren ihre Lösungen der Aufgabenblätter und beantworten Fragen. Einen Schwerpunkt bilden Programmieraufgaben, die vor Ort alleine am Computer zu lösen sind. Alle Übungen finden in den Räumen des Informatik Labors (InfLab) zu unterschiedlichen Zeiten statt, abhängig von den Anmeldungen zu Gruppen.\n" +
+                        "\n" +
+                        "Drei reguläre Tests bilden den Schwerpunkt der Beurteilung. Sie finden am 16. November, 7.Dezember und 25. Jänner in mehreren Labors und zu mehreren Terminen an Computern (mit ähnlicher Software wie bei den Übungen) statt. Der Test im November dauert 45 Minuten, die beiden Tests im Dezember und Jänner je 90 Minuten.\n" +
+                        "\n" +
+                        "Am 5.Oktober findet ein freiwilliger Einstufungstest statt. Er dauert 45 Minuten. Die Teilnahme daran ist freiwillig, wird aber allen Studierenden empfohlen, die schon Programmierkenntnisse haben. Studierende, die beim Einstufungstest mindestens 70% der Punkte erreichen, absolvieren die geleiteten Übungen in speziellen Übungsgruppen für Fortgeschrittene. Es ist nicht möglich an normalen Übungsgruppen teilzunehmen, wenn beim Einstufungstest mindestens 70% erreicht wurden. Das Ergebnis des Einstufungstests ist für den ersten regulären Test anrechenbar, wenn beim Einstufungstest mindestens 50% der Punkte erreicht wurden. Wenn Sie mindestens 50% der Punkte beim Einstufungstest erreicht haben und trotzdem beim ersten regulären Test mitmachen, verfallen die Punkte vom Einstufungstest!\n" +
+                        "\n" +
+                        "Im Februar findet ein Nachtragstest statt. Die Teilnahme ist nur möglich, wenn genau einer der drei regulären Tests negativ oder gar nicht beurteilt wurde. Die Beurteilung des Nachtragstests ersetzt jene dieses regulären Tests. Inhaltlich deckt der Nachtragstest das gesamte Stoffgebiet ab (das genaue Datum wird rechtzeitig über TUWEL angekündigt).\n" +
+                        "\n" +
+                        "Eine wesentliche Komponente ist das Üben, also das Lösen von Aufgaben nach eigenem Gutdünken zu Übungszwecken. Zur Unterstützung stehen im InfLab Tutor(inn)en bereit, die bei Fragen und Problemen weiterhelfen, das sogenannte Programmier-Cafe. Das Programmier-Cafe findet immer von 10:00-11:00 an einem Montag statt.\n" +
+                        "\n" +
+                        "Teilnahmevoraussetzungen\n" +
+                        "\n" +
+                        "Für die Teilnahme an den Komponenten der Lehrveranstaltung gelten folgende Voraussetzungen:\n" +
+                        "\n" +
+                        "Rechtzeitige Anmeldung im TISS.\n" +
+                        "\n" +
+                        "Für jede Teilnahme an einem Test ist eine Terminreservierung in TUWEL nötig.\n" +
+                        "Für die Teilnahme an den geleiteten Übungen ist eine Anmeldung zu einer Übungsgruppe in TUWEL nötig.\n" +
+                        "\n" +
+                        "Übungsgruppen\n" +
+                        "\n" +
+                        "Die Anmeldung zu den Übungsgruppen erfolgt im TUWEL.\n" +
+                        "\n" +
+                        "Die Übungsgruppen beginnen Mitte Oktober. Normale Übungsgruppen werden von Übungsgruppen für Fortgeschrittene unterschieden. Studierende, die beim Einstufungstest mindestens 70% der Punkte erreicht haben, kommen in eine Gruppe für Fortgeschrittene. Alle anderen Studierenden (nicht am Einstufungstest teilgenommen oder weniger Punkte erreicht) kommen in eine normale Übungsgruppe. Diese beiden Arten von Übungsgruppen unterscheiden sich folgendermaßen voneinander:\n" +
+                        "\n" +
+                        "Normale Übungsgruppen haben insgesamt 9 Übungstermine und beginnen zu Semesterbeginn.\n" +
+                        "\n" +
+                        "Übungsgruppen für Fortgeschrittene haben insgesamt 5 Übungstermine. Der erste Übungstermin ist erst nach dem ersten regulären Test.\n" +
+                        "\n" +
+                        "Übungsaufgaben für Fortgeschrittene können sich von denen normaler Übungsgruppen unterscheiden.\n" +
+                        "\n" +
+                        "Einige der unten genannten Übungstermine werden (je nach Teilnehmerzahl) möglicherweise nicht angeboten.\n" +
+                        "\n" +
+                        "Übungsumgebung\n" +
+                        "\n" +
+                        "Zu Beginn der geleiteten Übungen erhalten Teilnehmer(innen) Zugangsdaten zu einem Account auf dem Übungsrechner. Dort ist die zum Lösen der Aufgaben nötige Software installiert. Auch die Betreuer haben Zugang zu den Daten in der Übungsumgebung. In der ersten geleiteten Übung erfolgt eine kurze Einweisung in die Verwendung der Übungsumgebung. Während der geleiteten Übungen bleibt man in der Regel stets in diese Übungsumgebung eingeloggt. Aufgabenblätter können ebenfalls in dieser Übungsumgebung gelöst werden.\n" +
+                        "\n" +
+                        "Kommunikation\n" +
+                        "\n" +
+                        "Ein wichtiger Teil der Kommunikation erfolgt per Mail. Mail an Studierende wird an Adressen der Form eXXXXXXX@student.tuwien.ac.at verschickt, wobei XXXXXXX die Matrikelnummer ist. Teilnehmer(innen) werden gebeten, Mail an diese Adressen regelmäßig zu lesen, da manche Mails eine kurzfristige Aktion erfordern.\n" +
+                        "\n" +
+                        "Durch die erste Anmeldung zu einer Übungsgruppe erhält jede(r) Teilnehmer(in) die Kontaktadresse einer Tutorin oder eines Tutors, der oder die für die persönliche Betreuung zuständig ist. Dies(e) Tutor(in) dient als wichtigste Anlaufstelle bei Problemen und zur Klärung offener Fragen aller Art.\n" +
+                        "\n" +
+                        "Fragen können auch an die Adresse pk@complang.tuwien.ac.at gerichtet werden.\n" +
+                        "\n" +
+                        "Vor und nach Vorlesungen und Übungen sowie in Pausen können Teilnehmer(innen) die Lehrenden gerne direkt ansprechen und Fragen stellen. Daneben bietet jeder Lehrende eine wöchentliche Sprechstunde an, zu der Sie auch ohne Voranmeldung kommen können. Für genaue Termine klicken Sie bitte auf den Namen des jeweiligen Vortragenden.\n" +
+                        "\n" +
+                        "DIE ANMELDUNG ZU DEN ÜBUNGSGRUPPEN ERFOLGT ÜBER TUWEL !\n" +
+                        "\n" +
+                        " \n" +
+                        "ECTS-Breakdown:\n" +
+                        "3.0 ECTS (75 Stunden) für Teilnahme an Vorlesungen inklusive Vor- und Nachbereitung und Lösen der dabei gestellten Aufgaben\n" +
+                        "\n" +
+                        "3.6 ECTS (90 Stunden) für Lösen der Übungsaufgaben und Teilnahme an geleiteten Übungen\n" +
+                        "\n" +
+                        "2.2 ECTS (55 Stunden) für Testvorbereitung und Testteilnahme\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Verstehen und Beherrschen der technischen Grundlagen der Informatik.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Die Lehrveranstaltung vermittelt:\n" +
+                        "\n" +
+                        "Kenntnisse zur Darstellung von Zahlen in Computern\n" +
+                        "Grundlagen der Kodierungstheorie\n" +
+                        "Grundlagen der Booleschen Algebra und Minimierungsverfahren\n" +
+                        "Grundlagen digitaler Schaltungstechnik\n" +
+                        "Gatterschaltungen (Addierer, Codierer, Multiplexer, ...)\n" +
+                        "Schaltnetze mit programmierbaren Bausteinen (ROM, PROM/EPROM, PLA, PAL, ...)\n" +
+                        "Speicherglieder (RS, JK, D) und Speicher (statisch, dynamisch)\n" +
+                        "Synthese und Analyse von Schaltwerken\n" +
+                        "Prozessorarchitekturen\n" +
+                        "Adressierungsarten, Befehlssatz, RISC/CISC und Pipelining\n" +
+                        "Speicherverwaltung\n" +
+                        "Ein-/Ausgabe und Peripheriegeräte\n" +
+                        "Systemsoftware (Kurzüberblick)\n" +
+                        "Die Lernaktivitäten umfassen Vorlesungseinheiten, Übungen in Kleingruppen (\"Tafelübungen\"), sowie drei schriftliche Tests.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Vorbesprechung: Di., 4.10.2016, 10:00 Uhr, Hörsaal GM1 (Audi Max)\n" +
+                        "\n" +
+                        "Die Vorlesungen finden im Hörsaal GM1 (Audi Max) statt; jeweils am Dienstag von 10:00-11:00, am Donnerstag von 10:00-12:00 und am Freitag von 10:00-12:00. Erste reguläre Vorlesung am Do., 6.10.2016.\n" +
+                        "\n" +
+                        "Aufwandsabschätzung (ECTS Breakdown): 150 Stunden = 6 ECTS\n" +
+                        "\n" +
+                        "Anwesenheit Vorlesung / Repetitorien (50 Stunden)\n" +
+                        "Anwesenheit Tests (6 Stunden)\n" +
+                        "Anwesenheit Übung (12 Stunden)\n" +
+                        "Vor-/Nachbereitung Übung (64 Stunden)\n" +
+                        "Nachbereitung Vorlesung und Testvorbereitung (18 Stunden)\n" +
+                        "Alle Informationen, Lernunterlagen und die Angaben für die Übungsbeispiele finden Sie im TUWEL-Kurs der Lehrveranstaltung.\n" +
+                        "\n" +
+                        "Weitere Fragen richten Sie bitte an: tgi@auto.tuwien.ac.at\n" +
+                        "\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Erwerb grundlegender Kenntnisse und Fähigkeiten aus Mathematik.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Grundlagen, Zahlentheorie, Aussagenlogik, Mengenlehre, Kombinatorik, Differenzengleichungen, Graphentheorie, Algebraische Strukturen, Lineare Algebra, Grundlagen Algebraische Codierungstheorie.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Die Vorlesung beginnt am Dienstag, den 4.10. um 9h im AudiMax.\n" +
+                        "\n" +
+                        "Termine:\n" +
+                        "\n" +
+                        "Mo-Fr: 9h-10h im AudiMax\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Beherrschung des Vorlesungsstoffs\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Übungsaufgaben zum Stoff der gleichnamigen Vorlesung\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Achtung: Aktuelle Beginnzeiten für alle Gruppen und weitere Informationen auf der LVA-Homepage!\n" +
+                        "\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Formale Modellierung").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Ziel der Lehrveranstaltung ist es, den Studierenden die wichtigsten formalen Spezifikationsmethoden zu vermitteln und sie zu befähigen, mit diesen Methoden mehrdeutige umgangssprachlich beschriebene Sachverhalte zu modellieren. Weiters lernen sie die formal-mathematischen Beschreibungen dieser Methoden zu lesen und zu verstehen, sodass sie selbständig ihr Wissen an Hand von Fachliteratur vertiefen können.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Aussagenlogik, endliche Automaten, reguläre Ausdrücke, formale Grammatiken, Petri-Netze, Prädikatenlogik als Spezifikationssprache.\n" +
+                        "\n" +
+                        "Die Vermittlung dieser Inhalte erfolgt durch einen Vorlesungsteil und durch selbständig zu lösende Übungsaufgaben. Die Beurteilung setzt sich aus der Bewertung dieser Aufgaben, einer schriftlichen Leistungsüberprüfung und zwei Abgabegesprächen zusammen.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Aufwandsabschätzung\n" +
+                        "\n" +
+                        "17.0 h Vorlesungsbesuch (5 Tage x 3h, 1 Tag x 2h)\n" +
+                        "10.5 h 1.Übungsblatt (15 Beispiele x 0.7h)\n" +
+                        " 0.5 h 1.Tutorengespräch\n" +
+                        " 8.0 h Vorbereitung auf 1.Abgabegespräch(1 Tag x 8h)\n" +
+                        " 1.0 h 1.Abgabegespräch\n" +
+                        "10.5 h 2.Übungsblatt (15 Beispiele x 0.7h)\n" +
+                        " 0.5 h 2.Tutorengespräch\n" +
+                        " 8.0 h Vorbereitung auf 2.Abgabegespräch (1 Tag x 8h)\n" +
+                        " 1.0 h 2.Abgabegespräch\n" +
+                        "16.0 h Vorbereitung auf Abschlusstest (2 Tage x 8h)\n" +
+                        " 1.5 h Abschlusstest\n" +
+                        "-------------------------------------------------\n" +
+                        "74.5 h = ca. 3 Ects"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Einführung in die Datenmodellierung\n" +
+                        "\n" +
+                        "Emails bitte ausschließlich an dm@dbai.tuwien.ac.at\n" +
+                        "\n" +
+                        "Achtung:\n" +
+                        "Für alle StudienanfängerInnen der Bachelorstudien der Fakultät für Informatik der TU Wien ab dem Sommersemester 2011 gilt: \n" +
+                        "Voraussetzung für eine positive Absolvierung dieser LVA ist, dass bis zum Anmeldetermin das Studieneingangsgespräch (STEG) der Fakultät für Informatik absolviert wurde. \n" +
+                        "Details dazu siehe STEG.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Semantische Datenmodellierung (EER)\n" +
+                        "Überführung in das Relationenmodel\n" +
+                        "Datenbanksprachen (Relationale Algebra, Relationaler Tupel/Domänenkalkül, SQL)\n" +
+                        "Relationale Entwurfstheorie (Funktionale Abhängigkeiten, Normalformen)\n" +
+                        "Datenintegrität\n" +
+                        "Weitere Informationen\n" +
+                        "ECTS Breakdown:\n" +
+                        "-----------------------------\n" +
+                        "18h Vorlesungseinheiten\n" +
+                        "20h Übungsblätter\n" +
+                        "33h Vorbereitungszeit für Prüfungen\n" +
+                        "2h Abgabegespräche (bzw. Test) zu den Übungsblättern\n" +
+                        "1h SQL Test\n" +
+                        "1h Abschlussprüfung\n" +
+                        "-----------------------------\n" +
+                        "75h (3 ECTS)\n" +
+                        "-----------------------------"
+        );
+    }
+
+    private void addDescriptionToCourses() {
+        addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester1();
+    }
+
     private void addSubjectsToStudyPlans() {
         addBachelorSoftwareAndInformationEngineeringSubjectsToStudyPlan();
     }
@@ -1156,7 +1380,7 @@ public class DataInitializer {
         Feedback feedback = new Feedback(johnTerry, course);
 
         course = coursesBachelorSoftwareAndInformationEngineering.get("VU Technische Grundlagen der Informatik");
-        Student joanWatson =  studentMap.get("Joan Watson");
+        Student joanWatson = studentMap.get("Joan Watson");
         Student emmaDowd = studentMap.get("Emma Dowd");
         Student carolineBlack = studentMap.get("Caroline Black");
         Student mathematician = studentMap.get("Mathematician");
