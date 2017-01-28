@@ -53,6 +53,14 @@ header, main, footer {
   overflow: visible;
 }
 
+.subjectlist .subject {
+  color: mix(teal, white, 15%);
+}
+
+.default-text {
+  color: rgba(0,0,0,0.87);
+}
+
 h1 {
   font-size: 2.827rem;
 }
@@ -107,6 +115,16 @@ h4, h5 {
 .modal .modal-footer .btn-flat {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.collection-header .main-header {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.collection-header .sub-header {
+  font-size: 1rem;
+  margin: 0;
 }
 
 .collection.with-header .collection-item {
