@@ -1200,8 +1200,35 @@ public class DataInitializer {
         );
     }
 
+    private void addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester2() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Analysis für Informatik und Wirtschaftsinformatik").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Erwerb grundlegender Kenntnisse und Fähigkeiten aus Mathematik.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Folgen, Reihen und Funktionen, Elementare Funktionen, Grenzwerte und Nullstellen von Funktionen, Stetigkeit, Differentialrechnung in einer Variablen, Integralrechnung in einer Variablen, Grundlagen Differential- und Integralrechnung in mehreren Variablen, Elementare Differentialgleichungen.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Weitere Informationen siehe Homepage der Lehrveranstaltung.\n" +
+                        "\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Analysis für Informatik und Wirtschaftsinformatik").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Beherrschung des Vorlesungsstoffs.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Übungsaufgaben zum Stoff der gleichnamigen Vorlesung.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Erste Übungsstunden: 15.03. (für UE am Dienstag), 16.03. (für UE am Mittwoch), 10.03. (für UE am Donnerstag)\n" +
+                        "\n"
+        );
+    }
+
     private void addDescriptionToCourses() {
         addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester1();
+        addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester2();
     }
 
     private void addSubjectsToStudyPlans() {
