@@ -58,8 +58,8 @@ public class GradeRepositoryTests {
     @Before
     public void setUp() throws Exception {
         students = toList(studentRepository.save(asList(
-                new Student("123", "student", "student@uis.at"),
-                new Student("456", "student", "student@uis.at")
+                new Student("123", "student", "student123@uis.at"),
+                new Student("456", "student", "student456@uis.at")
         )));
     }
 
