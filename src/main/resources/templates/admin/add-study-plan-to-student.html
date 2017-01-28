@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml"
       layout:decorator="admin/index">
 <body>
 
@@ -9,21 +8,31 @@
 
     <div class="container">
         <h1 th:text="#{admin.users.student.addtostudyplan}"></h1>
-		  <div>
-            <h4 th:text="#{admin.users.header} +': '+ ${user.getName()}"></h4>
+
+        <div>
+            <h4 th:text="#{admin.studyplan.add.student.header} +': '+ ${user.getName()}"></h4>
         </div>
 		
         <div>
 
-            <ul class="collection z-depth-1">
+            <div
+                class="section-separator"
+                th:if="${#lists.isEmpty(studyPlans)}"
+                th:text="#{admin.studyplan.notfound}"
+            ></div>
 
-                <li class="collection-item" th:if="${#lists.isEmpty(studyPlans)}" th:text="#{admin.studyplan.notfound}"></li>
+            <ul th:unless="${#lists.isEmpty(studyPlans)}" class="collection z-depth-1">
 
                 <li class="collection-item" th:each="studyPlan : ${studyPlans}">
                     <div>
                         <div class="title">
-                        	<a class="teal-text" data-th-href="@{/admin/studyplans/(id=${studyPlan.id})}" th:text="${studyPlan.name}"></a>
-                            <a th:href="'#register-confirm-' + ${studyPlan.id}" class="secondary-content modal-trigger"><i class="material-icons">add</i></a>
+                            <a
+                                th:text="#{admin.studyplan.add.student(${user.getName()})}"
+                                th:href="'#register-confirm-' + ${studyPlan.id}"
+                                class="secondary-content modal-trigger"
+                            ></a>
+
+                            <div th:text="${studyPlan.name}"></div>
                         </div>
                     </div>
 

@@ -145,13 +145,7 @@ public class AdminStudyPlansController {
         return studyPlanService.getAvailableSubjectsForStudyPlan(id, query);
     }
     
-    
-    /**
-     * @author m.pazourek
-     * @param studentId
-     * @param studyPlanId
-     * @return
-     */
+
     @PostMapping(value = "/registerStudent", params = "studentId")
     public String registerStudent(RedirectAttributes redirectAttributes,
                                   @RequestParam Long studentId,
@@ -164,33 +158,28 @@ public class AdminStudyPlansController {
         return "redirect:/admin/users/"+student.getId();
     }
 
-    /**
-     * @author m.pazourek
-     * @param studentToAddId
-     * @param model
-     * @return
-     */
+
     @GetMapping(value = "/registerStudent", params = "studentToAddId")
     public String registerStudentView(@RequestParam Long studentToAddId, Model model) {
-      Student student = studentService.findOne(studentToAddId);
+        Student student = studentService.findOne(studentToAddId);
 
-      model.addAttribute("user", student);
-      model.addAttribute("test", "testString");
+        model.addAttribute("user", student);
+        model.addAttribute("test", "testString");
 
-      List<StudyPlan> toShow = new ArrayList<StudyPlan>();
-      for (StudyPlan sp : studyPlanService.findAll()) {
-        boolean error = false;
-        for(StudyPlanRegistration studentSp : student.getStudyplans()){
-          if(sp.equals(studentSp.getStudyplan())){
-            error = true;
-          }
+        List<StudyPlan> toShow = new ArrayList<StudyPlan>();
+        for (StudyPlan sp : studyPlanService.findAll()) {
+            boolean error = false;
+            for(StudyPlanRegistration studentSp : student.getStudyplans()){
+                if(sp.equals(studentSp.getStudyplan())){
+                    error = true;
+                }
+            }
+            if(!error && sp.isEnabled()){
+                toShow.add(sp);
+            }
         }
-        if(!error&&sp.isEnabled()){
-          toShow.add(sp);
-        }
-      }
 
-      model.addAttribute("studyPlans", toShow);
+        model.addAttribute("studyPlans", toShow);
 
         return "admin/add-study-plan-to-student";
     }

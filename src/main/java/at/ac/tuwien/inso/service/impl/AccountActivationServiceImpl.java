@@ -31,7 +31,7 @@ public class AccountActivationServiceImpl implements AccountActivationService {
 
         if (pendingAccountActivation == null) {
         	log.warn("failed finding pending activaiton for activation code "+activationCode);
-            throw new BusinessObjectNotFoundException(messages.msg("error.activation_code.notfound"));
+            throw new BusinessObjectNotFoundException("Account activation not found");
         }
 
         return pendingAccountActivation;
