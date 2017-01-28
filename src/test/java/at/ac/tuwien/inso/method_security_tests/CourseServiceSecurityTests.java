@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,13 +34,16 @@ import at.ac.tuwien.inso.entity.Semester;
 import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.Subject;
+import at.ac.tuwien.inso.entity.UisUser;
 import at.ac.tuwien.inso.entity.UserAccount;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.LecturerRepository;
 import at.ac.tuwien.inso.repository.SemesterRepository;
 import at.ac.tuwien.inso.repository.StudentRepository;
 import at.ac.tuwien.inso.repository.SubjectRepository;
+import at.ac.tuwien.inso.repository.UisUserRepository;
 import at.ac.tuwien.inso.service.CourseService;
 
 
@@ -64,35 +68,48 @@ public class CourseServiceSecurityTests {
 
     @Autowired
     private LecturerRepository lecturerRepository;
-
+    
     @Autowired
     private StudentRepository studentRepository;
 
     private Lecturer lecturer;
     private Course course;
     private Student student;
+    private Student adminaccount;
     private UserAccount user = new UserAccount("student1", "pass", Role.STUDENT);
+    private UserAccount admin = new UserAccount("admin1", "pass", Role.ADMIN);
+    private UserAccount lecturerRole = new UserAccount("Lecturer", "pass", Role.LECTURER);
 
     @BeforeTransaction
     public void beforeTransaction() {
         student = studentRepository.save(new Student("1", "student1", "student@student.com", user));
+        //workaround because it is not possible to instanceise an admin
+        adminaccount = studentRepository.save(new Student("2", "admin1", "admin@test.com", admin));
     }
 
     @AfterTransaction
     public void afterTransaction() {
         studentRepository.delete(student);
+        studentRepository.delete(adminaccount);
     }
 
     @Before
     public void setUp() {
-        lecturer = lecturerRepository.save(new Lecturer("2", "Lecturer", "lecturer@lecturer.com"));
+        lecturer = lecturerRepository.save(new Lecturer("2", "Lecturer", "lecturer@lecturer.com", lecturerRole));
         Subject subject = subjectRepository.save(new Subject("ASE", BigDecimal.valueOf(6)));
         subject.addLecturers(lecturer);
         subjectRepository.save(subject);
         Semester semester = semesterRepository.save(new Semester(2016, SemesterType.WinterSemester));
         course = courseRepository.save(new Course(subject, semester));
         course.setStudentLimits(0);
+        course.addStudents(student);
     }
+    
+    /*@After
+    public void destroy(){
+    	course.removeStudents(student);
+    	courseRepository.save(course);
+    }*/
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void findCourseForCurrentSemesterWithNameNotAuthenticated() {
@@ -126,14 +143,14 @@ public class CourseServiceSecurityTests {
     }
 
     @Test(expected = AccessDeniedException.class)
-    @WithMockUser(roles = "STUDENT")
+    @WithMockUser(username = "student1", roles = "STUDENT")
     public void saveCourseAuthenticatedAsStudent() {
         AddCourseForm addCourseForm = new AddCourseForm(course);
         courseService.saveCourse(addCourseForm);
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN", username="admin1")
     public void saveCourseAuthenticatedAsAdmin() {
         AddCourseForm addCourseForm = new AddCourseForm(course);
         Course result = courseService.saveCourse(addCourseForm);
@@ -141,7 +158,7 @@ public class CourseServiceSecurityTests {
     }
 
     @Test
-    @WithMockUser(roles = "LECTURER")
+    @WithMockUser(roles = "LECTURER", username="Lecturer")
     public void saveCourseAuthenticatedAsLecturer() {
         AddCourseForm addCourseForm = new AddCourseForm(course);
         Course result = courseService.saveCourse(addCourseForm);
@@ -166,9 +183,22 @@ public class CourseServiceSecurityTests {
         courseService.registerStudentForCourse(course);
     }
     
+    @Test(expected = ValidationException.class)
+    @WithMockUser(roles = "LECTURER", username="Lecturer")
+    public void removeCourseAuthenticatedButHasStudents(){
+    	AddCourseForm addCourseForm = new AddCourseForm(course);
+        Course result = courseService.saveCourse(addCourseForm);
+        assertTrue(addCourseForm.getCourse().equals(result));
+    	
+        courseService.remove(result.getId());
+        Course result2 = courseService.findOne(course.getId());
+    }
+    
     @Test(expected = BusinessObjectNotFoundException.class)
-    @WithMockUser(roles = "LECTURER")
+    @WithMockUser(roles = "LECTURER", username="Lecturer")
     public void removeCourseAuthenticated(){
+    	course.removeStudents(student);
+    	courseRepository.save(course);
     	AddCourseForm addCourseForm = new AddCourseForm(course);
         Course result = courseService.saveCourse(addCourseForm);
         assertTrue(addCourseForm.getCourse().equals(result));

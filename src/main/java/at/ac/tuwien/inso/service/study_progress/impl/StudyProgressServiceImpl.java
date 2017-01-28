@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +18,12 @@ import at.ac.tuwien.inso.entity.Grade;
 import at.ac.tuwien.inso.entity.SemesterType;
 import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.StudyPlanRegistration;
+import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.CourseService;
 import at.ac.tuwien.inso.service.FeedbackService;
 import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.service.SemesterService;
+import at.ac.tuwien.inso.service.UserAccountService;
 import at.ac.tuwien.inso.service.study_progress.CourseRegistration;
 import at.ac.tuwien.inso.service.study_progress.CourseRegistrationState;
 import at.ac.tuwien.inso.service.study_progress.SemesterProgress;
@@ -40,12 +44,24 @@ public class StudyProgressServiceImpl implements StudyProgressService {
 
     @Autowired
     private FeedbackService feedbackService;
+    
+    /*@Autowired
+    private UserAccountService userAccountService;
+    
+    @Autowired
+    private MessageSource messageSource;*/
 
     @Override
     @Transactional(readOnly = true)
     public StudyProgress studyProgressFor(Student student) {
     	SemesterDto currentSemester = semesterService.getOrCreateCurrentSemester();
         
+    	/*//only the logged in student should be able to see his study progress. no other should be able to do this. (guard)
+    	if(!userAccountService.getCurrentLoggedInUser().getId().equals(student.getId())){
+    		String msg = messageSource.getMessage("lecturer.course.edit.error.notallowed", null, LocaleContextHolder.getLocale());
+    		throw new ValidationException(msg);
+    	}*/
+    	
         List<SemesterDto> semesters = studentSemesters(student);
         List<Course> courses = courseService.findAllForStudent(student);
         List<Grade> grades = gradeService.findAllOfStudent(student);

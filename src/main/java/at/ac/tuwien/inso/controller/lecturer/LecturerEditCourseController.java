@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.entity.Course;
+import at.ac.tuwien.inso.entity.Lecturer;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
 import at.ac.tuwien.inso.exception.ValidationException;
