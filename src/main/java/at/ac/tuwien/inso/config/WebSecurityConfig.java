@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
             .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/rest/**").permitAll()   //do not require passwords for rest
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/min/**").permitAll()
