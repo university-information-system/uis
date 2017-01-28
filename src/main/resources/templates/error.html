@@ -15,6 +15,8 @@
 
         <h2 class="error-small" th:text="#{error.internal}"></h2>
 
+        <p th:if="${message}" th:text="${message}"></p>
+
         <p>
             <a href="/" th:text="#{error.back}"></a>
         </p>
