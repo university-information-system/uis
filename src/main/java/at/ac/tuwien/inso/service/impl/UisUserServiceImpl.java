@@ -57,13 +57,17 @@ public class UisUserServiceImpl implements UisUserService {
     }
 
 	@Override
+	@Transactional(readOnly = true)
 	public boolean existsUserWithMailAddress(String email) {
 		log.info("trying to find a user by email adress");
 		List<UisUser> l = uisUserRepository.findAllByEmail(email);
+		
 		if(l!=null&&!l.isEmpty()){
-			return false;
-		}else{
+			log.info("found users with same email adress");
 			return true;
+		}else{
+			log.info("found no users with same email adress");
+			return false;
 		}
 	}
 }
