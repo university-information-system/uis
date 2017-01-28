@@ -27,8 +27,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().disable();
 
 		http
-            .csrf().ignoringAntMatchers("/rest/**") //disable csrf for rest
-            .ignoringAntMatchers("/console/**"); //disable the database
+            .csrf()
+                .ignoringAntMatchers("/rest/**") //disable csrf for rest
+                .ignoringAntMatchers("/console/**") //disable the database
+                .ignoringAntMatchers("/logout"); // allow double logout
 
         http
             .authorizeRequests()
