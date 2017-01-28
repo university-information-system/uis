@@ -7,7 +7,10 @@
     <div class="container">
         <h3 th:text="${subject.name}">Courses</h3>
 
-        <input id="tags" class="typeahead form-control" type="text" />
+        <input id="tags" class="typeahead form-control" type="text" placeholder="Tags+">
+
+        </input>
+
 
         <form class="row"
               th:object="${addCourseForm}"
