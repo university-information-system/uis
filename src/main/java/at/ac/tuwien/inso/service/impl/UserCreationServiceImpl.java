@@ -16,7 +16,9 @@ import org.thymeleaf.context.Context;
 
 import at.ac.tuwien.inso.entity.PendingAccountActivation;
 import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.repository.PendingAccountActivationRepository;
+import at.ac.tuwien.inso.service.UisUserService;
 import at.ac.tuwien.inso.service.UserCreationService;
 import at.ac.tuwien.inso.validator.UisUserValidator;
 import at.ac.tuwien.inso.validator.ValidatorFactory;
@@ -47,6 +49,8 @@ public class UserCreationServiceImpl implements UserCreationService {
     @Value("${uis.server.account.activation.url.prefix}")
     private String activationUrlPrefix;
 
+	@Autowired 
+	private UisUserService userService;
     
     //for doc see interface
     @Transactional
@@ -55,6 +59,12 @@ public class UserCreationServiceImpl implements UserCreationService {
     	log.info("creating pendingaccountactivation by user "+user.toString());
    
         validator.validateNewUisUser(user);
+
+        //check if email is unique
+        if(userService.existsUserWithMailAddress(user.getEmail())){
+        	throw new ValidationException("This is not a valid email. Already exists");
+        }
+        
         PendingAccountActivation activation = new PendingAccountActivation(user);
 
         activation = pendingAccountActivationRepository.save(activation);

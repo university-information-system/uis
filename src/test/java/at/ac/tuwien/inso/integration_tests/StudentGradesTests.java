@@ -36,8 +36,8 @@ public class StudentGradesTests {
 
     private UserAccount studentUser = new UserAccount("student1", "pass", Role.STUDENT);
     private UserAccount student2User = new UserAccount("student2", "pass", Role.STUDENT);
-    private Student student1 = new Student("s000001", "Student1", "email", studentUser);
-    private Student student2 = new Student("s000002", "Student2", "email", student2User);
+    private Student student1 = new Student("s000001", "Student1", "email@1.com", studentUser);
+    private Student student2 = new Student("s000002", "Student2", "email@2.com", student2User);
 
     @Before
     public void setUp() {

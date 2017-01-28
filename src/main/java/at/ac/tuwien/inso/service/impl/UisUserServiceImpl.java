@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.service.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,4 +55,19 @@ public class UisUserServiceImpl implements UisUserService {
     	log.info("trying to find boolean if user with id "+id+" exists.");
         return uisUserRepository.existsByIdentificationNumber(id);
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public boolean existsUserWithMailAddress(String email) {
+		log.info("trying to find a user by email adress");
+		List<UisUser> l = uisUserRepository.findAllByEmail(email);
+		
+		if(l!=null&&!l.isEmpty()){
+			log.info("found users with same email adress");
+			return true;
+		}else{
+			log.info("found no users with same email adress");
+			return false;
+		}
+	}
 }
