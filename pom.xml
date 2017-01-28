@@ -138,6 +138,12 @@
             <groupId>org.apache.mahout</groupId>
             <artifactId>mahout-mr</artifactId>
             <version>0.12.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
