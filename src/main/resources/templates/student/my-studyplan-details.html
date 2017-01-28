@@ -14,21 +14,43 @@
         <div class="row">
             <div class="col s12 m7">
                 <div class="card-content z-depth-1">
-                    <ul class="collection with-header">
+                    <ul class="collection with-header subjectlist">
+
                         <li class="collection-header">
-                            <h4 th:text="#{student.studyplandetails.mandatory}"></h4>
-                            <h6 th:text="${progressMandatory + ' / ' + studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"></h6>
+                            <h4 class="main-header" th:text="#{student.studyplandetails.mandatory}"></h4>
+                            <p
+                                class="sub-header"
+                                th:text="${progressMandatory + ' / ' + studyPlan.getEctsDistribution().getMandatory() + ' ECTS'}"
+                            ></p>
                         </li>
-                        <li class="collection-item" th:each="subjectWithGrade : ${mandatory}">
-                            <div class="title">
-                                <a class="teal-text" th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"></a>
-                                <span class="secondary-content" th:if="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5}"><i class="material-icons tooltipped" th:attr="data-tooltip=#{student.studyplan.details.course.completed}">done</i></span>
+
+                        <li
+                            class="collection-item subject"
+                            th:classappend="${subjectWithGrade.getGrade() != null and subjectWithGrade.getGrade().getMark().getMark() != 5} ? 'succeeded' : ''"
+                            th:each="subjectWithGrade : ${mandatory}"
+                        >
+
+                            <span class="title">
+                                <a
+                                    class="teal-text"
+                                    th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getName()}"
+                                    th:href="@{/student/courses/semester/subject(subjectId=__${subjectWithGrade.subjectForStudyPlan.subject.id}__)}"
+                                ></a>
+                            </span>
+                            <span
+                                class="secondary-content default-text"
+                                th:if="${subjectWithGrade.getGrade() != null}"
+                                th:text="#{grade} + ': ' + ${subjectWithGrade.getGrade().getMark().getMark()}"
+                            ></span>
+
+                            <div>
+                                <span
+                                    th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getEcts()} + ' ECTS'"
+                                ></span><span
+                                    th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}"
+                                    th:text="', ' + ${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. ' + #{semester}"
+                                ></span>
                             </div>
-                            <div th:if="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation() != null}">
-                                <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSemesterRecommendation()} + '. Semester'"></div>
-                            </div>
-                            <div th:text="${subjectWithGrade.getSubjectForStudyPlan().getSubject().getEcts()} + ' ECTS'"></div>
-                            <h5 th:if="${subjectWithGrade.getGrade() != null}" th:text="#{student.studyplandetails.grade} + ': ' + ${subjectWithGrade.getGrade().getMark().getMark()}"></h5>
                         </li>
                     </ul>
                 </div>
