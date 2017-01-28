@@ -1,9 +1,8 @@
 package at.ac.tuwien.inso.controller.grade;
 
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import at.ac.tuwien.inso.entity.Grade;
 import at.ac.tuwien.inso.service.GradeService;
 import at.ac.tuwien.inso.view.pdf.GradePDFView;
 
@@ -26,13 +27,22 @@ public class PublicGradeController{
     @GetMapping
     public ModelAndView generateGradePDF(@RequestParam("identifier") String identifier,
                                          ModelMap modelMap,
-                                         HttpServletRequest request,
-                                         HttpServletResponse response) throws Exception {
+                                         UriComponentsBuilder uriComponentsBuilder) throws Exception {
 
         View view = new GradePDFView();
-        modelMap.addAttribute("grade", gradeService.getForValidation(identifier));
-        modelMap.addAttribute("validationLink",
-                request.getRequestURL().toString() + "?identifier=" + identifier);
+        Grade grade = gradeService.getForValidation(identifier);
+        if (grade == null) {
+            return new ModelAndView("error/404");
+        }
+        modelMap.addAttribute("grade", grade);
+        modelMap.addAttribute(
+                "validationLink",
+                uriComponentsBuilder
+                        .path("/public/grade")
+                        .queryParam("identifier", identifier)
+                        .build()
+                        .toString()
+        );
         ModelAndView modelAndView = new ModelAndView(view);
         return modelAndView;
     }
