@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.MessageSourceSupport;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -63,6 +66,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserAccountService userAccountService;
+    
+    @Autowired
+    private MessageSource messageSource;
 
     @Autowired
     private GradeService gradeService;
@@ -110,7 +116,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void dismissCourse(Student student, Long courseId) {
-        studentRepository.save(student.addDismissedCourse(findOne(courseId)));
+    	Course course = courseRepository.findOne(courseId);
+    	if(course!=null){
+    		if(course.getStudents().contains(student)){
+    	        studentRepository.save(student.addDismissedCourse(findOne(courseId)));
+    		}
+    	}
     }
 
     @Override
@@ -156,7 +167,8 @@ public class CourseServiceImpl implements CourseService {
     
     private void isLecturerAllowedToChangeCourse(Course c, UserAccount u){
     	if(c==null||u==null){
-    		throw new ValidationException("user is not allowed to change this course");
+    		String msg = messageSource.getMessage("lecturer.course.edit.error.notallowed", null, LocaleContextHolder.getLocale());
+    		throw new ValidationException(msg);
     	}
     	
     	if(u.hasRole(Role.ADMIN)){
@@ -171,7 +183,8 @@ public class CourseServiceImpl implements CourseService {
     		}
     	}
     	log.warn("suspisious try to modify course. user is not admin or does not own the subject for this course");
-    	throw new ValidationException("user is not allowed to change this course");
+    	String msg = messageSource.getMessage("lecturer.course.edit.error.notallowed", null, LocaleContextHolder.getLocale());
+    	throw new ValidationException(msg);
     }
 
     @Override
@@ -198,6 +211,8 @@ public class CourseServiceImpl implements CourseService {
             log.warn(msg);
             throw new BusinessObjectNotFoundException(msg);
         }
+        
+        isLecturerAllowedToChangeCourse(course, userAccountService.getCurrentLoggedInUser());
 
 
         List<Grade> grades = gradeService.findAllByCourseId(courseId);
@@ -252,11 +267,26 @@ public class CourseServiceImpl implements CourseService {
     public Course unregisterStudentFromCourse(Student student, Long courseId) {
         log.info("Unregistering student with id {} from course with id {}", student.getId(), courseId);
         validator.validateCourseId(courseId);
+        
         Course course = courseRepository.findOne(courseId);
         if (course == null) {
             log.warn("Course with id {} not found. Nothing to unregister", courseId);
             throw new BusinessObjectNotFoundException();
         }
+        
+        //students should only be able to unregister themselves
+        if(userAccountService.getCurrentLoggedInUser().hasRole(Role.STUDENT)){
+        	if(!student.getId().equals(userAccountService.getCurrentLoggedInUser().getId())){
+        		String msg = messageSource.getMessage("lecturer.course.edit.error.notallowed", null, LocaleContextHolder.getLocale());
+        		throw new ValidationException(msg);
+        	}
+        }
+        
+        //Lectureres should only be able to remove students from their own courses
+        if(userAccountService.getCurrentLoggedInUser().hasRole(Role.LECTURER)){
+        	isLecturerAllowedToChangeCourse(course, userAccountService.getCurrentLoggedInUser());
+        }
+        
 
         course.removeStudents(student);
         studentSubjectPreferenceStore.studentUnregisteredCourse(student, course);
