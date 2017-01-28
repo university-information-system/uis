@@ -29,7 +29,7 @@ import at.ac.tuwien.inso.entity.Tag;
 import at.ac.tuwien.inso.repository.CourseRepository;
 import at.ac.tuwien.inso.repository.SemesterRepository;
 import at.ac.tuwien.inso.service.course_recommendation.CourseScorer;
-import at.ac.tuwien.inso.service_tests.course_recommendation.filters.CourseRelevanceFilter;
+import at.ac.tuwien.inso.service.course_recommendation.filters.CourseRelevanceFilter;
 import at.ac.tuwien.inso.service.course_recommendation.impl.RecommendationServiceImpl;
 import at.ac.tuwien.inso.service.course_recommendation.normalization.CourseNormalizer;
 

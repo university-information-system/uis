@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.service_tests.course_recommendation.filters;
+package at.ac.tuwien.inso.service.course_recommendation.filters;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
