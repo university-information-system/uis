@@ -42,7 +42,7 @@ public interface StudyPlanService {
      * should be ordered by semester recommendation
      * user must be authorized
      * 
-     * @param id. should not be null and not <1
+     * @param id should not be null and not <1
      * @return
      */
     @PreAuthorize("isAuthenticated()")
@@ -52,7 +52,7 @@ public interface StudyPlanService {
      * 
      * returns a list of grades for the subjects for the CURRENTLY LOGGED IN STUDENT.
      * user needs to be authenticated
-     * @param id. should not be null and not <1
+     * @param id should not be null and not <1
      * @return
      */
     @PreAuthorize("hasRole('STUDENT')")
@@ -62,7 +62,7 @@ public interface StudyPlanService {
      * adds a subject to a study plan. 
      * user needs to be ADMIN
      * 
-     * @param subjectForStudyPlan. should contain a subject that is not null and has a id that is not <1. also should contain a study plan that is not null and has an id that is not null and not <1
+     * @param subjectForStudyPlan should contain a subject that is not null and has a id that is not <1. also should contain a study plan that is not null and has an id that is not null and not <1
      */
     @PreAuthorize("hasRole('ADMIN')")
     void addSubjectToStudyPlan(SubjectForStudyPlan subjectForStudyPlan);
@@ -73,7 +73,7 @@ public interface StudyPlanService {
      * 
      * user has to be authenticated
      * 
-     * @param id. should not be null and not <1
+     * @param id should not be null and not <1
      * @param query
      * @return
      */
@@ -87,7 +87,7 @@ public interface StudyPlanService {
      * may throw BusinessObjectNotFoundException if the study plan with this id does not exists
      * may throw a ValidationException if the id is not correct
      * 
-     * @param id. should not be null and not <1
+     * @param id should not be null and not <1
      */
     @PreAuthorize("hasRole('ADMIN')")
     StudyPlan disableStudyPlan(Long id);
