@@ -1,37 +1,23 @@
 package at.ac.tuwien.inso.controller.admin;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import at.ac.tuwien.inso.controller.admin.forms.CreateStudyPlanForm;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.StudyPlan;
-import at.ac.tuwien.inso.entity.StudyPlanRegistration;
-import at.ac.tuwien.inso.entity.Subject;
-import at.ac.tuwien.inso.entity.SubjectForStudyPlan;
-import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.controller.admin.forms.*;
+import at.ac.tuwien.inso.entity.*;
+import at.ac.tuwien.inso.exception.*;
 import at.ac.tuwien.inso.exception.ValidationException;
-import at.ac.tuwien.inso.service.StudentService;
-import at.ac.tuwien.inso.service.StudyPlanService;
-import at.ac.tuwien.inso.service.SubjectService;
-import at.ac.tuwien.inso.service.impl.Messages;
+import at.ac.tuwien.inso.service.*;
+import at.ac.tuwien.inso.service.impl.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.dao.*;
+import org.springframework.stereotype.*;
+import org.springframework.ui.*;
+import org.springframework.validation.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.*;
+
+import javax.validation.*;
+import java.math.*;
+import java.util.*;
+import java.util.stream.*;
 
 @Controller
 @RequestMapping("/admin/studyplans")
@@ -104,6 +90,8 @@ public class AdminStudyPlansController {
         try {
             StudyPlan studyPlan = studyPlanService.create(form.toStudyPlan());
             model.addAttribute("studyPlan", studyPlan);
+            model.addAttribute("addedMandatoryEcts", 0.0);
+            model.addAttribute("addedOptionalEcts", 0.0);
             model.addAttribute("flashMessageNotLocalized", messages.msg("admin.studyplans.create.success", studyPlan.getName()));
         } catch(DataAccessException e) {
             redirectAttributes.addFlashAttribute("flashMessage", "admin.studyplans.create.error");
