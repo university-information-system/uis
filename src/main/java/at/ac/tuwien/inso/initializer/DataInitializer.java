@@ -1607,9 +1607,6 @@ public class DataInitializer {
 
         Student newStudent = studentMap.get("NewStudent");
         register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch"));
-        register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"));
-        register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik"));
-        register(newStudent, coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"));
     }
 
     private void register(Student student, Course course) {
@@ -1675,20 +1672,6 @@ public class DataInitializer {
                 studentMap.get("SimilarToMathematician"),
                 Mark.EXCELLENT);
         gradeRepository.save(grade);
-
-        grade = new Grade(
-                coursesBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion"),
-                lecturer,
-                studentMap.get("NewStudent"),
-                Mark.EXCELLENT);
-        gradeRepository.save(grade);
-
-        grade = new Grade(
-                coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung"),
-                lecturer,
-                studentMap.get("NewStudent"),
-                Mark.EXCELLENT);
-        gradeRepository.save(grade);
     }
 
     private void giveFeedback() {
@@ -1702,7 +1685,6 @@ public class DataInitializer {
         Student carolineBlack = studentMap.get("Caroline Black");
         Student mathematician = studentMap.get("Mathematician");
         Student similarToMathematician = studentMap.get("SimilarToMathematician");
-        Student newStudent = studentMap.get("NewStudent");
 
         Feedback feedback1 = new Feedback(
                 joanWatson,
@@ -1758,13 +1740,7 @@ public class DataInitializer {
                 coursesBachelorSoftwareAndInformationEngineering.get("VO Algebra und Diskrete Mathematik für Informatik und Wirtschaftsinformatik")
         );
 
-        Feedback feedback8 = new Feedback(
-                newStudent,
-                coursesBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung")
-        );
-
-
-        giveFeedback(feedback, feedback1, feedback2, feedback3, feedback4, feedback5, feedback6, feedback7, feedback8);
+        giveFeedback(feedback, feedback1, feedback2, feedback3, feedback4, feedback5, feedback6, feedback7);
     }
 
     private void giveFeedback(Feedback... feedbacks) {
