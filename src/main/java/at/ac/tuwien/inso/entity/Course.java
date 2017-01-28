@@ -1,20 +1,13 @@
 package at.ac.tuwien.inso.entity;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
+import at.ac.tuwien.inso.dto.SemesterDto;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
-import at.ac.tuwien.inso.dto.SemesterDto;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 @Entity
 public class Course {
@@ -29,7 +22,7 @@ public class Course {
     @ManyToOne(optional = false)
     private Semester semester;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)

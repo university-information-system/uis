@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html
+    xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    xmlns="http://www.w3.org/1999/xhtml"
     layout:decorator="layout/default"
 >
 <head>
@@ -15,27 +15,38 @@
 
     <div class="row">
         <div class="col s12 m8 offset-m2 l4 offset-l4">
-            <p class="center white-text"><i class="large material-icons">school</i></p>
-            <h1 class="white-text center">UIS <span class="hide-on-small-only">- University Information System</span></h1>
+
+            <div class="login-logo-wrapper">
+                <i class="large material-icons">school</i>
+            </div>
+
+            <h1 class="white-text center">
+                UIS <span class="hide-on-small-only">– University Information System</span>
+            </h1>
 
             <form id="login" class="card-panel z-depth-2" th:action="@{/login}" method="post">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="username" name="username" type="text" autofocus="autofocus"/>
+                        <input id="username" name="username" required="required" type="text" autofocus="autofocus"/>
                         <label for="username" th:text="#{username}"></label>
                     </div>
 
                     <div class="input-field col s12">
-                        <input id="password" name="password" type="password"/>
+                        <input id="password" name="password" type="password" required="required"/>
                         <label for="password" th:text="#{password}"></label>
+                    </div>
+
+                    <div
+                        th:if="${loginError != null}"
+                        th:text="${loginError}"
+                        class="red-text center col s12"
+                    >
                     </div>
 
                     <div class="input-field col s12">
                         <input type="submit" th:value="#{log.in}" class="btn-large col s12"/>
                     </div>
 
-                    <p th:if="${param.error}" class="red-text center col s12" th:text="#{invalid.credentials}">
-                    </p>
                 </div>
             </form>
         </div>

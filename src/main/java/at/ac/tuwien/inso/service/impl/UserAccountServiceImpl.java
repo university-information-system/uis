@@ -15,7 +15,7 @@ import at.ac.tuwien.inso.service.UserAccountService;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
-	//this class does also extend org.springframework.security.core.userdetails.UserDetailsService
+    // UserAccountService extends org.springframework.security.core.userdetails.UserDetailsService
 
 
 	private static final Logger log = LoggerFactory.getLogger(UserAccountServiceImpl.class);
