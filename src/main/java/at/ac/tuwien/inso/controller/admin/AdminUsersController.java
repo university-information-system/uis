@@ -26,6 +26,7 @@ import at.ac.tuwien.inso.entity.Student;
 import at.ac.tuwien.inso.entity.StudyPlanRegistration;
 import at.ac.tuwien.inso.entity.Subject;
 import at.ac.tuwien.inso.entity.UisUser;
+import at.ac.tuwien.inso.exception.ValidationException;
 import at.ac.tuwien.inso.service.LecturerService;
 import at.ac.tuwien.inso.service.StudentService;
 import at.ac.tuwien.inso.service.UisUserService;
@@ -132,11 +133,17 @@ public class AdminUsersController {
 
             return "redirect:/admin/users";
         }
-
-        userCreationService.create(form.toUisUser());
-
-        redirectAttributes.addFlashAttribute("flashMessage", "admin.users.create.success");
-
+        boolean error = false;
+        try{
+        	userCreationService.create(form.toUisUser());
+        }catch(ValidationException e){
+        	error = true;
+            redirectAttributes.addFlashAttribute("flashMessage", "admin.users.create.error.email");
+        }
+        if(!error){
+        	redirectAttributes.addFlashAttribute("flashMessage", "admin.users.create.success");
+        }
+        
         return "redirect:/admin/users";
     }
 }
