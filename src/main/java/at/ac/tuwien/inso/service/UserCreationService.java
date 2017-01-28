@@ -8,7 +8,7 @@ import at.ac.tuwien.inso.entity.UisUser;
 public interface UserCreationService {
 
 	/**
-	 * this methods creates a new {@link UisUser} that should not automatically be activated by this method.
+	 * this method creates a new {@link UisUser} that should not automatically be activated by this method.
 	 *
 	 * 
 	 * Can only be used by ADMINS.
