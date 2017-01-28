@@ -24,7 +24,7 @@ public interface UisUserService {
 
     /**
      * 
-     * @param long id. should not be null and not <1 
+     * @param id should not be null and not <1
      * @return UisUser
      * @throws BusinessObjectNotFoundException
      * 
