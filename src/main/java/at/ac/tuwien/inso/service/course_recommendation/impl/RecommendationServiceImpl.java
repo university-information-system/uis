@@ -49,7 +49,12 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public List<Course> recommendCoursesSublist(Student student) {
-        return recommendCourses(student).subList(0, N_MAX_COURSE_RECOMMENDATIONS.intValue());
+        List<Course> recommended = recommendCourses(student);
+        return recommended.subList(0, max(N_MAX_COURSE_RECOMMENDATIONS.intValue(), recommended.size()));
+    }
+
+    private int max (int a, int b) {
+        return a < b ? a : b;
     }
 
     @Override
