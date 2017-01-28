@@ -2,17 +2,17 @@ package at.ac.tuwien.inso.initializer;
 
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
-import at.ac.tuwien.inso.service.student_subject_prefs.StudentSubjectPreferenceStore;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import at.ac.tuwien.inso.service.student_subject_prefs.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
-import java.math.BigDecimal;
+import java.math.*;
+import java.util.ArrayList;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.stream.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 @Component
 public class DataInitializer {
@@ -206,7 +206,7 @@ public class DataInitializer {
         put("VU 2D and 3D Image Registration", new Subject("VU 2D and 3D Image Registration", new BigDecimal(3.0)));
         put("VU Mobile Robotik", new Subject("VU Mobile Robotik", new BigDecimal(4.5)));
         put("SE Critical Algorithm Studies", new Subject("SE Critical Algorithm Studies", new BigDecimal(3.0)));
-        put("VU Brückenkurs Programmierung für Studienanfänger", new Subject("", new BigDecimal(0.0)));
+        put("VU Brückenkurs Programmierung für Studienanfänger", new Subject("VU Brückenkurs Programmierung für Studienanfänger", new BigDecimal(3.0)));
     }};
 
     private Map<String, Subject> subjectsBachelorSoftwareAndInformationEngineering;
