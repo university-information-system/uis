@@ -91,7 +91,7 @@ public class PublicGradeTests {
 
     @Test
     public void generateGradePDFTest() throws Exception {
-        grade = gradeRepository.findOne(new Long(1));
+        grade = gradeRepository.findOne(grade.getId());
         mockMvc.perform(
                 get("/public/grade?identifier=" + grade.getUrlIdentifier())
                         .with(anonymous())
