@@ -20,35 +20,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserAccountService userAccountService;
 
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+
 		http.headers().frameOptions().disable();
+
 		http
-				.csrf().ignoringAntMatchers("/rest/**") //disable csrf for rest
-				.ignoringAntMatchers("/console/**") //disable the database
-				.and()
-				.authorizeRequests()
-				.antMatchers("/rest/**").permitAll()   //do not require passwords for rest
-				.antMatchers("/public/**").permitAll()
-				.antMatchers("/min/**").permitAll()
-				.antMatchers("/webjars/**").permitAll()
-				.antMatchers("/node_modules/**").permitAll()
-				.antMatchers("/console/**").permitAll()
-				.antMatchers("/account_activation/**").permitAll()
-				.antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-				.antMatchers("/lecturer/**").hasRole(Role.LECTURER.name())
-				.antMatchers("/student/**").hasRole(Role.STUDENT.name())
-				.anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                .defaultSuccessUrl("/")
-                .permitAll()
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login?loggedOut")
-                .permitAll();
+            .csrf().ignoringAntMatchers("/rest/**") //disable csrf for rest
+            .ignoringAntMatchers("/console/**"); //disable the database
+
+        http
+            .authorizeRequests()
+            .antMatchers("/rest/**").permitAll()   //do not require passwords for rest
+            .antMatchers("/public/**").permitAll()
+            .antMatchers("/min/**").permitAll()
+            .antMatchers("/webjars/**").permitAll()
+            .antMatchers("/node_modules/**").permitAll()
+            .antMatchers("/console/**").permitAll()
+            .antMatchers("/account_activation/**").permitAll()
+            .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+            .antMatchers("/lecturer/**").hasRole(Role.LECTURER.name())
+            .antMatchers("/student/**").hasRole(Role.STUDENT.name())
+            .anyRequest().authenticated();
+
+        http
+            .formLogin()
+            .loginPage("/login")
+            .failureUrl("/login?error")
+            .defaultSuccessUrl("/")
+            .permitAll();
+
+        http
+            .logout()
+            .logoutSuccessUrl("/login?loggedOut")
+            .permitAll();
     }
 
 	@Autowired
