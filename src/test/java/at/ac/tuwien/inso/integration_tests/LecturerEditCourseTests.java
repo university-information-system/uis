@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.controller.lecturer.forms.AddCourseForm;
 import at.ac.tuwien.inso.repository.GradeRepository;
+import at.ac.tuwien.inso.repository.LecturerRepository;
 
 import java.math.BigDecimal;
 
@@ -36,11 +37,17 @@ public class LecturerEditCourseTests extends AbstractCoursesTests {
 
     @Autowired
     private GradeRepository gradeRepository;
+    
+    @Autowired
+    private LecturerRepository lecturerRepository;
 
     @Test
     public void testRemoveCourseWithoutStudentsOrGradesByIdSuccessfullyRemovesCourse() throws Exception{
         Course c = aseWS2016;
         assertTrue(courseRepository.exists(c.getId()));
+        
+        //lecturerRepository.save(new Lecturer("testLec3", "lecturer3", "lecturer3@uis.at", new UserAccount("lecturer3", "pass", Role.LECTURER)));
+        
         mockMvc.perform(
                 post("/lecturer/editCourse/remove?courseId="+c.getId())
                         .with(user("lecturer3").roles(Role.LECTURER.name()))
@@ -119,8 +126,11 @@ public class LecturerEditCourseTests extends AbstractCoursesTests {
         String testDescription = "TEST DESCRIPTION";
         form.getCourse().setDescription(testDescription);
         form.getCourse().setStudentLimits(20);
+        
+        lecturerRepository.save(new Lecturer("testLec", "lecturerTest", "lecturerTest@uis.at", new UserAccount("lecturerTest", "pass", Role.LECTURER)));
+        
         mockMvc.perform(
-                post("/lecturer/editCourse").with(user("lecturer").roles(Role.LECTURER.name()))
+                post("/lecturer/editCourse").with(user("lecturerTest").roles(Role.LECTURER.name()))
                         .content(form.toString())
                         .param("courseId", form.getCourse().getId().toString())
                         .with(csrf())

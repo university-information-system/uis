@@ -69,7 +69,7 @@ public abstract class AbstractCoursesTests {
     protected Semester ws2016 = new Semester(2016, SemesterType.WinterSemester);
     protected Subject calculus = new Subject("Calculus", new BigDecimal(3.0));
     protected Subject sepm = new Subject("SEPM", new BigDecimal(6.0));
-    protected Subject ase = new Subject("ASE", new BigDecimal(6.0));
+    protected Subject ase = new Subject("ASE", new BigDecimal(6.0)).addLecturers(lecturer3);
     protected Course sepmSS2016 = new Course(sepm, ss2016);
     protected Course sepmWS2016 = new Course(sepm, ws2016);
     protected Course aseWS2016 = new Course(ase, ws2016);
