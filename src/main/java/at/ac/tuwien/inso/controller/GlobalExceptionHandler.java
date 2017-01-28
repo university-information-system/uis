@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Locale;
+
 import at.ac.tuwien.inso.exception.ActionNotAllowedException;
 import at.ac.tuwien.inso.exception.BusinessObjectNotFoundException;
+import at.ac.tuwien.inso.exception.UserFacingException;
 import at.ac.tuwien.inso.exception.ValidationException;
 
 
@@ -29,7 +32,7 @@ public class GlobalExceptionHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value=HttpStatus.NOT_FOUND)
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
     public ModelAndView handlerExceptions(HttpServletRequest request, Exception exception) {
         logger.warn("Arbitrary exception happened", exception);
         ModelAndView mav = new ModelAndView();
@@ -51,6 +54,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleBusinessObjectNotFoundExceptions(HttpServletRequest request, BusinessObjectNotFoundException ex) {
         logger.warn("BusinessObjectNotFoundException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
+        mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
         return mav;
     }
@@ -78,6 +82,21 @@ public class GlobalExceptionHandler {
     public ModelAndView handleTypeMismatchExceptions(HttpServletRequest request, TypeMismatchException ex) {
         logger.warn("TypeMismatchRequest: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
+        mav.setViewName("error");
+        return mav;
+    }
+
+    @ExceptionHandler(UserFacingException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ModelAndView handleUserFacingException(HttpServletRequest request, UserFacingException ex) {
+        logger.warn("UserFacingException: " + request.getRequestURL(), ex);
+
+        ModelAndView mav = new ModelAndView();
+
+        Locale locale = LocaleContextHolder.getLocale();
+        String msg = messageSource.getMessage(ex.getMessage(), null, locale);
+        mav.addObject("message", msg);
+
         mav.setViewName("error");
         return mav;
     }
