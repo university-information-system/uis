@@ -8,6 +8,14 @@ import at.ac.tuwien.inso.dto.SemesterDto;
 
 public interface SemesterService {
 
+    /**
+     * Creates a new semester.
+     *
+     * User needs to be authenticated as an admin.
+     *
+     * @param semester the new semester to create
+     * @return the created semester
+     */
     @PreAuthorize("hasRole('ADMIN')")
     SemesterDto create(SemesterDto semester);
 
