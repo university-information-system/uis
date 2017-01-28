@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -102,6 +103,11 @@ public class CourseServiceSecurityTests {
         course = courseRepository.save(new Course(subject, semester));
         course.setStudentLimits(0);
         course.addStudents(student);
+    }
+    
+    @After
+    public void destroy(){
+    	course.removeStudents(student);
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
