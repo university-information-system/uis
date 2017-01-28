@@ -42,7 +42,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleDataAccessExceptions(HttpServletRequest request, DataAccessException ex) {
         logger.warn("DataAccessException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("message", messageSource.getMessage("error.dataaccess", null, LocaleContextHolder.getLocale()));
         mav.setViewName("error");
         return mav;
     }
@@ -52,7 +51,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleBusinessObjectNotFoundExceptions(HttpServletRequest request, BusinessObjectNotFoundException ex) {
         logger.warn("BusinessObjectNotFoundException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
         return mav;
     }
@@ -62,7 +60,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleValidationExceptions(HttpServletRequest request, ValidationException ex) {
         logger.warn("ValidationException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
         return mav;
     }
@@ -72,7 +69,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleActionNotAllowedExceptions(HttpServletRequest request, ActionNotAllowedException ex) {
         logger.warn("ActionNotAllowedException: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("message", ex.getMessage());
         mav.setViewName("error");
         return mav;
     }
@@ -82,7 +78,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleTypeMismatchExceptions(HttpServletRequest request, TypeMismatchException ex) {
         logger.warn("TypeMismatchRequest: " + request.getRequestURL(), ex);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("message", messageSource.getMessage("error.badrequest", null, LocaleContextHolder.getLocale()));
         mav.setViewName("error");
         return mav;
     }
