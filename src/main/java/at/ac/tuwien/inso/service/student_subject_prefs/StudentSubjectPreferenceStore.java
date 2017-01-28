@@ -23,5 +23,11 @@ public interface StudentSubjectPreferenceStore {
      */
     void studentUnregisteredCourse(Student student, Course course);
 
+    /**
+     * is updating student subject preference due to course feedback
+     * 
+     * @param student should not be null and id should not be null
+     * @param feedback should have a valid feedback.getType()
+     */
     void studentGaveCourseFeedback(Student student, Feedback feedback);
 }
