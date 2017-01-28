@@ -78,7 +78,7 @@ public class GradePDFView extends AbstractPdfView {
 
         Cell course = new Cell();
         course.setColspan(3);
-        course.add(new Paragraph("Course: ", SMALL_FONT));
+        course.add(new Paragraph("Subject: ", SMALL_FONT));
         course.add(new Paragraph(grade.getCourse().getSubject().getName()));
 
         Cell semester = new Cell();
