@@ -1226,9 +1226,299 @@ public class DataInitializer {
         );
     }
 
+    private void addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester3() {
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Objektorientierte Programmiertechniken").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Fachliche und methodische Kenntnisse\n" +
+                        "Kenntnisse objektorientierter Programmiersprachen und der produktiven Programmierung aus der Sichtweise aktueller Methoden der Softwareentwicklung\n" +
+                        "Kenntnisse zur effizienten Entwicklung objektorientierter Programme auf Basis eines guten Verständnisses der Wiederverwendung von Programmteilen\n" +
+                        "Kognitive und praktische Fertigkeiten\n" +
+                        "Durch die praktische Auseinandersetzung mit einer objektorientierten Programmiersprache (Java), Programmiermethoden und Programmierwerkzeugen werden folgende Fertigkeiten vermittelt bzw. ausgebaut:\n" +
+                        "\n" +
+                        "Modellbildung und Abstraktion in der objektorientierten Programmierung\n" +
+                        "Einsatz bewährter Methoden zur Modellbildung, Lösungsfindung und Evaluation im Bereich der objektorientierten Programmierung\n" +
+                        "Umgang mit unspezifizierten und unvollständig spezifizierten Problemsituationen\n" +
+                        "Kritische Bewertung und Reflexion von Lösungen\n" +
+                        "Soziale Kompetenzen, Innovationskompetenz und Kreativität\n" +
+                        "Der Übungsbetrieb fördert die Selbstorganisation und Eigenverantwortlichkeit sowie das Finden kreativer Problemlösungen und eigenständiger Lösungsstrategien.\n" +
+                        "Die Arbeit in Gruppen stärkt die Teamfähigkeit.\n" +
+                        "Die Vermittlung von Hintergrundwissen fördert die Neugierde an Themen im Bereich der objektorientierten Programmiersprachen und des objektorientierten Paradigmas.\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Überblick über das objektorientierte Programmierparadigma und entsprechende Programmiersprachen\n" +
+                        "Fortgeschrittenere objektorientierte Sprachkonzepte in Java, gute Kenntnisse einfacher Sprachkonzepte werden vorausgesetzt\n" +
+                        "Sprachkonzepte für Generizität, Nebenläufigkeit und Modularisierung in Java\n" +
+                        "Produktive Verwendung dieser Konzepte in einer dem objektorientierten Paradigma entsprechenden Weise\n" +
+                        "Genaue Betrachtung der Ersetzbarkeit und anderer für die Wiederverwendung in objektorientierten Programmen bedeutender Prinzipien\n" +
+                        "Zusammenhänge zwischen verschiedenen objektorientierten Konzepten und Prinzipien\n" +
+                        "Ausgewählte Entwurfsmuster und objektorientierte Programmiertechniken\n" +
+                        "Weitere Informationen\n" +
+                        "Webseite\n" +
+                        "Siehe http://www.complang.tuwien.ac.at/franz/objektorientiert.html für weitere Informationen.\n" +
+                        "\n" +
+                        "Didaktische Vorgehensweise\n" +
+                        "Wöchentliche Vorlesungen vermitteln den eher theoretischen Stoff und geben Hintergrundinformationen. Ebenso beinahe wöchentlich sind Programmieraufgaben, die auf den Vorlesungsstoff Bezug nehmen, in Kleingruppen zu lösen. Zur Erreichung der Ziele wird großer Wert auf das selbständige Finden von Lösungswegen und individuelle Lösungen gelegt; der eigene Weg zur Lösung ist wichtiger als die Lösung selbst.\n" +
+                        "\n" +
+                        "Aufwand\n" +
+                        "Für die Lösung der Programmieraufgaben und das entsprechende Abgabegespräch (Übungsteil) wird eine Aufwand im Umfang von 2 ECTS (50 Stunden) angenommen, für die Teilnahme an Vorlesungen, die Erarbeitung der Vorlesungsinhalte und die Prüfung (Theorieteil) ist ein Aufwand von 1 ECTS (25 Stunden) vorgesehen.\n" +
+                        "\n" +
+                        "Hinweise zur Anmeldung\n" +
+                        "Sie müssen sich sowohl zur Lehrveranstaltung als auch zu einer der zahlreichen Übungsgruppen mit Namen oopXn anmelden, wobei X ein Buchstabe im Namen der betreuenden Tutorin oder des Tutors  und n eine fortlaufende Nummer ist. Alle anderen hier sichtbaren Gruppen werden erst im Jänner zur Anmeldung zum Abgabegespräch dienen. Die genauen Termine für Abgabegespräche sowie Prüfungen werden sich bis zum Jänner noch ändern, aber ungefähr in den Zeiträumen liegen, die aus den Titeln erkennbar sind.\n" +
+                        "\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Funktionale Programmierung").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Die Studierenden erhalten ein umfassendes theoretisches und\n" +
+                        "praktisches Verständnis der Grundlagen, Prinzipien und Konzepte der\n" +
+                        "funktionalen Programmierung und lernen, diese auf ihre Eignung zur\n" +
+                        "Lösung programmiertechnischer Aufgaben zu bewerten und zielorientiert\n" +
+                        "und angemessen im funktionalen Programmierstil einzusetzen und\n" +
+                        "anzuwenden.\n" +
+                        "\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Die Vorlesung führt in Theorie und Praxis in die Prinzipien und\n" +
+                        "Konzepte des funktionalen Programmierstils ein und spannt dabei den\n" +
+                        "Bogen von den Grundlagen bis zur Anwendung. In der\n" +
+                        "vorlesungsbegleitenden Plenumsübung Haskell Live wird am Beispiel\n" +
+                        "konkreter Aufgabenstellungen praktisch vorgeführt und diskutiert, wie\n" +
+                        "sich diese zur Lösung einsetzen lassen. Dabei können insbesondere auch\n" +
+                        "eigene Lösungsvorschläge vorgestellt und zur Diskussion gestellt\n" +
+                        "werden. Im Übungsteil wird der funktionale Programmierstil anhand von\n" +
+                        "Beispielen eigenständig angewendet und eingeübt und so ein vertieftes\n" +
+                        "theoretisches und praktisches Verständnis für die Konzepte und\n" +
+                        "Prinzipien funktionaler Programmierung erarbeitet und erworben. Als\n" +
+                        "Demonstrations- und Implementierungssprache wird in Vorlesung und\n" +
+                        "Übung die funktionale state-of-the-art Programmiersprache Haskell\n" +
+                        "verwendet.\n" +
+                        "\n" +
+                        "Teil I: Einführung\n" +
+                        "\n" +
+                        "Motivation\n" +
+                        "Grundlagen von Haskell\n" +
+                        "Rekursion und Rekursionstypen\n" +
+                        "Teil II: Applikative Programmierung       \n" +
+                        "\n" +
+                        "Auswertung von Ausdrücken\n" +
+                        "Programmentwicklung und Programmverstehen\n" +
+                        "Datentypdeklarationen\n" +
+                        "Teil III: Funktionale Programmierung\n" +
+                        "\n" +
+                        "Funktionen höherer Ordnung\n" +
+                        "Parametrische und ad hoc Polymorphie\n" +
+                        "Teil IV: Fundierung funktionaler Programmierung\n" +
+                        "\n" +
+                        "Auswertungsstrategien\n" +
+                        "Formale Rechenmodelle\n" +
+                        "Lambda-Kalkül\n" +
+                        "Teil V: Ergänzungen und weiterführende Konzepte\n" +
+                        "\n" +
+                        "Muster\n" +
+                        "Module\n" +
+                        "Ein- und Ausgabe\n" +
+                        "Programmierprinzipien mit Strömen und Funktionalen\n" +
+                        "Monomorphe und polymorphe Typinferenz\n" +
+                        "Fehlerbehandlung\n" +
+                        "Teil VI: Resümee und Perspektiven\n" +
+                        "\n" +
+                        "Zusammenfassung und Ausblick\n" +
+                        " \n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Aufteilung der ECTS-Punkte:\n" +
+                        "\n" +
+                        "Der Lehrveranstaltung sind 3.0 ECTS-Punkte zugeordnet. Diese\n" +
+                        "entsprechen einem durchschnittlichen Lernaufwand von 75\n" +
+                        "Stunden. Dieser durchschnittliche Lernaufwand verteilt sich in\n" +
+                        "folgender Weise auf die einzelnen Teile der Lehrveranstaltung:\n" +
+                        "\n" +
+                        "Vorlesungsbesuch und -vor- und -nachbereitung: 30 Std.\n" +
+                        "\"Haskell Live\"-Plenumsübungsbesuch und \"Haskell Private\"-Teilnahme, Vor- und -nachbereitung: 10 Std.\n" +
+                        "Übungsaufgaben: 30 Std.\n" +
+                        "Prüfungsvorbereitung und Klausur: 5 Std.\n" +
+                        "Die Lehrveranstaltung beginnt am Di, 04.10.2016, 08:15-09:45 Uhr, mit Vorbesprechung und erster Vorlesung.\n" +
+                        "\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Betriebssysteme").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Erwerb von fachlichen und methodischen Kenntnissen und Fertigkeiten:\n" +
+                        "\n" +
+                        "Kenntnisse über die Rolle und Aufgaben von Betriebssystemen\n" +
+                        "Verstehen von Designentscheidungen für das Management von Systemressourcen\n" +
+                        "Verständnis der Mechanismen zur Koordination und Synchronisation paralleler Prozesse\n" +
+                        "Grundkenntnisse der Netzwerkkommunikation und des Zugriffsschutzes\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Grundkonzepte Betriebssysteme\n" +
+                        "Definition und Entwicklungsgeschichte\n" +
+                        "zentrale Abstraktionen und Mechanismen\n" +
+                        "Betriebssystemarchitekturen\n" +
+                        "Prozesse, Threads und Scheduling\n" +
+                        "Prozesse, Prozesszustände\n" +
+                        "Datenstrukturen und Mechanismen zur Prozessverwaltung\n" +
+                        "Threads, Multithreading\n" +
+                        "Scheduling und Dispatching (Ziele und Verfahren)\n" +
+                        "Prozesssynchronisation und Deadlock\n" +
+                        "Mutual Exclusion und Bedingungsynchronisation\n" +
+                        "Synchronisationsmechanismen und Basiskonstrukte (Dekker Algorithmus, Test and Set, Spinlocks), Semaphore, Sequencer und Eventcounts, Monitor, Nachrichten und Synchronisation\n" +
+                        "Synchronisationsaufgaben: Producer-Consumer, Reader-Writer, Dining Philosophers\n" +
+                        "Deadlock: Voraussetzungen, Erkennung, Vermeidung\n" +
+                        "Speicherverwaltung\n" +
+                        "Speicheraufteilung, Relocation\n" +
+                        "Segmentierung und Paging\n" +
+                        "Virtual Memory Management (Prinzipien, Adressierung und Hardwareunterstützung, Seitenaustausch, Protection und Sharing)\n" +
+                        "Ein-/Ausgabe und Disk Management\n" +
+                        "Devices und deren Characteristika\n" +
+                        "Ablauf von I/O\n" +
+                        "Operationen, Treiber, Pufferung\n" +
+                        "Festplatten: Zugriffe und Organisation\n" +
+                        "Filesysteme: Operationen, Stuktur und Organisation\n" +
+                        "Networking\n" +
+                        "Einführung in Netzwerke und Protokolle\n" +
+                        "Betriebssystem und Netzwerkkommunikation\n" +
+                        "Security und Protection\n" +
+                        "Bedrohungsszenarien und Sicherheitsmaßnahmen\n" +
+                        "Sicheres Design\n" +
+                        "Zugriffsschutz, Authentifizierung, Rechtesysteme\n" +
+                        "Verschlüsselung (Einführung)\n" +
+                        "Didaktisches Vorgehen: Die genannten Inhalte werden in der Vorlesung präsentiert und mit Beispielen illustriert. Ausgewählte Problemstellungen werden in der parallel abgehaltenen Übung in der Systemprogrammiersprache C unter UNIX (Linux) programmiert.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "ECTS Breakdown: 2 ECTS = 50 Stunden; 24 Std. Besuch der Vorlesung, 24 Std. Vorbereitung, Nachbereitung, Prüfungsvorbereitung, 2 Std. Prüfung"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Betriebssysteme").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Arbeiten mit Betriebssystemen und Programmierung unter Verwendung von Betriebssystemservices\n" +
+                        "Programmieren in einer Systemprogrammiersprache (C)\n" +
+                        "Programmierung paralleler Prozesse unter Verwendung gemeinsamer Ressourcen und Nutzung der Kommunikations- und Synchronisationsmechanismen eines Betriebssystems\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Programmierung in der Systemprogrammiersprache C, Programmierkonventionen und -richtlinien, Betriebssystemprogrammierung und Programmierumgebungen (GNU/Linux), Synchronisation paralleler Prozesse (Wechselseitiger Ausschluss und Bedingungssynchronisation mittels Semaphoren), Signale und Signalbehandlung, Interprozesskommunikation (mittels Shared Memory, Pipes, Sockets).\n" +
+                        "\n" +
+                        "Didaktisches Vorgehen: Ausgewählte Problemstellungen aus der Betriebssystemprogrammierung werden in der Systemprogrammiersprache C unter UNIX (Linux) programmiert. Einführungswissen zu den Aufgabestellungen und zur Systemprogrammierung wird in begleitenden Vortragsblöcken angeboten.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "ECTS Breakdown: 4 ECTS = 100 Stunden; 12 Std. Einführungsblöcke, 84 Std. Programmierbeispiele, 4 Std. Tests\n" +
+                        "\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Introduction to Security").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Die Lehrveranstaltung vermittelt eine grundlegende Einführung in unterschiedliche Aspekte der IT-Sicherheit. Dabei wird sowohl auf typische Sicherheitsprobleme und Angriffe als auch auf Sicherheitsmassnahmen zu deren Beseitigung eingegangen. Diese Lehrveranstaltung vermittelt Wissen, das für alle Studierenden der unterschiedlichen Informatik-Studien relevant ist und für Interessierte die Basis für weitergehende Lehrveranstaltungen im IT-Security Bereich bildet. Der Einsatz in der Praxis wird dabei u.a. durch Gast-Vorlesungen von externen Vortragenden aus der Wirtschaft dargestellt. Im Übungsteil, der v.a. in Gruppenarbeiten erfolgt, werden die Inhalte der Vorlesung erweitert und vertieft.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Die Vorlesung beschäftigt sich u.a. mit grundlegenden Aspekten der Themen\n" +
+                        "\n" +
+                        "Einführung in die IT-Sicherheit/ Grundlagen der IT-Sicherheit \n" +
+                        "Vorgehensweise und Sichtweise potenzieller AngreiferInnen \n" +
+                        "Methoden von AngreiferInnen zur Informationsbeschaffung \n" +
+                        "Risikoanalyse \n" +
+                        "Zugriffskontrolle (Authentifizierung, Autorisierung,...) \n" +
+                        "Betriebsystemsicherheit \n" +
+                        "Netzwerksicherheit \n" +
+                        "Grundlagen der Kryptographie \n" +
+                        "Sicherheit in der Software-Entwicklung \n" +
+                        "Sicherheit von Anwendungsprogrammen \n" +
+                        "Sicherheit von Web-Anwendungen \n" +
+                        "Organisatorische Sicherheit \n" +
+                        "Auffinden von Schwachstellen \n" +
+                        "Sicherheitstests\n" +
+                        "Didaktische Vorgehensweise:\n" +
+                        "\n" +
+                        "In der Vorlesung werden die erforderlichen Fachgrundlagen vermittelt, es erfolgt eine Anleitung zur weiterführenden Recherche bei Vertiefungsbedarf und die Vorstellung von realen, oft grossen Fallbeispielen. In den praktischen Übungsaufgaben werden neben den theoretischen Inhalten der Vorlesung in einer Übungsumgebung unterschiedliche Aspekte der IT-Sicherheit in 3 Einzel- bzw. Gruppenaufgaben weiter vertieft bzw. selbständig erweitert.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Aufwandsschaetzung (ECTS-Breakdown):\n" +
+                        "\n" +
+                        "Vorbesprechung: 1 h\n" +
+                        "Vorlesungen: 13,5 h\n" +
+                        "Self Study (Uebungen, Testvorbereitung): 59\n" +
+                        "Schriftlicher Test: 1.5\n" +
+                        "Summe: 75 Stunden (3 ECTS)"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Daten- und Informatikrecht").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Die Lehrveranstaltung zielt darauf ab, einen Zugang zu den für das Internet bzw. die Informationsgesellschaft relevanten rechtlichen Aspekten zu eröffnen und für aktuelle rechtspolitische Problemstellungen zu sensibilisieren. Ferner soll ein Beitrag zur Reduktion der rechtlichen Risiken, denen (Wirtschafts-)Techniker/innen im Rahmen ihrer beruflichen Praxis ausgesetzt sind, geleistet werden. Im Hinblick auf eine Verdichtung des Praxisbezugs sind Gastvorträge externer Experten geplant. Eine aktive Auseinandersetzung mit den die Vorlesung unterstützenden Unterlagen bzw. Internet-Ressourcen sowie Diskussionsbereitschaft der Teilnehmer/innen wird erwartet!\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Diese Lehrveranstaltung widmet sich dem Schwerpunkt \"Rechtliche Problematik des Internet\" (zB.: Grundprobleme von Recht und Technik, Strukturfragen des Internetrechts, Grundrechte in der Informationsgesellschaft, Telekommunikationsrecht, Urheberrecht, E-Commerce-Recht, Strafrecht etc.). Die Teilnehmer/innen sind zur intensiven Auseinandersetzung mit den via TUWEL bereitgestellten Internetressourcen sowie zur aktiven Mitgestaltung der Vorlesung eingeladen. Aktuelle Entwicklungen werden laufend einbezogen und im Schnittfeld von Recht und Technik diskutiert.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "Vorbesprechung: Di., 4.10.2016, 10.00-12.00 Uhr, Informatikhörsaal\n" +
+                        "\n" +
+                        "Erster Vorlesungstermin: Di., 11.10.2016!\n" +
+                        "\n" +
+                        "Nachmeldetermine (Hier haben Sie die Möglichkeit, Ihre Unterschrift auf der TeilnehmerInnenliste zu leisten, falls Sie das nicht bereits in der Vorbesprechung erledigt haben):\n" +
+                        "\n" +
+                        "Nachmeldetermin 1 - Do., 6.10.2016, 18.00-19.00 Uhr. Ort: Vorraum zum Informatikhörsaal.\n" +
+                        "Nachmeldetermin 2 - Di., 11.10.2016, 12.00-13.00 Uhr. Ort: Vorraum zum Informatikhörsaal.\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VU Datenbanksysteme").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Fachliche und methodische Kenntnisse:\n" +
+                        "Grundlagen, Komponenten, und Funktionsweise von Datenbankmanagementsystemen (DBMS); Datenbankarchitektur und Datenunabhängigkeit\n" +
+                        "Komplexe SQL Abfragen, Einbettung in prozedurale Abfragen (JDBC)\n" +
+                        "Physische Datenorganisation, Datenbanktuning\n" +
+                        "Transaktionen, Fehlerbehandlung, Mehrbenutzersynchronisation\n" +
+                        "Verteilte Datenbanken\n" +
+                        "Kognitive und praktische Fertigkeiten:\n" +
+                        "Verwendung von DBMS und Benutzung deklarativer Abfragesprachen\n" +
+                        "Programmierung von und Anbindung an Datenbanksysteme\n" +
+                        "Soziale Kompetenzen, Innovationskompetenz und Kreativität:\n" +
+                        "Funktionale Denkweise zum Verständnis deklarativer Abfragesprachen\n" +
+                        "Logisches Denken um Abläufe in einem DBMS nachzuvollziehen\n" +
+                        "Mathematisch fundierte Vorgehensweise zur Analyse von Methoden in DBMS\n" +
+                        "Kenntnisse der eigenen Fähigkeiten und Grenzen, Kritikfähigkeit an der eigenen Arbeit\n" +
+                        "Selbstorganisation und Eigenverantwortlichkeit zum eigenständigen Lösen von Laboraufgaben\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Schwerpunkte:\n" +
+                        "Datenbank-Programmierung (mit PL/SQL und JDBC) und SQL-Erweiterungen\n" +
+                        "Physische Datenorganisation und Anfragebearbeitung\n" +
+                        "Transaktionen, Fehlerbehandlung/Recovery, Mehrbenutzersynchronisation\n" +
+                        "Weiterführende Themen (z.B.: verteilte Datenbanken)\n" +
+                        "Didaktisches Vorgehen:\n" +
+                        "Vorlesungsteil\n" +
+                        "Es gibt 2 Übungen die die Konzepte der Vorlesung vertiefen.\n" +
+                        "Die Übungsbeispiele werden, bevor sie starten, in der Vorlesung besprochen.\n" +
+                        "Zur Betreuung der Übung gibt es Fragestunden bei den Tutorinnen und Tutoren verteilt auf die Zeit vor den Abgabeterminen.\n" +
+                        "Die Übung besteht hauptsächlich aus Programmieraufgaben und fließt zu 25% in die Gesamtnote ein.\n" +
+                        "Um für alle Studierenden gleiche Voraussetzungen bei der Abgabe zu schaffen gibt es einen einheitlichen Abgabetermin für alle Studenten gefolgt von den Abgabegesprächen.\n" +
+                        "Bei den Abgabegesprächen werden die Beispiele auf Korrektheit, aber besonders auf das Verständnis geprüft, und entsprechend Feedback gegeben.\n" +
+                        "Die Prüfung besteht aus einem Theorieteil und praktischen Beispielen.\n" +
+                        "Es gibt vier Prüfungstermine (einen am Semesterende, drei weitere im Folgesemester) die zu 75% in die Note einfließen.\n" +
+                        "Bitte beachten Sie für diese LVA unbedingt auch die lokale Homepage der Lehrveranstaltung.\n" +
+                        "\n"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("VO Statistik und Wahrscheinlichkeitstheorie").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Verständnis von Wahrscheinlichkeiten zur Beschreibung realer Phänomene sowie Fähigkeit zur Konstruktion stochastischer Modelle und deren statistischer Analyse.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Diese Vorlesung ist eine Einführung in die Stochastik für Studierende der Informatik. Ausgehend von empirischen Verteilungen und Histogrammen werden folgende Themenkreise der Beschreibung von Unsicherheit behandelt: Wahrscheinlichkeitsräume und stochastische Größen, stochastische Unabhängigkeit, Gesetz der großen Zahlen und zentraler Grenzverteilungssatz, Fundamentalsatz der Statistik, klassische schließende Statistik, Grundlagen der Bayes'schen Statistik und Methoden der linearen Regressionsanalyse.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "für InformatikerInnen"
+        );
+
+        coursesBachelorSoftwareAndInformationEngineering.get("UE Statistik und Wahrscheinlichkeitstheorie").setDescription(
+                "Ziele der Lehrveranstaltung\n" +
+                        "Verständnis von Wahrscheinlichkeiten zur Beschreibung realer Phänomene sowie Fähigkeit zur Konstruktion stochastischer Modelle und deren statistischer Analyse.\n" +
+                        "\n" +
+                        "Inhalt der Lehrveranstaltung\n" +
+                        "Diese Vorlesung ist eine Einführung in die Stochastik für Studierende der Informatik. Ausgehend von empirischen Verteilungen und Histogrammen werden folgende Themenkreise der Beschreibung von Unsicherheit behandelt: Wahrscheinlichkeitsräume und stochastische Größen, stochastische Unabhängigkeit, Gesetz der großen Zahlen und zentraler Grenzverteilungssatz, Fundamentalsatz der Statistik, klassische schließende Statistik, Grundlagen der Bayes'schen Statistik und Methoden der linearen Regressionsanalyse.\n" +
+                        "\n" +
+                        "Weitere Informationen\n" +
+                        "für InformatikerInnen"
+        );
+    }
+
     private void addDescriptionToCourses() {
         addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester1();
         addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester2();
+        addDescriptionToBachelorSoftwareAndInformationEngineeringCoursesSemester3();
     }
 
     private void addSubjectsToStudyPlans() {
