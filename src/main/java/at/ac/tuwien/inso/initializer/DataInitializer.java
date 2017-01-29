@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.initializer;
 import at.ac.tuwien.inso.entity.*;
 import at.ac.tuwien.inso.repository.*;
 import at.ac.tuwien.inso.service.student_subject_prefs.*;
+import at.ac.tuwien.inso.utils.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -504,39 +505,7 @@ public class DataInitializer {
 
         Collection<Course> courses = coursesBachelorSoftwareAndInformationEngineering.values();
 
-        // Add more courses for some subjects
-        List<Course> duplicateCourses = new ArrayList<>();
-
-        for (Course course : courses) {
-            Subject subject = course.getSubject();
-            long subjectId = subject.getId();
-
-            // add a second course for every third subject
-            if (subjectId % 3 == 0) {
-                Course duplicateCourse = new Course(subject, course.getSemester(), course.getDescription());
-                duplicateCourse.setStudentLimits(100);
-                duplicateCourses.add(duplicateCourse);
-            }
-
-            // add two more courses for every 10th subject
-            if (subjectId % 10 == 0) {
-                Course duplicateCourse = new Course(subject, course.getSemester(), course.getDescription());
-                duplicateCourse.setStudentLimits(200);
-                duplicateCourses.add(duplicateCourse);
-
-                Course duplicateCourse2 = new Course(subject, course.getSemester(), course.getDescription());
-                duplicateCourse2.setStudentLimits(200);
-                duplicateCourses.add(duplicateCourse2);
-            }
-        }
-
-        List<Course> allCourses = new ArrayList<>();
-        allCourses.addAll(courses);
-        allCourses.addAll(duplicateCourses);
-
-        Iterable<Course> savedCourses = courseRepository.save(allCourses);
-
-        this.courses = StreamSupport.stream(savedCourses.spliterator(), false).collect(Collectors.toList());
+        this.courses = IterableUtils.toList(courseRepository.save(courses));
     }
 
     private void createCoursesBachelorSoftwareAndInformationEngineering() {
