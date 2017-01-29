@@ -570,6 +570,13 @@ public class DataInitializer {
         subjectsBachelorSoftwareAndInformationEngineering.get("UE Studieneingangsgespräch").addLecturers(
                 lecturerMap.get("Carol Sanderson")
         );
+        subjectsBachelorSoftwareAndInformationEngineering.get("VU Programmkonstruktion").addLecturers(
+                lecturerMap.get("Eric Wilkins")
+        );
+        subjectsBachelorSoftwareAndInformationEngineering.get("VU Datenmodellierung").addLecturers(
+                lecturerMap.get("Eric Wilkins")
+        );
+
 
         subjects.get(0).addLecturers(lecturers.get(3));
         subjects.get(1).addLecturers(lecturers.get(3));
