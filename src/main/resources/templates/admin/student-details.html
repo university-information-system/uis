@@ -4,8 +4,8 @@
 <body>
 
 <div layout:fragment="specific-details">
+    <h2 class="col s12 m3 l1" th:text="#{admin.user.studyplans}"></h2>
     <div th:if="${not #lists.isEmpty(studyplans)}">
-        <h2 class="col s12 m3 l1" th:text="#{admin.user.studyplans}"></h2>
         <ul class="collection z-depth-1">
             <li class="collection-item" th:each="studyplan : ${studyplans}">
                 <div class="row">
@@ -14,14 +14,14 @@
             </li>
         </ul>
 
-        <a
-            href="#" data-th-href="@{/admin/studyplans/registerStudent/(studentToAddId=${user.id})}"
-            class="waves-effect waves-light btn"
-            th:inline="text"
-        >[[#{admin.users.student.addtostudyplan}]]</a>
 
         <div>&nbsp;</div>
     </div>
+    <a
+            href="#" data-th-href="@{/admin/studyplans/registerStudent/(studentToAddId=${user.id})}"
+            class="waves-effect waves-light btn"
+            th:inline="text"
+    >[[#{admin.users.student.addtostudyplan}]]</a>
 </div>
 </body>
 </html>
