@@ -1,18 +1,13 @@
 package at.ac.tuwien.inso.repository;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import at.ac.tuwien.inso.entity.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.*;
+import org.springframework.data.repository.query.*;
 import org.springframework.stereotype.Repository;
 
-import at.ac.tuwien.inso.entity.Course;
-import at.ac.tuwien.inso.entity.Semester;
-import at.ac.tuwien.inso.entity.Student;
-import at.ac.tuwien.inso.entity.Subject;
+import java.util.*;
 
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Long> {
@@ -38,7 +33,8 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
             "   select g.course.subject " +
             "   from Grade g " +
             "   where g.student = :student and g.mark.mark <> 5" +
-            ")")
+            ") " +
+            "and c not in :#{#student.dismissedCourses}")
     List<Course> findAllRecommendableForStudent(@Param("student") Student student);
 
     @Query("select c " +
