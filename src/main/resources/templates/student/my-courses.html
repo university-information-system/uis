@@ -99,9 +99,9 @@
                                         <label for="suggestions"
                                                th:text="#{student.my.courses.feedback.suggestions}"></label>
                                     </div>
-                                    <div class="col s12">
-                                        <input type="checkbox" name="like" id="like"/>
-                                        <label for="like" th:text="#{student.my.courses.feedback.like}"></label>
+                                    <div class="col s12" th:with="id='like-' + ${courseRegistration.course.id}">
+                                        <input type="checkbox" name="like" th:id="${id}"/>
+                                        <label th:for="${id}" th:text="#{student.my.courses.feedback.like}"></label>
                                     </div>
                                 </div>
                                 <input type="hidden" name="course" th:value="${courseRegistration.course.id}"/>
