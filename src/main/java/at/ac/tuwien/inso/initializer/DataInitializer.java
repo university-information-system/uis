@@ -522,7 +522,7 @@ public class DataInitializer {
 
     private void createStudyPlans() {
         Iterable<StudyPlan> studyplans = studyPlanRepository.save(asList(
-                new StudyPlan("Bachelor Software and Information Engineering", new EctsDistribution(new BigDecimal(90), new BigDecimal(60), new BigDecimal(30))),
+                new StudyPlan("Bachelor Software and Information Engineering", new EctsDistribution(new BigDecimal(136), new BigDecimal(30), new BigDecimal(14))),
                 new StudyPlan("Master Business Informatics", new EctsDistribution(new BigDecimal(30), new BigDecimal(70), new BigDecimal(20))),
                 new StudyPlan("Master Computational Intelligence", new EctsDistribution(new BigDecimal(60), new BigDecimal(30), new BigDecimal(30))),
                 new StudyPlan("Master Visual Computing", new EctsDistribution(new BigDecimal(60), new BigDecimal(30), new BigDecimal(30))),
