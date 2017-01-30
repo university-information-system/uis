@@ -20,7 +20,7 @@
                     <i th:if="${feedback.getType() == T(at.ac.tuwien.inso.entity.Feedback.Type).DISLIKE}" class="teal-text material-icons">thumb_down</i>
                 </div>
                 <div>
-                    <span th:text="${feedback.getSuggestions()}"></span>
+                    <span class="feedback-content" th:text="${feedback.getSuggestions()}"></span>
                 </div>
             </li>
         </ul>
