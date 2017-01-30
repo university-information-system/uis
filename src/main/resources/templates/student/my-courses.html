@@ -37,7 +37,7 @@
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).needs_feedback}"
                        th:href="'#give-feedback-' + ${courseRegistration.course.id}"
                        th:text="#{give-feedback}"
-                       class="secondary-content modal-trigger">
+                       class="secondary-content modal-trigger btn">
                     </a>
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).complete_ok}"
