@@ -38,7 +38,12 @@
             <li class="collection-item" th:if="${#lists.isEmpty(allCoursesForAllLecturersPagable)}" th:text="#{lecturer.courses.none}"></li>
 
             <li class="collection-item" th:each="course : ${allCoursesForAllLecturersPagable.getContent()}">
-                <a class="title teal-text" th:text="${course.subject.name}" th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"></a>
+                <a
+                    class="title teal-text"
+                    th:text="${course.subject.name}"
+                    th:href="@{/lecturer/course-details(courseId=__${course.id}__)}"
+                ></a>
+
                 <div th:text="${course.semester.label} + ', ' + ${course.subject.ects} + ' ECTS'"></div>
             </li>
         </ul>

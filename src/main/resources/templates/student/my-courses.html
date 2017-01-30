@@ -16,26 +16,28 @@
 			<h6 th:if="${studyProgress.currentSemester.getLabel()} == ${semesterProgress.semester.label}" class="section-separator" th:text="${semesterProgress.semester.label}" style='font-weight: bold;'></h6>
 			<h6 th:if="${studyProgress.currentSemester.getLabel()} != ${semesterProgress.semester.label}" class="section-separator" th:text="${semesterProgress.semester.label}"></h6>
 			   
-            <ul class="collection z-depth-1">
+            <ul class="collection z-depth-1 courses">
 
                 <li class="collection-item" th:if="${#lists.isEmpty(semesterProgress.courseRegistrations)}"
                     th:text="#{student.my.courses.no.semester.registrations}">
                 </li>
 
-                <li class="collection-item" th:each="courseRegistration : ${semesterProgress.courseRegistrations}">
+                <li
+                    class="collection-item"
+                    th:classappend="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).complete_ok}? 'succeeded' : ''"
+                    th:each="courseRegistration : ${semesterProgress.courseRegistrations}"
+                >
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).in_progress}"
-                       data-position="bottom" data-delay="50" data-tooltip="Unregister"
                        th:href="'#unregister-confirm-' + ${courseRegistration.course.id}"
-                       class="secondary-content tooltipped modal-trigger">
-                        <i class="material-icons">remove_circle</i>
+                       th:text="#{unregister}"
+                       class="secondary-content modal-trigger btn-flat">
                     </a>
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).needs_feedback}"
-                       data-position="bottom" data-delay="50" data-tooltip="Give feedback"
                        th:href="'#give-feedback-' + ${courseRegistration.course.id}"
-                       class="secondary-content tooltipped modal-trigger">
-                        <i class="material-icons">thumbs_up_down</i>
+                       th:text="#{give-feedback}"
+                       class="secondary-content modal-trigger">
                     </a>
 
                     <a th:if="${courseRegistration.state} == ${T(at.ac.tuwien.inso.service.study_progress.CourseRegistrationState).complete_ok}"
