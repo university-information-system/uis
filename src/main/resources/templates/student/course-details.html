@@ -8,12 +8,9 @@
 
         <div class="card-title">
             <a href="#register-to-course-modal"
-               class="teal-text right modal-trigger" th:if="${course.canEnroll}">
-                <i class="material-icons large tooltipped"
-                   data-position="bottom" data-delay="50" th:attr="data-tooltip=#{enroll}">
-                    add
-                </i>
-            </a>
+               class="right modal-trigger btn" th:if="${course.canEnroll}"
+               th:text="#{enroll}"
+            ></a>
             <h1 th:text="${course.name}"></h1>
         </div>
 
