@@ -44,9 +44,11 @@
         >
 
             <li class="collection-item" th:each="course : ${allCourses.getContent()}">
-                <a th:href="'#modal'+__${course.id}__" class="secondary-content modal-trigger"><i
-                        class="material-icons tooltipped"
-                        th:attr="data-tooltip=#{enroll}">add</i></a>
+                <a
+                    th:href="'#modal'+__${course.id}__"
+                    th:text="#{enroll}"
+                    class="secondary-content modal-trigger btn">
+                </a>
                 <a th:href="@{/student/courses/__${course.id}__}"
                    class="title teal-text"
                    th:text="${course.subject.name}"></a>
@@ -54,8 +56,8 @@
 
                 <div th:id="'modal'+__${course.id}__" class="modal small">
                     <div class="modal-content">
-                        <h5 class="center-align" th:text="${course.subject.name}"></h5>
-                        <h6 class="center-align" th:text="#{student.courses.enroll}"></h6>
+                        <h5 class="" th:text="${course.subject.name}"></h5>
+                        <h6 class="" th:text="#{student.courses.enroll}"></h6>
                     </div>
                     <div class="modal-footer">
                         <form

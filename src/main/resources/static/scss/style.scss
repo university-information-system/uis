@@ -53,8 +53,8 @@ header, main, footer {
   overflow: visible;
 }
 
-.subjectlist .subject {
-  color: mix(teal, white, 15%);
+.subjectlist .subject.succeeded {
+  background: mix(teal, white, 15%);
 }
 
 .courses-list .course-button {
