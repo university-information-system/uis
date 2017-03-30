@@ -1,6 +1,6 @@
 # University information system #
 
-This application was developed during the course Advance Software Engineering (ASE) at the Vienna University of Technology (TU Wien) in the winter term 2016.
+This application was developed during the course Advanced Software Engineering (ASE) at the Vienna University of Technology (TU Wien) in the winter term 2016.
 
 This tool is a university information system that assist students in selecting their courses in a smarter way.
 
