@@ -1,5 +1,24 @@
 # University information system #
 
+This application was developed during the course Advance Software Engineering (ASE) at the Vienna University of Technology (TU Wien) in the winter term 2016.
+
+This tool is a university information system that assist students in selecting their courses in a smarter way.
+
+## Main features ##
+* Admins manage everything including users, study plans and subjects
+* Students manage their courses and study plans
+* Students can generate their certificates as a pdf
+* Students get recommendations about courses
+* Lecturers create courses and assign grades to students
+
+## Some screenshots ##
+![login view](https://github.com/university-information-system/uis/raw/master/assets/screenshots/login.png)
+![courses view](https://github.com/university-information-system/uis/raw/master/assets/screenshots/courses.png)
+![course-details view](https://github.com/university-information-system/uis/raw/master/assets/screenshots/course-details.png)
+![recommendations view](https://github.com/university-information-system/uis/raw/master/assets/screenshots/recommendations.png)
+![studyplans view](https://github.com/university-information-system/uis/raw/master/assets/screenshots/studyplans.png)
+![certificate view](https://github.com/university-information-system/uis/raw/master/assets/screenshots/certificate.png)
+
 ## Setup and running ##
 
 ### 1. Installing postgres and configuring it in spring (optional as an embedded db is used for the moment) ###
